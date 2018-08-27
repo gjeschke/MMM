@@ -1,0 +1,14 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+syntax:glob
+*.asv
+private\*.asv
+auxiliary\*.*
+definitions\*.*
+demo\*.*
+help\*.cdr
+Modeller_demo\*.*
+Ramachandran\*.*
+rotamer_libraries\*.*
+tests\*.*
+third_party\*.*
+tmp\*.*
