@@ -1,0 +1,10 @@
+% Mean nitroxide positions for the rigid-body constructs
+% RNA: IAP
+21 	 -9.45	  4.69	-10.94	% SLD U 18, absolut 304, CLIR/MS 537
+% 26 % SLD U 23, absolut 309
+45 	  5.69	 -6.34	-29.21 % SLE U 9, absolut 328
+% 49 % SLE U 13, absolut 332
+57 	-44.04	 11.65	-12.64	% Linker EF U 4, absolut 340, CLIR/MS 548
+78 	 2.84	 22.65	  1.58	% SLF U 15, absolut 361
+
+

@@ -1,0 +1,61 @@
+<html>
+<!-- $Created automatically by MMM $ -->
+<head>
+<title>MMM spin labeling analysis</title>
+<style type="text/css">
+  body {background-color:#ffffff;}
+  td {padding-left:3px;padding-right:3px;padding-top:0px;padding-bottom:0px;margin:0;}
+  h4 {margin-top:6px;margin-bottom:2px;}
+  .pdb {color:#999;}
+  .chain {color:#070;}
+  .model {font-size:80%;}
+  .distcategory {font-weight:bold;}
+</style></head>
+<body>
+<h1>MMM spin labeling site scan</h1>
+<p>Sites without rotamers of sufficiently low energy are omitted.
+<P>
+<P>
+<a name="overview">
+<h2>Overview</h2>
+<p>Site analysis:<br>&nbsp;&nbsp;Chain <span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span>: <a href="#site1">6 sites</a> <p>Distance analysis (intra-chain):<br>&nbsp;&nbsp;Chain <span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span>: <A HREF="#intra1_DEER">DEER</A> | <A HREF="#intra1_CW">CW</A> | <A HREF="#intra1_DEERlong">long (DEER)</A> | <A HREF="#intra1_short">too short</A> | <A HREF="#intra1_long">too long</A> | <A HREF="#intra1_tight">too tight</A><br>
+<a name="site1">
+<h2>Site analysis <span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span></h2>
+<p>2 loop sites, rmsd min/mean/max 0.31/0.44/0.54 nm<br>
+4 helix sites, rmsd min/mean/max 0.04/0.46/0.60 nm<br>
+<a name="spatial1">
+<table style:"border:0px;">
+<tr><td colspan="2">Residue<td>label</td><td>location</td><td>NO rmsd</td><td>rotamers</td><td>partition function</td></tr>
+<tr><td align="right">107</td><td>Trp</td><td>R1A</td><td>helix</td><td>0.04 nm</td><td>3</td><td>0.37303 </td></tr>
+<tr><td align="right"> 70</td><td>Val</td><td>R1A</td><td>loop</td><td>0.31 nm</td><td>27</td><td>0.11125 </td></tr>
+<tr><td align="right">501</td><td>Asn</td><td>R1A</td><td>helix</td><td>0.43 nm</td><td>35</td><td>0.91674 </td></tr>
+<tr><td align="right"> 88</td><td>Thr</td><td>R1A</td><td>loop</td><td>0.54 nm</td><td>131</td><td>0.38617 </td></tr>
+<tr><td align="right">257</td><td>Ile</td><td>R1A</td><td>helix</td><td>0.54 nm</td><td>105</td><td>1.14677 </td></tr>
+<tr><td align="right">280</td><td>Ser</td><td>R1A</td><td>helix</td><td>0.60 nm</td><td>160</td><td>1.15915 </td></tr>
+</table>
+<a href="#overview">To overview</A>
+<a name="intra1">
+<h2>Intrachain distances <span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span></h2>
+<table>
+<tr><td>Site 1</td><td>Site 2</td><td>distance (nm)</td><td>rmsd (nm)</td><td>rel.width</td></tr>
+<tr><td colspan=5><a name="intra1_DEER"></a>
+<span class="distcategory">Most favorable for DEER measurements (1.8 nm ... 4.5 nm)</span> <a href="#overview">to overview</a></td></tr>
+<tr><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (70Val)</td><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (88Thr)</td><td>2.05</td><td>0.43</td><td> 21.1%</td></tr>
+<tr><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (257Ile)</td><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (88Thr)</td><td>2.62</td><td>0.45</td><td> 17.2%</td></tr>
+<tr><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (501Asn)</td><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (70Val)</td><td>3.27</td><td>0.17</td><td> 5.2%</td></tr>
+<tr><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (280Ser)</td><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (88Thr)</td><td>3.31</td><td>0.54</td><td> 16.3%</td></tr>
+<tr><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (501Asn)</td><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (88Thr)</td><td>3.36</td><td>0.40</td><td> 11.9%</td></tr>
+<tr><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (280Ser)</td><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (70Val)</td><td>3.43</td><td>0.41</td><td> 12.1%</td></tr>
+<tr><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (107Trp)</td><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (257Ile)</td><td>3.51</td><td>0.20</td><td> 5.7%</td></tr>
+<tr><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (107Trp)</td><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (70Val)</td><td>3.55</td><td>0.17</td><td> 4.8%</td></tr>
+<tr><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (107Trp)</td><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (280Ser)</td><td>3.58</td><td>0.21</td><td> 5.8%</td></tr>
+<tr><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (257Ile)</td><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (280Ser)</td><td>3.85</td><td>0.45</td><td> 11.6%</td></tr>
+<tr><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (107Trp)</td><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (88Thr)</td><td>3.93</td><td>0.30</td><td> 7.6%</td></tr>
+<tr><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (257Ile)</td><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (70Val)</td><td>4.06</td><td>0.41</td><td> 10.0%</td></tr>
+<tr><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (257Ile)</td><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (501Asn)</td><td>4.42</td><td>0.45</td><td> 10.2%</td></tr>
+<tr><td colspan=5><a name="intra1_DEERlong"></a>
+<span class="distcategory">DEER measurement possible, but rather imprecise (4.5 nm ... 7.0 nm)</span> <a href="#overview">to overview</a></td></tr>
+<tr><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (107Trp)</td><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (501Asn)</td><td>4.75</td><td>0.23</td><td> 4.8%</td></tr>
+<tr><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (280Ser)</td><td><span class="pdb">2WSX</span>/<span class="chain">A</span><span class="model">1</span> (501Asn)</td><td>6.12</td><td>0.36</td><td> 5.9%</td></tr>
+</table>
+<a href="#overview">To overview </a>

@@ -1,0 +1,33 @@
+% Artifical restraints for C-terminal domain 202-232 in LHCII, G. Jeschke, 30.9.2015
+# DOMAIN 202 232
+# SEQUENCE GKGPLENLADHLADPVNNNAWSYATNFVPGK
+# ENSEMBLE 20 0.5
+# HELICES
+206-214
+221-224
+# DEER MTSL 298
+% trilateration restraints beacon 28
+28	202	4.24	0.44
+28	207	4.58	0.35
+28	212	2.77	0.32
+28	217	2.95	0.51
+28	222	2.69	0.45
+28	227	4.23	0.39
+28	232	4.89	0.42
+% trilateration restraints beacon 89
+89	202	2.94	0.30
+89	207	1.63	0.35
+89	212	3.00	0.31
+89	217	3.57	0.45
+89	222	4.03	0.38
+89	227	3.54	0.41
+89	232	4.67	0.44
+% trilateration restraints beacon 105
+105	202	1.88	0.36
+105	207	2.83	0.48
+105	212	3.94	0.36
+105	217	4.73	0.40
+105	222	4.30	0.42
+105	227	3.03	0.52
+105	232	3.49	0.54
+# END

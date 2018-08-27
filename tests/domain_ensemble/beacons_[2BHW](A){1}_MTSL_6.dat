@@ -1,0 +1,13 @@
+% Optimum beacon sites for localization of residue [2BHW](A)201
+% Predicted distances between  2.5 and  3.5 nm
+% site 1 address  site 2 address  site 3 address  site 4 address  site 5 address  site 6 address  Figure of merit
+  [2BHW](A){1}26  [2BHW](A){1}49  [2BHW](A){1}78  [2BHW](A){1}89 [2BHW](A){1}107 [2BHW](A){1}135          2.339
+  [2BHW](A){1}26  [2BHW](A){1}49  [2BHW](A){1}78  [2BHW](A){1}89 [2BHW](A){1}107 [2BHW](A){1}180          2.345
+  [2BHW](A){1}26  [2BHW](A){1}49  [2BHW](A){1}78  [2BHW](A){1}89 [2BHW](A){1}107 [2BHW](A){1}184          2.348
+  [2BHW](A){1}25  [2BHW](A){1}77  [2BHW](A){1}78  [2BHW](A){1}89 [2BHW](A){1}107 [2BHW](A){1}132          2.351
+  [2BHW](A){1}26  [2BHW](A){1}49  [2BHW](A){1}74  [2BHW](A){1}89 [2BHW](A){1}107 [2BHW](A){1}135          2.351
+  [2BHW](A){1}25  [2BHW](A){1}77  [2BHW](A){1}78  [2BHW](A){1}89 [2BHW](A){1}107 [2BHW](A){1}128          2.353
+  [2BHW](A){1}26  [2BHW](A){1}49  [2BHW](A){1}74  [2BHW](A){1}78  [2BHW](A){1}89 [2BHW](A){1}107          2.353
+  [2BHW](A){1}26  [2BHW](A){1}49  [2BHW](A){1}78  [2BHW](A){1}89 [2BHW](A){1}107 [2BHW](A){1}138          2.354
+  [2BHW](A){1}25  [2BHW](A){1}77  [2BHW](A){1}78  [2BHW](A){1}89 [2BHW](A){1}107 [2BHW](A){1}131          2.354
+  [2BHW](A){1}26  [2BHW](A){1}49  [2BHW](A){1}75  [2BHW](A){1}78  [2BHW](A){1}89 [2BHW](A){1}107          2.357

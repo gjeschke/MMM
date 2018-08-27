@@ -1,0 +1,33 @@
+<productinfo
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="optional">
+<?xml-stylesheet type="text/xsl" href="optional"?>
+
+<matlabrelease>14</matlabrelease>
+<name>MMM</name>
+<type>toolbox</type>
+<icon>help/img/MMM_icon.gif/</icon>
+<help_location>help</help_location>
+
+    <list>
+        
+        <listitem>
+            <label>Start</label>
+            <callback>MMM</callback>
+            <icon>/help/img/MMM_icon.gif/</icon>
+        </listitem>
+
+        <listitem>
+            <label>Help</label>
+            <callback>web help/overview.html -helpbrowser;</callback>
+            <icon>$toolbox/matlab/icons/book_mat.gif</icon>
+        </listitem>
+        
+        <listitem>
+            <label>Web site</label>
+            <callback>web http://www.epr.ethz.ch/software/index/</callback>
+            <icon>$toolbox/matlab/icons/webicon.gif</icon>
+        </listitem>
+        
+    </list>
+</productinfo>

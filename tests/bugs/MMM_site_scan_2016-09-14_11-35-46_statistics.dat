@@ -1,0 +1,3 @@
+%  #  	 PDB-ID 	 chain 	 model 	 residue 	 type 	 rotamers  	 partition fct.  	 std. dev. (nm)
+   1   	 1PDB    	 A    	  1  	    25   	 GLN 	     57   	      0.80451   	      0.649
+   2   	 1PDB    	 A    	  1  	    58   	 GLN 	     29   	      0.57349   	      0.512

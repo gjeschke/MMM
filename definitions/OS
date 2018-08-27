@@ -1,0 +1,5 @@
+RESIDUE   OS       1
+END   
+HET    OS               1
+HETNAM     OS  OSMIUM ION
+FORMUL      OS     Os1 3+

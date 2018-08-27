@@ -1,0 +1,15 @@
+% Distance constraints for NhaA "rigid body docking"
+# PDB 1ZCD
+# DEER MTSL 175
+(A)221	2.83	0.3  
+(A)241	2.57	0.3
+(A)202	3.41	0.3
+(A)225	4.45	0.3
+(A)254	1.89	0.3
+(A)118	4.58	0.3
+(A)82	4.48	0.3
+(A)357	4.74	0.3
+(A)177	4.84	0.3
+(A)87	4.73	0.3
+# END
+

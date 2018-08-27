@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Spin labeling and site scans</title>
+</head>
+<body>
+
+<div class="pagetitle">Spin labeling and site scans</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="specialized.html"> Special tasks </A> &uarr;  |  &darr;  <A href="site_scan_window.html"> Site scan setup </A>  &bull; <A href="labeling_window.html"> Labeling conditions </A> </pre>
+
+<div class="subtitle">Spin labeling concept</div>
+<h4>General concept</h4>
+<p>
+MMM describes spin labels by a set of alternative conformations, rotamers, which can be attached without serious clashes with atoms of other residues or cofactors. The individual rotamers are assigned Boltzmann populations corresponding to an estimate of the sum of their internal energy and interaction energy with the protein. 
+All simulations of experiments on spin labels are then based on the population weighted average over the ensemble of rotamers. Since version 2010 clashes with water are automatically disregarded. 
+</p>
+<p>
+For further information, please read the <a href="credits.html#references">publications</a> on this approach. Full-text links:
+<p>
+<a href="http://dx.doi.org/10.1039/c0cp01865a">Rotamer library and attachment</a>
+</p>
+<p>
+<a href="http://dx.doi.org/10.3233/SPE-2010-0490">Site scans</a>
+</p>
+<p>
+Spin labels can also be <a href="localization.html">localized</a> with respect to a reference structure or with respect to each other <a href="network.html">(networks)</a>.
+</p>
+<h4>Rotamer libraries</h4>
+<p>
+The conformations allowed for an isolated spin label and their relative energies are stored in rotamer libraries. Currently such libraries exist for methanethiosulfonate spin label (MTSL) and iodoacetamido-PROXYL (IA-PROXYL) for cryogenic temperature and ambient temperature. As the cryogenic temperature, 175 K was selected, close enough to the glass transition temperatures of water/glycerol mixtures as a solvent for soluble proteins and lipid bilayers. Temperature scaling of the Boltzmann distribution is possible, but with the system not being ergodic, is only an approximation and should be restricted to small temperature intervals. 
+</p>
+<p>
+Some further libraries, based on the same rotamers but with different relative probabilities of these rotamers, have been created for tests.
+These libraries can be used after unlocking advanced features with the <img src="img/toolbar_lock.png" alt="(golden padlock)"> Lock/Unlock (toggle button)).
+</p>
+<h4>Interaction with the protein</h4>
+<p>
+Interaction with atoms of the protein is estimated as dominated by packing effects (only pairwise Lenard-Jones potentials for label and protein atoms) and uses a distance cutoff to speed up computation. The protein backbone and conformations of native side groups are currently considered as static.
+</p>
+<h4>Why a site scan?</h4>
+<p>
+MMM has a two-step process of attaching labels. First spin label rotamers are computed for a set of selected residues or selected chains and after that they are attached to the model structure.
+</p>
+<p>
+The reason is that rotamers computed in site scans do not interfer with each other, but they do interfer with labels that are already attached. A one-step labeling procedure would thus require to attach all desired labels at once.
+</p>
+<p>
+In a <a href="#site_scan">site scan</a> rotamer distributions are computed and stored and a HTML report of favourable labeling sites is prepared, but the structure remains unchanged. If you later select residues that were already computed in a site scan and click the labeling toolbutton<img src="img/toolbar_labeling.png" alt="(black N-O bond with red dot for unpaired electron)"> the rotamers are attached at once (in seconds). If you have prepared and stored a model with a complete site scan, you can always reload it and attach the desired labels. Furthermore, you can attach rotamers from a site scan consecutively without any interference (the distributions were all computed for the virgin structure).
+</p>
+<p>
+The main results from the site scan (number of significantly populated rotamers, partition function, r.m.s.d. of the N-O midpoint coordinate) are stored as residue annotations with the keyword <code>rotamers computed</code>. Hence, you can find all residues for which rotamers were computed via the <a href="find_by_key_window.html">keyword finder</a> and can obtain these statistics via the <code>Show annotation</code> button. 
+<a name="direct">
+<div class="subtitle">Attach precomputed labels</div>
+<p>
+Select the residues for labeling by any <a href="selection.html">selection method</a>, for instance in the <a href="hierarchy_window.html">hierarchy window</a>, by clicking on the structure in the <a href="model_window.html">model window</a> or by the <a href="commands.html#select">select command</a>. Now click the labeling toolbutton<img src="img/toolbar_labeling.png" alt="(black N-O bond with red dot for unpaired electron)">. A window <code>Set labeling conditions</code> opens. Pick the <code>Label</code> from the corresponding listbox and select the temperature with the <code>cryogenic</code> or <code>ambient</code> radiobutton. Direct temperature input in the corresponding edit field is also possible, but should be used with care and only if you understand the concept of rotamer computations well.
+<p>
+MMM now checks for each selected residue if rotamer computations for that label and that temperature were already done. If so, the label is attached, if not, a warning message is shown in the <a href="message_board.html">message board</a> of the <a href="main_window.html">main window</a>. 
+</p>
+<p>
+Labels will not be displayed automatically. Use the <img src="img/toolbar_graphics.png" alt="(cutout of a ball&stick model)">graphics toolbutton for display.
+</p>
+Label attachment leads to an automatic residue annotation with the keyword <code>spin label attached</code>. Hence, you can find all labeled residues via the <a href="find_by_key_window.html">keyword finder</a> and can obtain the corresponding rotamer statistics via the <code>Show annotation</code> button.
+</p>
+<a name="site_scan">
+<div class="subtitle">Spin labeling site scan</div>
+<h4>Is your protein structure suitable for labeling?</h4>
+<p>
+A protein structure downloaded from PDB may need some modification before labeling to get the most realistic results. First, mutations to non-native amino acids, such as selenocysteine (CSE) or selenomethionine (MSE), may have been used to solve the phase problem in x-ray crystallography.
+The protein that is used in EPR experiments most likely has the native amino acids instead. You can fix this with the <a href="menu_build.html#replace">Build/Replace non-standard residues</a> menu item. 
+This replaces selenium by sulfur in MSE and CSE and reduces the Se-C bond lengths to the typical values of S-C bond lengths. The residues are renamed to MET or CYS. The same function can also replace existing spin labels, if you use a crystal structure that has already spin labels attached.
+This is required as MMM labels only native amino acids. Spin labels are replaced by cysteine.
+</p>
+<p>
+Second, some amino acids may have missing sidechains. Although it is proper in crystallography not to specify sidechains if the corresponding electron density is missing, just ignoring these sidechains is not the best choice for subsequent spin label rotamer computations. 
+The problem can be identified in sequence display in the <a href="hierarchy_window.html">hierarchy window</a>, where residues with missing atoms are displayed by green letters, or by the <a href="menu_edit.html#keywords">Edit/Find by keyword</a> menu item (keyword: missing atoms). 
+You can (try to) repair all sidechains with the <a href="menu_build.html#repair">Build/Repair sidechains</a> menu item. This requires that you have the third-party software <a href="third_party.html#SCWRL4">SCWRL4</a> installed, which we strongly recommend. All residues will be repaired for which at least all backbone atoms exist.
+The function reports in the Message Borad of the main window whether all residues could be repaired. If not, you should check if incomplete residues are spatially close to your spin labels.
+</p>
+<p>
+Third, your protein may have been mutated to make it amenable to spin labeling. Typically, this involves removal of all or most native cysteines.  
+You should perform the same mutations on the structural model in MMM, using the <a href="menu_biochemistry.html#mutation">Biochemistry/Mutation</a> menu item.
+This also requires that you have the third-party software <a href="third_party.html#SCWRL4">SCWRL4</a> installed and that all backbone atoms of the mutated residues are specified in the structure.
+</p>
+<h4>Preparation</h4>
+<p>
+A site scan pertains to selected chains or coordinate sets of chains (in NMR structures with several chain models) or to selected residues. If nothing is selected, the current chain (displayed in the title of the main window) is labelled. To scan a chain or several chains, select them by any <a href="selection.html">selection method</a>, for instance in the <a href="hierarchy_window.html">hierarchy window</a>, by clicking on the structure in the <a href="model_window.html">model window</a> or by the <a href="commands.html#select">select command</a>. Now select the <code>EPR/Site scan/selected chains or current chain</code> menu item. A <code>Site scan setup</code> window opens that allows you to determine the labeling pattern. If there are alternative chain models (coordinate sets) for a selected chain, you are previously asked to determine which one should be labeled.
+</p>
+<p>
+To scan selected residues, select them by any <a href="selection.html">selection method</a>, for instance in the <a href="hierarchy_window.html">hierarchy window</a>, by clicking on the structure in the <a href="model_window.html">model window</a> or by the <a href="commands.html#select">select command</a>. Now select the <code>EPR/Site scan/selected residues</code> menu item. A <code>Site scan setup</code> window opens that allows you to exclude certain residue types from the scan (this is handy for domain scans, if you are reluctant to label charged residues).
+</p>
+<h4>Site scan setup</h4>
+<p>
+Here you can select <code>Residue types</code> that you want to label or want to exclude from labeling. Each of the 20 native amino acids can be selected or unselected by checkbox. There are also two predefined labeling patterns. The <code>conservative</code> pattern selects native Cys, Ile, Leu, Met, Ser, Thr, and Val residues, i.e., those residue types for which mutation to Cys is least likely to affect structure and function. The pattern <code>all</code> selects all amino acids, including non-native amino acids. For chain scans, <code>conservative</code> is the default choice, for selected residue scans <code>all</code> is the default choice.
+</p>
+<p>
+If your system has a symmetry axis or pseudo-symmetry axis and you have applied the <code>Symmetry</code> command in the <code>Edit</code> menu before, the <code>z axis is a unique axis</code>. The same applies if you have defined a bilayer with the z axis being the bilayer normal. In these cases you may want to activate the <code>z axis is a unique axis</code> checkbox, as spatial distribution of the label in z direction is of interest.
+</p>
+<p>
+After a site scan, rotamer distributions of label pairs can be used for <code>Distance analysis</code>. Such analysis can suggest label pairs that are suitable for CW EPR or DEER distance measurements. You can select by radiobuttons whether you want ditance analysis to be performed within the same chain (<code><i>intrachain</i> all</code>) for residue pairs in different chains (<code><i>interchain</i> all</code>) only for residues with the same number in different chains (<code><i>interchain</i> equivalent</code>, useful for homooligomers) or if you want to create homooligomer distance distributions by symmetry.
+</p>
+<p>
+With the latter option you need to scan only one of the equivalent chains in a homooligomer. This requires that the z axis is the symmetry axis and that you know how many protein molecules make up the homooligomer (<code>Multiplicity</code>).
+</p>
+<p>
+If you want to analyze rotamer statistics with your own program or need populations of all rotamers in the library with original rotamer numbers, you can request a clear text file of rotamer statistics output by activating the <code>Save statistics</code> checkbox. If you scan several chains at once, separate statistics files are written for individual chains. The file name(s) will be derived from the name of the HTML output file (see below) and statistics files will only be written if the HTML file is also written. For the format of this file, see <a href="#format">Clear text output</a>.
+<p>
+You can also save the coordinates of all rotamers for all labeled residues in individual (pseudo-)PDB files. This is not needed in application work and can create a large number of very long files. If you must do this, activate the <code>Save PDB rotamers</code> checkbox. There is a warning about the storage requirements. See <a href="#PDB_format">Pseudo PDB format for rotamers</a> for the format description.
+<p>
+Click the <code>OK</code> button to proceed or the <code>Cancel</code> button to cancel the computation.
+</p>
+<h4>Setting labelling conditions</h4>
+<p>
+For each chain you can set labeling conditions separately. This allows to scan with different labels for different chains.  A window <code>Set labeling conditions</code> opens
+ (see also <a href="labeling_window.html">Labeling conditions window</a>). Pick the <code>Label</code> from the corresponding listbox and select the temperature with the <code>cryogenic</code> or <code>ambient</code> radiobutton. Direct temperature input in the corresponding edit field is also possible, but should be used with care and only if you understand the concept of rotamer computations well.
+</p>
+<h4>HTML output of analysis results</h4>
+<p>
+After the labeling conditions for all chains are set, a file dialog opens that allows to select a file name for the HTML output file with results of the site scan analysis (spatial restrictions of spin labels at the selected sites, distance analysis). Decide on a file name or click <code>Cancel</code> to perform a site scan without HTML output.
+</p>
+<h4>Progress of the computation</h4>
+<p>
+Progress is reported in the <a href="message_board.html">message board</a> of the <a href="main_window.html">main window</a> and, for individual residues, in a status bar. The message board tells how many residues are already completed and also reports on the number of significantly populated rotamers and the uncertainty of the NO bond midpoint for each individual residue (labeling site).
+</p>
+<h4>Stopping computation</h4>
+<p>
+If necessary, you can stop the computation by closing the status bar tha reports on progress for individual residues (click the cross in the top right corner). A question dialog appears that will let you <code>Stop</code> or <code>Resume</code> the computation. Note that the remainder of the site scan will be skipped if you decide to <code>Stop</code>. Analysis of the site scan will also be skipped and no HTML output stored. 
+</p>
+<h4>Displaying the HTML file</h4>
+<p>
+After the site scan is completed, you are asked whether to open the HTML result file in a web browser. If you decide not to, the file will still be stored for later use.
+</p>
+<h4>Attaching labels</h4>
+<p>
+After a site scan, rotamer distributions are stored, but labels are not attached to the structure. It is strongly recommended to save the mode (<code>File/Save as..</code> menu item) before actually attaching any labels.
+</p>
+</p>
+Now first unselect the chains and then select those residues where you want to attach labels. Click the labeling toolbutton<img src="img/toolbar_labeling.png" alt="(black N-O bond with red dot for unpaired electron)">. The labels will be attached in only seconds per label.
+</p>
+<div class="subtitle">How reliable are the predictions?</div>
+<p>
+There are several possible sources of error: 
+<ul>
+<li>limited precision of the crystal structure or NMR structure of the protein</li>
+<li>differences in sidechain conformation between the crystalline state and the state in solution</li>
+<li>the assumption of a rigid backbone and only one rigid conformation of neighboring sidechains in the current algorithm for computing rotamer populations</li>
+<li>neglect of interactions other than repulsion and dispersion forces (Lennard-Jones potential) in computing the energy of spin-label/protein interaction</li>  
+</ul>
+An estimate of the errors caused by the first two sources can be obtained by repeating the spin labeling procedure with repacked sidechains. 
+For this, make a copy of the structure (before spin labelling), using the <a href="menu_build.html#copy">Build/Copy structure</a> menu item. 
+Repack sidechains in this copy by using the the <a href="menu_build.html#copy">Build/Repack sidechains</a> menu item (this requires that you have the third-party software <a href="third_party.html#SCWRL4">SCWRL4</a> installed).
+Do the same <i>in silico</i> spin labeling as for the original structure and compare the results (HTML output or distance distributions). 
+In combination with a full site scan, this can help to identify sites, where spin label conformation is very sensitive to conformation of neighboring sidechains.
+Such sites are better avoided.
+</p>
+<p>
+Further reliability tests become possible, if you have experimental distance distributions and want to understand the deviation between prediction and experiment. 
+For this, you can use the <a href= "deer_window.html#any_rotamers">Any rotamers?</a> and <a href= "deer_window.html#range_analysis">Range analysis</a> features in the DEER window.
+</p>
+<div class="subtitle">Finding spin labels in a structure</div>
+<p>
+Residues that are spin labeled or for which rotamers were computed are <a href= "annotation_window.html#automatic">automatically annotated</a> and tagged with the keyword <code>spin labels</code>. Hence, a list of all spin labeled residues in a structure can be obtained with the <a href="find_by_key_window.html">keyword finder</a> window, which is accessible via the <a href="menu_edit.html#keyword">Edit/Find by keyword</a> menu item.
+</a>
+<a name="format">
+<div class="subtitle">Clear text output</div>
+<p>
+If only one set of residues is scanned with the same rotamer library or only a single chain is scanned, one statistics file is written. It is stored in the same directory as the HTML file and the name is derived from the name of the HTML file without extension by appending <code>_1.dat</code>. If several chains are scanned, separate statistics files are written for the individual chains. They are consecutively numbered (<code>_1.dat</code>, <code>_2.dat</code>, ...).
+<p>
+The format of the clear text output file is explained by an example:
+<p>
+1<sup>st</sup> line of file: 
+<p>
+<code>%% Rotamer site scan with library IA1_175K_090814</code>
+<p>
+lists the library file used during the whole site scan.
+<p>
+The following lines are separated into records, one record per successfully scanned residue. For a library that contains <i>n</i> possible rotamers, each record has <i>n</i>+3 lines. The record lines are:
+<p>
+1<sup>st</sup> line of record: 
+<p>
+<code>% [2BHW](A){1}106 labeled at calibration temperature 175.0 (label IA1)</code>
+<p>
+gives the residue address, the calibration temperature of the library and the label type as clear text.
+</p>
+<p>
+2<sup>nd</sup> line of record: 
+<p>
+<code>     108      37   175.0    0.50       2</code>
+<p>
+gives the total number of rotamers (column 1), the number of significant rotamers (column 2), the actual labeling temperature (column 3), the "forgive factor" (column 4), and the label type as a number column (5, 1 corresponds to MTSL, 2 to IA-PROXYL).
+</p>
+<p>
+3<sup>rd</sup> line of record: 
+<p>
+<code>  56.292  45.484  61.913 145.834 1.38553</code>
+<p>
+The first three columns give the C<sup>&alpha; </sup> coordinate of the residue (in &Aring;), column 4 the net external potential and column 5 the partition function.
+</p>
+<p>
+The following <i>n</i> lines in the record (here 108 lines) provide information on the individual rotamers. All of them have the following format:
+<p>
+<code>  49.863  41.213  59.022   0.014 0.01741</code>
+<p>
+The first three columns give the midpoint coordinate of the N-O bond (in &Aring;), column 4 the relative population due to only the external potential and column 5 the total population (total populations are normalized, they add up to unity).
+</p>
+<p>
+This file can be read by Matlab with a single load command.
+</p>
+<a name="PDB_format">
+<div class="subtitle">Pseudo PDB format for rotamers</div>
+<p>
+In the PDB mindset rotamers correspond to alternate locations of sidechain atoms. Alternate locations are tagged by a single upper-case letter, hence only up to 26 rotamers can be stored in a PDB file that conforms to the official format specification. In fact, if MMM saves a PDB file with attached rotamers, the 26 leading rotamers (with the largest populations) are saved, all others are skipped. The MMM model has information on all rotamers, but in rare cases you might want to have a PDB file with all rotamers in the same coordinate frame as the protein structure. This may be useful for methodological work on rotamers with other visualization programs that understand PDB format.
+<p>
+For this purpose, a pseudo PDB format is defined in which the number of a rotamer in the original library is stored as the residue number. Hence, the set of rotamers corresponds to a chain A with all residues sharing the same positions of the N, CA, and C atoms. Only atom records (HETATM) and bond records (CONECT) are specified. The HEADER line (example):
+<p>
+<code>HEADER    SPIN LABELING WITH LIBRARY IA1_175K_090814</code>
+<p>
+specifies the rotamer library and the TITLE line
+<p>
+<code>TITLE     [2BHW](A){1}160 LABELED WITH IA1 AT 175 K</code>
+<p>
+the MMM address of the labeled residue, the label type (here IA1 = iodoacetamido PROXYL) and the labeling temperature. A REMARK 4 is written to specify that this is a non-standard format:
+<p>
+<code>REMARK 4 MMM ROTAMERS (PSEUDO-PDB FORMAT) RESIDUE NUMBERS ARE ROTAMER IDS</code>
+</p>
+In the atom (HETATM) records, populations are stored as occupancies. Occupancies have only two significant digits. Hence, round-off errors may be significant and the populations may not add up to unity. The PDB file should thus be used only in conjunction with the <a href="#format">statistics file</a> (five significant digits for populations). Therefore, MMM forces that a corresponding statistics file is written when the individual PDB files are written.
+<p>
+A fake B factor is specified that corresponds to 1 Å r.m.s.d. of all atom positions.
+<p>
+The format can be read again by MMM (use the <code>File/Add.../From PDB.../local file</code> menu item) and is recognized as a special format. The structure tag is constructed based on the address of the labeled residue and the keyword <code>rotamers</code>. Backbone bond generation and DSSP secondary structure assignment (if installed) are suppressed. When displaying low population rotamers (population &lt; = 0.005), you have to change transparency, otherwise they are invisible.
+<p>
+As the format is non-standard, there is some risk that other visualization programs do not process it properly. We have tested Swiss-PdbViewer 4.0.1 and Accelrys DS Visualizer Accelrys DS Visualizer v2.0.1.7347. Both these programs appear to work properly (within their own limits) with this format.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2013, edited 2013/01/17</div>
+</body>
+</html>
+

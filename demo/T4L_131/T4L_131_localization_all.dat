@@ -1,0 +1,17 @@
+% Localization test restraints for MTSL at residue 131 with respect to T4 Lysozyme structure 2LZM
+% Data sets for DEER distance constraints courtesy Christian Altenbach (CA)
+% or
+% Islam2013	S.Islam, R.Stein, H.Mchaourab, B.Roux  
+%		J. Phys. Chem. B 2013, 117, 4740-4754.
+% restraints were derived by Y. Polyhach 
+# PDB 2LZM
+# LOCATE 131R1 0.5 MTSL 298 full
+68	3.86	0.51	% CA
+72	3.51	0.25	% CA
+75	3.27	0.39	% Islam2013
+76	3.65	0.19	% Islam2013
+79	3.31	0.29	% Islam2013
+86	2.70	0.40	% CA
+89      3.26    0.27	% CA
+109	3.02	0.26	% CA
+# END

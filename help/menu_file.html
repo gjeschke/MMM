@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Menu/File</title>
+</head>
+<body>
+
+<div class="pagetitle">Menu/File</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  <A href="user_interface.html"> User interface </A> <A href="main_window.html"> Main window </A> <A href="menu.html"> Menu </A> &uarr;  |  &darr; &bull; <a href="pdb_info.html">Information in PDB files </a> </pre>
+
+<a name="open">
+<div class="subtitle">Open...</div>
+<p>
+Opens a model, which may consist of several related structures, in binary MMM format (a Matlab file). The model contains information on structures, the 3D view, graphics modes for the objects, coloring, transparency, object selections, and auxiliary information, such as results of spin labeling site scans.
+</p>
+<p>
+After opening a model you can proceed with your work where you stopped before saving the model. The state of the MMM user interface (opened windows, content of message board etc.) is not saved or loaded with a model.
+</p>
+<a name="open">
+<div class="subtitle">Open without display.</div>
+<p>
+Opens a model, but does not display the graphics and does not perform <a href="search_PubMed.html#automatic">reference autosearches</a>. This is convenient if you only want to inspect <a href="find_by_key_window.html">keywords</a> and <a href="annotation_window.html">annotations</a> or want to look up or export <href="references.html">references</a>, as the model is loaded much faster.
+</p>
+<p>
+You are advised not to save the model again after opening it in this mode (results are not well tested). This mode is for inspection only.
+</p>
+<a name="save_as">
+<div class="subtitle">Save as...</div>
+<p>
+Saves a model, which may consist of several related structures, in binary MMM format (a Matlab file). See item <a href="#open">Open...</a> for what is and what is not saved. The programm suggest a filename based on date and time.
+</p>
+<p>
+When trying to overwrite an existing file we sometimes encountered an error "No permission.", which seems to be a Matlab problem. It disappears when the save operation is repeated. MMM catches this error and pops up a message box that informs that the save process has to be repeated. Sorry.
+</p>
+<div class="subtitle">Share</div>
+<p>
+Saves a model for sharing with other mebers of the own group (or collaborators) or for public sharing. The only difference to saving the model is that private <a href="annotation_window.html">annotations</a> and <a href="reference_window.html">references</a> are not stored and that group-restricted annotations and references are not stored in public mode.
+</p>
+<a name="new">
+<div class="subtitle">New...</div>
+<p>
+Creates a new model from an atomistic structure (PDB format) or a sequence (yet to be implemented). The current model is discarded after an inquiry- save it before! MMM imports atomic coordinates (including alternate locations and alternate models), B factors, anisotropic temperature factors, sequence information, secondary structure information (except for beta-sheet registry), the header, the title, information on sequence modification, and on atom connection of non-standard residues/cofactors. See <a href="pdb_info.html">Information in PDB files</a> for a full description of how MMM processes PDB files. PDB file format v 3.2 is assumed, a few deviating formats can also be loaded (e.g., MolProbity proton definitions).
+</p>
+<h4>Local file</h4>
+A locally stored PDB file can be selected and loaded.
+<p>
+You are strongly advised to use original PDB files that were originally downloaded from the Protein Data Base rather than PDB files processed and saved before by another program. This is because processing and visualization programs gegenerally do not read (and save) all information from the original PDB files and MMM is likely to use information that was ignored by other programs.
+</p>
+<h4>Direct PDB access</h4>
+<p>
+This requires an internet connection and knowledge of the four-character PDB identifier. An input dialog for the PDB identifier appears and if a valid identifier is provided, the PDB file is loaded. Otherwise, an error or warning message appears in the Message Board.
+</p>
+<div class="subtitle">Add...</div>
+<p>
+Adds an atomistic structure (PDB format) or a sequence (yet to be implemented) to an existing model. See "New..." for what information MMM reads from a PDB file.
+</p>
+<h4>Local file</h4>
+A locally stored PDB file can be selected and loaded.
+<p>
+You are strongly advised to use original PDB files that were originally downloaded from the Protein Data Base rather than PDB files processed and saved before by another program. This is because processing and visualization programs gegenerally do not read (and save) all information from the original PDB files and MMM is likely to use information that was ignored by other programs.
+</p>
+<h4>Direct PDB access</h4>
+<p>
+This requires an internet connection and knowledge of the four-character PDB identifier. An input dialog for the PDB identifier appears and if a valid identifier is provided, the PDB file is loaded. Otherwise, an error or warning message appears in the Message Board.
+</p>\
+<a name="save_pdb">
+<div class="subtitle">Save PDB as...</div>
+<p>
+Saves the current atomistic structure as a PDB file in format v3.2. The title of the main window tells you what structure this is and the structure popupmenu of the <a href="hierarchy_window.html">hierarchy window</a> can be used to select it. Note that this does not save the whole model if it consists of several structures or contains coarse-grained domains. Note also that information on visualization and object selections are lost and that only the 26 leading rotamers can be saved for spin labels. Use "Save as..." for saving the complete model.
+</p>
+Limitations: Only up to 26 alternate locations are saved for an atom. As spin label rotamers are stored as alternate locations, this may lead to loss of information (only the leading 26 rotamers with highest populations are saved to the PDB file). Use "Save as..." to maintain all information on rotamers.
+</p>
+<p>
+Note also that MMM, as virtually any other program that processes PDB structures reads only part of the information contained in an "official" PDB file. Hence, you should always keep a copy of the original file.
+</p>
+<a name="save_pdb">
+<div class="subtitle">Save selection as PDB...</div>
+<p>
+Saves all currently selected objects into a PDB file in format v3.2. The objects can be in different structures. This is a way for merging (parts of) different structures. After reimporting the PDB file to MMM, the merged structure is available as a single structure. The routine promps for a (pseudo)-PDB identifier, which should have four characters but should not be a valid PDB identifier.
+</p>
+<a name="export">
+<div class="subtitle">Export visualization...</div>
+<p>
+Export the 3D visualization in the detached <a href="model_window.html">model window</a> to a graphics file in one of the formats specified below. This item is active only if the model window is detached (use the <a href="toolbar.html#detach">detach toolbutton</a> if required).
+<h4>bmp</h4>
+24-bit bitmap (true color). Fastest export and reasonable size. Resolution is the same as in the model window. To obtain best results, maximize the model window before and <a href="toolbar.html#zoom">zoom</a> the model so that the parts of interest fill the whole figure window.  
+</p>
+<h4>emf</h4>
+Windows extended metafile. Slower export and almost six times larger than bmp. The same format as used with the <a href="toolbar.html#copy">copy tool</a> and the Windows clipboard. Use this with MS Office applications.
+</p>
+<h4>eps</h4>
+Encapsulated postscript with 300 dpi resolution and a 72 dpi TIFF preview included. Particularly useful for LaTeX users. Very slow export and very large file.
+</p>
+<h4>jpeg</h4>
+The well known JPEG format. Snmallest file size and relatively fast export, but supposedly quality is slightly worse than with tiff or bmp. You need a good printer to see the difference, though.
+</p>
+<h4>pdf</h4>
+Adobe's portable document format with 600 dpi resolution. Slow export, much smaller files than eps, but unlike with eps the picture may be clipped at maximum screen size.
+</p>
+<h4>png</h4>
+Portable network graphics 24-bit bitmap format. Usually the best compromise between size, exporting speed, and graphics quality.
+</p>
+<h4>tiff</h4>
+A 300 dpi TIFF file. Preserves full information at about the same size as bmp with reasonably fast export speed. Is accepted by almost any graphics and office program, except for LaTeX.
+</p>
+<a name="density">
+<div class="subtitle">Load density</div>
+<p>
+Loads a density cube file for visualization in the model. Currently two binary formats are supported, the MMM native format and a format exported by a LabView program written by Christian Altenbach.
+</p>
+<p>
+The native MMM format is a Matlab variable file with variables x, y, and z specifying the axes and variable cube of array size [nx,ny,nz] containing the densities. Variables x, y, and z are vectors of lengths nx, ny, and nz and specify the coordinates of the voxels.
+</p>
+<p>
+Altenbach's format is a double precision big endian binary file with the first nine numbers specifying the number of data points and coordinates of the cube in the order nx, x0, dx, ny, y0, dy, nz, z0, dz. Here x0, y0, and z0 are the starting coordinates of the x, y, and z axis and dx, dy, and dz are the respective increments. The following nx&middot;ny&middot;nz values are the densities.
+</p>
+<p>
+Each density cube is assigned a tag for later reference. The default tag ist density_<i>n</i>, where <i>n</i> is a running index. The tag can be edited. Note that density cubes are defined on model level and refer to the (global) model frame. The density cube is assigned to the coordinate frame of the current structure. It will transform with this structure, if you superimpose the structure onto another structure or if you make a symmetry axis, &alpha;-helix bundle mean axis or &beta;-barrel mean axis the new <i>z</i> axis. Such transformations are rather slow (voxels must be interpolated).
+</p>
+<p>
+See the <a href="menu_display.html#density"> Display menu help</a> for information on how to display density cubes.
+</p>
+<a name="preferences">
+<div class="subtitle">Preferences</div>
+<p>
+Allows to set the preferred PDB server (Europe, USA, or Japan) and make the SFX (library) server of your home institution known to MMM for fulltext access of references.
+</p>
+<p>
+If your computing environment allows for establishing a processor pool (for instance, your PC has a multi-core processor) and the Parallel processing toolbox of Matlab is available, MMM can make use of parallel computing for some time-consuming tasks. To allow for comfortable working with your computer while MMM is running, you may want to restrict the number of processor cores that are claimed by MMM. The default value is 6, which proved convenient on a Windows 7 PC with 8 CPU cores. This should be adjusted if your CPU has more or less than eight cores.
+<p>
+You can also specify whether the Matlab browser or the system browser is your preferred browser for viewing help files and internet homepages. The default is <code>mixed</code>, which displays help files in the Matlab browser and internet homepages in the system browser.
+<p>
+<a href="ANM.html">Anisotropic network model (ANM)</a> parametrization can be controlled in the corresponding panel. You can choose how force constants between network nodes (C<sup>&alpha;</sup> positions) are computed. Keep with the defaults, unless you understand the issue and have a particular reason. Activation of the checkbox <code>imANM</code> makes only sense if you work with membrane proteins and if a <a href="build_bilayer.html">lipid bilayer</a> was added, so that the protein is in a standard orientation. In that case the implicit membrane (ANM) is used, as described in Lezon and Bahar, Biophys. J. 2012, 102, 1331-1340.
+</p>
+Finally, you can specify the name of the current version of the Modeller executable, if you want to work with <a href="third_party.html#Modeller">Modeller</a> for loop reconstruction and constraint-supported homology modeling.
+</p>
+<div class="subtitle">Close</div>
+<p>
+Closes MMM. You are asked whether you want to save the current model.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2011.2, edited 2012/06/26</div>
+</body>
+</html>
+

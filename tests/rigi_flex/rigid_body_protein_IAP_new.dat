@@ -1,0 +1,15 @@
+% Mean nitroxide positions for the rigid-body constructs
+% the first nine lines msut correspond to the reference points
+% further lines can specify sites for auxiliary restraints 
+% Protein: IA-Proxyl
+71	20.87	-32.15	-27.51 % rigid body I, ref 1
+80	 6.72	-35.66	-16.50 % rigid body I, ref 2
+109	 2.18	-27.89	 -4.11 % rigid body I, ref 3
+205 	31.45	  6.42	 10.33 % rigid body II, ref 1	
+235 	14.29 	 -8.48 	 21.98 % rigid body II, ref 2	
+240 	 28.17	 -2.11	 26.57 % rigid body II, ref 3
+352	-31.29	 11.99	-30.44 % rigid body III, ref 1
+388	-26.75	-12.68	-10.97 % rigid body III, ref 2
+475	-46.41	  1.82	-46.38 % rigid body III, ref 3
+
+

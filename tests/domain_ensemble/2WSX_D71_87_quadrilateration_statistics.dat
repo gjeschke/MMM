@@ -1,0 +1,22 @@
+%  #  	 PDB-ID 	 chain 	 model 	 residue 	 type 	 rotamers  	 partition fct.  	 std. dev. (nm)
+   1   	 2WSX    	 A    	  1  	   107   	 TRP 	      3   	      0.37303   	      0.037
+   2   	 2WSX    	 A    	  1  	   257   	 ILE 	    105   	      1.14677   	      0.545
+   3   	 2WSX    	 A    	  1  	   280   	 SER 	    160   	      1.15915   	      0.597
+   4   	 2WSX    	 A    	  1  	   501   	 ASN 	     35   	      0.91699   	      0.428
+   5   	 2WSX    	 A    	  1  	    71   	 PHE 	    121   	      0.89411   	      0.558
+   6   	 2WSX    	 A    	  1  	    72   	 GLY 	      1   	      0.00000   	      0.007
+   7   	 2WSX    	 A    	  1  	    73   	 PRO 	    123   	      1.12431   	      0.571
+   8   	 2WSX    	 A    	  1  	    74   	 TYR 	     10   	      0.14888   	      0.274
+   9   	 2WSX    	 A    	  1  	    75   	 ALA 	     16   	      0.40138   	      0.282
+  10   	 2WSX    	 A    	  1  	    76   	 LYS 	    140   	      0.95100   	      0.589
+  11   	 2WSX    	 A    	  1  	    77   	 LYS 	     22   	      1.06713   	      0.388
+  12   	 2WSX    	 A    	  1  	    78   	 ARG 	     90   	      0.58091   	      0.528
+  13   	 2WSX    	 A    	  1  	    79   	 LEU 	      1   	      0.00229   	      0.025
+  14   	 2WSX    	 A    	  1  	    80   	 GLY 	      1   	      0.03249   	      0.022
+  15   	 2WSX    	 A    	  1  	    81   	 GLU 	    139   	      1.18555   	      0.572
+  16   	 2WSX    	 A    	  1  	    82   	 GLU 	     85   	      1.16405   	      0.545
+  17   	 2WSX    	 A    	  1  	    83   	 PRO 	    149   	      1.15140   	      0.583
+  18   	 2WSX    	 A    	  1  	    84   	 PRO 	      8   	      0.07833   	      0.100
+  19   	 2WSX    	 A    	  1  	    85   	 GLU 	     89   	      0.94494   	      0.475
+  20   	 2WSX    	 A    	  1  	    86   	 PHE 	     24   	      0.46704   	      0.346
+  21   	 2WSX    	 A    	  1  	    87   	 SER 	    139   	      1.18127   	      0.594

@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: View control</title>
+</head>
+<body>
+
+<div class="pagetitle">View control</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  <A href="user_interface.html"> User interface </A> <A href="main_window.html"> Main window </A> &uarr;  |  &darr;  &bull; <A href="depth_cueing.html">Depth cueing</A>  </pre>
+
+<div class="subtitle">What can you do with view control?</div>
+<p>
+View control informs you on the current camera view direction and orientation, allows you to select axes of the Cartesian frame as viewing axes, and can be used to toggle atom graphics display as well as emulated <a href="depth_cueing.html">depth cueing</a>.
+</p>
+<div class="subtitle">Cartesian frame display</div>
+<p>
+A trihedron with red (x axis), green (y axis), and blue (z axis) vertices shows how the camera sees the 3D model. An object rotation with mouse click and drag, the tripod updates only after mouse button release.
+</p>
+<div class="subtitle">Special views</div>
+<p>
+A popup menu right from the Cartesian frame display allows to select viewing directions along the x, -x, y, -y z, and -z axes. If none of these directions is selected, this popup menu displays the term <code>arbitrary</code>. Selecting one of the special views resets camera zoom so that all displayed graphics is seen.
+</p>
+<div class="subtitle">Viewing vector</div>
+<p>
+Below the popup menu, the current viewing direction is specified as a vector in dark blue writing. This allows to write down the current viewing direction and to reproduce it exactly at a later time by using the <a href="commands.html#view">view command</a>. This is followed by a slash and the camera up vector in dark green writing. To obtain exactly the same appearance, viewing direction and camera up vector must coincide. The camera up vector can be set by the <a href="commands.html#camup">camup command</a> or, together with the viewing vector, by the <a href="commands.html#view">view command</a> with six arguments.
+</p>
+<div class="subtitle">Depth cueing</div>
+<p>
+This button activates <A href="depth_cueing.html">Depth cueing</A>, which has a dedicated control window.
+</p>
+<a name="atom_graphics">
+<div class="subtitle">Atom graphics</div>
+<p>
+Beyond a certain number of graphics objects Matlab graphics becomes very slow. This slows down operations in the graphical user interface and can make it completely impractical to rotate, zoom, and pan the 3D model interactively.
+<p>
+This situation is most likely encountered when you display large conformational ensembles of spin labels (many rotamers) with atom graphics, i.e., as stick, wire, ball & stick, or space-filling representations.
+<p>
+As a workaround, click the <code>Atom graphics on</code> button. It changes to <code>Atom graphics low</code> with yellow lettering. The graphical representation for each displayed atom is replaced by a single dot and graphics speeds up. If the speed up does not suffice, click the button again. It changes to <code>Atom graphics off</code> with red lettering. All atom graphics is now invisible, but not deleted. Graphics speeds up once again.
+<p>
+Once you are finished with setting up your graphics, click the button until the lettering becomes green again and reads <code>Atom graphics on</code>. Allow some time between clicks for display update.
+<p>
+Note that you can generate atom graphics with the <a href="commands.html#show">show</a> command or the <a href="graphics_window.html">graphics mode</a> window even when the <code>Atom graphics</code> button is switched off. The graphics just is not displayed until you click the button. For a reason unknown to us it is sometimes necessary to click twice through all the states before the graphics is really displayed.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2010.1, edited 2010/07/31</div>
+</body>
+</html>
+

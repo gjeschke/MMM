@@ -1,0 +1,66 @@
+HEADER    SITE NETWORK                            20-Dec-16   SBL1
+TITLE     BAX SPIN LABEL LOCATIONS SBL1
+REMARK   4
+REMARK   4 SBL1 COMPLIES WITH FORMAT V. 3.20, 01-DEC-08
+REMARK   5
+REMARK   5 WRITTEN BY MMM (SITE NETWORK)
+MODEL        1
+HETATM    1 NAL  LOP A   1      35.608  61.812  12.461  1.00  0.10          NA
+ENDMDL
+MODEL        2
+HETATM    1 NAL  LOP A   1      35.208  61.412  14.461  0.86  0.10          NA
+ENDMDL
+MODEL        3
+HETATM    1 NAL  LOP A   1      35.608  62.212  10.461  0.81  0.10          NA
+ENDMDL
+MODEL        4
+HETATM    1 NAL  LOP A   1      34.008  63.012  12.861  0.77  0.10          NA
+ENDMDL
+MODEL        5
+HETATM    1 NAL  LOP A   1      36.808  60.212  12.861  0.75  0.10          NA
+ENDMDL
+MODEL        6
+HETATM    1 NAL  LOP A   1      36.808  60.612  10.861  0.69  0.10          NA
+ENDMDL
+MODEL        7
+HETATM    1 NAL  LOP A   1      34.008  60.612  12.861  0.64  0.10          NA
+ENDMDL
+MODEL        8
+HETATM    1 NAL  LOP A   1      34.008  63.412  10.861  0.63  0.10          NA
+ENDMDL
+MODEL        9
+HETATM    1 NAL  LOP A   1      37.208  61.812  14.061  0.60  0.10          NA
+ENDMDL
+MODEL       10
+HETATM    1 NAL  LOP A   1      36.408  59.812  14.861  0.60  0.10          NA
+ENDMDL
+MODEL       11
+HETATM    1 NAL  LOP A   1      35.608  63.412  14.061  0.59  0.10          NA
+ENDMDL
+MODEL       12
+HETATM    1 NAL  LOP A   1      33.608  62.612  14.861  0.59  0.10          NA
+ENDMDL
+MODEL       13
+HETATM    1 NAL  LOP A   1      34.408  60.612  10.861  0.58  0.10          NA
+ENDMDL
+MODEL       14
+HETATM    1 NAL  LOP A   1      36.008  63.812  12.061  0.55  0.10          NA
+ENDMDL
+MODEL       15
+HETATM    1 NAL  LOP A   1      37.608  62.212  12.061  0.55  0.10          NA
+ENDMDL
+MODEL       16
+HETATM    1 NAL  LOP A   1      36.008  61.012   8.861  0.51  0.10          NA
+ENDMDL
+MODEL       17
+HETATM    1 NAL  LOP A   1      35.208  61.012  16.461  0.49  0.10          NA
+ENDMDL
+MODEL       18
+HETATM    1 NAL  LOP A   1      34.408  62.612   8.861  0.48  0.10          NA
+ENDMDL
+MODEL       19
+HETATM    1 NAL  LOP A   1      35.208  59.012  13.261  0.45  0.10          NA
+ENDMDL
+MODEL       20
+HETATM    1 NAL  LOP A   1      32.808  61.812  11.661  0.45  0.10          NA
+ENDMDL

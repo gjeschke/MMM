@@ -1,0 +1,7 @@
+\select@language {ngerman}
+\contentsline {section}{\numberline {1}Introduction}{2}
+\contentsline {subsection}{\numberline {1.1}Why yet another program for protein modeling?}{2}
+\contentsline {subsection}{\numberline {1.2}What the program should do and how the user interface should look like}{4}
+\contentsline {section}{\numberline {2}Hierachical description of macromolecular models}{6}
+\contentsline {section}{\numberline {3}Display algorithms}{6}
+\contentsline {subsection}{\numberline {3.1}Ribbon models}{6}

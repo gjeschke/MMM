@@ -1,0 +1,84 @@
+% This is the manual template file for MMM
+% Lines starting with % are comments
+% Lines starting with < include the specified help file in the manual
+% if a line starts with <<, the included file is treated as subsubsection
+% Lines starting with $ define a new section, whereas the individual help files
+% correspond to subsections
+% Lines starting with any other character are literally copied into the
+% intermediate HTML file
+% space at the beginning and end of lines is ignored (lines are trimmed)
+% The Contents section (not numbered) is automatically created
+% Be sure to include your new help files under the appropriate sections and, if
+% applicable, under the appropriate subsections
+< manual.html
+$ General
+< overview.html
+< getting_started.html
+<< demo_model.html
+< changes.html
+< model_concept.html
+< object_concept.html
+< addressing.html
+<< domain_addressing.html
+< visualization.html
+<< densities.html
+< selection.html
+< annotation_window.html
+< reference_window.html
+<< search_PubMed.html
+<< citation_format.html
+< find_by_key_window.html
+< pdb_info.html
+$ User interface
+< main_window.html
+<< menu_file.html
+<< menu_edit.html
+<< menu_build.html
+<< menu_display.html
+<< menu_analysis.html
+<< menu_dynamics.html
+<< menu_EPR.html
+<< menu_biochemistry.html
+<< menu_predict.html
+<< menu_help.html
+<< toolbar.html
+<< view_control.html
+<< depth_cueing.html
+<< command_line.html
+<< model_panel.html
+<< model_window.html
+<< message_board.html
+< commands.html
+< hierarchy_window.html
+< color_selection.html
+< transparency_selection.html
+< graphics_window.html
+< report_editor.html
+$ Methods
+< spin_labeling.html
+< deer_window.html
+< localization.html
+< network.html
+< docking.html
+< domain_ensemble.html
+< coarse_graining.html
+<< ENM.html
+<< GNM.html
+<< ANM.html
+<< fit_from_template.html
+< fit_from_template_Modeller.html
+< scripting.html
+< magic_fit.html
+< sites_window.html
+< assign_TM.html
+< build_bilayer.html
+< ENDOR_window.html
+$ Protocols
+< protocol_labeling_DEER.html
+<< protocol_load.html
+<< protocol_sitescan.html
+<< protocol_deer.html
+$ Conditions and Acknowledgment
+< license.html
+< third_party.html
+< credits.html

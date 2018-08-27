@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Superimposing structures</title>
+</head>
+<body>
+
+<div class="pagetitle">Superimposing structures</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="specialized.html"> Special tasks </A> &uarr;  |  &darr;  </pre>
+
+<div class="subtitle">Superimposing structures or parts thereof</div>
+<p>
+This function allows to superimpose two structures or parts of two structures by minimization of the root mean square deviation of atom positions (A. D. McLachlan, <i>J. Mol. Biol.</i> <b>1979</b>, <i>128</i>, 49-79). One of the structures serves as the template and is unchanged, the other structure is the moving structure and is rotated and translated to achieve the best fit. By selecting always the same template structure with different moving structures you can superimpose multiple structures. See also explanation of the corresponding <a href="menu_edit.html#magic_fit">menu item</a>.
+</p>
+<p>
+Note that one of the structures has to be redrawn, and as MMM is a bit slow with graphics, this may take some time. Fitting starts only when you click the <code>OK</code> button. To find out only the r.m.s.d. without actually transforming a structure, <a href="#save">save the transformation matrix</a>.
+</p>
+<p>
+Superposition of complete structures works only if the chain identifiers match. Otherwise, select corresponding residues, use the <code>only selected</code> option, and deactivate the <code>check residue correspondence</code> checkbox.
+</p>
+<div class="subtitle">Superimposing complete structures</div>
+<h4>Selection of template and moving structures</h4>
+<p>
+Two popup menus allow for selection of the <code>Template structure</code> and <code>Moving structure</code>. Note that atoms are superimposed by matching chain identifier, matching residue number, and matching atom tag.
+</p>
+<a name="selection_mode">
+<h4>Atoms to be fitted</h4>
+<p>
+The <code>Fit mode</code> group of radiobuttons allows to select which atom types are to be fitted. For identical sequences you might want to superimpose <code>all atoms</code>, but most of the time you may want to superimpose only <code>backbone atoms</code>. In rare cases you may want to restrict superposition to the <code>C<sup>&alpha;</sup></code> atoms.
+</p>
+<div class="subtitle">Superimposing parts of structures</div>
+<p>
+To superimpose only parts of a structure, select the corresponding residues both in the intended template and intended moving structure. If different sets of residues are selected, only matching residues are considered (chain identifier, rresidue number, and insertion code are checked). You can also select cofactors, if they have the same chain identifiers and residue numbers in both structures. 
+</p>
+<p>
+If chain identifiers or numbers of residues to be superimposed do not match, superposition can still be done after careful residue selection. In both structures to be superimposed you have to select corresponding residues in exactly the same sequence. The number of selected residues should be the same in both structures (surplus residues in the moving structure are ignored, surplus residues in the target structure create an error). Only residues, not atoms, or whole chains can be selected for this mode. You need to deactivate the <code>check residue correspondence</code> checkbox before performing the transformation.
+</p>
+<p>
+In the <code>Fit mode</code> panel, activate the <code>only selected</code> checkbox.
+<a name="aligned">
+<div class="subtitle">Sequence alignment based superposition</div>
+<p>
+For unlike proteins it may be tedious to manually generate selections of corresponding residues. MMM can try to align the sequences of the two proteins and superimpose either the aligned residues or the whole structure. As an example you can load PDB structures 1OMP and 2HQ0 and superimpose them by checking the <code>aligned residues</code> checkbox.
+</p>
+<a name="motion_display">
+<div class="subtitle">Display motion arrows</div>
+<p>
+If the two structures are of the same protein in different states, you may display 3D (conical) arrows that depict the structural transformation. For that it is best to display only the moving structure as a coil. See also the <a href="commands.html#motion">motion command</a> for how to do that in a single step.
+</p>
+<a name="ensemble_mode">
+<div class="subtitle">Ensemble mode</div>
+<p>
+The ensemble mode is useful if the moving structure is an ensemble of different conformations, whereas the template structure is a single model. In that case it is usually appropriate to separately fit each individual conformation in the ensemble to the template. This is achieved by activating the checkbox. If the checkbox is deactivated, the selected conformation (if any) or the first conformation is fitted to the template and all other conformations are translated and rotated in the same way.
+</p>
+<a name="save">
+<div class="subtitle">Saving a transformation matrix</div>
+<p>
+Instead of actually moving the structure, you can just save the 4&times;4 affine transformation matrix that achieves the superposition. Click on the <code>Save</code> button and select the filename (a selfexplanatory name is suggested). Then close the window by clicking the <code>Cancel</code> button so that actual transformation and redrawing are avoided. The r.m.s.d. of both structures is still shown in the Message board.
+</p><div class="subsubtitle">Version</div>
+<div class="comment">version 2010.1, edited 2010/08/10</div>
+</body>
+</html>
+

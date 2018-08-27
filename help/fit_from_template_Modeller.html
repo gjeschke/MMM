@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Fit from template by Modeller</title>
+</head>
+<body>
+
+<div class="pagetitle">Fit from template/Modeller</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="modeling.html"> Model building </A>  &bull;  <a href="menu_build.html"> Build menu</a> &uarr;  |  &darr;  </pre>
+
+<div class="subtitle">Introduction</div>
+<p>
+This feature requires that <a href="third_party.html#Modeller">Modeller<a> is installed in an MMM subdirectory, or a writable directory known in the Matlab path, and that the name of the executable, for instance <code>mod9.10</code>, is properly specified in the preferences window, which is accessible from the <a href="menu_file.html#preferences">File menu</a>.
+<p>
+This fit procedure can be used to create a homology model based on a template structure of a related protein, a sequence alignment, and a set of distance constraints and, optionally, secondary structure constraints. In simple cases, where sequence identity is moderate to high, sequence alignment can be automated by using the alignment program <a href="third_party.html#MUSCLE">MUSCLE</a>, which is bundled with MMM. If the template and target sequence are the same (a model of unknown state B structure of a protein is to be computed from the knowwn structure of state A and constraints for state B), no alignment file is required.
+</p>
+<p>
+We emphasize that the concept of a single "true" structure of a protein or protein complex is largely fiction. Nevertheless <i>some parts</i> of a protein are fixed at atomic resolution. The models obtained with the Modeller fit procedure should not be discussed in terms of such atomistic detail, unless sequence identity is very high at least near the details to be discussed. Otherwise, only speculations are possible on this level.
+</p>
+<p>
+The current MMM version allows for homology modelling of <i>only single-chain proteins</i>. It is still in a development stage. In particular, modelling supported by experimental constraints may still change. The help file does not describe all features. We suggest that you wait for our publication on the approach before using the feature for serious work or that you contact us.
+</p>
+<p>
+The template structure must be loaded and must be the current structure in MMM before the window is opened.
+</p>
+<a name="alignment">
+<div class="subtitle">Specification of sequence alignment</div>
+<p>
+Skip this step if you model a structural transition between states of the same protein.
+</p>
+<p>
+Homology modeling is based on an alignment between the sequence of the template protein and the sequence of the protein to be modeled (target protein). MMM can read alignment files in FASTA format (default extensions <code>.afa</code>, <code>.fa</code>, <code>.fasta</code>, <code>.ebi</code>, <code>.txt</code>), Clustal format (default extensions <code>.clw</code>, <code>.aln</code>, <code>.clustalw</code>), and in Modeller's native PIR format (default extensions <code>.ali</code>, <code>.pir</code>). The native format of MMM is FASTA and this is assumed for any file extension that is not assigned to another format. Note, however, that the file dialog window by default lists only files in the native Modeller format PIT (<code>*.pir, *,ali</code>). Withe <code>Files of type:</code> popup menu in this window, you can select that FASTA files, Clustal files, or any file type is listed.
+</p>
+<p>
+The alignment is loaded via the <code>Alignment</code> button. MMM checks whether the template sequence exists in the alignment file and, if not, adds this sequence and aligns it to the other sequences by using <a href="third_party.html#MUSCLE">MUSCLE</a>. This feature also allows working from only the template structure and a FASTA file of the target sequence, without explicitly specifying the alignment. However, we discourage this automatic alignment mode in cases where sequence identity is lower than 50%.
+</p>
+<p>
+Sequence identity is displayed in the <b>Message board</b> of the main MMM window after the alignment or target sequence was loaded. Furthermore, the <code>Alignment</code> button is color-coded after loading an alignment. Red color corresponds to 20% sequence identity or less ("midnight zone", unreliable without additional constraints), green color to 40% sequence identity or more (rather reliable homology models). In between ("twilight zone"), color is linearly interpolated on an RGB scale, with yellow corresponding to 30% sequence identity. This is really a traffic light code. There are cases where driving over a red traffic light will work out for you, but be aware that it is dangerous.
+</p>
+<a name="constraints">
+<div class="subtitle">Specification of constraints and fit parameters</div>
+<p>
+Fits are controlled by an ASCII text input file that is opened via the <code>Constraints</code> button. After the constraints are loaded, they are visualized in the <a href="#wireframe">wireframe model</a> using a color code that indicates whether they are matched (green, within the standard deviation of the distance specified in the constraint file), poorly matched (yellow, within twice the standard deviation), or not matched (red, deviating by more than twice the standard deviation). The plot <code>Restraint matching</code> (top right) visualizes the same information ordered by constraint number and a <a href="report_editor.html">report editor</a> opens that provides this information in text format, so that you can save it.
+<p>
+Comment lines or comments in command lines are introduced by the percent character %. Keyword lines start with the hash character #. There must be a space between the hash character and the keyword. Two types of keywords exist, single-line keywords (all parameters are specified on the same line as the keyord) and block keywords (some parameters follow in additional lines, this is used for constraint specification). Blocks end when the next keyword is encountered. The last block must be followed by an <code># END</code> keyword line. Keywords are not case sensitive. Keywords and arguments are separated by spaces.
+</p>
+Currently, the following keywords are defined:
+<ul>
+<li> <code> # PDB</code> (single-line), argument: PDB identifier of template structure, the chain can be given after a colon (<code>:</code>)</li>
+<li> <code> # DEER</code> (block), arguments: spin label and temperature (in K) for rotamer simulation, starts block for EPR (DEER and CW EPR) constraints</li>
+<li> <code> # DIRECT</code> (block), no arguments, starts specification block for C<sup>&alpha;</sup>-C<sup>&alpha;</sup> constraints.
+<li> <code> # HELICES</code> (block), no arguments, starts specification of secondary structure constraints for (&alpha;-)helices.</li>
+<li> <code> # STRANDS</code> (block), no arguments, starts specification of secondary structure constraints for &beta;-strands.</li>
+<li> <code> # SHEETS</code> (block), no arguments, starts specification of secondary structure constraints for the alignment of &beta;-strands to sheets.</li>
+<li> <code> # ALIGN</code> (single-line), argument: file name of alignment file, we recommend to use the <code>Alignment</code> button instead</li>
+<li> <code> # CHAINS</code> (single-line), arguments: identifiers of the chains, this allows to name the chain in the target structure other than <code>A</code> </li>
+<li> <code> # REALIGN</code> (single-line), argument: threshold for realigning the sequences, not yet implemented</li>
+<li> <code> # END</code> (single-line), no arguments, stops reading of the file
+</ul>
+</p>
+<h4>Remarks</h4>
+<p>
+Future versions may have additional keywords. If you are a programmer and want to implement keywords of your own, please contact us before. The constraint file is processed by function <code>rd_restraints.m</code>. Note also that some other keywords are already in use for <a href="fit_from_template.html#constraints">elastic network model fitting</a>.
+</p>
+<p>
+<code># PDB</code>: This is used for a check whether the current structure in MMM, which can be picked in the <a href="hierarchy_window.html">hierarchy window</a>, is the requested template structure. If the current structure in MMM has a different PDB identifier than specified in the constraints file, the user can either use the current structure or load the specified structure (if it is available on the FTP server of the PDB).
+<p>
+<code># DEER</code>: The arguments of this keyword supersede any spin labeling with a different label or at a different temperature that you may already have performed on the template structure (rotamers are automatically recomputed). If rotamer computation (<a href="spin_labeling.html#site_scan">site scan</a>) was already performed for the specified sites (see below) with matching spin label and temperature, rotamer computation is skipped. It is not necessary to compute labels before, since version 2011 rotamer computation is fast. In any case you should not actually attach the labels before fitting.
+</p>
+<p>
+<i>DEER constraint specification</i>: DEER constraints are specified by <a href="addressing.html">MMM addresses</a> of the two residues involved, followed by the mean distance (in nm) and the full width of the distance range (in nm). The width of the distance range is not currently used in homology modeling. In single-chain structures, the residue number suffices as an address. In multi-chain protein complexes the chain identifier in parentheses must precede the residue number (without intervening space). The structure must not be specified in the residue address.
+</p>
+<p>
+It is good practice to comment each constraint (where does it come from, functional assay, etc.). Constraints from CW EPR are currently specified as DEER constraints.
+</p>
+<p>
+<code># direct</code>: This keyword allows to specify direct constraints between C<sup>&alpha;</sup> atoms of residues, for instance to fix part of the structure during the fit or to use information from an incomplete crystal structure. 
+</p>
+<p>
+<i>direct C<sup>&alpha;</sup>constraint specification</i>: Direct constraints are specified by <a href="addressing.html">MMM addresses</a> of the two residues involved, followed by the distance (in nm) and the full width of a distance range (in nm). In single-chain structures, the residue number suffices as an address. In multi-chain protein complexes the chain identifier in parentheses must precede the residue number (without intervening space). The structure must not be specified in the residue address. It is good practice to comment each direct constraint (reason why it is provided).
+</p>
+<p>
+<code># ensemble</code>: Such a keyword exists, but is not used for homology modeling. Please specify the number of computed models and selected ensemble in the <b>Modeller control</b> panel of the fit window..
+</p>
+<p>
+<code># END</code>: Make it your practice to always conclude a constraint file with the <code># END</code> keyword. The current version may work if you forget this, but we give no guarantee that this will also be the case in future versions of MMM.
+</p>
+<h4>Example constraint file:</h4>
+<p>
+<code>
+% Experimental DEER restraints for PutP
+</code><p><code>
+# PDB	2XQ2:A
+</code><p><code>
+# CHAINS A
+</code><p><code>
+# DEER	MTSL	175
+</code><p><code>
+41	62	3.23	0.49
+</code><p><code>
+41	446	4.74	0.64
+</code><p><code>
+...
+</code><p><code>
+# HELICES
+</code><p><code>
+8-24
+</code><p><code>
+44-55
+</code><p><code>
+...
+</code><p><code>
+# END
+</code>
+<p>
+<a name="create">
+<div class="subtitle">Creating and importing models</div>
+<p>
+The <code>Run options</code> subpanel of the <code>Modeller control</code> panel allows for specifying how Modeller is called. For very long jobs (large protein or large ensemble size) you may wish to run Modeller as a background job by activating the <code>background run</code> checkbox. Note, however, that you will loose some information, the visualization of constraint matching in the wireframe model and <code>Constraint matching</code> plot are not available. The advantage of a background run is that you can do other work with MMM while the Modeller job runs and that you can even close MMM and Matlab (and thus free a Matlab network license for other users). Once you restart MMM it will check for running and completed jobs and allow for loading results of completed jobs. You can also get an overview of background jobs and interrogate the current state of the computation via the <code>Jobs</code> menu.
+<p>
+In a background run, a console window (DOS window) may open that will state <code>'import site' failed; use -v for traceback</code>. This warning message is a minor bug of Modeller, which does not affect your results. Do not close that window (you can minimize it)! Job control of a background job also reports the runtime of a background job and allows for displaying the complete (Modeller) logfile and for killing (deleting) a background job. 
+<p>
+The <code>Models</code> edit field allows for specifying the size of the ensemble to be computed by Modeller. This may be larger than the ensemble of models you wish to import later (see below).
+<p>
+You can specify structure identifiers, which are not necessarily PDB identifiers, for the template and target structures. These identifiers are used for Modeller output and input files that are stored in the <code>\tmp</code> subdirectory of MMM, and the target identifier also specifies the name of the structure after importing results.
+<p>
+The <code>repacking</code> checkbox requests an alternative spin label rotamer computation that we implemented for test purposes. It will strongly slow down rotamer computation and does not have any significant advantage. You may want to use it occasionally to test how sensitive your results are with respect to specifics of spin label rotamer modeling. It requires that <a href="third_party.html#SCWRL4">SCWRL4</a> is installed as third-party software.
+<p>
+MMM will always automatically remove spin labels after importing models and will repack sidechains after this, if <a href="third_party.html#SCWRL4">SCWRL4</a> is installed as third-party software. We strongly recommend doing this, SCWRL4 is free for academic use.
+<p>
+Information in the <code>Import models</code> subpanel should ideally also be specified before running Modeller, in particular the <code>Target ID</code>. The edit field <code>Min. GA341</code> specifies a threshold, below which models should be rejected. The authors of Modeller suggest that models with GA341 score below 0.70 are unreliable. The default value of MMM is a bit more conservative (0.75), but you can change it. It can be decreased down to 0.50 with the <code>-</code> button and down to 0.30 by direct input. Using such low scores is supported for development purposes and for early stages of modeling, where the alignment might still be poor. We strongly advise against publishing models with GA341 below 0.70. If you really must do so, at leastv take pains to explain to the readers of your paper that this is a rough, uncertain model.
+<p>
+The <code>Ensemble</code> edit field allows you to specify how large the imported ensemble should be. This number cannot be larger than the number of computed models, hence, the two edit fields are coupled. It can be smaller if you wish to select potentially more reliable models from a large computation.
+<p>
+In any case, the imported ensemble will exclude all models below the GA341 threshold and may thus be smaller than requested, in particular, if sequence identity of the alignment was poor. If there exist more computed models above the GA341 threshold than are requested in the imported ensemble, the ensemble is created from the models with the highest DOPE score (an independent energy function, which is not the Modeller objective energy function). Such selection follows guidelines issued by the authors of the Modeller package.
+</p>
+<p>
+The Modeller computation is started with the <code>Run</code> button. If you run it in the foreground, the message board will report Modeller log output after the computation is finished. This report will end with a warning, which results from a minor Modeller bug that does not affect your results. The cursor will also change from watch to arrow when a foreground Modeller run is completed. At that point you need to import results with the <code>Import</code> button. 
+<p>
+After import, the constraint matching of the first loaded homology model is visualized in the <a href="#wireframe">wireframe model</a> using a color code that indicates whether they are matched (green, within the standard deviation of the distance specified in the constraint file), poorly matched (yellow, within twice the standard deviation), or not matched (red, deviating by more than twice the standard deviation). The plot <code>Restraint matching</code> (top right) visualizes the same information ordered by constraint number and a <a href="report_editor.html">report editor</a> opens that provides this information in text format, so that you can save it.
+<p>
+For a background job, a window <code>Modeller job completed.</code> will pop up once the job is finished. You can import results immediately or after closing and reopening MMM. The latter choice is advisable if you are currently working on another project and you do not want to add the imported ensemble to the model in MMM. Note that the imported structure is not automatically displayed (could take very long for a large ensemble) and that you do not receive reports on constraint matching for a background job.
+<p>
+If you had closed MMM or even Matlab after starting a background job, MMM will check for completion when it is opened the next time. If the job is already completed, you will be offered to import the results. If the job has not yet been completed, MMM will periodically check for completion as long as it is running.
+<p>
+If your computer crashed while you were running a background job or if a background job crashed on its own account, you need to delete it from the list of running background jobs using the <code>Jobs/Job control</code> menu item.
+<p>
+<a name="wireframe">
+<div class="subtitle">C<sup>&alpha;</sup> wireframe model</div>
+<p>
+The left half of the ANM window contains the <code>State transition animation</code> panel for displaying a C<sup>&alpha;</sup> wireframe model for normal mode visualization. On opening of the window, the wireframe is colored according to <a href="commands.html#colorscheme">colorscheme chain</a>, i.e. different chains in a protein complex are distinguished by color. After a <a href="#constraints">constraint file</a> is loaded using the <code>Constraints</code> button, the wireframe changes to neutral grey color and experimental distance constraints are visualized as color-coded connections between sites. Sites (currently only spin labels) are visualized as blue dots, connected by thin blue tether lines to the C<sup>&alpha;</sup> node of the corresponding residue in the wireframe model. The color code is green for experimental distances that are within the experimental (error) range around the distance in the current model. Directly after loading constraints, before fitting, the current model is the template structure. The color code is yellow for distances outside the error range but within twice this range and red for distances outside twice the range. An overview of <code>Constraint matching</code> information is given in the auxiliary plot in the right half of the window. Both plots can be copied into separate Matlab figures for copying or printing by clicking on the respective <code>C</code> buttons.
+</p>
+<a name="close">
+<div class="subtitle">Closing the window</div>
+<p>
+By clicking the <code>Close</code> button below the wireframe model plot the window is closed. On reopening it will not appear in the same state and animation of a previous fit will no longer be possible (in the current version). Instead, the window reopens with the template structure displayed for a new fit.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2011, edited 2011/12/16</div>
+</body>
+</html>
+

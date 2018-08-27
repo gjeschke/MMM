@@ -1,0 +1,357 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Domain ensemble</title>
+</head>
+<body>
+
+<div class="pagetitle">Domain ensemble</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="modeling.html"> Model building </A>  &bull;  <a href="menu_build.html"> Build menu</a> &uarr;  |  &darr;  </pre>
+
+<div class="subtitle">Introduction</div>
+<p>
+This builder is currently intended for disordered or partially disordered domains that may be N-terminal, C-terminal, or may connect two resolved residues in an existing protein structure (closed loops).
+It requires that SCWRL4 is installed and present on the Matlab path.
+<p>
+Possible restraints include 
+<ul>
+<li> distances between one spin label in the disordered domain and one label (the beacon) in the resolved part of the structure</li>
+<li> distances between two labels in the disordered domain</li>
+<li> the distance between a labeled residue and the equivalent residue in the neighboring protomer of an oligomer</li>
+<li> residue depth in a lipid bilayer</li>
+<li> secondary structure</li>
+<li> specification of cis peptide links</li>
+</ul>
+In the absence of any restraints, the ensemble conforms to residue-specific Ramachandran statistics for protein domains without secondary structure (default) or such statistics derived from the entire PDB (option that can be selected by the user).
+Residue-specific Ramachandran statistics was derived by digitizing the plots from: Sven Hovmöller, Tuping Zhou, Tomas Ohlson (2002) <i>Conformations of amino acids in proteins.</i> Acta Cryst. D <b>58</b>, 768-776.
+Definition of backbone dihedral angles for helices and strands is also based on the analysis described in this paper.
+<p>
+Random cis links are generated according to the statistics of the <a href="http://jenalib.fli-leibniz.de/ImgLibDoc/cispep/non_proline/IMAGE_CISPEP2.html">Jena library of Biological Macromolecules</a>, i.e. with a probability of 5% from pre-proline residues and of 0.03% otherwise.
+</p>
+<p>
+The ensemble can be visualized during the computation and can be saved from the MMM File menu as a PDB file with several models. Fulfillment of distance and depth restraints by the ensemble can be visualized.
+</p>
+<p>
+Modeling requires a restraint file (the format is described below) and a structure in which the disordered domain is anchored. A future version will also handle intrinsically disordered proteins that are not anchored in a template structure.
+</p>
+<p>
+Currently, the template structure must be loaded and must be the current structure in MMM before the window is opened.
+</p>
+<a name="restraints">
+<div class="subtitle">Restraint file</div>
+<p>
+Currently, the following restraint keywords are defined for domain ensemble modeling:
+<ul>
+<li> <code> # PDB</code> (single-line), argument: PDB identifier of template structure, the chain can be given after a colon (<code>:</code>)</li>
+<li> <code> # DOMAIN</code> (single-line), arguments: number of the first and last residue to be modelled</li>
+<li> <code> # NANCHOR</code> (single-line), argument: MMM address of the residue in the template structure that prececdes the first residue of the domain to be modelled</li>
+<li> <code> # CANCHOR</code> (single-line), argument: MMM address of the residue in the template structure that follows the last residue of the domain to be modelled</li>
+<li> <code> # SEQUENCE</code> (single-line), argument: sequence (in single-letter amino acid code) of the domain to be modelled</li>
+<li> <code> # ENSEMBLE</code> (single-line), arguments: number of conformations to be modelled and ensemble probability, which defaults to 0.5 (see below)</li>
+<li> <code> # DEER</code> (block), arguments: spin label and temperature (in K) for rotamer simulation, starts block for EPR (DEER and CW EPR) restraints</li>
+<li> <code> # OLIGOMER</code> (block), arguments: multiplicity n, spin label and temperature (in K) for rotamer simulation, starts block for EPR (DEER and CW EPR) restraints</li>
+<li> <code> # DEPTH</code> (block), arguments: spin label and temperature (in K) for rotamer simulation, starts block for depth restraints, spin label can be replaced by CA for C&alpha;</li>
+<li> <code> # HELICES</code> (block), no arguments, starts specification of secondary structure constraints for (&alpha;-)helices.</li>
+<li> <code> # STRANDS</code> (block), no arguments, starts specification of secondary structure constraints for &beta;-strands.</li>
+<li> <code> # CISPEPTIDE</code> (single-line), arguments: residue numbers, separated by spaces, of residues that have cis peptide links to the next residue</li>
+<li> <code> # END</code> (single-line), no arguments, stops reading of the file
+</ul>
+</p>
+<p>
+Among these keywords, <code> # DOMAIN</code> and <code> # SEQUENCE</code> are mandatory and, currently, either <code> # NANCHOR</code> (C-terminal loop) or <code> # CANCHOR</code> (N-terminal loop) is mandatory. If both <code> # NANCHOR</code> and <code> # CANCHOR</code> are provided, a closed loop is modelled. The case without anchors will be implemented in the next version of MMM.
+</p>
+<h4>Remarks</h4>
+<p>
+<code># PDB</code>: This is used for a check whether the current structure in MMM, which can be picked in the <a href="hierarchy_window.html">hierarchy window</a>, is the requested template structure. If the current structure in MMM has a different PDB identifier than specified in the constraints file, the user can either use the current structure or load the specified structure (if it is available on the FTP server of the PDB).
+<p>
+<code># DEER</code>: The arguments of this keyword supersede any spin labeling with a different label or at a different temperature that you may already have performed on the template structure (rotamers are automatically recomputed). If rotamer computation (<a href="spin_labeling.html#site_scan">site scan</a>) was already performed for the specified sites (see below) with matching spin label and temperature, rotamer computation is skipped. It is not necessary to compute labels before, since version 2011 rotamer computation is fast. In any case you should not actually attach the labels before fitting.
+</p>
+<p>
+<i>DEER restraint specification</i>: DEER restraints are specified by <a href="addressing.html">MMM addresses</a> of the two residues involved, followed by the mean distance (in nm) and the standard deviation (in nm). Alternatively a lower and upper bound for the distance (in nm) can be provided by using negative numbers.
+</p>
+<p>
+The program determines from the given residue addresses whether one residue is in the template structure (beacon restraint) or both residues are in the domain to be modelled (internal restraint). Restraints between two residues in the template structure are ignored and a warning is displayed in the Message Board of the MMM main window.
+</p>
+<p>
+It is good practice to comment each constraint (where does it come from, functional assay, etc.). Constraints from CW EPR are currently specified as DEER constraints.
+</p>
+<code># OLIGOMER</code>: The arguments of this keyword supersede any spin labeling with a different label or at a different temperature that you may already have performed on the template structure (rotamers are automatically recomputed). If rotamer computation (<a href="spin_labeling.html#site_scan">site scan</a>) was already performed for the specified sites (see below) with matching spin label and temperature, rotamer computation is skipped. It is not necessary to compute labels before, since version 2011 rotamer computation is fast. In any case you should not actually attach the labels before fitting.
+</p>
+<p>
+The use of oligomer restraints requires that the protein is aligned with the <i>z</i> axis being the C<sub><i>n</i></sub> axis. Use the <code>Symmetry frame</code> item in the <code>Edit</code> menu to achieve this.
+</p>
+<p>
+<i>Oligomer restraint specification</i>: Oligomer restraints are specified by <a href="addressing.html">MMM address</a> of the residue in the modeled domain (residue number is sufficient), followed by the mean distance to the equivalent residue in the first neighbor protomer (in nm) and the standard deviation (in nm). Alternatively a lower and upper bound for the distance (in nm) can be provided by using negative numbers.
+</p>
+<code># DEPTH</code>: The arguments of this keyword supersede any spin labeling with a different label or at a different temperature that you may already have performed on the template structure (rotamers are automatically recomputed). If rotamer computation (<a href="spin_labeling.html#site_scan">site scan</a>) was already performed for the specified sites (see below) with matching spin label and temperature, rotamer computation is skipped. It is not necessary to compute labels before, since version 2011 rotamer computation is fast. In any case you should not actually attach the labels before fitting.
+</p>
+<p>
+The use of depth restraints requires that the <i>z</i> axis is perpendicular to the lipid bilayer <i>and</i> that the center of the bilayer corresponds to <i>z</i> = 0. For oligomeric membrane proteins <i>z</i> axis alignment is best done with the <code>Symmetry frame</code> feature in the <cde>Edit</code> menu. 
+For other membrane proteins, it is best to first assign transmembrane helices and strands using the <code>Assign TM helices or strands</code> item in the <code>Edit</code> menu. In both cases the origin of the <i>z</i> axis can be defined with the bilayer with the <code>Bilayer</code> feature in the <code>Build</code> menu.
+This requires that the third-party software MSMS is installed for computing the solvent-accessible surface. 
+</p>
+<p>
+<i>Depth restraint specification</i>: Depth restraints are specified by <a href="addressing.html">MMM address</a> of the residue in the modeled domain (residue number is sufficient), followed by the absolute value of the distance (in nm) from the bilayer center and the standard deviation (in nm). Alternatively a lower and upper bound for the distance (in nm) can be provided by using negative numbers. 
+</p>
+<p>
+Length of the sequence (keyword <code># SEQUENCE</code>) and range of residues to be modelled (keyword <code># DOMAIN</code>) must agree.
+</p>
+<p>
+Currently, secondary structure at a residue can only be defined as existing or non-existing (default). A future version may provide the possibility to specify &alpha;-helix and &beta;-strand propensities.
+</p>
+<a name="monitor">
+<div class="subtitle">Monitoring distances</div>
+<p>
+Sometimes restraints cannot be derived unambiguously from experimental distance distributions. Yet these distributions contain information that can be used for validating models. 
+If the distribution contains multiple peaks, for instance from oligomerization, a first modeling run may even reveal which one has to be assigned to the intra-protomer distance.
+This peak could then be converted to a restraint and the restraint be used in a second run. To facilitate such an approach, distances and depths can be monitored, i.e. their distribution over the whole ensemble can be displayed after modeling.
+For this, the potential restraint (DEER, oligomer, or depth) has to be specified in the restraint file, but with a mean distance and standard deviation of zero (see example below).
+</p>
+<a name="examples">
+<div class="subtitle">Example restraint files</div>
+<p>
+<b>Active form of pro-apoptotic protein Bax in liposomes</b>, see: S. Bleicken, G. Jeschke, C. Stegmüller, R. Salvador-Gallego, A.J. García-Sáez, E. Bordignon, (2014) <i>Structural Model of Active Bax at the Membrane</i> Mol. Cell <b>56</b>, 496-505 (2014)
+<P>
+<code>
+% Restraints for Bax active form residues 123-149
+</code><p><code>
+# PDB	BAXC   
+</code><p><code>
+# DOMAIN 123 149
+</code><p><code>
+# NANCHOR [BAXC](A)122
+</code><p><code>
+# SEQUENCE KALSTKVPELIRTIMGWTLDFLRERLL
+</code><p><code>
+# ENSEMBLE 20 0.5
+</code><p><code>
+# HELICES
+</code><p><code>
+130-146
+</code><p><code>
+# DEER	MTSL 298
+</code><p><code>
+(A)126	(A)55	3.83    0.38 % Bleicken et al. Mol. Cell 56, 496-505 (2014)
+</code><p><code>
+(A)126	(A)62	3.13    0.39 % Bleicken et al. Mol. Cell 56, 496-505 (2014)
+</code><p><code>
+(A)126	(A)72	2.28    0.40 % Bleicken et al. Mol. Cell 56, 496-505 (2014)
+</code><p><code>
+(A)126	(A)87	2.67    0.31 % Bleicken et al. Mol. Cell 56, 496-505 (2014)
+</code><p><code>
+(A)126	(A)101	3.71    0.62 % Bleicken et al. Mol. Cell 56, 496-505 (2014)
+</code><p><code>
+(A)126	(A)149	3.86    0.39 % Bleicken et al. Mol. Cell 56, 496-505 (2014)
+</code><p><code>
+(A)149	(A)55	4.60	0.86 % Bleicken et al. Mol. Cell 56, 496-505 (2014)
+</code><p><code>
+(A)149	(A)62	5.43	0.48 % Bleicken et al. Mol. Cell 56, 496-505 (2014)
+</code><p><code>
+(A)149	(A)72	5.25	0.58 % Bleicken et al. Mol. Cell 56, 496-505 (2014)
+</code><p><code>
+(A)149	(A)87	4.33	0.37 % Bleicken et al. Mol. Cell 56, 496-505 (2014)
+</code><p><code>
+(A)149	(A)101	4.42	1.01 % Bleicken et al. Mol. Cell 56, 496-505 (2014)
+</code><p><code>
+# OLIGOMER 2 MTSL 298
+</code><p><code>
+% only monitoring
+</code><p><code>
+126	0	0 % distribution exists, hard to assign
+</code><p><code>
+149	0	0 % distribution exists, slightly ambiguous
+</code><p><code>
+# END
+</code>
+<p>
+<b>N-terminal domain of major plant light harvesting complex LHCII</b>, see: N. Fehr, C. Dietz, Y. Polyhach, T. von Hagens, G. Jeschke, H. Paulsen, <i>submitted</i>
+</p>
+<code>
+% Restraints for N-terminal domain residues 3-13 of LHCII, Fehr et al.
+</code><p><code>
+# PDB	2BHW:A  
+</code><p><code>
+# DOMAIN 3 13
+</code><p><code>
+# CANCHOR [2BHW](A)14
+</code><p><code>
+# SEQUENCE SATTKKVASSG
+</code><p><code>
+# ENSEMBLE 20 0.5
+</code><p><code>
+# DEER	IA-PROXYL 298
+</code><p><code>
+3	34	2.66	1.60 % N. Fehr, heterogeneous trimer
+</code><p><code>
+3	59	1.50	1.66 % N. Fehr, heterogeneous trimer
+</code><p><code>
+7	34	2.67	1.62 % N. Fehr, heterogeneous trimer
+</code><p><code>
+7	59	1.92	1.69 % N. Fehr, heterogeneous trimer
+</code><p><code>
+11	34	2.45	1.56 % N. Fehr, heterogeneous trimer
+</code><p><code>
+11	59	1.50	1.73 % N. Fehr, heterogeneous trimer
+</code><p><code>
+# OLIGOMER 3 IA-PROXYL 298
+</code><p><code>
+3	3.65	1.28 % A. Müller, C. Dockter, singly labeled trimer
+</code><p><code>
+4	3.72	1.21 % A. Müller, C. Dockter, singly labeled trimer
+</code><p><code>
+7	4.00	1.18 % A. Müller, C. Dockter, singly labeled trimer
+</code><p><code>
+9	4.31	1.34 % A. Müller, C. Dockter, singly labeled trimer
+</code><p><code>
+10	4.64	1.46 % A. Müller, C. Dockter, singly labeled trimer
+</code><p><code>
+11	4.57	1.17 % A. Müller, C. Dockter, singly labeled trimer
+</code><p><code>
+12	4.96	1.36 % A. Müller, C. Dockter, singly labeled trimer
+</code><p><code>
+# DEPTH CA
+</code><p><code>
+3	-1.87	-3.5 % A. Volkov, C. Dockter, deuterium ESEEM
+</code><p><code>
+4	-1.75	-3.5 % A. Volkov, C. Dockter, deuterium ESEEM
+</code><p><code>
+7	-1.79	-3.5 % A. Volkov, C. Dockter, deuterium ESEEM
+</code><p><code>
+9	-1.75	-3.5 % A. Volkov, C. Dockter, deuterium ESEEM
+</code><p><code>
+10	-1.89	-3.5 % A. Volkov, C. Dockter, deuterium ESEEM
+</code><p><code>
+11	-1.73	-3.5 % A. Volkov, C. Dockter, deuterium ESEEM
+</code><p><code>
+12	-2.06	-3.5 % A. Volkov, C. Dockter, deuterium ESEEM
+</code><p><code>
+# END
+</code>
+<p>
+Note that in the second example, depth restraints are defined as lower and upper bounds for the C&alpha; <i>z</i> coordinate. 
+These restraints are based on a correlation between the deuterium ESEEM water accessibility parameter &Pi;(D<sub>2</sub>O) and this coordinate established on spin-labeled residues in the resolved part of the LHCII structure.
+<a name="options">
+<div class="subtitle">Options and runtime information</div>
+<p>
+Apart from specifying restraints, the user has some further control on how the ensemble is computed. This concerns the following options:
+<p>
+<i>Ramachandran statistics</i>
+<p>
+By default, the program uses digitized versions of the residue-specific Ramachandran plots from Hovmöller <i>et al.</i>, 2002 corresponding to only protein sections without secondary structure.
+The user can select the statistics from the same paper that includes sections with secondary structure, but note that spontaneous formation of helices and strands in a Monte Carlo simulation is very unlikely.
+If secondary structure is suspected, the user needs to provide restraints for it, which can come, e.g., from spin-labeling EPR site scans or from NMR residual dipolar couplings or chemical shifts.
+<p>
+<i>Ensemble probability</i>
+<p>
+Restraints can be defined as lower and upper bounds. In this case the restraint is fulfilled in all accepted structures and contributes a probability density of 1.
+In most cases it is better to define the restraints by a Gaussian distribution with mean value &lang;<i>r</i>&rang; and standard deviation &sigma;<sub><i>r</i></sub>.
+In this case the restraint contributes a probability density <i>p<sub>i</sub></i> = exp{-[(<i>r</i>-&lang;<i>r</i>&rang;)/&sigma;<sub><i>r</i></sub>]<sup>2</sup>}, where <i>r</i> is the distance between the predicted mean distance between spin label positions for the current conformation.
+The <i>p<sub>i</sub></i> for all Gaussian restraints are multiplied, <i>P</i> = &Pi;<sub><i>i</i></sub> <i>p<sub>i</sub></i>. A simulated conformation is rejected as soon as <i>P</i> falls below a threshold value <i>P</i><sub>thr</sub>.
+This threshold value roughly ensures that the accepted models span the region in space where 50% of all conformations are located that are consistent with the restraints.
+The 50% level is the same that is used for visualizing thermal ellipsoids in crystal structures. It corresponds to a value of 0.5 for the ensemble probability.
+<p>
+Lower values than 0.5 produce a narrower ensemble, larger values a broader ensemble. If all restraints are consistent, a probability of 0.5 is a good choice.
+In the restraints are uncertain or ambiguous or distance distributions have been misinterpreted, a choice of 0.5 may not produce any accepted conformations or only very few of them.
+In order to track down the problematic restraints, it may be useful to produce a large number of conformations that have a lower robability for fulfilling all restraints. Usually, 0.75 is a good choice. Note that a choice of 1.00 would produce an ensemble that is "blind" to all Gaussian restraints, whereas a choice of 0 makes it practically impossible that any computed conformation will be accepted.
+Hence, the control parameter is limited to the range between 0.05 and 0.95.
+<p>
+<i>Sidegroup clash threshold</i>
+<p>
+After a backbone model has been decorated with sidegroups by SCWRL4, it is tested for clashes between heavy atoms within the simulated doamin as well as between the simulated domain and the template structure.
+In most cases the deafult sidegroup clash threshold of 2.00 &#8491; is fine for this test. However, if the domain is tightly packed against the protein it is unlikely that a Monte Carlo algorithm will find the properly packed structure.
+This is also because the algorithm does not recompute sidegroup packing by SCWRL4 after attachment of the domain to the template, but for the isolated domain before attachment.
+<p>
+As the algorithm is not intended for finding well-defined structures, but rather conformation ensembles for disordered domains, this should not pose a big problem.
+However, if a set of restraints that are considered to be reliable does not produce any models because of sidegroup clashes, it may be advisable to lower the threshold to 1.3 &#8491; or even 1.0 &#8491;, corresponding to the forgive factors that we typically use for the similar problem of attaching rotamers from a coarse library to a protein structure.
+A future version may provide the option to repack side groups on the complete model after domain attachment if clashes are observed.
+<p>
+<i>Ensemble size</i>
+<p>
+The ensemble size specified by the restraint file can be changed <i>after</i> the restraint file had been loaded. Please note that in the default <code>attach models</code> mode, for each conformation the template structure is copied.
+During testing, we have not encountered memory problems for ensembles of up to 500 models. However, the limit depends on the size of the template structure. Usually it is not necessary to generate more than 100 or 200 conformations.
+<p>
+If the domain is disordered indeed and the set of restraints is consistent, ensemble generation is reasonably fast. If the structure is rather well-defined (many narrow restraints) or restraints are inconsistent, it may take very long to generate the requested number of models.
+Computation time can be limited in the <code>Ensemble size</code> panel. Please note that the default value of 2 hours may have to be increased if more than 20 models are requested or if a closed loop is computed, in particular, if the last or second-to last residue is a proline. 
+<p>
+Alternatively, the maximum number of Monte Carlo trials can be used to limit total computational effort. The default value of 50'000'000 has been sufficient in all cases that we tried and corresponds to very long computation times with a single processor core even for short domains.
+<p>
+<i>Post processing</i>
+<p>
+When the program generates acceptable backbone coordinates, they are saved as a PDB file, the backbone is decorated with side groups by SCWRL4, which generates another PDB file, the model including side groups is tested for internal clashes and clashes with the template, and if it survives this test, it is attached to the template, displayed as coil graphics (crimson) and the C-terminal C&alpha; atoms is displayed as a space-filling model (blue).
+Displayed models have their weight in the ensemble encoded by transparency. The PDB files of the individual conformations are saved in the current Matlab directory. These default settings provide the user with the full information, prevent that files are later deleted during garbage collection in the MMM temporary directory (after 30 days), and generate a structure that can be saved as a PDB file for the whole ensemble from the <code>File</code> menu in the MMM main window.
+The log file is generally saved in the directory from where the restraint file was coming and its name is generated from the name of the restraint file and the date and time when the run was started.
+<p>
+If the individual conforamtions are automatically attached to the template and the structure is later saved from the main window, the individual PDB files are not anymore required. When the <code>save to current directory</code> checkbox is deactivated, they are saved in the MMM temporary directory and disposed of automatically after 30 days.
+Note also that the individual PDB files are overwritten if another run for the same domain and the same template is started.
+<p>
+Automatic display of coil models and automatic display of the C-terminal C&alpha; atom can be suppressed by deactivating the corresponding checkboxes.  
+<p>
+Attachment of the individual conformations to the template can also be deactivated. This has the advantage that the template structure remains unchanged, thus allowing for further runs without reloading the template. For the combination of very large ensembles with very large template structures, memory problems that may arise from copying the template for each individual model can be avoided.
+Note, however, that without attachment distance and depth distributions are not computed for the whole ensemble.
+<p>
+<a name="runtime">
+<div class="subtitle">Runtime information</div>
+<p>
+During the run, some diagnostic information is updated after each block of 10'000 Monte Carlo trials. Thus, the user alwyas has an overview what fraction of the maximum time and number of Monte Carlo trials have been spent, how many loop models (valid conformations) have been found, hw many valid backbone models have been found.
+Furthermore, it is reported what percentage of Monte Carlo trials was unsuccessful due to restraint violations. If the ensemble is well restrained, this number should be close to 100%. In fact, in some cases the probability that a trial fulfills all restraints is less than 10<sup-4</sup> (less than one per block), which leads to the display of 100% restraint violations. 
+<p>
+The generation of a backbone model may also fail due to internal clashes of backbone atoms in the domain or clashes of backbone atoms with the template. The percentage of Monte Carlo trials where this happened are also displayed.
+<p>
+Among the valid backbone models, some will clash internally and some will clash with the template after side group attachment. The percentages given for these rejections are relative to the number of backbone models found, not to the number of Monte Carlo trials.
+<p>
+For closed loops, the algorithm may sometimes fail to bring the last backbone atom into the convergence radius of the C-terminal anchor residue or it may be impossible to find a set of allowed Ramachandran values for the last residue that preserves restraint fulfillment and is consistent with allowed Ramachandran values of previous residues in the domain. The latter problem arises especially in cases where the last or second-to-last residue of a closed loop is a proline.
+The precentage of such cases is reported relative to the total number of Monte Carlo trials.
+<p>
+Finally, a plot reports how the rejection probability of models was distributed over the residues. A high value for a particular residue indicates that the restraints specified for this residue were particularly hard to fulfill. 
+In cases where the restraints are nearly uniformly distributed along the chain, as in the LHCII example above, a very high probability for a single residue may indicate that this residue is overrestrained, possibly because standard deviations or bounds are to narrow, or inconsistently restrained, because at one or more restraints are simply wrong.
+There may also be cases where almost all rejections occur at a single residue for good reasons. The Bax example above is such a case. Only residues 126 and 149 are restrained and as the domain is C-terminal, residue 126 is encountered first. Because this residue is well restrained (without being overrestrained), most Monte Carlo trials fail already there.
+The rejection probability at residue 149 is lower simply because only for a small fraction of all Monte Carlo trials residue 149 is ever reached.
+<p>
+For closed loops, the center residue tends to have an enhanced rejection probability. This is a feature of the algorithm, which tests the backbone for internal clashes and clashes with the template before the second half of the domain is generated. This enhances computational efficiency, since generation of the second half of the loop is computationally much more expensive for closed lops that have to "home in" on the C-terminal anchor residue.
+<a name="inspection">
+<div class="subtitle">Inspecting restraint fulfillment</div>
+<p>
+It is good practice to check how well the individual restraints are fulfilled by the ensemble. If there were no implicit restraints from bond lengths, bond angles, allowed Ramachandran angles, or the neccessity of closing the loop and if the simplified prediction of the spin label coordinate from the backbone coordinates of the residue would be perfect, distance distributions computed from the ensemble should match the Gaussian distributions provided as restraints.
+Usually, this is observed only for part of the restraints.
+<p>
+One reason is that during backbone generation, side  group cordinates are not available, which makes prediction of the spin label coordinate less certain. After the whole domain has been modeled and the side groups have been attached, the distance distribution is recomputed with the rotamer library approach. The distance distribution for the ensemble is the probability-weighted sum of such distance distributions for the individual conformations.
+If the neighboring side groups impose as systematic shift on the spin label position of a restrained residue, the restraints for this residue may not exactly be matched.
+<p>
+While this is a deficiency of the algorithm, in practice the more likely cause for deviations are uncertainties in the experimental distance distribution or in deriving a Gaussian restraint from this distribution. Hence, the simulated distributions for the ensemble are best compared to the raw distance distributions as they can be obtained, for instance, with <code>DeerAnalysis</code>.
+For that purpose, DeerAnalysis result files can be imported by using the <code>L</code> button above the plot.
+<p>
+<a name="load">
+<div class="subtitle">Loading restraints</div>
+<p>
+The <code>Restraints</code> button allows for loading a restraint file. Please watch the <code>Message Board</code> of the MMM main window. Any problems will be reported there.
+After loading is completed you can use the <code>Show log</code> button in the main window to inspect all previous output to the <code>Message Board</code>.
+If the restraint file has correct syntax, provides all mandatory information, and is formally consistent, the <code>Run</code> button is activated.
+The <code>Restraints</code> button is then deactivated. If you want to simulate with other restraints, you need to close and reopen the window.
+<p>
+<a name="run">
+<div class="subtitle">Running the computation</div>
+<p>
+The <code>Run</code> button becomes active only after loading restraints. When it is clicked the computation starts. After each block of 10'000 Monte Carlo trials the <code>Runtime information</code> (see above) is updated.</p>
+The computation stops when the requested number of models (conformations) has been generated, the maximum allotted time has been passed, or the maximum number of Monte Carlo trials has been spent (whichever condition is fulfilled first).
+After a successful run, the <code>Rejection distribution along the loop</code> plot changes to a <code>Restraint fulfillment</code> plot.
+<p>
+Note that the template structure has been "spent" after a run, unless you had deactivated the <code>attach models</code> checkbox, which is discouraged.
+If you wish to create another ensemble from the same template, you need to close the window, reload the template structure in the main window, and start over.
+<a name="close">
+<div class="subtitle">Closing the window</div>
+<p>
+By clicking the <code>Close</code> button the window is closed. All information is lost, except for saved single conformations, the structure with the attached domains, and the log file of ensemble generation.</p>
+<p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2015, edited 2015/06/05</div>
+</body>
+</html>
+

@@ -1,0 +1,731 @@
+pdbload Model_112_integrin_S_r1_m1_SCWRL4.pdb
+show [1] ribbon
+transparency [1] 0.05
+color [1] grey
+color [1]1549-1571 crimson
+transparency [1]1549-1571 0.048
+pdbload Model_112_integrin_S_r1_m2_SCWRL4.pdb
+show [2]1549-1571 ribbon
+color [2]1549-1571 crimson
+transparency [2]1549-1571 0.001
+pdbload Model_112_integrin_S_r1_m3_SCWRL4.pdb
+show [3]1549-1571 ribbon
+color [3]1549-1571 crimson
+transparency [3]1549-1571 0.020
+pdbload Model_112_integrin_S_r1_m4_SCWRL4.pdb
+show [4]1549-1571 ribbon
+color [4]1549-1571 crimson
+transparency [4]1549-1571 0.010
+pdbload Model_112_integrin_S_r1_m5_SCWRL4.pdb
+show [5]1549-1571 ribbon
+color [5]1549-1571 crimson
+transparency [5]1549-1571 0.001
+pdbload Model_272_integrin_S_r1_m1_SCWRL4.pdb
+show [6] ribbon
+transparency [6] 0.96
+color [6] grey
+color [6]1549-1571 crimson
+transparency [6]1549-1571 0.000
+pdbload Model_152_integrin_S_r1_m1_SCWRL4.pdb
+show [7] ribbon
+transparency [7] 0.06
+color [7] grey
+color [7]1549-1571 crimson
+transparency [7]1549-1571 0.100
+pdbload Model_152_integrin_S_r1_m2_SCWRL4.pdb
+show [8]1549-1571 ribbon
+color [8]1549-1571 crimson
+transparency [8]1549-1571 0.206
+pdbload Model_152_integrin_S_r1_m3_SCWRL4.pdb
+show [9]1549-1571 ribbon
+color [9]1549-1571 crimson
+transparency [9]1549-1571 0.098
+pdbload Model_152_integrin_S_r1_m4_SCWRL4.pdb
+show [10]1549-1571 ribbon
+color [10]1549-1571 crimson
+transparency [10]1549-1571 0.055
+pdbload Model_152_integrin_S_r1_m5_SCWRL4.pdb
+show [11]1549-1571 ribbon
+color [11]1549-1571 crimson
+transparency [11]1549-1571 0.002
+pdbload Model_152_integrin_S_r1_m6_SCWRL4.pdb
+show [12]1549-1571 ribbon
+color [12]1549-1571 crimson
+transparency [12]1549-1571 0.004
+pdbload Model_84_integrin_S_r1_m1_SCWRL4.pdb
+show [13] ribbon
+transparency [13] 0.05
+color [13] grey
+color [13]1549-1571 crimson
+transparency [13]1549-1571 0.000
+pdbload Model_84_integrin_S_r1_m2_SCWRL4.pdb
+show [14]1549-1571 ribbon
+color [14]1549-1571 crimson
+transparency [14]1549-1571 1.000
+pdbload Model_84_integrin_S_r1_m3_SCWRL4.pdb
+show [15]1549-1571 ribbon
+color [15]1549-1571 crimson
+transparency [15]1549-1571 0.009
+pdbload Model_84_integrin_S_r1_m4_SCWRL4.pdb
+show [16]1549-1571 ribbon
+color [16]1549-1571 crimson
+transparency [16]1549-1571 0.001
+pdbload Model_84_integrin_S_r1_m5_SCWRL4.pdb
+show [17]1549-1571 ribbon
+color [17]1549-1571 crimson
+transparency [17]1549-1571 0.262
+pdbload Model_84_integrin_S_r1_m6_SCWRL4.pdb
+show [18]1549-1571 ribbon
+color [18]1549-1571 crimson
+transparency [18]1549-1571 0.183
+pdbload Model_84_integrin_S_r1_m7_SCWRL4.pdb
+show [19]1549-1571 ribbon
+color [19]1549-1571 crimson
+transparency [19]1549-1571 0.052
+pdbload Model_84_integrin_S_r1_m8_SCWRL4.pdb
+show [20]1549-1571 ribbon
+color [20]1549-1571 crimson
+transparency [20]1549-1571 0.517
+pdbload Model_84_integrin_S_r1_m9_SCWRL4.pdb
+show [21]1549-1571 ribbon
+color [21]1549-1571 crimson
+transparency [21]1549-1571 0.000
+pdbload Model_84_integrin_S_r1_m10_SCWRL4.pdb
+show [22]1549-1571 ribbon
+color [22]1549-1571 crimson
+transparency [22]1549-1571 0.000
+pdbload Model_84_integrin_S_r1_m11_SCWRL4.pdb
+show [23]1549-1571 ribbon
+color [23]1549-1571 crimson
+transparency [23]1549-1571 0.000
+pdbload Model_84_integrin_S_r1_m12_SCWRL4.pdb
+show [24]1549-1571 ribbon
+color [24]1549-1571 crimson
+transparency [24]1549-1571 0.458
+pdbload Model_84_integrin_S_r1_m13_SCWRL4.pdb
+show [25]1549-1571 ribbon
+color [25]1549-1571 crimson
+transparency [25]1549-1571 0.019
+pdbload Model_84_integrin_S_r1_m14_SCWRL4.pdb
+show [26]1549-1571 ribbon
+color [26]1549-1571 crimson
+transparency [26]1549-1571 0.011
+pdbload Model_84_integrin_S_r1_m15_SCWRL4.pdb
+show [27]1549-1571 ribbon
+color [27]1549-1571 crimson
+transparency [27]1549-1571 0.004
+pdbload Model_84_integrin_S_r1_m16_SCWRL4.pdb
+show [28]1549-1571 ribbon
+color [28]1549-1571 crimson
+transparency [28]1549-1571 0.198
+pdbload Model_84_integrin_S_r1_m17_SCWRL4.pdb
+show [29]1549-1571 ribbon
+color [29]1549-1571 crimson
+transparency [29]1549-1571 0.252
+pdbload Model_84_integrin_S_r1_m18_SCWRL4.pdb
+show [30]1549-1571 ribbon
+color [30]1549-1571 crimson
+transparency [30]1549-1571 0.000
+pdbload Model_631_integrin_S_r1_m1_SCWRL4.pdb
+show [31] ribbon
+transparency [31] 0.00
+color [31] grey
+color [31]1549-1571 crimson
+transparency [31]1549-1571 0.016
+pdbload Model_631_integrin_S_r1_m2_SCWRL4.pdb
+show [32]1549-1571 ribbon
+color [32]1549-1571 crimson
+transparency [32]1549-1571 0.014
+pdbload Model_631_integrin_S_r1_m3_SCWRL4.pdb
+show [33]1549-1571 ribbon
+color [33]1549-1571 crimson
+transparency [33]1549-1571 0.029
+pdbload Model_631_integrin_S_r1_m4_SCWRL4.pdb
+show [34]1549-1571 ribbon
+color [34]1549-1571 crimson
+transparency [34]1549-1571 0.096
+pdbload Model_631_integrin_S_r1_m5_SCWRL4.pdb
+show [35]1549-1571 ribbon
+color [35]1549-1571 crimson
+transparency [35]1549-1571 0.001
+pdbload Model_631_integrin_S_r1_m6_SCWRL4.pdb
+show [36]1549-1571 ribbon
+color [36]1549-1571 crimson
+transparency [36]1549-1571 0.003
+pdbload Model_631_integrin_S_r1_m7_SCWRL4.pdb
+show [37]1549-1571 ribbon
+color [37]1549-1571 crimson
+transparency [37]1549-1571 0.000
+pdbload Model_631_integrin_S_r1_m8_SCWRL4.pdb
+show [38]1549-1571 ribbon
+color [38]1549-1571 crimson
+transparency [38]1549-1571 0.002
+pdbload Model_631_integrin_S_r1_m9_SCWRL4.pdb
+show [39]1549-1571 ribbon
+color [39]1549-1571 crimson
+transparency [39]1549-1571 0.120
+pdbload Model_631_integrin_S_r1_m10_SCWRL4.pdb
+show [40]1549-1571 ribbon
+color [40]1549-1571 crimson
+transparency [40]1549-1571 0.144
+pdbload Model_631_integrin_S_r1_m11_SCWRL4.pdb
+show [41]1549-1571 ribbon
+color [41]1549-1571 crimson
+transparency [41]1549-1571 0.009
+pdbload Model_631_integrin_S_r1_m12_SCWRL4.pdb
+show [42]1549-1571 ribbon
+color [42]1549-1571 crimson
+transparency [42]1549-1571 0.375
+pdbload Model_631_integrin_S_r1_m13_SCWRL4.pdb
+show [43]1549-1571 ribbon
+color [43]1549-1571 crimson
+transparency [43]1549-1571 0.009
+pdbload Model_631_integrin_S_r1_m14_SCWRL4.pdb
+show [44]1549-1571 ribbon
+color [44]1549-1571 crimson
+transparency [44]1549-1571 0.125
+pdbload Model_631_integrin_S_r1_m15_SCWRL4.pdb
+show [45]1549-1571 ribbon
+color [45]1549-1571 crimson
+transparency [45]1549-1571 0.015
+pdbload Model_631_integrin_S_r1_m16_SCWRL4.pdb
+show [46]1549-1571 ribbon
+color [46]1549-1571 crimson
+transparency [46]1549-1571 0.004
+pdbload Model_631_integrin_S_r1_m17_SCWRL4.pdb
+show [47]1549-1571 ribbon
+color [47]1549-1571 crimson
+transparency [47]1549-1571 0.077
+pdbload Model_631_integrin_S_r1_m18_SCWRL4.pdb
+show [48]1549-1571 ribbon
+color [48]1549-1571 crimson
+transparency [48]1549-1571 0.122
+pdbload Model_631_integrin_S_r1_m19_SCWRL4.pdb
+show [49]1549-1571 ribbon
+color [49]1549-1571 crimson
+transparency [49]1549-1571 0.015
+pdbload Model_631_integrin_S_r1_m20_SCWRL4.pdb
+show [50]1549-1571 ribbon
+color [50]1549-1571 crimson
+transparency [50]1549-1571 0.127
+pdbload Model_623_integrin_S_r1_m1_SCWRL4.pdb
+show [51] ribbon
+transparency [51] 0.00
+color [51] grey
+color [51]1549-1571 crimson
+transparency [51]1549-1571 0.361
+pdbload Model_623_integrin_S_r1_m2_SCWRL4.pdb
+show [52]1549-1571 ribbon
+color [52]1549-1571 crimson
+transparency [52]1549-1571 0.560
+pdbload Model_623_integrin_S_r1_m3_SCWRL4.pdb
+show [53]1549-1571 ribbon
+color [53]1549-1571 crimson
+transparency [53]1549-1571 0.053
+pdbload Model_623_integrin_S_r1_m4_SCWRL4.pdb
+show [54]1549-1571 ribbon
+color [54]1549-1571 crimson
+transparency [54]1549-1571 0.340
+pdbload Model_623_integrin_S_r1_m5_SCWRL4.pdb
+show [55]1549-1571 ribbon
+color [55]1549-1571 crimson
+transparency [55]1549-1571 0.008
+pdbload Model_623_integrin_S_r1_m6_SCWRL4.pdb
+show [56]1549-1571 ribbon
+color [56]1549-1571 crimson
+transparency [56]1549-1571 0.383
+pdbload Model_623_integrin_S_r1_m7_SCWRL4.pdb
+show [57]1549-1571 ribbon
+color [57]1549-1571 crimson
+transparency [57]1549-1571 0.144
+pdbload Model_623_integrin_S_r1_m8_SCWRL4.pdb
+show [58]1549-1571 ribbon
+color [58]1549-1571 crimson
+transparency [58]1549-1571 0.423
+pdbload Model_623_integrin_S_r1_m9_SCWRL4.pdb
+show [59]1549-1571 ribbon
+color [59]1549-1571 crimson
+transparency [59]1549-1571 0.247
+pdbload Model_623_integrin_S_r1_m10_SCWRL4.pdb
+show [60]1549-1571 ribbon
+color [60]1549-1571 crimson
+transparency [60]1549-1571 0.361
+pdbload Model_623_integrin_S_r1_m11_SCWRL4.pdb
+show [61]1549-1571 ribbon
+color [61]1549-1571 crimson
+transparency [61]1549-1571 0.527
+pdbload Model_623_integrin_S_r1_m12_SCWRL4.pdb
+show [62]1549-1571 ribbon
+color [62]1549-1571 crimson
+transparency [62]1549-1571 0.071
+pdbload Model_623_integrin_S_r1_m13_SCWRL4.pdb
+show [63]1549-1571 ribbon
+color [63]1549-1571 crimson
+transparency [63]1549-1571 0.001
+pdbload Model_623_integrin_S_r1_m14_SCWRL4.pdb
+show [64]1549-1571 ribbon
+color [64]1549-1571 crimson
+transparency [64]1549-1571 0.009
+pdbload Model_623_integrin_S_r1_m15_SCWRL4.pdb
+show [65]1549-1571 ribbon
+color [65]1549-1571 crimson
+transparency [65]1549-1571 0.301
+pdbload Model_623_integrin_S_r1_m16_SCWRL4.pdb
+show [66]1549-1571 ribbon
+color [66]1549-1571 crimson
+transparency [66]1549-1571 0.440
+pdbload Model_623_integrin_S_r1_m17_SCWRL4.pdb
+show [67]1549-1571 ribbon
+color [67]1549-1571 crimson
+transparency [67]1549-1571 0.089
+pdbload Model_559_integrin_S_r1_m1_SCWRL4.pdb
+show [68] ribbon
+transparency [68] 0.02
+color [68] grey
+color [68]1549-1571 crimson
+transparency [68]1549-1571 0.278
+pdbload Model_553_integrin_S_r1_m1_SCWRL4.pdb
+show [69] ribbon
+transparency [69] 0.09
+color [69] grey
+color [69]1549-1571 crimson
+transparency [69]1549-1571 0.000
+pdbload Model_563_integrin_S_r1_m1_SCWRL4.pdb
+show [70] ribbon
+transparency [70] 0.01
+color [70] grey
+color [70]1549-1571 crimson
+transparency [70]1549-1571 0.000
+pdbload Model_563_integrin_S_r1_m2_SCWRL4.pdb
+show [71]1549-1571 ribbon
+color [71]1549-1571 crimson
+transparency [71]1549-1571 0.002
+pdbload Model_563_integrin_S_r1_m3_SCWRL4.pdb
+show [72]1549-1571 ribbon
+color [72]1549-1571 crimson
+transparency [72]1549-1571 0.000
+pdbload Model_314_integrin_S_r1_m1_SCWRL4.pdb
+show [73] ribbon
+transparency [73] 0.02
+color [73] grey
+color [73]1549-1571 crimson
+transparency [73]1549-1571 0.000
+pdbload Model_441_integrin_S_r1_m1_SCWRL4.pdb
+show [74] ribbon
+transparency [74] 0.02
+color [74] grey
+color [74]1549-1571 crimson
+transparency [74]1549-1571 0.015
+pdbload Model_441_integrin_S_r1_m2_SCWRL4.pdb
+show [75]1549-1571 ribbon
+color [75]1549-1571 crimson
+transparency [75]1549-1571 0.000
+pdbload Model_441_integrin_S_r1_m3_SCWRL4.pdb
+show [76]1549-1571 ribbon
+color [76]1549-1571 crimson
+transparency [76]1549-1571 0.000
+pdbload Model_441_integrin_S_r1_m4_SCWRL4.pdb
+show [77]1549-1571 ribbon
+color [77]1549-1571 crimson
+transparency [77]1549-1571 0.000
+pdbload Model_441_integrin_S_r1_m5_SCWRL4.pdb
+show [78]1549-1571 ribbon
+color [78]1549-1571 crimson
+transparency [78]1549-1571 0.000
+pdbload Model_201_integrin_S_r1_m1_SCWRL4.pdb
+show [79] ribbon
+transparency [79] 0.04
+color [79] grey
+color [79]1549-1571 crimson
+transparency [79]1549-1571 0.000
+pdbload Model_201_integrin_S_r1_m2_SCWRL4.pdb
+show [80]1549-1571 ribbon
+color [80]1549-1571 crimson
+transparency [80]1549-1571 0.000
+pdbload Model_201_integrin_S_r1_m3_SCWRL4.pdb
+show [81]1549-1571 ribbon
+color [81]1549-1571 crimson
+transparency [81]1549-1571 0.007
+pdbload Model_201_integrin_S_r1_m4_SCWRL4.pdb
+show [82]1549-1571 ribbon
+color [82]1549-1571 crimson
+transparency [82]1549-1571 0.002
+pdbload Model_201_integrin_S_r1_m5_SCWRL4.pdb
+show [83]1549-1571 ribbon
+color [83]1549-1571 crimson
+transparency [83]1549-1571 0.000
+pdbload Model_201_integrin_S_r1_m6_SCWRL4.pdb
+show [84]1549-1571 ribbon
+color [84]1549-1571 crimson
+transparency [84]1549-1571 0.002
+pdbload Model_201_integrin_S_r1_m7_SCWRL4.pdb
+show [85]1549-1571 ribbon
+color [85]1549-1571 crimson
+transparency [85]1549-1571 0.003
+pdbload Model_201_integrin_S_r1_m8_SCWRL4.pdb
+show [86]1549-1571 ribbon
+color [86]1549-1571 crimson
+transparency [86]1549-1571 0.001
+pdbload Model_201_integrin_S_r1_m9_SCWRL4.pdb
+show [87]1549-1571 ribbon
+color [87]1549-1571 crimson
+transparency [87]1549-1571 0.001
+pdbload Model_201_integrin_S_r1_m10_SCWRL4.pdb
+show [88]1549-1571 ribbon
+color [88]1549-1571 crimson
+transparency [88]1549-1571 0.002
+pdbload Model_201_integrin_S_r1_m11_SCWRL4.pdb
+show [89]1549-1571 ribbon
+color [89]1549-1571 crimson
+transparency [89]1549-1571 0.008
+pdbload Model_201_integrin_S_r1_m12_SCWRL4.pdb
+show [90]1549-1571 ribbon
+color [90]1549-1571 crimson
+transparency [90]1549-1571 0.000
+pdbload Model_201_integrin_S_r1_m13_SCWRL4.pdb
+show [91]1549-1571 ribbon
+color [91]1549-1571 crimson
+transparency [91]1549-1571 0.003
+pdbload Model_201_integrin_S_r1_m14_SCWRL4.pdb
+show [92]1549-1571 ribbon
+color [92]1549-1571 crimson
+transparency [92]1549-1571 0.041
+pdbload Model_201_integrin_S_r1_m15_SCWRL4.pdb
+show [93]1549-1571 ribbon
+color [93]1549-1571 crimson
+transparency [93]1549-1571 0.001
+pdbload Model_201_integrin_S_r1_m16_SCWRL4.pdb
+show [94]1549-1571 ribbon
+color [94]1549-1571 crimson
+transparency [94]1549-1571 0.000
+pdbload Model_201_integrin_S_r1_m17_SCWRL4.pdb
+show [95]1549-1571 ribbon
+color [95]1549-1571 crimson
+transparency [95]1549-1571 0.021
+pdbload Model_201_integrin_S_r1_m18_SCWRL4.pdb
+show [96]1549-1571 ribbon
+color [96]1549-1571 crimson
+transparency [96]1549-1571 0.002
+pdbload Model_201_integrin_S_r1_m19_SCWRL4.pdb
+show [97]1549-1571 ribbon
+color [97]1549-1571 crimson
+transparency [97]1549-1571 0.000
+pdbload Model_614_integrin_S_r1_m1_SCWRL4.pdb
+show [98] ribbon
+transparency [98] 0.02
+color [98] grey
+color [98]1549-1571 crimson
+transparency [98]1549-1571 0.009
+pdbload Model_614_integrin_S_r1_m2_SCWRL4.pdb
+show [99]1549-1571 ribbon
+color [99]1549-1571 crimson
+transparency [99]1549-1571 0.015
+pdbload Model_614_integrin_S_r1_m3_SCWRL4.pdb
+show [100]1549-1571 ribbon
+color [100]1549-1571 crimson
+transparency [100]1549-1571 0.034
+pdbload Model_614_integrin_S_r1_m4_SCWRL4.pdb
+show [101]1549-1571 ribbon
+color [101]1549-1571 crimson
+transparency [101]1549-1571 0.004
+pdbload Model_614_integrin_S_r1_m5_SCWRL4.pdb
+show [102]1549-1571 ribbon
+color [102]1549-1571 crimson
+transparency [102]1549-1571 0.001
+pdbload Model_614_integrin_S_r1_m6_SCWRL4.pdb
+show [103]1549-1571 ribbon
+color [103]1549-1571 crimson
+transparency [103]1549-1571 0.002
+pdbload Model_614_integrin_S_r1_m7_SCWRL4.pdb
+show [104]1549-1571 ribbon
+color [104]1549-1571 crimson
+transparency [104]1549-1571 0.052
+pdbload Model_614_integrin_S_r1_m8_SCWRL4.pdb
+show [105]1549-1571 ribbon
+color [105]1549-1571 crimson
+transparency [105]1549-1571 0.001
+pdbload Model_614_integrin_S_r1_m9_SCWRL4.pdb
+show [106]1549-1571 ribbon
+color [106]1549-1571 crimson
+transparency [106]1549-1571 0.004
+pdbload Model_614_integrin_S_r1_m10_SCWRL4.pdb
+show [107]1549-1571 ribbon
+color [107]1549-1571 crimson
+transparency [107]1549-1571 0.021
+pdbload Model_614_integrin_S_r1_m11_SCWRL4.pdb
+show [108]1549-1571 ribbon
+color [108]1549-1571 crimson
+transparency [108]1549-1571 0.000
+pdbload Model_614_integrin_S_r1_m12_SCWRL4.pdb
+show [109]1549-1571 ribbon
+color [109]1549-1571 crimson
+transparency [109]1549-1571 0.004
+pdbload Model_614_integrin_S_r1_m13_SCWRL4.pdb
+show [110]1549-1571 ribbon
+color [110]1549-1571 crimson
+transparency [110]1549-1571 0.015
+pdbload Model_614_integrin_S_r1_m14_SCWRL4.pdb
+show [111]1549-1571 ribbon
+color [111]1549-1571 crimson
+transparency [111]1549-1571 0.002
+pdbload Model_614_integrin_S_r1_m15_SCWRL4.pdb
+show [112]1549-1571 ribbon
+color [112]1549-1571 crimson
+transparency [112]1549-1571 0.004
+pdbload Model_614_integrin_S_r1_m16_SCWRL4.pdb
+show [113]1549-1571 ribbon
+color [113]1549-1571 crimson
+transparency [113]1549-1571 0.000
+pdbload Model_614_integrin_S_r1_m17_SCWRL4.pdb
+show [114]1549-1571 ribbon
+color [114]1549-1571 crimson
+transparency [114]1549-1571 0.049
+pdbload Model_614_integrin_S_r1_m18_SCWRL4.pdb
+show [115]1549-1571 ribbon
+color [115]1549-1571 crimson
+transparency [115]1549-1571 0.001
+pdbload Model_614_integrin_S_r1_m19_SCWRL4.pdb
+show [116]1549-1571 ribbon
+color [116]1549-1571 crimson
+transparency [116]1549-1571 0.030
+pdbload Model_614_integrin_S_r1_m20_SCWRL4.pdb
+show [117]1549-1571 ribbon
+color [117]1549-1571 crimson
+transparency [117]1549-1571 0.000
+pdbload Model_614_integrin_S_r1_m21_SCWRL4.pdb
+show [118]1549-1571 ribbon
+color [118]1549-1571 crimson
+transparency [118]1549-1571 0.002
+pdbload Model_614_integrin_S_r1_m22_SCWRL4.pdb
+show [119]1549-1571 ribbon
+color [119]1549-1571 crimson
+transparency [119]1549-1571 0.001
+pdbload Model_614_integrin_S_r1_m23_SCWRL4.pdb
+show [120]1549-1571 ribbon
+color [120]1549-1571 crimson
+transparency [120]1549-1571 0.009
+pdbload Model_614_integrin_S_r1_m24_SCWRL4.pdb
+show [121]1549-1571 ribbon
+color [121]1549-1571 crimson
+transparency [121]1549-1571 0.100
+pdbload Model_614_integrin_S_r1_m25_SCWRL4.pdb
+show [122]1549-1571 ribbon
+color [122]1549-1571 crimson
+transparency [122]1549-1571 0.020
+pdbload Model_46_integrin_S_r1_m1_SCWRL4.pdb
+show [123] ribbon
+transparency [123] 0.22
+color [123] grey
+color [123]1549-1571 crimson
+transparency [123]1549-1571 0.000
+pdbload Model_46_integrin_S_r1_m2_SCWRL4.pdb
+show [124]1549-1571 ribbon
+color [124]1549-1571 crimson
+transparency [124]1549-1571 0.000
+pdbload Model_46_integrin_S_r1_m3_SCWRL4.pdb
+show [125]1549-1571 ribbon
+color [125]1549-1571 crimson
+transparency [125]1549-1571 0.000
+pdbload Model_54_integrin_S_r1_m1_SCWRL4.pdb
+show [126] ribbon
+transparency [126] 0.03
+color [126] grey
+color [126]1549-1571 crimson
+transparency [126]1549-1571 0.005
+pdbload Model_544_integrin_S_r1_m1_SCWRL4.pdb
+show [127] ribbon
+transparency [127] 0.05
+color [127] grey
+color [127]1549-1571 crimson
+transparency [127]1549-1571 0.000
+pdbload Model_544_integrin_S_r1_m2_SCWRL4.pdb
+show [128]1549-1571 ribbon
+color [128]1549-1571 crimson
+transparency [128]1549-1571 0.000
+pdbload Model_544_integrin_S_r1_m3_SCWRL4.pdb
+show [129]1549-1571 ribbon
+color [129]1549-1571 crimson
+transparency [129]1549-1571 0.000
+pdbload Model_544_integrin_S_r1_m4_SCWRL4.pdb
+show [130]1549-1571 ribbon
+color [130]1549-1571 crimson
+transparency [130]1549-1571 0.000
+pdbload Model_15_integrin_S_r1_m1_SCWRL4.pdb
+show [131] ribbon
+transparency [131] 0.08
+color [131] grey
+color [131]1549-1571 crimson
+transparency [131]1549-1571 0.003
+pdbload Model_15_integrin_S_r1_m2_SCWRL4.pdb
+show [132]1549-1571 ribbon
+color [132]1549-1571 crimson
+transparency [132]1549-1571 0.002
+pdbload Model_15_integrin_S_r1_m3_SCWRL4.pdb
+show [133]1549-1571 ribbon
+color [133]1549-1571 crimson
+transparency [133]1549-1571 0.000
+pdbload Model_15_integrin_S_r1_m4_SCWRL4.pdb
+show [134]1549-1571 ribbon
+color [134]1549-1571 crimson
+transparency [134]1549-1571 0.000
+pdbload Model_15_integrin_S_r1_m5_SCWRL4.pdb
+show [135]1549-1571 ribbon
+color [135]1549-1571 crimson
+transparency [135]1549-1571 0.000
+pdbload Model_672_integrin_S_r1_m1_SCWRL4.pdb
+show [136] ribbon
+transparency [136] 0.01
+color [136] grey
+color [136]1549-1571 crimson
+transparency [136]1549-1571 0.000
+pdbload Model_672_integrin_S_r1_m2_SCWRL4.pdb
+show [137]1549-1571 ribbon
+color [137]1549-1571 crimson
+transparency [137]1549-1571 0.000
+pdbload Model_672_integrin_S_r1_m3_SCWRL4.pdb
+show [138]1549-1571 ribbon
+color [138]1549-1571 crimson
+transparency [138]1549-1571 0.001
+pdbload Model_672_integrin_S_r1_m4_SCWRL4.pdb
+show [139]1549-1571 ribbon
+color [139]1549-1571 crimson
+transparency [139]1549-1571 0.002
+pdbload Model_672_integrin_S_r1_m5_SCWRL4.pdb
+show [140]1549-1571 ribbon
+color [140]1549-1571 crimson
+transparency [140]1549-1571 0.002
+pdbload Model_672_integrin_S_r1_m6_SCWRL4.pdb
+show [141]1549-1571 ribbon
+color [141]1549-1571 crimson
+transparency [141]1549-1571 0.000
+pdbload Model_672_integrin_S_r1_m7_SCWRL4.pdb
+show [142]1549-1571 ribbon
+color [142]1549-1571 crimson
+transparency [142]1549-1571 0.000
+pdbload Model_672_integrin_S_r1_m8_SCWRL4.pdb
+show [143]1549-1571 ribbon
+color [143]1549-1571 crimson
+transparency [143]1549-1571 0.000
+pdbload Model_672_integrin_S_r1_m9_SCWRL4.pdb
+show [144]1549-1571 ribbon
+color [144]1549-1571 crimson
+transparency [144]1549-1571 0.000
+pdbload Model_159_integrin_S_r1_m1_SCWRL4.pdb
+show [145] ribbon
+transparency [145] 0.04
+color [145] grey
+color [145]1549-1571 crimson
+transparency [145]1549-1571 0.000
+pdbload Model_682_integrin_S_r1_m1_SCWRL4.pdb
+show [146] ribbon
+transparency [146] 0.01
+color [146] grey
+color [146]1549-1571 crimson
+transparency [146]1549-1571 0.001
+pdbload Model_682_integrin_S_r1_m2_SCWRL4.pdb
+show [147]1549-1571 ribbon
+color [147]1549-1571 crimson
+transparency [147]1549-1571 0.000
+pdbload Model_682_integrin_S_r1_m3_SCWRL4.pdb
+show [148]1549-1571 ribbon
+color [148]1549-1571 crimson
+transparency [148]1549-1571 0.000
+pdbload Model_682_integrin_S_r1_m4_SCWRL4.pdb
+show [149]1549-1571 ribbon
+color [149]1549-1571 crimson
+transparency [149]1549-1571 0.001
+pdbload Model_682_integrin_S_r1_m5_SCWRL4.pdb
+show [150]1549-1571 ribbon
+color [150]1549-1571 crimson
+transparency [150]1549-1571 0.001
+pdbload Model_682_integrin_S_r1_m6_SCWRL4.pdb
+show [151]1549-1571 ribbon
+color [151]1549-1571 crimson
+transparency [151]1549-1571 0.000
+pdbload Model_682_integrin_S_r1_m7_SCWRL4.pdb
+show [152]1549-1571 ribbon
+color [152]1549-1571 crimson
+transparency [152]1549-1571 0.001
+pdbload Model_682_integrin_S_r1_m8_SCWRL4.pdb
+show [153]1549-1571 ribbon
+color [153]1549-1571 crimson
+transparency [153]1549-1571 0.001
+pdbload Model_682_integrin_S_r1_m9_SCWRL4.pdb
+show [154]1549-1571 ribbon
+color [154]1549-1571 crimson
+transparency [154]1549-1571 0.001
+pdbload Model_682_integrin_S_r1_m10_SCWRL4.pdb
+show [155]1549-1571 ribbon
+color [155]1549-1571 crimson
+transparency [155]1549-1571 0.000
+pdbload Model_682_integrin_S_r1_m11_SCWRL4.pdb
+show [156]1549-1571 ribbon
+color [156]1549-1571 crimson
+transparency [156]1549-1571 0.003
+pdbload Model_682_integrin_S_r1_m12_SCWRL4.pdb
+show [157]1549-1571 ribbon
+color [157]1549-1571 crimson
+transparency [157]1549-1571 0.001
+pdbload Model_682_integrin_S_r1_m13_SCWRL4.pdb
+show [158]1549-1571 ribbon
+color [158]1549-1571 crimson
+transparency [158]1549-1571 0.001
+pdbload Model_682_integrin_S_r1_m14_SCWRL4.pdb
+show [159]1549-1571 ribbon
+color [159]1549-1571 crimson
+transparency [159]1549-1571 0.001
+pdbload Model_682_integrin_S_r1_m15_SCWRL4.pdb
+show [160]1549-1571 ribbon
+color [160]1549-1571 crimson
+transparency [160]1549-1571 0.001
+pdbload Model_686_integrin_S_r1_m1_SCWRL4.pdb
+show [161] ribbon
+transparency [161] 0.00
+color [161] grey
+color [161]1549-1571 crimson
+transparency [161]1549-1571 0.060
+pdbload Model_686_integrin_S_r1_m2_SCWRL4.pdb
+show [162]1549-1571 ribbon
+color [162]1549-1571 crimson
+transparency [162]1549-1571 0.118
+pdbload Model_686_integrin_S_r1_m3_SCWRL4.pdb
+show [163]1549-1571 ribbon
+color [163]1549-1571 crimson
+transparency [163]1549-1571 0.000
+pdbload Model_686_integrin_S_r1_m4_SCWRL4.pdb
+show [164]1549-1571 ribbon
+color [164]1549-1571 crimson
+transparency [164]1549-1571 0.000
+pdbload Model_686_integrin_S_r1_m5_SCWRL4.pdb
+show [165]1549-1571 ribbon
+color [165]1549-1571 crimson
+transparency [165]1549-1571 0.057
+pdbload Model_686_integrin_S_r1_m6_SCWRL4.pdb
+show [166]1549-1571 ribbon
+color [166]1549-1571 crimson
+transparency [166]1549-1571 0.138
+pdbload Model_686_integrin_S_r1_m7_SCWRL4.pdb
+show [167]1549-1571 ribbon
+color [167]1549-1571 crimson
+transparency [167]1549-1571 0.001
+pdbload Model_686_integrin_S_r1_m8_SCWRL4.pdb
+show [168]1549-1571 ribbon
+color [168]1549-1571 crimson
+transparency [168]1549-1571 0.000
+pdbload Model_686_integrin_S_r1_m9_SCWRL4.pdb
+show [169]1549-1571 ribbon
+color [169]1549-1571 crimson
+transparency [169]1549-1571 0.179
+pdbload Model_686_integrin_S_r1_m10_SCWRL4.pdb
+show [170]1549-1571 ribbon
+color [170]1549-1571 crimson
+transparency [170]1549-1571 0.000
+pdbload Model_686_integrin_S_r1_m11_SCWRL4.pdb
+show [171]1549-1571 ribbon
+color [171]1549-1571 crimson
+transparency [171]1549-1571 0.138
+pdbload Model_686_integrin_S_r1_m12_SCWRL4.pdb
+show [172]1549-1571 ribbon
+color [172]1549-1571 crimson
+transparency [172]1549-1571 0.080
+view 0.6430 0.5330 -0.5500 0.4900 0.2650 0.8300

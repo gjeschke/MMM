@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Anisotropic network models</title>
+</head>
+<body>
+
+<div class="pagetitle">Anisotropic network models</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="ENM.html"> Elastic network models </A>  &bull;  &uarr;  |  &darr;  </pre>
+
+<div class="subtitle">Introduction</div>
+<p>
+An anisotropic network model (ANM) is a special <A href="ENM.html"> Elastic network model </A> that considers both the amplitude and direction of residue fluctuations. Hence, the ANM can be used for visualizing the motion of the C<sup>&alpha;</sup> trace in individual normal modes. This provides an impression of likely large-scale motions of the protein and a dynamic visualization of partitioning of the protein into domains.
+</p>
+<p>
+In MMM, ANMs are used for such visualization and for <a href="fit_from_template.html">fitting structures</a> from an existing template structure. The ANM window is used for inspecting the ANM and for normal mode visualization. This window also allows to save the coarse-grained model (C<sup>&alpha;</sup> trace) into an individual Matlab variable.
+</p>
+<p>
+Once computed, the ANM is stored with the structure and is saved, when the whole MMM model is saved. Likewise, the C<sup>&alpha;</sup> network (coarse-grained structure) is stored and saved with the model. Hence, on repeated activation the ANM window opens much faster than on first activation.
+</p>
+<div class="subtitle">ANM computation in MMM</div>
+<p>
+An ANM for the current structure is computed and an inspection window is opened via the ANM menu item in the <a href="menu_dynamics.html">Dynamics menu</a>. Note that computation can take between a few seconds and about an hour, depending on size of the structure. Computation time scales with the third power of the number of amino acid residues and is about 27 times longer than for a <a href="GNM.html">Gaussian network model</a>. Computation is always for the current structure, which can be picked in the <a href="hierarchy_window.html">hierarchy window</a>.
+</p>
+<p>
+MMM uses force constants for residue pairs that scale with the inverse sixth power of the C<sup>&alpha; </sup>-C<sup>&alpha; </sup> distance between the two residues. This provides better description of large-scale structural changes than other ENM-based approaches (L. Yang , G. Song, R.-L. Jernigan, Proc. Natl. Acad. Sci. USA 
+2009, 106, 12347–12352). For interaction between direct neighbor and next neighbor residues we use force constants that are larger by a factor of 10000. This stabilizes peptide bond geometry during fitting and avoids the relaxation step in such fitting that is required without such stabilization (W. Zheng, B. R. Brooks, Biophys. J. 2006, 90, 4327-4336). 
+</p>
+<a name="limitations">
+<div class="subtitle">Limitations</div>
+<p>
+Elastic network models have some tolerance against missing residues in the core of a protein, however, for quantitative work you may want to have a continuous peptide chain. If the template structure is incomplete (missing stretches of residues), consider (homology) modeling or other reconstruction, for instance with the Modeller software. Although such modelling is worse than having reliable experimental data, it is certainly better than ignoring the problem.
+</p>
+<p>
+Computation of an ANM can fail for more than 2000 residues in the structure due to memory limitations with a typical dekstop or laptop computer at the time of writing. Use a computer with larger memory available to Matlab to avoid this problem.
+</p>
+<a name="wireframe">
+<div class="subtitle">C<sup>&alpha;</sup> wireframe model</div>
+<p>
+The left half of the ANM window displays the C<sup>&alpha;</sup> wireframe model for normal mode visualization. By default, the wireframe is colored according to <a href="commands.html#colorscheme">colorscheme chain</a>, i.e. different chains in a protein complex are distinguished by color. Alternatively, you can use a neutral grey color for the whole model. 
+</p>
+<p>
+The wireframe model display is linked to the full 3D model display of MMM. When you rotate the model in the 3D model window, the wireframe will rotate the same way. That way you can easily compare, side-by-side, normal mode motions to any type of static visualization that is possible within MMM. This is why normal mode visualization was implemented in MMM. For producing pretty cartoon animated GIF normal mode visualizations (via MolScript) you might consider the <a href="http://igs-server.cnrs-mrs.fr/elnemo/">ElNémo server</a> instead. That said, normal mode visualizations can also be <a href="#AVI">saved as AVI movies</a> from MMM's ANM window, with limited visualization quality. The ANM window provides more flexibility and interactivity in visualizations than web servers. Hence, you may want to inspect potential protein dynamic behavior by MMM and make animations for presentations with a web server.
+</p>
+<a name="save">
+<div class="subtitle">Saving the coarse grained model</div>
+<p>
+The coarse-grained model can be saved into a Matlab file that contains only this variable by clicking on the <code>Save</code> button. This is a feature for experimenting with the program and is not needed by the normal user. This button may vanish in future versions. The ANM and coarse-grained model are automatically saved when the whole MMM model is saved from the main window.
+</p>
+<a name="animation">
+<div class="subtitle">Animation</div>
+<p>
+Animation is accessible via the <code>Animation control</code> panel. Select the mode to be visualized. Default behavior is that the vibration is shown with moderate amplitude, scaled by the inverse square vibrational frequency, seen from the same viewing perspective as the static model in the 3D model window. First the visualization is computed frame by frame, then it is played back by default for five full oscillations. This behavior gives you an impression on relative vibration amplitudes in the different modes. It may not be ideal for visualizing motion in higher (faster) modes, as these have very low scaled oscillation amplitudes.
+</p>
+<p>
+Amplitude of the oscillation can be changed by the same factor for all modes using the <code>Amplitude</code> slider. Relative amplitudes can be change by selecting the <code>thermal</code> (default) or <code>unscaled</code> radio buttons. The latter choice provides better visualization for fast modes.   
+</p>
+<p>
+The oscillation can be superimposed with rotation of the model about the <i>x</i> axis (along viewing direction, <i>y</i> (horizontal axis in screen plane), or <i>z</i> axis (vertical axis in screen plane). A full rotation (360&deg;) is superimposed with the number of oscillation cycles requested. Note that computation of animations with superimposed rotation takes much longer, as with rotation frames for all oscillation cycles must be computed, while without rotation only frames for a single oscillation are computed.  
+</p>
+<p>
+You can choose between grey and black background with the <code>black bckg.</code> checkbox. Interactive animation is started by clicking on the <code>Animate</code> button. Note that the animation is not stored. It is recomputed when you click this button repeatedly, even if parameters are unchanged.
+</p>
+<a name="AVI">
+<div class="subtitle">Movie of an animation in AVI format</div>
+<p>
+You can produce and store a movie of an animation in AVI format by clicking the <code>Save AVI</code> button. The animation should be set up before (and preferably tested on screen) as <a href="#animation">described above</a>. Quality of Matlab-generated AVI movies is rather low. The next version of MMM will allow for saving a trajectory as a PDB file with several models, for visualization in UCSF Chimera, or concatenated PDB files, for visualization in VMD. Both programs can create high quality movies.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2010.1, edited 2010/08/12</div>
+</body>
+</html>
+

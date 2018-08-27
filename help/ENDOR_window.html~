@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: P-31 Mims ENDOR simulation</title>
+</head>
+<body>
+
+<div class="pagetitle">P-31 Mims ENDOR simulation</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="specialized.html"> Special tasks </A> &uarr;  |  &darr;  </pre>
+
+<div class="subtitle">P-31 Mims ENDOR simulations in MMM</div>
+<p>
+The P-31 Mims ENDOR window is intended for the following tasks:
+<ul>
+<li>simulation of P-31 Mims ENDOR spectra in spin-labeled structures with phosphorous-containing biomacromolecules, such as DNA, RNA, and phosphorylated proteins</li>
+<li>simulation of P-31 Mims ENDOR spectra in spin-labeled structures of peptides or membrane proteins in a lipid bilayer</li>
+<li>estimation of multi-spin effects on dipolar evolution functions and form factors for systems with more than two labels</li>
+<li>direct comparison of predicted and experimental data</li>
+</ul>
+This window can be accessed via the menu item <a href="menu_EPR.html#ENDOR">EPR/P-31 Mims ENDOR</a>, but only if the current structure has at least one paramagnetic center.
+Paramagnetic centers can be spin labels or selected atoms. See the help page on <a href="spin_labeling.html">spin labeling</a> to find out how structures are spin labeled. 
+See the help page on <a href="selection.html">selection</a> to find out how particular atoms are selected.
+<p>
+Furthermore, the structure with the paramagnetic center must have phosphorous atoms in it or a bilayer must be defined in this structure (see <A href="build_bilaye.html">).
+The ENDOR window will open even if this is not the case, but all distance distributions and simulated spectra will be flat lines.
+</p>
+<a name="spin_system">
+<div class="subtitle">Defining the spin system</div>
+<p>
+The sites of the electron spin is selected in the <code>Labels & selected atoms</code> list box, where all spin labels and selected atoms are listed in MMM's <a href="addressing.html">address format</a>.
+The first tag in square brackets is the structure tag (often a PDB identifier), the second tag in parentheses the chain identifier, the number in curly brackets a number of the coordinate set (usually always 1, except for NMR structures) and the last number without any brackets the residue number. 
+For selected atoms, the address is followed by a semi-colon and the residue name. The selected paramagnetic center is displayed in the <code>Spin syste</code> panel and its position
+in current Cartesian coordinates of the structure is shown below the listbox. If a bilayer is defined, the bilayer central plane is the <i>xy</i> plane (last coordinate zero). 
+Thus, the last coordinate is the distance from the bilayer central plane. For spin labels, the coordinates given are mean coordinates of the N-O bond midpoints of all rotamers. 
+</p>
+<p>
+Note that paramagnetic centers other than spin labels are defined by the location(s) of a single atom. Centers of spin density that are defined by several atoms are not supported in this version. 
+If the selected atom has several alternate locations, all locations will contribute to the distance distribution.
+</p>
+<p>
+The subset of phosphorous nuclei is selected by radiobuttons in the <code><i>P-31 nuclei</i></code> subpanel of the <code>Spin system</code> panel.
+Selection <code>molecule</code> considers only "structural" phosphorous, even if a bilayer model is present. Selection <code>bilayer</code> considers only phosphorous from an MMM bilayer model.
+Selection <code>both</code> considers all phosphorous nuclei. This is the default.
+</p>
+<a name="bilayer_model">
+<div class="subtitle">The lipid bilayer model</div>
+<p>
+The current lipid bilayer is the DPPC model of Kucerka et al. (N. Kucerka et al., Biophys. J. 2008, 95, 2356-2367) with scaling of the bilayer thickness, aumming a thickness of 35 Å
+for the DPPC model. The model is defined as a 3D grid of phosphorous locations with spacing of 0.5 Å. All positions within 25 Å are considered. Fractional P-31 populations at 
+these positions are computed from the z-profile (along the bilayer normal) of phosphocholine groups (tag PCN) in the DPPC model. Fractional population is zero for positions within the protein slabs.
+Protein slabs are computed on a 2D <i>xy</i> grid with 0.2 Å spacing by computing potential collisions with protein atoms at a certain <i>x<sub>i</sub></i>, <i>y<sub>i</sub></i> coordinate.
+Lennard-Jones interaction energies (only repulsive part) are computed separately for the top and bottom monolayer by summing over all protein atoms in the <i>z</i>-range of the monolayer,
+which extends from <i>z</i>=0 to <i>z</i>&pm;<i>d</i>/2, where <i>d</i> is the bilayer thickness. The lipid population at this <i>x<sub>i</sub></i>, <i>y<sub>i</sub></i> coordinate
+is computed as a Boltzmann population at 293 K. Populations below 0.05 are assumed to be zero. Holes in the upper and lower monolayer protein slabs are filled, as lipid molecules are not expected to insert into such holes 
+(sometimes they do, but they may then be resolved in the crystal structure).
+</p>
+<p>
+Only positions with <i>z</i>-profile population larger than 1% are considered in the final model. Typically, these are between 10'000 and 100'000 positions. 
+The populations are scaled so that the integral over a slab of monolayer unblocked by protein with an area equal to the area-per-lipid for DPPC is unity.  
+</p>
+<a name="load">
+<div class="subtitle">Loading experimental data</div>
+<p>
+Experimental data can be loaded directly in Bruker's Xepr (EleXsys) format via the <code>Load Xepr</code> button. 
+A Mims ENDOR spectrum with a frequency axis in MHz is expected. The static field read from the <code>.DSC</code> file is used to
+compute an inital estimate of the P-31 Zeeman frequency. Only the real part of the spectral intensities is considered. It is assumed that zero amplitude corresponds to zero stimulated echo
+and stimulated echo amplitude for an off-resonant r.f. pulse is positive. Hence, ENDOR peaks correspond to a decrease in positive spectral intensity.
+If in doubt, <a href="mailto:gunnar.jeschke@phys.chem.ethz.ch?subject=MMM PulseSPEL program for Mims ENDOR &body;=Dear MMM authors, please send us a PulseSPEL program for P-31 Mims ENDOR.">ask us</a> about a suitable PulseSPEL program.
+</p>
+<p>
+Data in a generic ASCII format can be read via the <code>Load ASCII</code> button. The first column must define a frequency axis in MHz, the second column real spectral intensities. 
+</p>
+<a name="options">
+<div class="subtitle">Bckg. polynomial</div>
+<p>
+Experimental ENDOR baselines (off-resonant intensities) may not be completely flat. MMM corrects for this on loading data, by assuming that the first and last 10% of data
+points are baseline (you should measure spectra with at least that much baseline). The first 2.5% of data points are neglected, as baseline may be spoiled here due to thermal effects.
+Baseline correction is done by fitting al polynomial function to the baseline ranges, extrapolating this function over the whole frequency axis, and dividing the spectrum by this function.
+This also normalizes baseline intensity to unity. The default baseline polynomial order is 0 (flat line). Polynomial order can be increased up to 5, but note that values above 2 indicate that something is wrong with the spectrum.
+<p>
+Use the <code>&lt;</code> and <code>&gt;</code> buttons or direct input into the edit field to adapt polynomial order. Display of the experimental spectrum changes automatically.
+</p>
+<a name="distribution">
+<div class="subtitle">Distance distribution</div>
+<p>
+The distance distribution is automatically recomputed when you cahnge selection of the paramagnetic center or of the contributing P-31 nuclei.
+Computation may take long if a bilayer is present and the distance distribution for the selected paramagnetic center was not computed before.
+</p>
+<p>
+The distance distribution due to structural phosphorous is displayed in blue, the one due to phosphorous from the lipid bilayer in green, and the sum distribution in red.
+Often you may see only the red line, as one of the contributions may be totally missing or be insignificant.
+</p>
+<p>
+Display range can be adapted and the plot detached in a separate Matlab window for copying, printing, and further inspection using the corresponding user interface elements in the
+<code>Distance distribution</code> panel.
+</p>
+<a name="spectrum">
+<div class="subtitle">Mims ENDOR spectrum</div>
+<p>
+Conversion from the distance distribution to the Mims ENDOR spectrum depends on the first interpulse delay &tau; (tau) of the stimulated echo sequence (blind spot behavior)
+and on the length of the radiofrequency pulse (power broadening). MMM does not read these values from the <code>.DSC</code> file. You need to input them directly into the 
+corresponding edit fields, if simulation needs to match experiment. Sensible default values of &tau;=600 ns and <i>t</i><sub>r.f.</sub>= 10 &mu;s are given.
+</p>
+<p>
+Matching experiment also requires that the center frequency (P-31 Zeeman frequency) of the experimental spectrum is known. When loading Xepr data, this frequency
+is computed from the magnetic field. Note however that the magnetic field is measured by a Hall probe with limited precision and calibration may be surprisingly poor, 
+as the Hall probe in pulse EPR spectrometers is located far from the magnet center. In many cases, you are better off by checking the <code>Fit center frq.</code> checkbox.
+This is not the default, as it may fail spectacularly if the experimental and simulated distance distributions do not match. The center frequency can also be input manually.
+The experimental spectrum as displayed in the plot should be as symmetric as possible with respect to zero frequncy offset (<code>f-f0</code>). 
+</p>
+<p>
+The maximum ENDOR effect (strongest decrease of stimulated echo intensity in percent) is displayed as it provides a fast estimate of P-31 proximity to the paramagnetic center.
+Furthermore the full width at 1.5% signal reduction is displayed if the maximum signal reduction is at least 1.5%.
+</p>
+<a name="copy">
+<div class="subtitle">Copying and printing plots</div>
+<p>
+Both plots can be detached as separate Matlab figures via the corresponding <code>Detach</code> buttons. Use the figure menu to copy or plot (or edit) them.
+</p>
+<div class="subtitle">Saving simulated data</div>
+<p>
+The <code>Save</code> button in the left bottom corner of the window can be used to save the simulated data in text (ASCII) format, 
+similar to the output format of DeerAnalysis. In any case the three files <code>*_res.txt</code>,  <code>*_distr.dat</code> and <code>*_spc.dat</code> are written,
+where * stands for the basis file name that can be given in a file dialog window. The file <code>*_res.txt</code> contains information on simulation and fit parameters,
+the file <code>*_distr.dat</code> the distance distribution and the file <code>*_fit.dat</code> the form factor. 
+The contents of file <code>*_res.txt</code> are self-explaining.
+</p>
+<p>
+In file <code>*_distr.dat</code> the first column is the distance axis in units of Angstroem. The second column is the predicted distance distribution. The distance range extends from 0 to 25 Å.
+</p>
+<p>
+In file <code>*_spc.dat</code> the first column is the frequency offset axis in kHz. The second column is the simulated spectrum.
+</p>
+<p>
+A third file <code>*_fit.dat</code> exists if and only if experimental data were loaded. This file contains in the first column the frequency offset axis in kHz, 
+in the second column the normalized, baseline corrected and center-frequency shifted experimental data, and in the third column the simulated spectrum interpolated to the frequency axis increment of the experimental spectrum.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2010.1, edited 2010/12/17</div>
+</body>
+</html>
+

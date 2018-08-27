@@ -1,0 +1,21 @@
+% Distance restraints for rigid body docking of two integrin domains
+% N. Alonso-García, I. García-Rubio, J. A. Manso, R. M. Buey, H. Urien, 
+% A. Sonnenberg, G. Jeschke, J. M. de Pereda, Acta Cryst. 2015, D71, 969-985
+# PDB 4WTW 4WTX
+# DEER MTSL 298
+1463	1608	2.9	0.5
+1472	1608	4.3	0.5
+1485	1608	5.9	0.5
+1497	1608	3.8	0.5
+1504	1608	5.2	0.5
+1497	1598	1.4	0.5
+1497	1608	3.7	0.5
+1504	1598	2.5	0.5
+1472	1590	2.7	0.5
+1472	1626	3.6	0.5
+1497	1626	2.73	0.5
+1504	1626	4.4	0.5
+1472	1630	3.63	0.5
+1504	1630	4.55	0.5
+# END
+

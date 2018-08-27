@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Coarse graining</title>
+</head>
+<body>
+
+<div class="pagetitle">Coarse graining</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> <A href="model_concept.html"> Model concept </A> &uarr |  &darr; <A href="ENM.html"> Elastic network models </A> <a href="build_bilayer.html">Lipid Bilayers</a>
+</pre>
+
+<div class="subtitle">What is coarse graining?</div>
+<p>
+The structure of a biomacromolecule is fully specified by the coordinates of all atoms (we neglect partial charges in this discussion). However, such a representation may not always be appropriate. First, the available experimental data may not allow to specify all atom positions. For instance many x-ray structures of proteins are arguably overspecified compared to the information that is really inherent in the electron density cloud (or diffraction pattern) at the given resolution. Second, biomacromolecules under pyhsiological conditions are inherently dynamic and in an ensemble of molecules of the same primary structure, atoms will be at slightly different positions in individual molecules. For instance it will rarely if ever happen that the sidegroup of a given residue at the surface of a protein has the same conformation in all molecules of the sample. Third, when considering long-time dynamics or large-scale structural transitions, it may not be feasible to perform simulations at full atomic detail and it may not be necessary either, as on such time scales and during such changes details of atomistic structure vary and may not always be of interest (exception: binding sites).
+</p>
+<p>
+In all these cases it is more appropriate to consider models with lower resolution. However, given the wealth of information inherent in the atomistically defined structures of the protein data bank (PDB) and the sophisticated parametrization of atomistic force fields for molecular dynamics computations, it is often possible and most appropriate to <i>start from</i> an atomistic model. Such a model is coarse grained by combining several atoms into a pseudo-particle. For instance, each amino acid residue can be represented by two pseudo-particles, one for the backbone and one for the sidegroup. On the next level of coarse graining it could be represented by a single pseudo-particle, positioned at the coordinate of the C<sup> &alpha </sup> atom. Further on, several residues could be combined into one collectively moving entity.
+</p>
+<p>
+This combination of several particles into a single pseudo-particle reduces the number of degrees of freedom of the model and the number of pairwise interactions. Hence, the model can be specified from fewer experimental constraints and simulation of model dynamics becomes much faster. Already when going from an atomistic model to one pseudo-particle per residue the savings are huge.
+</p>
+<p>
+The downside of coarse graining is that the model becomes less precise, not only in terms of resolution, but also in terms of interactions between the (pseudo-)particles. The true pairwise interaction potentials between the pseudo-particles are complicated, anisotropic, and may even depend on structural context. In practice, simplified potentials are used that strike a compromise between ease of use and precision. At a given level of sophistication, ultimate precision is obtained by parametrizing the potentials on the basis of atomistic force fields for the very system under study. In other words, coarse grained models are either relatively precise or relatively universal.
+</p>
+<p>
+The molecular dynamics community strives for ultimate precision in coarse graining at the cost of universality. MMM follows biophysical approaches that value universality more than precision, for the reason that it is concerned with deriving structures and structural transition pathways from scarce experimental constraints. Scarcity of constraints already imposes a limit on precision. Furthermore, experience with long-range distance measurements by EPR spectroscopy has shown that in a number of cases the width of distance distributions can be explained only when assuming flexibility of the backbone of the biomacromolecule. In such cases the nature of the problem itself poses a limit to the precision of the model.
+</p>
+<div class="subtitle">Coarse graining approaches in MMM</div>
+<p>
+The current version of MMM provides isotropic and anisotropic <A href="ENM.html"> Elastic network models </A> and simple <a href="build_bilayer.html">lipid bilayer</a> models. Generally, proteins are coarse grained to a single pseudo-particle per residue positioned at the C<sup>&alpha </sup> coordinate of the atomistic model. Bilayers are infinitely extended and homogeneous parallel to the bilayer plane and feature variation of (residue-specific) interaction potentials and of chemical composition along the bilayer normal, for instance distribution profiles of water, oxygen, and phosphorous nuclei of phospholipid headgroups. 
+</p>
+<p>
+All interaction potentials are universal, with the exception of interaction of residues with a lipid bilayer that depends on secondary structure of the residue. Even in that case, the interactions can be computed from the atomistic structure without specific parametrization. 
+</p>
+<div class="subtitle">Fine graining</div>
+<p>
+MMM allows for reconverting a coarse-grained model to an atomistic model in the following way. A local frame is defined by the C<sup>&alpha </sup> coordinates of residues <i>i</i>-2, <i>i</i>-1, <i>i</i>, <i>i</i>+1, and <i>i</i>+2 (at least three of these residues are needed). The translation and rotation of this local frame between the original atomistic <i>tmplate structure</i> and the current coarse-grained structure is determined by least square superposition of the C<sup>&alpha </sup> coordinates of the template structure onto the coordinates of the coarse-grained model. Now all atoms of residue <i>i</i> are subject to this translation and rotation. 
+</p>
+<p>
+The user should realize that this involves approximations. For instance, if the C<sup> &alpha </sup> network has deformed, preferred sidechain conformations may have changed. To account for this, sidechains can be repacked using <a href="third_party.html#SCWRL4">SCWRL4 </a>, but note that this again involves approximations.
+</p>
+<p>
+Such fine graining may be necessary to perform certain tests on the model, to compare it to certain types of experimental data, or to update other approximate information, for instance on spin label conformational distribution. The user should be aware that the full specification of all atom coordinates in a fine-grained model is to some extent an illusion, in fact, to a larger extent than it was already an illusion in experimental template structure used at the start for coarse graining. Starting from a homology model may be an exception. In this case an experimentally informed fine-grained C<sup>&alpha </sup> model may well be more precise that the template structure.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2010.1, edited 2010/07/31</div>
+</body>
+</html>
+

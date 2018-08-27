@@ -1,0 +1,10 @@
+% Localization of LOPTC in liopxygenase structure 1YGE
+% Restraints from B. J. Gaffney et al., Biophys. J. 2012, 103, 2134-2144
+# PDB 1YGE
+# LOCATE LOP 0.5 MTSL 298 full
+270	2.30	0.30
+480	4.30	0.30
+569	3.80	0.30
+619	4.70	0.30
+782	3.75	0.30
+# END

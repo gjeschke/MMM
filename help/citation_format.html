@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Define citation format</title>
+</head>
+<body>
+
+<div class="pagetitle">Define citation format</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> <A href="user_interface.html"> &bull; User interface </A> &bull; <A href="annotation_window.html"> Annotations</A> &bull; <A href="reference_window.html"> References</A> &uarr;  |  &darr; &bull; <a href="#limitations">Limitations</a> &bull; <a href="#help_me">Why is this so complicated?</a></pre>
+
+<div class="subtitle">How MMM creates citations</div>
+<p>
+A citation in MMM can contain all or part of the following information:
+<ul>
+<li>an <a href="#author_list">author list</a>: <code>A</code></li>
+<li>the journal name in <a href="#abbreviation">abbreviated form: <code>J</code></a></li>
+<li>the publication year: <code>Y</code></li>
+<li>the volume of the journal: <code>V</code></li>
+<li>the issue: <code>I</code></li>
+<li>the start page: <code>P</code> and end page: <code>E</code></li>
+<li>the title of the paper: <code>T</code></li>
+</ul>
+<p>
+No special formats for books and book sections are supported.
+</p>
+<p>
+The items of this list can be in any order and any of the items, as well as separators between them, can be formatted <b>bold</b> or <i>italic</i>, but not both. The order of items and the separators between them are defined by a <a href="#format_string">format string</a>. Formats and their assignment to journals are defined in the file <code>def_reference_format.m</code>, which is found in the <code>/definitions</code> subdirectory of MMM.
+</p>
+<a name="format_string">
+<div class="subtitle">Defining order of items and separators</div>
+The format string is stored as field <code>reference_formats(<i>i</i>).order</code>, where <code><i>i</i></code> is the index of the format. For example:
+<p>
+<code>A, T, J V (Y) P-E.</code>
+<p>
+defines a citation that starts with the author list, which is followed by a comma, the title, a comma, the year, the volume (separated by only a space from the year and enclosed in parentheses) and the start and end page spearated by a hyphen. The citation ends with a full stop.
+<p>
+Font formatting is defined by a string <code>reference_formats(<i>i</i>).font</code> of exactly the same length. In this string, <code>p</code> stands for plain, <code>i</code> for <i>italic</i>, and <code>b</code> for <b>bold</b>.
+<a name="author_list">
+<div class="subtitle">The author list</div>
+<h4>Order of authors and separators</h4>
+This is defined by a string <code>reference_formats(<i>i</i>).authors</code>, with identifiers <code>F</code> (first author), <code>I</code> (any author other than first or last), and <code>L</code> (last author). For example:
+<p>
+<code>F, I, and L</code>
+<p>
+defines a list, where authors are separated by commas and there is an "and" between the second-to-last and last author, with a comma before that "and". If there are only two authors, the comma before the "and" will be skipped.
+<h4>Order of surname and initials</h4>
+In addition, the sequence of surname <code>S</code> and initials <code>I</code> needs to be defined, separately for the first author (<code>reference_formats(<i>i</i>).first_author</code>), last author (<code>reference_formats(<i>i</i>).last_author</code>), and any other author (<code>reference_formats(<i>i</i>).any_author</code>). For example:
+<p>
+<code>reference_formats(<i>i</i>).first_author='S, I.'</code>
+means that for the first author, the surname is followed by a comma, a space, the initial(s) and each initial is followed by a full stop. 
+<h4>Maximum number of authors</h4>
+Some journals abbreviate long author lists by <i>et al.</i>. The maximum number of names to be written out is given in <code>reference_formats(<i>i</i>).max_authors</code>. If this field is empty, always all authors are listed. Formatting of <i>et al.</i> cannot be influenced, it is always <i>italic</i> and ends with a full stop.
+<a name="abbreviation">
+<div class="subtitle">How MMM formats abbreviated journal titles</div>
+The internal reference format of MMM is based on PubMed abbreviated journal titles and no correspondence list between full and abbreviated titles is kept. This works reasonably well, although there are exceptions (for instance, PubMed lists <i>Chem. Eur. J.</i> as <i>Chemistry</i>). Most journals use (superfluous) punctuation (full stops) with abbreviated journal names, while PubMed does not. Hence, MMM must decide (heuristically) where to put a full stop, if this is required. Whether or not the journal uses punctuation, is defined by <code>reference_formats(<i>i</i>).journal_delimiter</code> which can be <code>'.'</code> (full stop punctuation) or <code>''</code> (no punctuation).
+<p>
+MMM's heuristic is based on the length of components of the journal title and assumes that abbreviated words do not end on vowels or a closing parenthesis. This does not always get it right, but usually it does.
+</p>
+<div class="subtitle">Assigning formats to journals</div>
+<p>
+Almost all permutations in order, choices of separators, etc. are used by some journal. Nevertheless, there are more journals than formats. MMM does not mind redefinition of the same format, but avoid it, if you can. For instance, journals of the same publisher often share the same (or at least a similar format).
+<p>
+<b>### Warning ###</b>
+Publishers and their journal teams are not only idiosyncratic with respect to their citation formats, they are also fickle. Formats do change from time to time.
+<p>
+To assign an existing format to a journal, you need to define, e.g.
+<p>
+<code>journals(<i>k</i>).name='J Irreprod Res';</code>
+<p>
+<code>journals(<i>k</i>).format=<i>i</i>;</code>
+where <code><i>i</i></code> is the index of the format and <code><i>k</i></code> the index of the journal. Make sure that <code><i>k</i></code> is not yet used for another journal. If you define a new format, make sure that <code><i>i</i></code> is not yet used for an existing format.
+<a name="limitations">
+<div class="subtitle">Limitations</div>
+<p>
+Although MMM's citation format is reasonably flexible and the citation compiler avoids a few pitfalls, the citations will not always be precisely formatted. Occasionally there may be surplus or missing full stops. If a journal lists up to four author names, but only the first author and <i>et al.</i> for more than four authors, MMM will list the first four authors.
+<p>
+If you are very ambitious, you can edit by hand. Otherwise leave it, the journals will correct small glitches themselves, if there are only a few.
+<a name="help_me">
+<div class="subtitle">Why is this so complicated?</div>
+<p>
+Because nobody cares to standardize this. If you don't dare to define an additional format, but you need one, <a href="mailto:gunnar.jeschke@phys.chem.ethz.ch?subject=MMM: citation format&body=Dear MMM authors, please implement the citation format for journal:">ask us</a> for implementing it. 
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/11/23</div>
+</body>
+</html>
+

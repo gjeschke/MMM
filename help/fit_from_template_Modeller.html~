@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Fit from template by Modeller</title>
+</head>
+<body>
+
+<div class="pagetitle">Fit from template/Modeller</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="modeling.html"> Model building </A>  &bull;  <a href="menu_build.html"> Build menu</a> &uarr;  |  &darr;  </pre>
+
+<div class="subtitle">Introduction</div>
+<p>
+This feature requires that <a href="third_party.html#Modeller">Modeller<a> is installed in an MMM subdirectory, or a writable directory known in the Matlab path, and that the name of the executable, for instance <code>mod9.10</code>, is properly specified in the preferences window, which is accessible from the <a href="menu_file.html#preferences">File menu</a>.
+<p>
+This fit procedure can be used to create a homology model based on a template structure of a related protein, a sequence alignment, and a set of distance constraints and, optionally, secondary structure constraints. In simple cases, where sequence identity is moderate to high, sequence alignment can be automated by using the alignment program <a href="third_party.html#MUSCLE">MUSCLE</a>, which is bundled with MMM.
+</p>
+<p>
+We emphasize that the concept of a single "true" structure of a protein or protein complex is largely fiction. Nevertheless <i>some parts</i> of a protein are fixed at atomic resolution. The models obtained with the Modeller fit procedure should not be discussed in terms of such atomistic detail, unless sequence identity is very high at least near the details to be discussed. Otherwise, only speculations are possible on this level.
+</p>
+<p>
+The current MMM version allows for homology modelling of only single-chain proteins. It is still in a development stage. In particular, modelling supported by experimental constraints may still change. The help file does not describe all features. We suggest that you wait for our publication on the approach before using the feature for serious work.
+</p>
+<a name="alignment">
+<div class="subtitle">Specification of sequence alignment</div>
+<p>
+Homology modeling is based on an alignment between the sequence of the template protein and the sequence of the protein to be modeled (target protein). MMM can read alignment files in FASTA format (default extensions <code>.afa</code>, <code>.fa</code>, <code>.fasta</code>, <code>.ebi</code>, <code>.txt</code>), Clustal format (default extensions <code>.clw</code>, <code>.aln</code>, <code>.clustalw</code>), and in Modeller's native PIR format (default extensions <code>.ali</code>, <code>.pir</code>). The native format of MMM is FASTA and this is assumed for any file extension that is not assigned to another format.
+</p>
+<p>
+The alignment is loaded via the <code>Alignment</code> button. MMM checks whether the template sequence exists in the alignment file and, if not, adds this sequence and aligns it to the other sequences by using <a href="third_party.html#MUSCLE">MUSCLE</a>. This feature also allows working from only the template structure and a FASTA file of the target sequence, without explicitly specifying the alignment. However, we discourage this automatic alignment mode in cases where sequence identity is lower than 50%.
+</p>
+<p>
+Sequence identity is displayed in the <b>Message board</b> of the main MMM window after the alignment or target sequence was loaded. Furthermore, the <code>Alignment</code> button is color-coded after loading an alignment. Red color corresponds to 20% sequence identity or less ("midnight zone", unreliable without additional constraints), green color to 40% sequence identity or more (rather reliable homology models). In between ("twilight zone"), color is linearly interpolated on an RGB scale, with yellow corresponding to 30% sequence identity.
+</p>
+<a name="constraints">
+<div class="subtitle">Specification of constraints and fit parameters</div>
+<p>
+Fits are controlled by an ASCII text input file that is opened via the <code>Restraints</code> button. Comment lines or comments in command lines are introduced by the percent character %. Keyword lines start with the hash character #. There must be a space between the hash character and the keyword. Two types of keywords exist, single-line keywords (all parameters are specified on the same line as the keyord) and block keywords (some parameters follow in additional lines, this is used for constraint specification). Blocks end when the next keyword is encountered. The last block must be followed by an <code># END</code> keyword line. Keywords are not case sensitive. Keywords and arguments are separated by spaces.
+</p>
+Currently, the following keywords are defined:
+<ul>
+<li> <code> # PDB</code> (single-line), argument: PDB identifier of template structure, the chain can be given after a colon (<code>:</code>)</li>
+<li> <code> # DEER</code> (block), arguments: spin label and temperature (in K) for rotamer simulation, starts block for EPR (DEER and CW EPR) constraints</li>
+<li> <code> # DIRECT</code> (block), no arguments, starts specification block for C<sup>&alpha;</sup>-C<sup>&alpha;</sup> constraints.
+<li> <code> # HELICES</code> (block), no arguments, starts specification of secondary structure constraints for (&alpha;-)helices.</li>
+<li> <code> # STRANDS</code> (block), no arguments, starts specification of secondary structure constraints for &beta;-strands.</li>
+<li> <code> # SHEETS</code> (block), no arguments, starts specification of secondary structure constraints for the alignment of &beta;-strands to sheets.</li>
+<li> <code> # ALIGN</code> (single-line), argument: file name of alignment file, we recommend to use the <code>Alignment</code> button instead</li>
+<li> <code> # CHAINS</code> (single-line), arguments: identifiers of the chains, this allows to name the chain in the target structure other than <code>A</code> </li>
+<li> <code> # REALIGN</code> (single-line), argument: threshold for realigning the sequences, not yet implemented</li>
+<li> <code> # END</code> (single-line), no arguments, stops reading of the file
+</ul>
+</p>
+<h4>Remarks</h4>
+<p>
+Future versions may have additional keywords. If you are a programmer and want to implement keywords of your own, please contact us before. The constraint file is processed by function <code>rd_restraints.m</code>. 
+</p>
+<p>
+<code># PDB</code>: This is used for a check whether the current structure in MMM, which can be picked in the <a href="hierarchy_window.html">hierarchy window</a>, is the requested template structure. If the current structure in MMM has a different PDB identifier than specified in the constraints file, the user can either use the current structure or load the specified structure (if it is available on the FTP server of the PDB).
+<p>
+<code># DEER</code>: The arguments of this keyword supersede any spin labeling with a different label or at a different temperature that you may already have performed on the template structure (rotamers are automatically recomputed). If rotamer computation (<a href="spin_labeling.html#site_scan">site scan</a>) was already performed for the specified sites (see below) with matching spin label and temperature, rotamer computation is skipped. It is not necessary to compute labels before, in version 2011 rotamer computation is fast. In any case you should not actually attach the labels before fitting.
+</p>
+<p>
+<i>DEER constraint specification</i>: DEER constraints are specified by <a href="addressing.html">MMM addresses</a> of the two residues involved, followed by the mean distance (in nm) and the full width of the distance range (in nm). The width of the distance range is not currently used in homology modeling. In single-chain structures, the residue number suffices as an address. In multi-chain protein complexes the chain identifier in parentheses must precede the residue number (without intervening space). The structure must not be specified in the residue address.
+</p>
+<p>
+It is good practice to comment each constraint (where does it come from, functional assay, etc.). Constraints from CW EPR are currently specified as DEER constraints.
+</p>
+<p>
+<code># direct</code>: This keyword allows to specify direct constraints between C<sup>&alpha;</sup> atoms of residues, for instance to fix part of the structure during the fit or to use information from an incomplete crystal structure. 
+</p>
+<p>
+<i>direct C<sup>&alpha;</sup>constraint specification</i>: Direct constraints are specified by <a href="addressing.html">MMM addresses</a> of the two residues involved, followed by the distance (in nm) and the full width of a distance range (in nm). In single-chain structures, the residue number suffices as an address. In multi-chain protein complexes the chain identifier in parentheses must precede the residue number (without intervening space). The structure must not be specified in the residue address. It is good practice to comment each direct constraint (reason why it is provided).
+</p>
+<p>
+<code># ensemble</code>: Such a keyword exists, but is not used for homology modeling. Please specify the number of computed models and selected ensemble in the <b>Modeller control</b> panel of the fit window..
+</p>
+<p>
+<code># END</code>: Make it your practice to always conclude a constraint file with the <code># END</code> keyword. The current version may work if you forget this, but we give no guarantee that this will also be the case in future versions of MMM.
+</p>
+<a name="wireframe">
+<div class="subtitle">C<sup>&alpha;</sup> wireframe model</div>
+<p>
+The left half of the ANM window contains the <code>State transition animation</code> panel for displaying a C<sup>&alpha;</sup> wireframe model for normal mode visualization. On opening of the window, the wireframe is colored according to <a href="commands.html#colorscheme">colorscheme chain</a>, i.e. different chains in a protein complex are distinguished by color. After a <a href="#constraints">constraint file</a> is loaded using the <code>Load restraints</code> button, the wireframe changes to neutral grey color and experimental distance constraints are visualized as color-coded connections between sites. Sites (currently only spin labels) are visualized as blue dots, connected by thin blue tether lines to the C<sup>&alpha;</sup> node of the corresponding residue in the wireframe model. The color code is green for experimental distances that are within the experimental (error) range around the distance in the current model. Directly after loading constraints, before fitting, the current model is the template structure. The color code is yellow for distances outside the error range but within twice this range and red for distances outside twice the range. An overview of <code>Restraint matching</code> information is given in the auxiliary plot in the right half of the window. Both plots can be copied into separate Matlab figures for copying or printing by clicking on the respective <code>C</code> buttons.
+</p>
+<a name="close">
+<div class="subtitle">Closing the window</div>
+<p>
+By clicking the <code>Close</code> button below the wireframe model plot the window is closed. On reopening it will not appear in the same state and animation of a previous fit will no longer be possible (in the current version). Instead, the window reopens with the template structure displayed for a new fit.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2011, edited 2011/12/16</div>
+</body>
+</html>
+

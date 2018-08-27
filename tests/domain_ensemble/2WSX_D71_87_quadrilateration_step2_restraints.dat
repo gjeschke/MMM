@@ -1,0 +1,44 @@
+% Artifical restraints for domain 71-87 in CaiT, G. Jeschke, 7.10.2015
+# DOMAIN 71 87
+# NANCHOR [2WSX](A)70
+# CANCHOR [2WSX](A)88
+# SEQUENCE FGPYAKKRLGEEPPEFS
+# ENSEMBLE 20 0.5
+# DEER MTSL 298
+% quadrilateration restraints beacon 107
+107	71	3.99	0.33
+107	73	4.54	0.24
+107	75	4.35	0.11
+107	77	4.56	0.14
+107	80	4.00	0.07
+107	82	4.64	0.33
+107	84	4.12	0.08
+107	86	3.48	0.20
+% quadrilateration restraints beacon 257
+257	71	4.37	0.47
+257	73	4.68	0.43
+257	75	4.37	0.42
+257	77	3.97	0.45
+257	80	2.71	0.39
+257	82	2.77	0.52
+257	84	2.66	0.42
+257	86	1.53	0.34
+% quadrilateration restraints beacon 280
+280	71	3.85	0.50
+280	73	5.01	0.45
+280	75	4.37	0.42
+280	77	5.15	0.38
+280	80	5.14	0.32
+280	82	5.14	0.45
+280	84	3.81	0.39
+280	86	4.01	0.37
+% quadrilateration restraints beacon 501
+501	71	3.15	0.23
+501	73	2.10	0.41
+501	75	2.59	0.23
+501	77	1.53	0.26
+501	80	1.82	0.26
+501	82	2.29	0.46
+501	84	2.92	0.25
+501	86	3.26	0.35
+# END

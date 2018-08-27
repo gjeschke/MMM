@@ -1,0 +1,14 @@
+% Example of elastic network modeling of a conformational change
+% Ligand-free Human Glutathione S-Transferase A1-1
+% Restraints from:
+% M.J. Lawless, J.R. Pettersson, G.S. Rule, F. Lanni, S. Saxena, Biophys. J.
+% 114, 592–601 (2018), DOI: 10.1016/j.bpj.2017.12.016 
+% Crystal structure PDB 1K3L needs to be loaded
+# BASIS 10
+# ENSEMBLE 1 0.30
+# DEER MTSL 298
+(A)214	(B)214	3.6	0.4
+(A)212	(B)212	3.7	0.4
+# ODEER IDA IDA 298
+(A)211	(A)215 (B)211	(B)215	3.5	0.1
+# END

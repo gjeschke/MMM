@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Depth cueing</title>
+</head>
+<body>
+
+<div class="pagetitle">Depth cueing</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="specialized.html"> Special tasks </A> &uarr;  |  &darr;  </pre>
+
+<div class="subtitle">Depth cueing concept</div>
+<p>
+Depth cueing helps to see in a two-dimensional graphics of the model which objects are situated in the foreground and which ones in the background. There are several ways to achieve that. Objects can blend into the background color with increasing depth and they can be made more transparent with increasing depth. In Matlab graphics, a combination of both these modes together with a uniform white background works best. 
+</p>
+<p>
+Modern graphics cards allow for more sophisticated and faster hardware-supported depth cueing. Currently, Matlab graphics does not support this feature. Hence, depth cueing in MMM is emulated and a bit slow.
+</p>
+<div class="subtitle">Depth cue control</div>
+<h4>Preparation</h4>
+<p>
+Depth cueing is most useful for detail views of a model although it can also be used for viewing the whole model. To use it for the whole model, unselect all objects, for instance with an <code>unselect *</code> command in the command line or double click on an object in the 3D graphics display. The click the <img src="img/toolbar_view_all.png" alt="(four red arrow pointing to a full green sphere)"><code>View all</code> toolbutton. If necessary, adjust the view as described in the <a href="model_panel.html#best_view">model panel help page</a>. 
+</p>
+<p>
+To use it for a detail view, <a href="selection.html">select</a> the objects that you want to see,  for instance in the <a href="hierarchy_window.html">hierarchy window</a>, by clicking on the structure in the <a href="model_window.html">model window</a> or by the <a href="commands.html#select">select command</a>. Then click the <img src="img/toolbar_view_selection.png" alt="(red arrow pointing down right to a quarter green sphere)"><code>View selected</code> toolbutton.
+</p>
+<h4>Switching on</h4>
+<p>
+Depth cueing is toggled (switched on/off) by clicking on the <code>Depth cueing</code> button in the <code>View</code> panel of the main window or switched on via the <code>Depth cueing</code> item of the <code>Display</code> menu.
+<p>
+A <code>Depth cueing control</code> window opens, the background color of the <a href="model_panel.html">model panel</a> or <a href="model_window.html">model window</a> is switched to white, selection highlights are switched off, and depth cueing is enabled. Objects in the front that could obscure the view are cut away.
+</p>
+<h4>Adjusting</h4>
+<p>
+Dept cueing is controlled by two planes that are perpendicular to the viewing direction <i>d</i>. Your eyes are at a negative coordinate along <i>d</i>, the background is at a positive coordinate. The <code>Front plane</code> is by default set at <i>d</i>=0, corresponding to the front edge of the selected objects or the whole model. Front edge computation is approximate, small adjustments may be necessary.
+</p>
+<p>
+You can adjust the <code>Front plane</code> by the corresponding slider or by directly setting a value in the edit field. Note that depth cueing does not automatically update, you have to click the <code>Update</code> button.
+</p>
+<p>
+All objects closer to you than the front plane are cut away. The front plane also corresponds to fully opaque objects with full color saturation. If the front plane is too close to your eye (large negative values), everything will look very pale.
+</p>
+<p>
+The <code>Back plane</code> is by default set at <i>d</i>=1.5, corresponding to 1.5 times the extension of the selected objects (or whole model) behind the front plane. This makes sure that the whole selection can still be seen rather clearly. Shifting the backplane to the back (larger values of <i>d</i>) makes more objects visible in the background and the color saturation gradient is decreased. You can shift the <code>back plane</code> with the corresponding slider or by direct input in the edit field.
+</p>
+<h4>Switching off</h4>
+<p>
+Click the code>Cancel</code> button of the <code>Depth cueing control</code> window or, alternatively, click once more on the <code>Depth cueing</code> button in the <code>View</code> panel of the main window. The window closes, depth cueing is decativated, and selection highlights- if any- are restored. The previous background color is also restored.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/10/30</div>
+</body>
+</html>
+

@@ -1,0 +1,1437 @@
+
+--- Restraint fulfillment for model 1 with weight 0.464 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 26.22
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 14.76
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 26.00
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 39.29
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 29.00
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 49.99
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 24.10
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 22.22
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 34.50
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 38.82
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 33.00
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 35.66
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 33.50
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 51.37
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 19.37
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 26.70
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 30.50
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 44.44
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 28.00
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 58.79
+
+Residue 13
+
+
+--- Restraint fulfillment for model 2 with weight 0.471 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 29.31
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 15.86
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 33.00
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 41.66
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 33.50
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 29.19
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 23.52
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 15.69
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 34.00
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 38.54
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 31.00
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 47.18
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 29.00
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 30.98
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 21.16
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 24.71
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 30.00
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 44.32
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 26.50
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 50.79
+
+Residue 13
+
+
+--- Restraint fulfillment for model 3 with weight 0.420 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 24.08
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 14.88
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 34.50
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 35.44
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å violated at <r> = 35.00
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 33.74
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 25.87
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 16.83
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 32.50
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 44.00
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 34.00
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 51.77
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 30.50
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 39.04
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 28.44
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 27.27
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 57.79
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 25.00
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 41.24
+
+Residue 13
+
+
+--- Restraint fulfillment for model 4 with weight 0.494 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 23.74
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 23.25
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 30.00
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 47.47
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 30.50
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 31.05
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 18.71
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 23.33
+Depth restraint [17.90, 35.00] Å violated at <r> = 35.00
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 32.44
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 31.50
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 35.19
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 30.00
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 50.56
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 22.81
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 23.93
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 31.00
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 47.82
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 28.00
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 54.79
+
+Residue 13
+
+
+--- Restraint fulfillment for model 5 with weight 0.469 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 19.39
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 20.72
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 39.85
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 30.00
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 41.11
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 16.97
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 24.52
+Depth restraint [17.90, 35.00] Å violated at <r> = 35.00
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 39.09
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 33.50
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 41.74
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 30.50
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 36.99
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 27.80
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 24.96
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 54.86
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 24.50
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 40.92
+
+Residue 13
+
+
+--- Restraint fulfillment for model 6 with weight 0.498 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 25.43
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 28.29
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 28.00
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 54.86
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 41.41
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 17.25
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 28.34
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 34.50
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 42.00
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 31.50
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 42.35
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 29.00
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 58.05
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 24.68
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 22.06
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 47.70
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 25.00
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 43.02
+
+Residue 13
+
+
+--- Restraint fulfillment for model 7 with weight 0.440 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 24.93
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 14.12
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 30.00
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 28.47
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 31.50
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 40.85
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 27.30
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 17.27
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 30.50
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 43.91
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 27.50
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 42.79
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 44.64
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 28.87
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 24.15
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 55.51
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 25.00
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 39.93
+
+Residue 13
+
+
+--- Restraint fulfillment for model 8 with weight 0.451 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 17.55
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 22.11
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 31.00
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 37.66
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 34.00
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 29.93
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 26.99
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 18.18
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 32.50
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 42.31
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 28.00
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 36.67
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 29.00
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 50.14
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 28.48
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 21.72
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 28.00
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 53.20
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 25.00
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 41.49
+
+Residue 13
+
+
+--- Restraint fulfillment for model 9 with weight 0.498 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 31.76
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 17.94
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 33.50
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 45.21
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 34.00
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 49.06
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 24.83
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 23.77
+Depth restraint [17.90, 35.00] Å violated at <r> = 35.00
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 45.78
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 30.50
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 45.11
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 30.00
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 54.98
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 28.57
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 24.54
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 28.00
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 56.09
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 25.00
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 39.13
+
+Residue 13
+
+
+--- Restraint fulfillment for model 10 with weight 0.473 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 14.27
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 19.71
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 28.00
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 30.33
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 31.50
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 43.14
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 25.77
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 20.43
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 33.50
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 44.68
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 39.95
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 30.50
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 58.46
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 26.89
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 28.06
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 29.00
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 56.77
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 25.50
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 52.85
+
+Residue 13
+
+
+--- Restraint fulfillment for model 11 with weight 0.470 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 22.78
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 20.59
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 34.50
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 34.84
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 32.50
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 42.17
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 21.56
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 23.31
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 33.50
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 42.72
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 31.00
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 30.04
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 31.00
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 40.25
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 18.61
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 28.56
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 46.52
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 27.50
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 54.45
+
+Residue 13
+
+
+--- Restraint fulfillment for model 12 with weight 0.462 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 28.05
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 17.95
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 31.50
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 46.89
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 30.14
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 22.34
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 20.78
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 33.00
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 35.58
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 32.50
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 36.70
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 30.00
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 35.48
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 22.07
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 27.47
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 31.50
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 46.55
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 56.20
+
+Residue 13
+
+
+--- Restraint fulfillment for model 13 with weight 0.483 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 21.26
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 24.71
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 29.00
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 47.38
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 32.50
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 38.04
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 22.42
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 17.94
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 34.50
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 41.18
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 34.50
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 58.10
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 31.00
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 45.57
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 21.40
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 28.32
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 30.00
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 48.45
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 27.50
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 54.18
+
+Residue 13
+
+
+--- Restraint fulfillment for model 14 with weight 0.494 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 25.54
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 25.35
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 34.00
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 49.37
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 34.50
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 39.15
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 22.33
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 16.34
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 33.00
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 33.74
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 29.00
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 39.36
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 31.00
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 46.24
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 27.18
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 23.10
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 52.47
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 25.00
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 43.44
+
+Residue 13
+
+
+--- Restraint fulfillment for model 15 with weight 0.452 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 31.09
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 18.01
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 31.50
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 41.90
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 34.00
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 48.48
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 23.48
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 16.46
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 31.50
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 41.24
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 30.50
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 41.19
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 32.50
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 50.38
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 29.27
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 24.71
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 29.50
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 56.40
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 26.00
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 41.65
+
+Residue 13
+
+
+--- Restraint fulfillment for model 16 with weight 0.494 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 21.13
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 15.07
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 29.50
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 28.86
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 32.50
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 37.31
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 20.63
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 20.10
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 33.50
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 39.33
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 32.00
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 36.01
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 31.50
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 44.03
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 18.45
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 27.85
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 44.41
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 27.50
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 51.40
+
+Residue 13
+
+
+--- Restraint fulfillment for model 17 with weight 0.448 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 25.85
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 19.89
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 32.50
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 45.01
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 31.00
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 43.82
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 20.11
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 24.11
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 34.00
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 40.31
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 29.00
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 32.73
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 30.50
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 47.94
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 20.16
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 28.92
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 48.35
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 29.00
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 51.87
+
+Residue 13
+
+
+--- Restraint fulfillment for model 18 with weight 0.491 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 22.51
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 13.77
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 23.50
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 31.73
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 27.00
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 35.45
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 21.48
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 15.71
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 31.00
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 35.24
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 32.00
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 33.93
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 31.00
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 49.02
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 22.91
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 16.52
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 27.50
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 40.35
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 25.00
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 41.29
+
+Residue 13
+
+
+--- Restraint fulfillment for model 19 with weight 0.421 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 22.46
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 17.02
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 31.00
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 33.16
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 31.50
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 34.76
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 25.37
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 17.07
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 29.00
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 45.11
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 31.50
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 42.65
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 33.50
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 53.85
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 21.34
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 28.20
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 30.50
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 48.71
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 61.70
+
+Residue 13
+
+
+--- Restraint fulfillment for model 20 with weight 0.496 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 18.46
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 17.69
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 28.00
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 30.12
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 27.50
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 41.51
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 18.16
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 28.13
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 30.00
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 42.52
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 31.50
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 51.01
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 29.50
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 59.58
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 22.54
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 22.24
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 29.00
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 43.92
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 25.50
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 49.40
+
+Residue 13
+
+
+--- Restraint fulfillment for model 21 with weight 0.473 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 26.24
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 14.12
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 29.50
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 39.49
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 33.00
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 28.79
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 29.52
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 22.03
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 34.00
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 49.22
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 30.00
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 48.29
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 42.80
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 24.46
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 19.19
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 26.00
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 45.15
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 24.50
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 38.20
+
+Residue 13
+
+
+--- Restraint fulfillment for model 22 with weight 0.491 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 28.05
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 14.83
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 32.00
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 39.82
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 32.50
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 30.47
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 18.52
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 18.20
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 28.00
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 32.02
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 30.00
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 50.77
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 30.00
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 49.81
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 28.36
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 24.68
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 27.50
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 56.33
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 24.50
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 37.94
+
+Residue 13
+
+
+--- Restraint fulfillment for model 23 with weight 0.490 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 19.77
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 23.91
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 33.50
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 38.83
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 32.00
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 41.94
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 23.29
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 28.86
+Depth restraint [17.90, 35.00] Å violated at <r> = 35.00
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 48.39
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 30.00
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 56.00
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 59.77
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 22.91
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 22.64
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 29.00
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 45.60
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 25.00
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 44.01
+
+Residue 13
+
+
+--- Restraint fulfillment for model 24 with weight 0.476 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 17.40
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 26.83
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 29.50
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 42.36
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 31.50
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 37.07
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 19.15
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 18.16
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 32.00
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 35.93
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 34.50
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 45.14
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 33.00
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 43.51
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 19.19
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 28.81
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 29.00
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 47.84
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 27.00
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 57.00
+
+Residue 13
+
+
+--- Restraint fulfillment for model 25 with weight 0.455 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 31.68
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 20.36
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 31.50
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 49.91
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 31.50
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 37.95
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 27.28
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 23.01
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 33.50
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 50.40
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 41.04
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 29.00
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 42.11
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 27.53
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 24.21
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 28.00
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 54.10
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 24.50
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 44.20
+
+Residue 13
+
+
+--- Final statistics ---
+
+Total runtime: 0 h 1 min.
+ 0.00% of maximum number of MC trials spent.
+Ensemble with 25 models generated.
+36 backbone models were generated.
+76.25% of all trials had restraint violations.
+This is a success rate of 237531.7 ppm.
+ 0.76% of all trials had internal loop backbone clashes.
+19.86% of all trials hand backbone clashes with the protein.
+The sidegroup clash threshold was  1.2 Å.
+ 0.00% of the backbone models lead to internal sidegroup clashes.
+30.56% of the backbone models lead to sidegroup clashes with the protein.
+
+The run had a time limit of: 2 h 0 min.
+The run had a limit of 500000000 Monte Carlo trials.
+25 models had been requested with an ensemble probability of 0.50.
+The number of Gaussian-type restraints was 13.
+Ramachandran statistics without secondary structure elements was used.
+
+--- Distribution shifts and overlaps ---
+
+Shift [Å]	Overlap
+-3.03	0.945
+ 1.81	0.917
+ 3.57	0.949
+ 1.08	0.961
+-4.49	0.926
+ 0.14	0.929
+ 0.90	0.968
+-0.62	0.964
+ 1.13	0.966
+-0.87	0.937
+ 7.08	0.898
+ 3.96	0.939
+-2.05	0.937

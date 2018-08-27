@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Model concept</title>
+</head>
+<body>
+
+<div class="pagetitle">Model concept</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &uarr |  &darr; <A href="coarse_graining.html"> Coarse graining </A> <A href="ENM.html"> Elastic network models </A> <A href="fit_from_template_Modeller.html"> Homology modeling </A>
+</pre>
+
+<div class="subtitle">Introduction</div>
+<p>
+An MMM model is a collection of related structures. The individual structures may correspond to different states of the same protein, they may be different components of a protein complex, or they may be related by structure homology of the whole biomacromolecule or of domains. These structures are defined with respect to a common coordinate frame, the model frame.
+</p>
+<p>
+A structure consists of one or more biomacromolecules, cofactors, and auxiliary objects, such as a lipid bilayer, a micelle, a surface, or an AFM tip. A biomacromolecular complex can thus be defined either on model level, with the individual components as different structures or on structure level. Interconversion between these two modes is possible: several structures within a model can be merged to a single structure and a single structure can be subdivided into several structures.
+</p>
+<p>
+A structure is a hierarchical collection of objects. For instance, it may consist of several protein molecules (chains), which in turn consist of residues, which in turn consist of atoms, for which in turn several locations may be defined. This <A href="object_concept.html">object concept</A> allows for a simple <a href="addressing.html"> addressing of substructures</a>.
+</p>
+<p>
+The concept of MMM is not restricted to biomacromolecules. Supramolecular assemblies of small molecules (analogous to cofactors) and synthetical macromolecules can be treated in the same way. This requires definition of the components and monomers in a similar way as cofactors and amino acid residues are defined in the protein data base (PDB).
+</p>
+<div class="subtitle">Multiscale models</div>
+<p>
+Function of biomacromolecules is based on structural dynamics on different length and time scales. Furthermore, experimental techniques for the characterization of structure and dynamics of macromolecules provide information on different length and time scales with different resolution.
+</p>
+<p>
+For these reasons, structure and structural dynamics are defined and- should be analyzed- on different length and time scales. It follows that knowledge of a static atomistic structure is neither a necessary condition for understanding aspects of protein function nor a sufficient condition for completely understanding it. Systematic approaches for converting a detailed (e.g., atomistic) model to a model with lower resolution are <A href="coarse_graining.html"> coarse graining </A> approaches. 
+</p>
+<p>
+Modeling of biomacromolecular complexes should thus strive to define structures and state transitions between alternative structures on the appropriate length scales for understanding function. This length scale may be different for different parts of the structure and for different aspects of function. For instance, function of the active centre of a metalloprotein can only be fully understood at atomistic resolution, with additional information on electronic structure being required. Access of the substrate to the active site and release of the product may depend on larger scale movements of protein domains that are better specified in a <A href="coarse_graining.html"> coarse grained </A> or cartoon model.
+</p>
+<p>
+Hence, MMM allows for specifying different parts of the same structure with different resolution and on different levels of coarse graining. In fact, even the same part of the structure can be defined on different levels of coarse graining to facilitate visualization of different aspects of function.
+</p>
+<p>
+Such multiscale modeling is also convenient for combining experimental data from different techniques into the same structural model, as these data tend to apply to different length scales and tend to have different spatial and time resolution. That way results of different techniques can be quantitatively tested for consistency and can be used as complementary restraints on structure and structural transitions.
+</p>
+<div class="subtitle">Keeping model and experimental restraints separate</div>
+<p>
+Any structural model is based on primary experimental data and on restraints on distances and angles obtained from these data. Except in trivial cases, these restraints are never sufficient to specify an atomistic structure. Further assumptions are made. Some of them are well justified, such as canonical values for bond lengths and bond angles. Other assumptions, based for instance of energy minimization with a molecular force field, may be less secure. Some assumptions are made intuitively- and thus subjectively- by a human. They may not be formulated in a precise way, sometimes they may even be subconscious.   
+</p>
+<p>
+A structural model thus contains more information than the experimental data. The additional information is not precisely known and part of it may not be correct. It follows that a structural model is never complete, it may change when further information becomes accessible. Clearly, the updated model should be consistent with all available information. Such incremental improvement of models is possible only if the experimental restraints are stored together with the model. If the conversion of primary experimental data to restraints is non-trivial (also requires assumptions), the primary data need to be stored.
+</p>
+<a name="creating">
+<div class="subtitle">Creating models in MMM</div>
+<p>
+Currently, MMM is mainly intended as a toolbox for creating and testing structural models that are (mainly) based on distance constraints between spin labels. The following modeling features are implemented:
+<ul>
+<li>generation of a model for an unknown structure in state B of a protein, if the structure in state A is know and distance constraints for state B have been determined <a href="fit_from_template.html">by anisotropic elastic network models</a></li>
+<li>generation of a model for an unknown structure of a protein from a template structure by <a href="fit_from_template_Modeller.html">constraint-supported homology modeling</a>. The template can be another protein structure with sufficient sequence identity or similarity or a structure of the same protein in a different state.</li>
+<li>addition of a <a href="build_bilayer.html">coarse-grained lipid bilayer model</a> to a membrane protein structure with the possibility to fit thickness and orientation of the bilayer (based on membrane propensities for residues in &alpha;-helices and &beta;-strands).
+</ul>
+</p>
+<div class="subtitle">Ownership of a model</div>
+<p>
+The concept of an incrementally improving model that takes into account experimental information from many different techniques is fundamentally at odds with the concept of a model "owned" by a certain number of authors that cannot be extended after publication. While MMM allows for defining and storing models that belong to a single group of authors, it encourages sharing of models and contributions by several groups, i.e., a continuous extension of the list of model authors.
+</p>
+<p>
+Due to current social rituals in the science community, some extent of secrecy about primary information and current understanding of a biological system may be necessary. Hence, MMM allows to define annotation texts, restraints, and primary experimental data as private, accessible to a group, or public and to save models for exchange with only the appropriate extent of information. 
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2012.2, edited 2016/06/26</div>
+</body>
+</html>
+

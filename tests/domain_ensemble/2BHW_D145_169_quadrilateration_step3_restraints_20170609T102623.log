@@ -1,0 +1,56 @@
+
+--- Final statistics ---
+
+Total runtime: 1 h 0 min.
+ 0.08% of maximum number of MC trials spent.
+Ensemble with 0 models generated.
+1 backbone models were generated.
+85.73% of all trials had restraint violations.
+This is a success rate of 142670.6 ppm.
+ 0.55% of all trials had internal loop backbone clashes.
+13.72% of all trials hand backbone clashes with the protein.
+The sidegroup clash threshold was  1.2 Å.
+ 0.00% of the backbone models lead to internal sidegroup clashes.
+100.00% of the backbone models lead to sidegroup clashes with the protein.
+
+The run had a time limit of: 1 h 0 min.
+The run had a limit of 500000000 Monte Carlo trials.
+20 models had been requested with an ensemble probability of 0.50.
+The number of Gaussian-type restraints was 32.
+Ramachandran statistics without secondary structure elements was used.
+
+--- Distribution shifts and overlaps ---
+
+Shift [Å]	Overlap
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN
+  NaN	  NaN

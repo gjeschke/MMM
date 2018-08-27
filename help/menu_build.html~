@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Menu/Build</title>
+</head>
+<body>
+
+<div class="pagetitle">Menu/Build</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  <A href="user_interface.html"> User interface </A> <A href="main_window.html"> Main window </A> <A href="menu.html"> Menu </A> &uarr;  |  </pre>
+
+<a name="copy">
+<div class="subtitle">Copy structure</div>
+<p>
+Copies basic information of a structure (including all coordinates) and creates a new structure from it. The new structure is made the current structure. The user is asked to supply a structure tag. Use this together with <a href="commands.html#colorscheme">colorscheme</A> <code>difference</code> to visualize structural changes during model building. 
+</p>
+<a name="replace">
+<div class="subtitle">Replace non-standard residues</div>
+<p>
+Replaces non-standard residues such as selenocysteine or selenomethionine as well as spin-labels by their native amino acid equivalents (cysteine or methionine). A window appears where the user can select residue types to be replaced.
+Only the first location is kept (leading rotamer in case of spin labels). This will hide replaced residues in the 3D plot (if they were displayed before). The user needs to redisplay them if required. 
+</p>
+<a name="repair">
+<div class="subtitle">Repair sidechains</div>
+<p>
+Repairs missing sidechains using the external freeware program <a href="third_party.html#SCWRL4">SCWRL4</a>. The license for SCWRL4 must be obtained by the user and SCWRL4 must have been installed by the user and must be on the Matlab path.
+At least the backbone atoms must exist. The residues are no longer marked as incomplete in the sequence display of the hierarchy window, but the annotation with keyword "missing atoms" for the residues is kept.
+</p>
+<a name="sidechains">
+<div class="subtitle">Grow/repack sidechains</div>
+<p>
+Adds or repacks sidechains using the external freeware program <a href="third_party.html#SCWRL4">SCWRL4</a>. The license for SCWRL4 must be obtained by the user and SCWRL4 must have been installed by the user and must be on the Matlab path. 
+</p>
+<a name="secondary">
+<div class="subtitle">Reassign secondary structure</div>
+<p>
+This requires that <a href="third_party.html#DSSP">DSSP</a> was installed at the time when the original PDB file was read in or a model was created. Furthermore, secondary structure assignement is protected. You first need to unprotect it by click the <a href="toolbar.html#lock">lock toolbutton</a> or issuing the <a href="commands.html#unlock">unlock command</a>. Helices and strands in the current structure are reassigned based on DSSP information. Don't forget to lock secondary structure afterwards.
+</p>
+<a name="transform">
+<div class="subtitle">Transform to viewing frame</div>
+<p>
+When the structure is rotated in the 3D model window or panel, atom coordinates are unchanged. Only the viewing direction is changed. In some cases it is useful to actually transform the structure to a coordinate frame that coincides with the viewing frame. By using the subitems <code>x along viewing vector</code>, <code>y along viewing vector</code>, and <code>z along viewing vector</code> you can transform the structure so that any of the Cartesian frame axes is along the viewing direction. For x and y, the z axis is chosen as the camera up vector, i.e. as the upright direction on your screen. For z as the viewing direction, the y axis is chosen as the camera up vector.
+In a model with several structures, this transformation is applied to all structures.
+</p>
+<a name="bilayer">
+<div class="subtitle">Bilayer</div>
+<p>
+Definition of a lipid bilayer (membrane) with the membrane normal being the current <i>z</i> axis. Use the <a href="menu_edit.html#symmetry">Symmetry axis</a> or <a href="menu_edit.html#bundle">Assign TM helices and strands</a> subitem of the <code>Edit</code> menu for conversion to such a frame.
+</p>
+<p>
+<a href="build_bilayer.html">Bilayer definition</a> involves manual specification or automatic fitting of the central plane of the bilayer and of its width. Fitting is based on lipid propensities of residues.
+</p>
+<p>
+Note that structures with bilayers require that the bilayer normal is the <i>z</i> axis of the coordinate frame. Any subsequent coordinate transformation of the structure 
+will make the bilayer invalid.
+</p>
+<a name="SAS">
+<div class="subtitle">Solvent accessible surface</div>
+<p>
+This feature requires installation of M. F. Sanner's MSMS program (see <a href="third_party.html#MSMS">third-party software</a>). A probe radius (effective solvent molecule radius) of 1.5 &Aring; is assumed.
+</p>
+<p>
+If no objects are <a href="selection.html">selected</a>, the solvent accessible surface is computed for the current structure. Resolution adapts to the number of atoms (usually 1 vertex/ &Aring;<sup>2</sup> for large structures, but can be up to 3 vertices/ &Aring;<sup>2</sup> for smaller structures). In structures with several coordinate sets, only the first set is used (sorry).
+</p>
+<p>
+Partial surfaces can also be computed for a chain (by default first coordinate set), for a selected coordinate set of a chain, and for a residue. Resolution adapts to the number of atoms. For these computations a <i>single</i> object has to be selected. Strictly speaking, these surfaces are not fully solvent accessible, as parts of them may be blocked by other residues, chains, or cofactors. They are, however, of interest for visualizations and are therefore provided.
+</p>
+<p>
+A window appears for input of a tag for the computed surface. This tag is used later to access the surface and the underlying data. A default tag is suggested, but you can choose freely, as long as the new tag is not yet used for another surface.
+</p>
+<p>
+The solvent accessible surface (SAS) is displayed immediately after computation as a semi-transparent aquamarine cloud. it can be hidden (and redisplayed without computation) via the <a href="toolbar.html#graphics"><img src="img/toolbar_graphics.png" alt="(cutout of a ball&stick model)">graphics mode</a> toolbutton. Note that some object must be selected to use this button.
+</p>
+<p>
+The SAS is also assigned an address <code>$SAS:<i>tag</i></code>, where <i>tag</i> is the tag provide above. The surface is known by this address to the <a href="commands.html#show">show</a>, <a href="commands.html#hide">hide</a>, <a href="commands.html#color">color</a>, and <a href="commands.html#transparency">transparency</a> commands, which affect only the visualization, but not the underlying data. By using the <a href="commands.html#delete">delete</a> command, both the surface and the underlying data can be deleted.  
+<p>
+<i>Examples:</i>
+<p>
+<code>color $SAS:SAS_1 aliceblue</code> % changes color of the surface with tag SAS_1 to a very pale blue
+<p>
+<code>hide $SAS:SAS_1</code> % hides the surface with tag SAS_1
+<p>
+<code>show $SAS:SAS_1</code> % redisplays the surface with tag SAS_1 after being hidden, this is fast, no recomputation required
+<p>
+<code>delete $SAS:SAS_1</code> % deletes the surface with tag SAS_1 and the underlying data
+<p>
+Note that MMM may have to recompute the surface for other tasks, if you delete it instead of only hiding it
+</p>
+<a name="fit">
+<div class="subtitle">Fit from template</div>
+<p>
+Fit a structural model from distance constraints and a template structure by using either an elastic network model and a variation of the Zheng/Brooks algorithm (W. J. Zheng, B. R. Brooks, Biophys. J. 2006, 90, 4327-4336.) or <a href="third_party.html#Modeller">Modeller</a>.
+</p>
+<p>
+This opens either the <A href="fit_from_template.html">Fit from template/ENM window</a> or the  <A href="fit_from_template_Modeller.html">Fit from template/Modeller window</a>.
+</p>
+<p>
+Another menu subitem allows for refinement of Modeller-generated structure ensembles.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2013, edited 2013/01/18</div>
+</body>
+</html>
+

@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Addressing</title>
+</head>
+<body>
+
+<div class="pagetitle">Addressing</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  &bull; <A href="object_concept.html">Object concept</A> &uarr;  |  &darr;  &bull; <A href="domain_addressing.html">Substructure addressing</A> 
+</pre>
+<div class="subtitle">General address format</div>
+<p>
+[<i>structure</i>](<i>chain</i>){<i>coordinate set</i>}<i>residue</i>.<i>atom</i>:<i>location</i>  
+</p>
+<p>
+Parts of the address may be missing, as specified in <a href="#defaults">Defaults</a>. A slightly modified format is used for <a href="domain_addressing.html">addressing secondary structure elements and domains</a>.
+<ul>
+<li> <i>structure</i>- structure identifier, either the number of the structure or the PDB identifier or a user-defined <a href="#synonym">synonym</a>
+<li> <i>chain</i>- chain identifier, character (A-Z) or a user-defined <a href="#synonym">synonym</a>
+<li> <i>coordinate set</i>- number of the coordinate set within an ensemble of structures (e.g. NMR structures)
+<li> <i>residue</i>- residue number
+<li> <i>atom</i>- atom identifier, usually up to two characters, with atom identifiers for common residues and cofactors being defined in PDB template files
+<li> <i>location</i>- location identifier, up to two characters, both letters, only required if an atom has <a href="#alternate">alternate locations</a>
+</ul>
+<h4>Examples:</h4>
+<p>
+<code>[2BHW](B)123.CA</code>
+</p>
+<p>
+addresses the C<sup><smaller>&alpha <larger></sup> atom of residue 123 of chain B in the structure with PDB identifier 2BHW (major plant light harvesting complex IIb)
+</p>
+<p>
+<code>[2CUU]131.N1:B</code>
+<p>
+addresses location B of the nitroxide N atom (<i>atom identifier</i>: N1) of residue 131 (R1A, a cystein labeled by MTSL) in the structure with PDB identifier 2CUU (spin-labeled T4 lysozyme)
+</p>
+<a name="special">
+<div class="subtitle">Special addresses (shortcuts)</div>
+<p>
+<ul>
+<li>The asterisk <code>*</code> addresses all currently selected objects.</li>
+<li>The exclamation mark <code>!</code> addresses the current structure, shown in the title of the main window.</li>
+<li>The <code>#</code> character addresses the current chain, shown in the title of the main window.</li>
+</ul>
+</p>
+<a name="special">
+<div class="subtitle">Special addresses (surfaces, densities, motion arrows)</div>
+<p>
+Surface objects, such as <a href="menu_display.html#density">densities</a> or <a href="menu_build.html#SAS">solvent accessible surfaces</a> and also sets of motion arrows have addresses that start with a dollar sign <code>$</code>, followed by a type identifier, and a tag that is unique for the given type (format: <code>$<i>type</i>:<i>tag</i></code>), where type is <code>density</code> for density objects, <code>SAS</code> for solvent accessible surfaces, and <code>motion</code> for sets of motion arrows.
+</p>
+<i>Example:</i>
+<p>
+<code>$SAS:SAS_1</code> addresses the solvent accessible surface with tag "SAS_1".
+<p>
+Surface and motion arrow addresses cannot be used in all places where addresses of structure objects can be used. They are supported only by the <a href="commands.html#show">show</a>, <a href="commands.html#hide">hide</a>, <a href="commands.html#color">color</a>, <a href="commands.html#transparency">transparency</a>, and <a href="commands.html#delete">delete</a> commands.
+</p>
+<a name="defaults">
+<div class="subtitle">Defaults</div>
+<ul>
+<li> <i>structure</i>- defaults to the current structure, which is displayed in the title bar of the <a href="main_window.html">main window</a>
+<li> <i>chain</i>- defaults to the current chain, which is displayed in the title bar of the <a href="main_window.html">main window</a>
+<li> <i>coordinate set</i>- often there is only a single coordinate set and this part of the address can be left out, otherwise <i>all coordinate sets</i> are addressed simultaneously if this part is missing
+<li> <i>residue</i>- should always be specified, use <code>:</code> (colon) to address all residues in a chain
+<li> <i>atom</i>- if atom identifier is missing, the whole residue is addressed
+<li> <i>location</i>- often there is only a single location and this part can be left out; otherwise <i>all alternative locations</i> are addressed if this part is missing
+</ul>
+<h4>Examples:</h4>
+<p>
+<code>123</code>
+</p>
+<p>
+addresses residue 123 of the current chain in the current structure
+</p>
+<p>
+<code>(C):.CA</code>
+addresses all C<sup><smaller>&alpha <larger></sup> atoms in chain C of the current structure
+<div class="subtitle">Addressing several objects at once (list addressing)</div>
+<p>
+Several structures, chains, coordinate sets, residues, atoms, or locations can be addressed at once by replacing identifiers with comma-separated lists.
+</p>
+<h4>Examples:</h4>
+<p>
+<code>[2BHW](A,C)96.CB</code>
+</p>
+<p>
+addresses the C<sup><smaller>&beta <larger></sup> atoms of residues 96 in both chains A and C of structure 2BHW (but not in chain B of this structure)
+</p>
+<p>
+<code>[2BHW](A,C)96,123.CA,CB</code>
+</p>
+addresses the C<sup><smaller>&alpha <larger></sup> and C<sup><smaller>&beta <larger></sup> atoms of residues 96 and 123 in chains A and C of structure 2BHW
+</p>
+<p>
+Such list addressing accepts that certain combinations may not exist. For instance, if residue 123 were a glycine, its C<sup><smaller>&alpha <larger></sup> atom would be addressed and no error would be returned although there is no C<sup><smaller>&beta <larger></sup> atom. 
+<p>
+A continuous range of residues can be addressed by using a hyphen.  
+</p>
+<h4>Example:</h4>
+<p>
+<code>[2BHW](A)96-123.CA</code>
+</p>
+<p>
+addresses the C<sup><smaller>&alpha <larger></sup> atoms of residues 96-123 in chain A of structure 2BHW
+</p>
+<p>
+Note that addressing a large number of objects via a combination of list tags can lead to noticeable computation times for address resolution.
+</p>
+<div class="subtitle">Addressing residues and atoms by type</div>
+<p>
+Residues and cofactors can be addressed by their PDB residue types, enclosed in double quotation marks. This can be combined with list addressing by a comma-separated list. MMM accepts common nomenclature "Xaa" for any natural amino acid residue (thus excluding modified amino acids and cofactors), "Asx" to abbreviate "Asn","Asp" and "Glx" to abbreviate "Gln","Glu".
+</p>
+<h4>Examples:</h4>
+<code>[2CUU]"R1A".N1,O1</code>
+<p>
+addresses the nitroxide group nitrogen and oxygen atoms of all residues R1A (cystein labeled by MTSL) in the structure with PDB identifier 2CUU.
+</p>
+<code>[2BHW]"CHL","CLA"</code>
+<p>
+addresses all chlorophyll a and b molecules in all chains of the structure with PDB identifier [2BHW].
+</p>
+<p>
+Atoms can be addressed by element.
+</p>
+<h4>Examples</h4>
+<code>."Fe"</code>
+<p>
+addresses all iron atoms in the current chain of the current structure.
+</p>
+<a name="alternate">
+<div class="subtitle">Working with alternate locations</div>
+<p>
+Alternate loctions are often specified for only a few atoms in a structure, chain, or residue. To address all atoms (using the single location of those atoms that do not have alternate locations), use the address format given above.
+</p>
+<h4>Example:</h4>
+<p>
+<code>[2CUU]"R1A".B</code>
+</p>
+<p>
+addresses all residues with type R1A in structure 2CUU, selecting location B for all those atoms which do have alternate locations.
+</p>
+<p>
+If you want to inspect only atoms with alternate locations, use an exclamation mark <code>!</code> to enforce location addressing.
+</p>
+<h4>Example:</h4>
+<p>
+<code>[2CUU]"R1A","ASN".:B!</code>
+</p>
+<p>
+addresses only atoms with alternate locations, and of those only location B, for residues of types R1A and ASN in structure 2CUU
+</p>
+<a name="synonym">
+<div class="subtitle">Synonyms for structure and chain identifiers</div>
+<p>
+For convenience, MMM allows to define synonyms for structure and chain identifiers. For instance, after defining the synonym LHCIIb for structure 2BHW using a <a href="commands.html">command</a>, <code>[LHCIIb](A)123.CA</code> addresses the C<sup><smaller>&alpha <larger></sup> atom of residue 123 of chain A in structure 2BHW.
+</p>
+<p>
+Usually, such synonyms will be the established names of the proteins or protein complexes, however, the user is completely free in the choice of synonym.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/09/26</div>
+</body>
+</html>
+

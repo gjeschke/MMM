@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Site scan</title>
+</head>
+<body>
+
+<div class="pagetitle">Site scan</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="specialized.html"> Special tasks </A> &uarr;  |  &darr;  </pre>
+
+<div class="subtitle">What can you do with the transparency selection window?</div>
+<p>
+This window allows to assign a <a href="#color">transparency value</a> or transparency choice by population (occupancy) to all currently selected objects. If you do not want to reassign transparency, use the <code>Cancel</code> button. You can assign transparency without first selecting objects by using the <a href="commands.html#transparency">transparency command</a> in the <a href="command_line.html">command line</a>.
+</p>
+<a name="color">
+<div class="subtitle">Transparency values</div>
+<p>
+If the <code>Mode</code> radiobutton <code>by value</code> is activated, all selected objects are assigned the same transparency, which is given by the <code>Value</code> in the edit field. This value is between 0 (fully transparent, objects become invisible, but are not deleted) and 1 (fully opaque, default value). The edit field does not accept values outside this range.
+<p>
+If the <code>Mode</code> radiobutton <code>by population</code> is activated, each object is assigned an individual transparency based on population. This value is 1 (opaque), unless there are alternate locations for an atom or the observed electron density was too weak to assume full occupation at the specified coordinates.
+</p>
+<a name="depth_cueing">
+<div class="subtitle">Conflict with depth cueing</div>
+<p>
+Note that the use of transparency in visualization does not mix well with MMM's <a href="depth_cueing.html">emulated depth cueing</a>. In depth cueing transparency is used to fade objects in the background. If you activate depth cueing, a transparent object may appear too far in the background. 
+</p>
+</p><div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/10/21</div>
+</body>
+</html>
+

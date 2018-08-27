@@ -1,0 +1,5300 @@
+
+--- Restraint fulfillment for model 1 with weight 0.499 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 22.63
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 25.86
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 38.49
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 26.88
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 20.29
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 28.92
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 40.85
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 34.85
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 24.86
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 22.01
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 34.62
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 42.80
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 49.81
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 49.02
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 32.27
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 21.72
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 16.59
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 21.04
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 33.68
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 47.54
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 56.03
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 50.49
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 28.57
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 24.11
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 15.85
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 23.84
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 36.35
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 39.49
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 49.90
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 67.50
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 67.61
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 59.16
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 41.46
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 28.19
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 28.63
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 23.31
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 22.16
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 28.53
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 39.16
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 41.69
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 44.07
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 66.30
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 47.92
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 34.09
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 17.58
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 25.33
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 23.36
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 15.96
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 17.52
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 35.82
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 33.42
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 40.17
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 41.60
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 37.87
+
+--- Restraint fulfillment for model 2 with weight 0.495 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 24.84
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 24.33
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 36.55
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 25.07
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 18.71
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 27.44
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 44.18
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 36.58
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 20.41
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 22.42
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 32.93
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 47.76
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 48.15
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 39.27
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 28.38
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 13.72
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 16.59
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 20.64
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 29.70
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 45.00
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 64.55
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 52.06
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 36.24
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 23.24
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 19.62
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 24.73
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 22.73
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 39.53
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 51.57
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 65.42
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 65.74
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 62.13
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 46.42
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 28.13
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 25.33
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 25.94
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 23.61
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 25.04
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 33.54
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 44.00
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 51.13
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 67.65
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 55.30
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 35.63
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 22.83
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 28.70
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 31.22
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 21.27
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 22.78
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 34.84
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 25.14
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 38.65
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 38.40
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 46.03
+
+--- Restraint fulfillment for model 3 with weight 0.492 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 25.44
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 30.58
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 39.29
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 27.73
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 21.74
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 29.59
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 35.96
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 28.16
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 22.86
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 19.77
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 33.87
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 45.31
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 56.17
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 45.58
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 25.68
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 24.32
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 21.56
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 24.43
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 23.85
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 47.59
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 56.06
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 50.05
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 25.79
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 31.90
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 18.24
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 25.87
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 19.61
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 33.58
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 44.64
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 61.89
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 63.21
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 61.21
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 41.45
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 36.66
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 24.96
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 21.90
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 17.22
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 35.92
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 30.83
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 40.86
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 52.03
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 69.22
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 46.73
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 30.83
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 26.60
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 27.75
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 22.50
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 21.59
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 29.93
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 35.28
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 37.10
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 37.66
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 32.80
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 39.34
+
+--- Restraint fulfillment for model 4 with weight 0.485 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 21.88
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 31.15
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 38.28
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 29.96
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 17.50
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 34.00
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 40.85
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 37.11
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 22.20
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 23.33
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 24.23
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 51.74
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 51.87
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 49.86
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 24.71
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 20.89
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 14.21
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 30.63
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 28.13
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 55.40
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 63.71
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 58.27
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 34.35
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 24.89
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 19.15
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 21.39
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 24.99
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 44.16
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 46.26
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 71.26
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 61.85
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 62.05
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 40.68
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 27.06
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 19.89
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 18.61
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 23.73
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 29.14
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 33.19
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 43.79
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 45.76
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 62.48
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 53.66
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 40.58
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 21.21
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 27.76
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 27.83
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 19.29
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 19.87
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 35.83
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 30.25
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 35.59
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 41.94
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 38.67
+
+--- Restraint fulfillment for model 5 with weight 0.499 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 19.30
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 29.61
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 41.69
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 26.73
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 26.88
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 38.73
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 46.83
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 38.36
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 23.26
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 20.24
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 34.62
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 52.45
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 59.72
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 50.83
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 33.13
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 17.36
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 19.92
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 18.40
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 25.99
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 48.31
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 61.07
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 48.75
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 26.48
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 20.47
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 16.07
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 26.22
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 23.85
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 37.63
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 41.12
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 66.64
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 68.37
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 61.40
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 49.03
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 35.33
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 24.49
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 31.18
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 18.28
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 35.66
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 24.81
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 41.66
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 45.02
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 66.85
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 44.40
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 35.55
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 24.40
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 21.36
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 26.99
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 19.07
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 28.08
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 39.80
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 43.18
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 31.63
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 40.29
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 39.24
+
+--- Restraint fulfillment for model 6 with weight 0.499 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 26.97
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 30.22
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 34.96
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 22.90
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 24.92
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 28.84
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 37.82
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 41.65
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 25.34
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 22.25
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 27.84
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 45.92
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 48.26
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 49.57
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 30.30
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 17.11
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 15.87
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 31.33
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 30.78
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 49.55
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 57.86
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 54.54
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 33.36
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 25.16
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 15.36
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 27.11
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 22.19
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 38.64
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 47.94
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 65.27
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 57.50
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 64.02
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 46.01
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 23.95
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 21.49
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 26.68
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 18.94
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 27.67
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 25.19
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 35.33
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 49.89
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 59.85
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 48.41
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 34.67
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 15.48
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 23.03
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 32.50
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 20.86
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 23.70
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 39.97
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 36.15
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 36.28
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 35.23
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 52.21
+
+--- Restraint fulfillment for model 7 with weight 0.494 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 21.35
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 31.37
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 35.26
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 23.77
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 27.87
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 36.55
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 44.94
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 42.13
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 29.66
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 21.74
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 26.06
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 46.63
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 60.86
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 53.99
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 33.94
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 22.35
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 18.81
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 36.98
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 40.45
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 61.08
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 64.01
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 52.46
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 35.11
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 29.01
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 19.28
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 12.29
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 23.34
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 39.22
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 42.50
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 58.35
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 64.98
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 55.64
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 45.26
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 30.08
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 32.69
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 22.01
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 20.53
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 28.30
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 33.97
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 40.88
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 53.28
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 59.98
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 52.44
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 43.75
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 21.50
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 32.16
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 29.52
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 17.84
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 25.33
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 33.78
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 42.40
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 38.66
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 37.81
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 46.62
+
+--- Restraint fulfillment for model 8 with weight 0.491 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 28.77
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 30.52
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 44.84
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 25.75
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 18.84
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 34.52
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 44.71
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 35.55
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 23.24
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 19.13
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 30.94
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 51.92
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 59.68
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 43.96
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 29.58
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 20.10
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 15.34
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 22.72
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 29.65
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 51.99
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 64.36
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 53.65
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 39.42
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 22.75
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 16.35
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 26.08
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 24.71
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 41.13
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 53.00
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 72.49
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 65.66
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 57.62
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 37.31
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 25.39
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 28.41
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 24.09
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 19.21
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 28.53
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 25.41
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 35.83
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 50.78
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 63.22
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 49.62
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 40.67
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 19.49
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 28.03
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 21.18
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 27.36
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 24.11
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 38.03
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 32.68
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 33.73
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 32.77
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 44.94
+
+--- Restraint fulfillment for model 9 with weight 0.486 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 20.59
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 25.40
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 37.41
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 26.64
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 20.91
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 34.68
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 46.64
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 39.74
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 19.51
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 19.89
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 25.79
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 47.84
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 50.09
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 41.89
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 28.52
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 18.18
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 17.73
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 28.85
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 25.82
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 48.27
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 64.88
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 55.83
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 39.44
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 26.21
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 16.69
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 23.09
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 30.19
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 42.00
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 45.36
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 66.03
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 69.51
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 66.05
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 50.28
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 33.58
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 27.00
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 21.44
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 25.67
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 33.93
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 33.26
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 34.36
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 46.04
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 60.90
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 53.68
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 39.40
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 23.95
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 17.12
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 18.54
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 15.31
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 23.85
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 31.09
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 34.01
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 41.17
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 38.80
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 41.75
+
+--- Restraint fulfillment for model 10 with weight 0.499 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 26.23
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 29.32
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 35.77
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 26.87
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 19.76
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 35.59
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 45.48
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 35.04
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 18.86
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 21.91
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 23.07
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 47.98
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 61.47
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 44.33
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 31.78
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 20.73
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 21.37
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 31.43
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 33.71
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 49.40
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 66.01
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 52.98
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 35.22
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 21.89
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 16.24
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 27.35
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 26.68
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 36.13
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 46.82
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 67.04
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 73.10
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 65.48
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 47.68
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 32.14
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 32.72
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 21.67
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 19.17
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 25.09
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 35.42
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 39.73
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 51.22
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 64.51
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 53.14
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 32.92
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 19.75
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 26.77
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 17.62
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 17.07
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 25.50
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 36.80
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 37.33
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 44.39
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 35.66
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 50.62
+
+--- Restraint fulfillment for model 11 with weight 0.499 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 20.41
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 26.19
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 37.21
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 23.37
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 23.08
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 35.33
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 48.02
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 31.66
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 21.33
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 27.15
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 28.05
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 47.65
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 58.63
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 42.23
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 23.42
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 21.83
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 14.20
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 29.54
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 28.54
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 51.43
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 71.11
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 53.49
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 37.73
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 26.06
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 18.72
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 26.61
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 22.07
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 45.30
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 47.64
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 64.96
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 74.87
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 60.44
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 40.85
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 33.01
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 25.99
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 23.37
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 22.42
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 29.34
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 26.01
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 38.94
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 50.38
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 67.71
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 46.73
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 32.72
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 17.38
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 22.87
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 18.51
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 21.83
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 27.09
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 43.12
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 31.89
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 34.96
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 35.33
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 49.13
+
+--- Restraint fulfillment for model 12 with weight 0.474 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 21.01
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 23.67
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 42.03
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 28.92
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 26.53
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 30.96
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 38.63
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 37.04
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 29.97
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 18.88
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 35.47
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 45.36
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 58.61
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 49.79
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 32.51
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 25.53
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 17.98
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 22.86
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 25.98
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 41.05
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 63.16
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 50.94
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 36.37
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 36.28
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 18.09
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 25.03
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 27.66
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 40.73
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 48.55
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 60.55
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 68.61
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 61.10
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 51.49
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 38.85
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 23.64
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 21.77
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 17.32
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 28.19
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 36.30
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 44.51
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 46.11
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 56.34
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 49.97
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 41.54
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 21.48
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 18.80
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 26.46
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 20.31
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 32.07
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 39.32
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 36.52
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 39.00
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 36.39
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 42.28
+
+--- Restraint fulfillment for model 13 with weight 0.498 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 19.59
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 22.42
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 39.17
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 30.14
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 22.99
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 30.69
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 40.69
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 39.22
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 26.22
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 22.40
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 35.75
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 45.86
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 56.34
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 52.25
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 26.28
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 23.62
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 20.44
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 32.55
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 35.25
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 44.56
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 61.34
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 59.83
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 36.06
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 26.04
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 14.83
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 25.41
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 24.86
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 44.16
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 55.84
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 62.65
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 65.89
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 68.79
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 50.56
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 32.46
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 30.31
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 20.74
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 16.63
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 26.01
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 27.27
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 42.34
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 53.70
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 56.00
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 53.48
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 41.94
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 22.01
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 31.43
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 26.63
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 20.58
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 27.40
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 37.99
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 29.47
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 38.91
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 42.98
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 45.20
+
+--- Restraint fulfillment for model 14 with weight 0.497 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 25.58
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 27.33
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 39.45
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 26.77
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 16.11
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 31.00
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 42.90
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 34.75
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 22.27
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 17.91
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 29.87
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 44.43
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 61.99
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 47.93
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 25.63
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 26.44
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 16.75
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 22.61
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 31.92
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 49.69
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 67.03
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 55.45
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 33.78
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 27.33
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 15.37
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 23.89
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 25.37
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 40.33
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 52.32
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 65.06
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 69.06
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 61.12
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 43.46
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 28.38
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 28.21
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 18.73
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 19.28
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 32.27
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 28.57
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 41.18
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 53.65
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 58.92
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 57.42
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 38.87
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 26.39
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 32.38
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 25.86
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 20.49
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 27.73
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 38.21
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 38.77
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 38.71
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 42.46
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 50.97
+
+--- Restraint fulfillment for model 15 with weight 0.496 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 22.74
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 27.25
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 34.49
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 20.17
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 19.82
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 29.48
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 46.87
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 35.30
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 23.09
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 22.67
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 30.17
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 47.76
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 60.59
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 44.80
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 29.01
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 20.16
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 19.99
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 26.96
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 42.20
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 51.85
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 59.34
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 48.50
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 29.88
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 26.19
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 20.06
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 26.25
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 20.48
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 39.82
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 47.39
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 66.69
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 75.48
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 64.11
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 48.35
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 30.54
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 25.67
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 29.27
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 19.24
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 35.80
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 25.95
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 39.57
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 43.74
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 66.07
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 48.76
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 34.75
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 17.46
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 25.34
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 25.02
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 21.72
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 21.55
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 37.18
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 46.76
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 34.79
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 38.37
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 37.13
+
+--- Restraint fulfillment for model 16 with weight 0.493 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 22.93
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 28.47
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 36.77
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 25.74
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 23.05
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 34.47
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 43.93
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 42.78
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 27.75
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 23.86
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 34.17
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 55.14
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 46.38
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 46.12
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 26.34
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 19.79
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 15.21
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 25.60
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 28.16
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 52.47
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 57.22
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 55.71
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 33.98
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 22.30
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 15.90
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 24.45
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 23.78
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 44.60
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 48.66
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 72.23
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 61.37
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 66.97
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 49.65
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 32.68
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 24.72
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 22.41
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 25.57
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 33.91
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 28.15
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 40.90
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 51.39
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 67.22
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 48.24
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 34.76
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 20.69
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 16.85
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 22.34
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 20.93
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 21.82
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 42.49
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 40.29
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 34.53
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 34.16
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 47.29
+
+--- Restraint fulfillment for model 17 with weight 0.500 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 17.76
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 30.03
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 36.92
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 29.90
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 23.38
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 29.79
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 42.36
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 37.10
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 20.74
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 22.98
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 23.94
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 46.91
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 57.56
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 46.75
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 26.55
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 22.92
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 17.11
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 20.23
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 28.73
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 46.57
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 58.43
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 50.82
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 28.43
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 19.05
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 15.47
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 21.94
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 26.99
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 40.28
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 45.05
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 66.66
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 68.62
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 63.06
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 41.50
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 27.44
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 27.49
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 18.28
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 24.14
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 25.66
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 29.04
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 35.95
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 49.56
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 65.13
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 49.86
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 33.08
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 16.41
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 28.87
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 20.19
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 19.09
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 23.94
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 38.57
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 30.59
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 39.56
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 31.66
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 52.48
+
+--- Restraint fulfillment for model 18 with weight 0.457 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 22.49
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 27.34
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 38.85
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 27.07
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 22.86
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 40.51
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 44.56
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 37.18
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 21.10
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 18.15
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 29.74
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 50.72
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 56.64
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 53.90
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 36.65
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 19.68
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 15.79
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 21.64
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 23.43
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 48.02
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 61.95
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 55.44
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 33.02
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 21.11
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 15.82
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 27.99
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 32.21
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 45.90
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 45.29
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 66.12
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 69.98
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 64.86
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 48.97
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 30.14
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 19.23
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 23.80
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 20.68
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 32.73
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 34.90
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 45.23
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 42.17
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 55.91
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 47.16
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 37.85
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 19.48
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 18.41
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 28.41
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 22.24
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 25.76
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 42.90
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 39.94
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 40.44
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 42.23
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 36.01
+
+--- Restraint fulfillment for model 19 with weight 0.499 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 26.82
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 28.41
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 38.23
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 22.38
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 27.78
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 32.31
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 44.82
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 35.52
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 23.60
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 21.78
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 39.21
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 51.12
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 55.72
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 44.89
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 27.63
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 15.94
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 18.50
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 20.84
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 32.44
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 48.24
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 60.10
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 50.27
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 30.02
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 29.18
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 19.38
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 25.95
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 23.23
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 39.36
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 56.05
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 70.36
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 61.76
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 62.35
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 46.09
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 37.36
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 32.03
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 26.91
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 22.48
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 25.86
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 34.62
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 40.44
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 55.72
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 68.42
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 48.67
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 33.60
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 27.36
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 25.53
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 22.96
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 16.68
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 26.94
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 41.97
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 28.95
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 40.51
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 31.87
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 46.51
+
+--- Restraint fulfillment for model 20 with weight 0.493 ---
+
+
+Residue 25
+
+
+Residue 26
+
+
+Residue 27
+
+
+Residue 28
+
+
+Residue 29
+
+
+Residue 30
+
+
+Residue 31
+
+
+Residue 32
+
+
+Residue 33
+
+
+Residue 34
+
+Internal restraint [22.60,  8.78] Å to residue 25 fulfilled at <r> = 24.19
+
+Residue 35
+
+
+Residue 36
+
+
+Residue 37
+
+
+Residue 38
+
+
+Residue 39
+
+Internal restraint [29.20,  8.08] Å to residue 30 fulfilled at <r> = 27.80
+
+Residue 40
+
+
+Residue 41
+
+
+Residue 42
+
+
+Residue 43
+
+Internal restraint [38.00,  8.66] Å to residue 25 fulfilled at <r> = 39.21
+Internal restraint [26.60,  8.17] Å to residue 34 fulfilled at <r> = 23.13
+
+Residue 44
+
+
+Residue 45
+
+
+Residue 46
+
+
+Residue 47
+
+
+Residue 48
+
+Internal restraint [22.80,  7.72] Å to residue 39 fulfilled at <r> = 21.86
+Internal restraint [30.30,  8.03] Å to residue 30 fulfilled at <r> = 31.85
+
+Residue 49
+
+
+Residue 50
+
+
+Residue 51
+
+
+Residue 52
+
+Internal restraint [43.20,  8.49] Å to residue 25 fulfilled at <r> = 41.08
+Internal restraint [36.50,  8.44] Å to residue 34 fulfilled at <r> = 34.29
+Internal restraint [23.90,  7.93] Å to residue 43 fulfilled at <r> = 19.23
+
+Residue 53
+
+
+Residue 54
+
+
+Residue 55
+
+
+Residue 56
+
+
+Residue 57
+
+Internal restraint [20.40,  7.98] Å to residue 48 fulfilled at <r> = 13.06
+Internal restraint [28.30,  8.38] Å to residue 39 fulfilled at <r> = 21.26
+Internal restraint [47.00,  7.93] Å to residue 30 fulfilled at <r> = 34.74
+
+Residue 58
+
+
+Residue 59
+
+
+Residue 60
+
+
+Residue 61
+
+Internal restraint [57.10,  7.98] Å to residue 25 fulfilled at <r> = 51.64
+Internal restraint [47.30,  8.12] Å to residue 34 fulfilled at <r> = 44.05
+Internal restraint [27.40,  8.03] Å to residue 43 fulfilled at <r> = 26.55
+Internal restraint [17.40,  7.72] Å to residue 52 fulfilled at <r> = 18.18
+
+Residue 62
+
+
+Residue 63
+
+
+Residue 64
+
+
+Residue 65
+
+
+Residue 66
+
+Internal restraint [15.00,  7.57] Å to residue 57 fulfilled at <r> = 18.26
+Internal restraint [26.50,  7.93] Å to residue 48 fulfilled at <r> = 28.01
+Internal restraint [24.70,  8.96] Å to residue 39 fulfilled at <r> = 27.01
+Internal restraint [47.00,  8.12] Å to residue 30 fulfilled at <r> = 43.79
+
+Residue 67
+
+
+Residue 68
+
+
+Residue 69
+
+
+Residue 70
+
+Internal restraint [60.20,  8.33] Å to residue 25 fulfilled at <r> = 62.52
+Internal restraint [52.00,  8.44] Å to residue 34 fulfilled at <r> = 48.92
+Internal restraint [28.80,  8.28] Å to residue 43 fulfilled at <r> = 29.07
+Internal restraint [23.90,  8.12] Å to residue 52 fulfilled at <r> = 29.36
+Internal restraint [13.70,  7.38] Å to residue 61 fulfilled at <r> = 18.75
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+
+Residue 74
+
+
+Residue 75
+
+Internal restraint [24.40,  8.55] Å to residue 66 fulfilled at <r> = 26.18
+Internal restraint [22.20,  8.12] Å to residue 57 fulfilled at <r> = 29.61
+Internal restraint [39.20,  7.85] Å to residue 48 fulfilled at <r> = 37.62
+Internal restraint [46.80,  8.49] Å to residue 39 fulfilled at <r> = 46.60
+Internal restraint [63.80,  7.61] Å to residue 30 fulfilled at <r> = 63.21
+
+Residue 76
+
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Internal restraint [63.50,  8.49] Å to residue 25 fulfilled at <r> = 70.90
+Internal restraint [62.20,  8.49] Å to residue 34 fulfilled at <r> = 61.35
+Internal restraint [43.60,  8.22] Å to residue 43 fulfilled at <r> = 40.81
+Internal restraint [29.50,  8.96] Å to residue 52 fulfilled at <r> = 32.66
+Internal restraint [26.80,  7.89] Å to residue 61 fulfilled at <r> = 21.15
+Internal restraint [23.80,  7.89] Å to residue 70 fulfilled at <r> = 19.76
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+
+Residue 83
+
+
+Residue 84
+
+Internal restraint [18.20,  7.98] Å to residue 75 fulfilled at <r> = 21.64
+Internal restraint [30.00,  8.12] Å to residue 66 fulfilled at <r> = 26.83
+Internal restraint [29.70,  7.93] Å to residue 57 fulfilled at <r> = 29.60
+Internal restraint [40.30,  8.38] Å to residue 48 fulfilled at <r> = 37.99
+Internal restraint [48.50,  8.66] Å to residue 39 fulfilled at <r> = 48.21
+Internal restraint [59.50,  8.08] Å to residue 30 fulfilled at <r> = 56.39
+
+Residue 85
+
+
+Residue 86
+
+
+Residue 87
+
+
+Residue 88
+
+Internal restraint [50.80,  8.12] Å to residue 34 fulfilled at <r> = 50.47
+Internal restraint [36.50,  8.17] Å to residue 43 fulfilled at <r> = 34.58
+Internal restraint [18.30,  8.17] Å to residue 52 fulfilled at <r> = 19.36
+Internal restraint [22.40,  7.68] Å to residue 61 fulfilled at <r> = 16.09
+Internal restraint [24.80,  7.98] Å to residue 70 fulfilled at <r> = 29.77
+Internal restraint [17.70,  7.89] Å to residue 79 fulfilled at <r> = 23.96
+
+Residue 89
+
+
+Residue 90
+
+
+Residue 91
+
+
+Residue 92
+
+
+Residue 93
+
+Internal restraint [25.70,  8.08] Å to residue 84 fulfilled at <r> = 27.63
+Internal restraint [37.90,  8.08] Å to residue 75 fulfilled at <r> = 44.85
+Internal restraint [33.60,  7.89] Å to residue 66 fulfilled at <r> = 34.93
+Internal restraint [37.30,  7.61] Å to residue 57 fulfilled at <r> = 33.13
+Internal restraint [37.70,  8.38] Å to residue 48 fulfilled at <r> = 38.21
+Internal restraint [40.30,  8.17] Å to residue 39 fulfilled at <r> = 45.79
+
+--- Final statistics ---
+
+Total runtime: 2 h 2 min.
+ 0.02% of maximum number of MC trials spent.
+Ensemble with 20 models generated.
+26 backbone models were generated.
+99.96% of all trials had restraint violations.
+This is a success rate of  403.3 ppm.
+ 0.02% of all trials had internal loop backbone clashes.
+ 0.00% of all trials hand backbone clashes with the protein.
+The sidegroup clash threshold was  1.2 Å.
+23.08% of the backbone models lead to internal sidegroup clashes.
+ 0.00% of the backbone models lead to sidegroup clashes with the protein.
+
+The run had a time limit of: 48 h 0 min.
+The run had a limit of 500000000 Monte Carlo trials.
+20 models had been requested with an ensemble probability of 0.50.
+The number of Gaussian-type restraints was 54.
+Ramachandran statistics without secondary structure elements was used.

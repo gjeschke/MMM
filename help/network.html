@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Networks of sites</title>
+</head>
+<body>
+
+<div class="pagetitle">Networks of sites</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="specialized.html"> Special tasks </A> &uarr;  </pre>
+
+<div class="subtitle">What is a network in MMM?</div>
+<h4>General concept</h4>
+<p>
+A network in MMM is a set of <i>M</i> sites with some or all of the <i>M(M-1)/2</i> site-pair distances being known. If all distances are known the geometry of the network polyhedron can be fully determined, except that the mirror image is also a possible solution. If at least 4 of the sites are reference points in a known structure, this ambiguity can also be resolved. In fact, the set of <i>M</i> 3D coordinates has only 3<i>M</i>-6 degrees of freedom, as rotation and translation of the whole network do not affect internal geometry or node-to-node distances. Hence, the problem can still be solved when 3<i>M</i>-6 distances are known. For instance, a network with 6 nodes has 15 distinct node-to-node distances, whereas 12 distances are sufficient to determine geometry.
+</p>
+<p>
+If at least 3 of the sites are reference points in a known structure, the network can be fitted to the known structure with mirror image ambiguity. With 4 reference points, the mirror image ambiguity vanishes.
+</p>
+<p>
+Typical application scenarios are the localization of spin-labeled cofactors or substrates with respect to a protein, see <a href="http://dx.doi.org/10.1016/j.bpj.2012.10.002">Gaffney et al., Biophys. J. 2012, 103, 2134-2144</a> or the localization of several spin-labeled residues in a domain that is not resolved in a crystal structure or NMR structure. The feature may also be useful if the structure is completely unknown. In that case the network together with the known number of amino acid residues between sites and possibly secondary structure restraints from accessibility measurements or a web server may help to develop hypotheses on the structure. If you do not have enough distances between the reference points, but at least three distances between each of the unknown points and some reference points, you should use <a href="localization.html">localization</a> instead.
+</p>
+<h4>Limitations</h4>
+<p>
+At least three distances to distinct reference points are required. In this case localization will result in an ambigous result, with two sets of coordinates that are mirror images with respect to the reference point triangle. This ambiguity is resolved by a fourth reference point unless the symmetry is accidentally maintained by the fourth point. In practice, localization with four reference points still results in substantial uncertainty if the distances are uncertain. This is always the case with spin labels, since predictions of spin label conformational distribution are uncertain. Hence, whenever possible, at least five reference points should be used. 
+</p>
+<p>
+The network nodes do not need to be spin labels. However, the current implementation can directly compute reference coordinates from a given structure only for spin labels. Other reference points have to be specified with their full coordinates in the <a href="#constraints">constraint file</a>. Currently it is not possible to mix automatic coordinate computation for spin labels with direct specification of other reference points. As a workaround you may determine mean spin label reference coordinates with the <a href="deer_window.html">DEER window</a> and write these coordinates in the constraint file.
+</p>
+<h4>Algorithm</h4>
+<p>
+If all the <i>M(M-1)/2</i> site-pair distances are known, solution of the problem by distance matrix geometry is straightforward. The <i>M</i>&times;<i>M</i> distance matrix is converted to a metric matrix (<code>metric_matrix.m</code>), the metric matrix is diagonalized, and if the first three eigenvalues are all positive, the network point coordinates are given by the first three eigenvectors scaled by the square root of the corresponding eigenvalue (<code>dmat2coor.m</code>, see also G. M. Crippen, T. F. Havel, Distance Geometry and Molecular Conformation, Research Studies Press Ltd. Taunton, 1988.). If the input distances are inconsistent with a 3D structure the matrix cannot be embedded (zero or negative values among the first three eigenvalues). In that case the program returns with an error message in the <b>Message board</b>.
+</p>
+<p>
+Since the distances are fraught with errors, there is no guarantee that the node coordinates indeed fulfill all distance constraints. The coordinates are iteratively refined (<code>bound_refiner.m</code>) until they are within lower and upper bounds specified in the <a href="#constraints">constraint file</a>. For mean distance/standard deviation pairs (<i>r</i>,&sigma;), the bounds are taken as <i>r</i> - 2 &sigma; and <i>r</i> + 2 &sigma;. Lower bounds below 3 &#8491; and upper bounds above 100 &#8491; are set to these general bounds. The general bounds can be redefined in the <a href="#constraints">constraint file</a>. If iterative refinement fails, the program returns with an error message in the <b>Message board</b>.     
+</p>
+<p>
+If not all site-pair distances are known, the missing distances have to be estimated from lower and upper bounds (restraints). Such bounds can be specified for individual distances in the <a href="#constraints">constraint file</a>. If  constraints (<i>r</i>,&sigma;) or restraints (lower and upper bound) have been specified for at least 3<i>M</i>-6 site pairs, a Monte Carlo solution is attempted. For the missing distances random guesses are made in the interval between the general lower and general upper bound (default 3 to 100 &#8491;). It is possible to specify only a tighter lower or only a tighter upper bound for individual distances in the <a href="#constraints">constraint file</a>. Bounds are refined by triangle bound smoothing (G. M. Crippen, T. F. Havel, Distance Geometry and Molecular Conformation, Research Studies Press, Taunton, 1988, p. 252 f.).
+</p>
+<p>
+In Monte Carlo mode, the program attempts to compute 1000 sets of consistent node coordinates (models). After a computation time of 1 hour the program is stopped, even if less than 1000 sets were found. In this case the problem is not sufficiently constrained. The program returns with an error message in the <b>Message board</b> if it did not find any solution, otherwise it reports the number of trials and the number of failed embeddings. The preliminary node coordinates are computed as the mean coordinates of all models.
+</p>
+<p>
+The coordinates obtained in the previous step are used to obtain estimates of uncertainty for each network node. For each node a cube with 6 nm side length with the node as its center is searched for locations that are consistent with the mean coordinates of the other nodes and the known distances. This cube is sampled by a grid with uniform spacing &Delta;x = &Delta;y = &Delta;z = 0.4 &#8491;. The probability for the spin label to be located at a given grid point is computed. From the <i>n</i> experimental distances to the reference points and the corresponding distances of the grid point to the reference points the program calculates probabilities <i>p<sub>i</sub></i> (<i>i</i> = 1... <i>n</i>) that these distances are consistent with experiment. This is done either by assuming a Gaussian distribution of the individual distances, with mean values and standard deviations given in the <a href="#constraints">constraint file</a>, or by using a numerical distribution that must be specified also in the constraint file. Assuming that the distance distributions are uncorrelated, the total probability for the node to be located at this grid point is the product of the <i>n</i> individual probabilities. If an upper bound/lower bound restraint is violated at the grid point, the probability is set to zero.
+</p>
+<p>
+After computing this total probability at all grid points, we know a probability density distribution in the cube at 0.4 &#8491; resolution. We now find a level <i>l</i><sub>&frac12;</sub> of the normalized probability density so that an probability density isosurface at this level includes 50% of the total probability. This level is determined at 1% resolution of the maximum probability density. The isosurface is displayed as a red semitransparent surface object. Note that inclusion of 50% of the total probability is also usual practice in displaying thermal ellipsoids in crystal structures of small molecules. Note, however that in the case at hand the isosurface is only a rough approximation since in computing this surface, no uncertainty was assigned to the coordinates of all other nodes. Nevertheless, visualization of these surfaces provides a qualitative picture of how well or how poorly the problem is constrained. The isosurfaces are clickable. When clicked, the site tag, the center of gravity of the density cloud, and the point of highest probability are reported in the <b>Message board</b>.   
+</p>
+<p>
+Important quality measures are reported during the computation in the <b>Message board</b>. The highest location probability is a measure for the maximum probability that all distance constraints are simultaneously fulfilled at any point in space. A perfect solution has a value of 1. Values smaller than 1 are to be expected even if the distance distributions are known exactly, since they will be correlated to some extent and this correlation was neglected in computing probability density. However, values smaller than 0.25 usually indicate problems with the experimental constraints. The second quality measure is the maximum relative probability at density cube border. A good solution has 0.00%, but values of a few percent are acceptable. Values larger than 10% indicate that the experimental constraints are insufficient for localization. If the constraints are very poor, it may even happen that the 50% isosurface extends beyond the 6 nm cube. This is easily recognized by the displayed surface not being closed. In such cases, additional experimental constraints are required.
+</p>
+<p>
+For interactive analysis of the result in MMM or other PDB viewers the spatial probability distribution for each node can be sampled by an ensemble of point coordinates. For that, the volume enclosed by the 50% isosurface is successively filled by spheres, starting at the point of maximum probability density. The next spheres are also located in the point of maximum probability density, but under the constraint that they do not intersect any of the spheres that were put before. The spheres are displayed as grey balls with a transparency corresponding to relative probability density at their center. Number and diameter of the spheres can be specified in the <a href="#constraints">constraint file</a>. If the specification is missing only a single sphere with a diameter 2 &#8491; is created at the point of maximum probability density.
+</p>
+<p>
+The ensembles of spheres that sample the 50% probability density volume of the nodes can be written out as a PDB file (see <a href="#constraints">constraint file</a>). The spheres are specified as sodium atoms, each set of <i>M</i> spheres for the <i>M</i> nodes corresponding to a separate model. Relative probability densities at the sphere centers are stored as occupations. This file can be re-read by MMM and is also compatible with Accelrys Discovery, Chimera, PyMol, and Swiss-PdbViewer 4.1.0. Inspection of the set of models is particularly convenient with Accelrys DS Visualizer.
+</p>
+<a name="constraints">
+<div class="subtitle">Constraint file</div>
+<p>
+A constraint file serves for both specifying the distance constraints between the reference points and the point to be localized and for controling output. A typical constraint file looks like this:
+</p>
+<p>
+<code>% Network fit and superposition for localizing LOPTC in liopxygenase structure 1YGE</code>
+<p>
+<code>% Restraints from B. J. Gaffney et al., Biophys. J. 2012, 103, 2134-2144</code>
+<p>
+<code># PDB 1YGE % if this file is loaded into MMM before selecting network,</code><p>
+<code>% the network is fitted to the five reference points</code><p>
+<code># ENSEMBLE 20 2</code><p>
+<code># OUTPUT Gaffney_network</code><p>
+<code># NETWORK SBL1 0.5 MTSL 298 constraints</code><p>
+<code>270	480	3.25	0.30</code><p>
+<code>270	569	3.70	0.30</code><p>
+<code>270	619	4.70	0.30</code><p>
+<code>270	782	3.80	0.30</code><p>
+<code>480	569	3.75	0.30 % comment out this line for Monte Carlo test</code><p>
+<code>480	619	4.65	0.30</code><p>
+<code>480	782	5.25	0.30</code><p>
+<code>569	619	4.40	0.30</code><p>
+<code>569	782	5.20	0.30</code><p>
+<code>619	782	2.20	0.30</code><p>
+<code>LOP	270	2.30	0.30</code><p>
+<code>LOP	480	4.30	0.30</code><p>
+<code>LOP	569	3.80	0.30</code><p>
+<code>LOP	619	4.70	0.30</code><p>
+<code>LOP	782	3.75	0.30</code><p>
+<code># END</code><p>
+</p>
+This file is provided as <code>network_Gaffney.dat</code> in MMM subdirectory <code>\test\multilateration</code>.
+<p>
+Lines starting with a percent character. <code>%</code>, are comment lines. Lines starting with a hash characters, <code>#</code>, are command lines. Other lines provide additional arguments to the previous command. The optional <code># PDB</code> command specifies the reference structure. A reference structure can be loaded into MMM and must then be the active structure. If there is a mismatch between the tag of the active structure and the identifier specified in the <code># PDB</code> command, a dialog window pops up for confirmation. Apart from activating this security question, the <code># PDB</code> command has no function. Network computation can be run withour reference structure.
+</p>
+<p>
+The optional <code># ENSEMBLE</code> command specifies how many spheres shall be used for sampling the 50% probability volumes (default 1) and which diameter they shall have (default 2 &#8491;).   
+</p>
+<p>
+The optional <code># OUTPUT</code> command specifies whether a PDB file with an ensemble of possible network coordinates is written. If the command is present without an argument, a PDB file with name <code>network_<i>tag</i>.pdb</code> is written, where <code><i>tag</i></code> is the tag specified with the <code># NETWORK</code> command. A user-defined filename can be specified as an argument of the <code># OUTPUT</code> command, as in the example above. If the filename argument does not have an extension <code>.pdb</code>, this extension is automatically appended. Unless a full path name is given, the PDB file is written to the directory from which the constraint file was loaded.
+</p>
+<p>
+The mandatory <code># NETWORK</code> command signifies that the following lines until the next command are constraint lines. Its first argument is the tag used in place of a PDB identifier in the output PDB file (<code>SBL1</code> in the example) and in an automatically generated filename for this file. If this tag is missing, it defaults to <code>DGM1</code>, although it is not recommended to omit the tag. The second, optional argument can be used to specify the isosurface level (probability included in the volume, defaults to 0.5). As a third, optional argument, the type of labels at the reference points can be specified (currently either <code>MTSL</code> or <code>IA-Proxyl</code>, with <code>MTSL</code> being the default. As a fourth, optional argument, the temperature of the rotamer library can be specified. It defaults to <code>298</code> K. The fifth, optional argument specifies the extent of visualization (default is <code>constraints</code>). With <code>full</code> both spheres at the nodes and the constraints are visualized. Constraints between two reference sites are shown as dark blue lines and other constraints as red lines. With <code>nodes</code> only the node spheres are shown. With <code>constraints</code> only constraints between nodes are shown. With <code>none</code> both node and constraint display is suppressed. The probability isosurfaces and the spheres sampling them are always displayed. 
+</p>
+<p>The <code># NETWORK</code> command is followed by as many constraint lines as there are reference points. Each constraint line has at least three arguments. The first argument is the address of the spin-labeled residue, either just the residue number or an MMM address, such as <code>(B)23</code> for residue 23 in chain B of the active structure. For distance constraints the second argument is the experimental mean distance (in nanometers) between the reference label and the paramagnetic center to be localized. The third argument is the standard deviation of this distance, also in nanometers. Distances and standard deviations can alternatively be specified in &#8491;ngstroems. For that the <code># NETWORK</code> command has to be preceded by the command <code># UNITS A</code> or <code># UNITS ANGSTROEM</code>.
+</p>
+<p>
+To input restraints (lower or upper bounds) the second argument (lower bound) or third bound (upper bound) must be given as negative numbers. If only one of the two arguments is negative, the positive one is ignored and replaced by the default bound.
+</p>
+<p>
+Constraint lines can specify the filename of a distance distribution file in DeerAnalysis output format. In that case probability densities are taken from the experimental distribution rather than computed from the mean distance and standard deviation. Unless a full pathname is provided, MMM expects the distance distribution file in the same directory from which the constraint file was loaded.
+</p>
+<p>
+The optional commands <code># LOWER</code> and <code># UPPER</code> allow for adjusting the default lower and upper distance bounds that are applied to node pairs for which no constraint or restraint was specified. The defaults are 3 and 100 &#8491;, respectively. Adjusting these bounds according to the expected network size and minimum distance between nodes can strongly improve model quality in cases where some node pairs are otherwise unconstrained. Note that these bounds must be consistent with all node pair distances in the network, including those ones that are specified by individual constraints or bounds.
+</p>
+<p>
+If necessary, coordinates for reference points can be directly specified with the <code># REFERENCE</code> command, as in the following example:
+</p>
+<code># REFERENCE</code><p>
+<code>S270	17.13	59.97	2.23</code><p>
+<code>S480	-7.19	45.70	2.54</code><p>
+<code>S569	12.41	47.50	33.61</code><p>
+<code>S619	25.57	16.19	10.35</code><p>
+<code>S782	41.14	29.12	1.84</code><p>
+<code># NETWORK SBL1 0.5 MTSL 298 full</code><p>
+<code>S270	S480	3.25	0.30</code><p>
+<code>...</code><p>
+<code># END</code><p>
+<p>
+The lines after the <code># REFERENCE</code> command consist of the reference site tag and the <i>x</i>, <i>y</i>, and <i>z</i> coordinates. Please note that coordinates are specified in Angstroems, irrespective of the units for distance restraints. If a <code># REFERENCE</code> command exists, <i>all</i> reference sites must be specified by coordinates. Note also that the arguments <code>MTSL 298</code> of the <code># NETWORK</code> command are ignored in this example.</p>
+<p>If you want to mix spin labeled reference sites and other reference sites, you need to determine mean spin label coordinates manually and write them into the constraint file. To do so, <a href="selection.html">select</a> the residues to be spin labelled and perform a <a href="spin_labeling.html">spin labeling site scan</a>, attach the labels by clicking the labeling toolbutton<img src="img/toolbar_labeling.png" alt="(black N-O bond with red dot for unpaired electron)">. Then go to the  <a href="deer_window.html">DEER window</a> and select the labeled sites, one by one, in the <code>Labels & selected atoms</code> listbox. The coordinates in Angstroem appear below the listbox.</p>
+<p>
+It is good practice to finish the constraint file by an <code># END</code> command.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2013, edited 2013/09/04</div>
+</body>
+</html>
+

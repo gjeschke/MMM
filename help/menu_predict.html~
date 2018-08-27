@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Menu/Predict</title>
+</head>
+<body>
+
+<div class="pagetitle">Menu/Predict</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  <A href="user_interface.html"> User interface </A> <A href="main_window.html"> Main window </A> <A href="menu.html"> Menu </A> &uarr;  |  </pre>
+
+<div class="subtitle">CD spectrum</div>
+<p>
+Opens a Matlab browser displaying a Web server that allows for CD spectrum prediction from a PDB file. Note that only standard amino acids, not cofactors, are considered in this computation. Save your structure as a PDB file and upload this PDB file to the server. Results will be sent by e-mail. The server is courtesy of The Hirst group, University of Nottingham.
+</p>
+<div class="subtitle">Secondary</div>
+<p>
+Offers access to several Web servers for prediction of secondary structure from amino acid sequence. These servers are:
+<ul>
+<li>PHYRE, courtesy Structural Bioinformatics Group, Imperial College, London
+<li>PSIPRED, courtesy Bioinformatics Group, University College London 
+<li>SAM, courtesy Bioinformatics, UC Santa Cruz
+<li>PORTER, courtesy University College, Dublin
+<li>SABLE, courtesy University of Cincinnati 
+</ul> 
+</p>
+<div class="subtitle">Tertiary</div>
+<p>
+Offers access to several Web servers and a program for prediction of tertiary structure from amino acid sequence. These servers are:
+<ul>
+<li>HHpred, courtesy Max Planck Institute for Developmental Biology, Tübingen
+<li>PHYRE, courtesy Structural Bioinformatics Group, Imperial College, London
+<li>SAM, courtesy Bioinformatics, UC Santa Cruz
+<li>Modeller, requires obtaining a license and installation as an external program
+</ul> 
+</p>
+<div class="subtitle">Quaternary</div>
+<p>
+Offers access to several Web servers and two programs for prediction of quaternary structure from tertiary structure (docking). These servers are:
+<ul>
+<li>Hex, courtesy College of Physical Sciences, University of Aberdeen
+<li>RosettaDock, courtesy Department of Chemical & Biomolecular Engineering, Johns Hopkins University
+<li>HADDOCK, courtesy Bijvoet Center for Biomolecular Research, Utrecht University (requires registration)
+<li>Modeller, requires obtaining a license and installation as an external program
+<li>AutoDock, requires obtaining a license and installation as an external program
+<li>ArgusLab, requires obtaining a license and installation as an external program
+</ul> 
+</p>
+<div class="subtitle">TM topology</div>
+<p>
+Offers access to several Web servers for prediction of transmembrane topology from amino acid sequence. Unlike tertiary structure prediction this works quite well even if no structure for a similar integral membrane protein is known. The servers are:
+<ul>
+<li>MEMSAT3 (via PSIPRED), courtesy Bioinformatics Group, University College London
+<li>TMHMM, courtesy Center for Biological Sequence Ananysis, Technical University of Denmark
+<li>PHILIUS, courtesy Yeast Resource Center, University of Washington
+</ul> 
+</p>
+<div class="subtitle">Disorder</div>
+<p>
+Offers access to a Web server for prediction of disordered domains of a protein from the sequence:
+<ul>
+<li>Spritz, courtesy University College Dublin and University of Padua
+</ul> 
+</p>
+<div class="subtitle">Hinges</div>
+<p>
+Offers access to Web servers for prediction of hinges that allow for relative movement of protein domains. A PDB file must be uploaded. The servers are:
+<ul>
+<li>StoneHinge, courtesy Yale University
+<li>HingeMaster, courtesy Yale University
+</ul> 
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/09/17</div>
+</body>
+</html>
+

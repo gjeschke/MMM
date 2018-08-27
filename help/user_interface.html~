@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: User interface</title>
+</head>
+<body>
+
+<div class="pagetitle">User interface</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  &uarr;  |  &darr;  &bull; <A href="main_window.html">Main window</A>  &bull; <A href="model_window.html">Model window</A>  &bull; <A href="hierarchy_window.html">Hierarchy window</A>  &bull; <A href="color_selection.html">Color</A>  &bull; <A href="transparency_selection.html">Transparency</A>  &bull; <A href="graphics_window.html">Graphics mode</A>  &bull; <A href="annotation_window.html">Annotation</A>  &bull; <A href="reference_window.html">References</A>  &bull; <A href="find_by_key_window.html">Keyword finder</A> </pre>
+
+<div class="subtitle">Concept</div>
+<P>
+The user interface of MMM consists of a <a href="main_window.html">main window</a> for primary control, a <a href="model_window.html">model window</a> for high-resolution display and fine control of the 3D view, a <a href="hierarchy_window.html">hierarchy window</a> for a convenient overview of structures and selection of objects (structures, chains, residues and cofactors, atoms, atom locations) and several auxiliary windows for special tasks, such as influencing model visualization (<a href="color_selection.html">coloring</a>, <a href="transparency_selection.html">changing object transparency</a>, <a href="graphics_selection.html">graphics mode</a>), <a href="annotation_window.html">annotation</a>, and managing <a href="reference_window.html">references</a>
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/09/17</div>
+</body>
+</html>
+

@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Model window</title>
+</head>
+<body>
+
+<div class="pagetitle">Model window</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> <A href="user_interface.html"> User interface </A> &uarr;  |  &darr; &bull; <a href="model_panel.html"> Model panel </a> </pre>
+
+<div class="subtitle">What can you do with the model window?</div>
+<p>
+The model window displays the 3D graphics of the model as a scalable picture in a separate window. The model can be rotated, zoomed, and panned (shifted) by mouse click and drag in the panel. The view can also be changed using the <a href="view_control.html">view control panel</a>.
+</p>
+<p>
+Structure <a href="object_concept.html">objects </a>, such as residues or atoms, can be selected by mouse click and the <a href="#background">background color</a> can be selected among black, grey, and white by using a <a href="#context_menu">context menu</a> (click with the right mouse button).
+</p>
+<p>
+The 3D picture can be copied to the Windows clipboard (MS Windows only) or printed.
+</p>
+<p>
+Most of this functionality is also available with a small, fixed-sized picture in the <a href="model_panle.html">model panel</a> of the <a href="main_window.html">main window</a>. The model window can be attached to the main window with the <img src="img/toolbar_attach.png" alt="(miniature helix bundle with curved arrow to the bottom right)">attach toolbutton.
+</p>
+<a name="best_view">
+<div class="subtitle">Getting the best view on the model</div>
+<h4>You do not yet know what you are looking for</h4>
+<p>
+To explore the model in general, you may want to turn and zoom it. Actually the model remains fixed in space and the camera is moved around to simulate such rotation and zoom. 
+<p>
+To rotate the model, activate the <img src="img/toolbar_rotate.png" alt="(circular arrow)"> rotate toolbutton. Now click left and draw for rotating the camera around the object, release to update the view indicator in the <a href"view_control.html">view control panel</a>. Click left while pressing the shift key (or click with the middle button) and draw to rotate the vertical axis of the camera around the view direction. The rotation mode can also be activated by pressing the 'r' key while the model window is the active window. 
+</p>
+<p>
+To zoom the model activate the <img src="img/toolbar_zoom.png" alt="(diagonal double arrow)"> zoom toolbutton. Now Click left and draw down to enlarge the graphics (zoom in), click and draw up to shrink it (zoom out). Click left while pressing the shift key (or click with the middle button) to pan (move the graphics midpoint by drawing) while in Zoom mode. The zoom mode can also be activated by pressing the 'z' key while the model window is the active window. 
+</p>
+<p>
+If you want to shift the center of the 3D model activate the <img src="img/toolbar_pan.png" alt="(pink hand)"> pan toolbutton. Now mouse click and drag moves the midpoint of the graphics in the viewing plane. The rotation mode can also be activated by pressing the 'p' key while the model window is the active window. 
+</p>
+<p>
+When you are done, do not forget to reactivate the <img src="img/toolbar_select.png" alt="(cursor arrow)"> selection mode. Otherwise you cannot select objects by click.
+</p>
+<h4>You already know what you are looking for</h4>
+<p>
+It is most convenient to first select the objects by <a href="#click_selection">mouse click</a> or via the <a href="commands.html#select">select command</a> or in the <a href="hierarchy_window.html">hierarchy window</a>. Now use the <img src="img/toolbar_view_selection.png" alt="(red arrow pointing down right to a quarter green sphere)">view selected toolbutton. The camera is directed at the selected objects and, zoomed so that these objects approximately fill the 3D panel. Disturbing objects in the front are cut away. This can be combined with <a href="depth_cueing.html">depth cueing</a>.
+<p>
+If you want to see all graphics again, use the <img src="img/toolbar_view_all.png" alt="(four red arrow pointing to a full green sphere)">view all toolbutton.
+<a name="click_selection">
+<div class="subtitle">Selecting objects</div>
+<p>
+To select a single object click with the left mouse button on it. This unselects all previously selected objects. Selected objects are displayed yellow.
+</p>
+<p>
+To add an object to an existing selection, press <code>Shift</code> while clicking or click with the middle mouse button.
+</p>
+<p>
+To remove an object from the selection while other selected objects remain selected, press <code>Ctrl</code> while clicking or click with the right mouse button.
+</p>
+<p>
+To unselect all objects, double click on an object.
+</p>
+<p>
+Clicking on ribbon graphics selects residues, clicking on atom graphics (wire, stick, ball&wire, space-filling plots) selects an atom, or, if there are alternate locations, a location. Clicking on a string graphic selects a whole chain. Clicking on label graphics, selects the corresponding spin label rotamer. Selecting label rotamers can be tricky if there are many of them, as the N-O midpoints are shown as transparent spheres and one often inadvertently clicks on a pale sphere in front of the intended opaque sphere.
+</p>
+<p>
+If you need more sophisticated selection capabilities, use the <a href="commands.html#select">select command</a> or the <a href="hierarchy_window.html">hierarchy window</a>.
+</p>
+<a name="background">
+<div class="subtitle">Changing background color</div>
+<p>
+A right mouse click in the panel, but outside any graphics object, opens the context menu. Navigate to the <code>background</code> line and select the desired color.
+</p>
+<a name="context_menu">
+<div class="subtitle">Context menu</div>
+<p>
+A right mouse click in the panel, but outside any graphics object, opens the context menu. You can change between the selection, rotation, zoom, and pan modes (alternative to tool buttons), change the color or transparency of the currently selected objects, copy or print the graphics, detach the model panel as a separate <a href="model_window.html">model window</a> and change the <a href="#background">background color</a>. Copying to the clipboard works only under MS Windows. Note that for complex graphics, activation of the context menus may take some time.
+</p><div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/10/08</div>
+</body>
+</html>
+

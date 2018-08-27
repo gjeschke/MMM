@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Build lipid bilayer</title>
+</head>
+<body>
+
+<div class="pagetitle">MMM: Build lipid bilayer</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="specialized.html"> Special tasks </A> &bull; <A href="more_specialized.html"> Special tasks (II) </A> &uarr;  |  &darr;  </pre>
+
+<div class="subtitle">What is a lipid bilayer in MMM and what it is needed for?</div>
+<p>
+A lipid bilayer in MMM is a two-dimensional object associated with a structure. A model can thus contain several bilayers, one for each structure. The position of the bilayer with respect to the protein is defined by a <i>membrane normal</i>, which is associated with the z axis of the coordinate frame, and by the central plane position on the normal (z=0).
+</p>
+<p>
+The bilayer is homogeneous along its lateral extension, i.e. parallel to the xy plane. Along the membrane normal, a water profile, and oxygen profile, and- for phospholipids- a <sup>31</sup>P density profile are defined. Together with a solvent accessible surface, these profiles allow for computation of water and oxygen accessibility of residues or spin labels and for the prediction of <sup>31</sup>P Mims ENDOR spectra of spin labels.
+<p>
+Note that for structures with bilayers the coordinate frame cannot be subsequently transformed without destroying the bilayer.
+</p>
+<p>
+The distribution of lipid functional groups and water are modelled according to N. Kucerka <i>et al.</i>, Biophys. J. <b>2008</b>, <i>95</i>, 2356-2367. The oxygen profile was parametrized from data given in R.D. Nielsen <i>et al.</i> J. Am. Chem. Soc. <b>2005</b>, <i>127</i>, 6430-6442.
+</p>
+<a name="preparation">
+<div class="subtitle">Before you can build a lipid bilayer</div>
+<p>
+Bilayer building requires that  <a href="third_party.html#MSMS">MSMS by Michel Sanner</a> is installed and known on the Matlab path.
+<p>
+The parameters of the bilayer, direction of the membrane normal, position of the bilayer centre, and thickness need to be adjusted to the structure under consideration. This can be done by visual inspection or by fitting. Fitting is based on minimization of the free energy of membrane insertion, which in turn is computed from <i>lipid propensities</i> of the residues that are in contact with the bilayer.
+</p>
+<p>
+Fitting requires reasonable starting values for the membrane normal direction and centre coordinate. The whole range of reasonable values for the bilayer thickness is automatically scanned.
+<p>
+If the structure is an homoligomer, the membrane normal can be exactly predicted, as it coincides with the symmetry axis. In that case, use the <a href="menu_edit.html#symmetry">Edit/Symmetry frame</a> menu item to transform the structure to a frame where the symmetry axis is the z axis. The centre of the bilayer is initialized as the geometrical center of the structure. This principle also works for heteroligomers that have at least two copies of the same polypetide chain in symmetry-related positions. If the system has pseudo-symmetry, as for instance the bacterial photosynthetic reaction centre, this pseudo-symmetry can be used to obtain a good approximation of the membrane normal. 
+</p>
+<p>
+If the membrane normal cannot be inferred from symmetry, it can be guessed from the mean direction of transmembrane helices (&alpha;-helical bundle) or strands (&beta;-barrel). This technique works better for &beta;-barrels than for &alpha;-helical bundles. In either case it provides a reasonable first approximation that can be improved by fitting or visual inspection. Use the <a href="menu_edit.html#bundle">Edit/Assign TM helices and strands</a> menu item to define the membrane normal this way. The centre of the bilayer is initialized as the geometrical centre of the bundle or barrel.
+</p>
+<p>
+In some cases a look along the x direction will tell you that the approximate membrane normal is just that- approximate. You can try to improve it by rotating the structure. This works best by rotating just the camera-up vector (press the middle mouse button or the left mouse button plus the <code>Shift</code> key and drag the mouse). After you are satisfied, select the <a href="menu_build.html#transform">Build/Transform to viewing frame/x along viewing vector</a> menu item. Now choose a view along y and repeat the procedure (select the <a href="menu_build.html#transform">Build/Transform to viewing frame/y along viewing vector</a> after you are satisfied).
+</p>
+<p>
+You are now ready to build a bilayer (<a href="menu_build.html#bilayer">Build/Bilayer</a> menu item).
+</p>
+<a name="manual">
+<div class="subtitle">Manual adjustment</div>
+<p>
+The midpoint of the bilayer is initialized to z=0 and the thickness to 35 Å. For manual adjustment by visual inspection, it is advisable to select a view along the x or y direction. You might also want to keep an eye at the <code>Interaction energy</code>. To obtain realistic (relative) energies, you need to select the <code>alpha-helical bundle</code> for bundles and the <code>beta-barrel</code> radiobutton for barrels, so that the appropriate lipid propensities are used (&alpha;-helical bundle [Adamian_2005]: Adamian, L., V. Nanda, W. F. DeGrado, and J. Liang. 2005. Empirical lipid propensities of amino acid residues in multispan alpha helical membrane proteins. <i>Proteins</i>. 59:496-509; &beta;-barrel [Hayat_2007]: Hayat, S., Y. Park, and V. Helms. 2007. A Statistical Approach to Deriving and Analyzing a Propensity Scale for Predicting Exposed Transmembrane Beta Barrel Residues from Protein Sequence. <i>Proc.. NIC. Workshop</i>. 36:137-140.). The interaction energy should be negative. If not, either the protein is not an integral membrane protein or the initial values for the bilayer centre/ membrane normal are poor.  
+</p>
+<p>
+Manual adjustment of the bilayer thickness for a &beta;-barrel involves matching the outer planes to the upper and lower rim of the barrel by using the <code>Midpoint</code> and <code>Thickness</code> sliders. If the barrel does not have a well-defined upper or lower rim, you better use the <code>Fit</code> button. For an &alpha;-helical bundle, you may also be able to identify upper and lower rims (most helices end at about the same z coordinate).
+</p>
+<p>
+The free energy may increase during manual adjustment, as lipid propensities of amino acid residues are approximate values and contributions of residues in loops are not well accounted for. However, the free energy should not increase a lot and it should not be positive after the adjustment.
+</p>
+<a name="display">
+<div class="subtitle">Fitting the bilayer</div>
+<p>
+If you are insecure about manually adjusting the bilayer midpoint and thickness, you can fit them by minimizing the interaction energy predicted from lipid propensities of solvent-accessible residues. To do that, make sure that the proper propensities (<code>alpha-helical bundle</code> or <code>beta-barrel</code> are selected and that the <code>fit membrane normal</code> checkbox is unchecked. Click the <code>Fit</code> button. To avoid being trapped in a local minimum, MMM performs a grid search for z from -10...10 Å and for the thickness from 20..50 Å. This is followed by simplex minimization of the free energy near the global minimum found in the grid search.
+<p>
+If you are also insecure about the membrane normal direction, check the <code>fit membrane normal</code> checkbox before fitting. Two consecutive grid searches and a final simplex minimization are performed in this case. The energy surface is very rough in this four-parameter fit. To converge to the global minimum you may have to repeat the whole process: Click <code>OK</code>, select the <code>Build/Bilayer</code> menu item once again and fit once again with the <code>fit membrane normal</code> checkbox checked.
+</p>
+<p>
+Lipid propensities are approximate quantities, hence the free energy of membrane insertion is an approximate quantity. Keep this in mind when making conclusions based on the orientation, position, and thickness of a fitted bilayer.
+</p>
+<a name="display">
+<div class="subtitle">Display control</div>
+<p>
+The bilayer is visualized by three semi-transparent planes with black edges. The outer boundaries are pink, the centre plane is a light green. Checkboxes control which of these planes are shown. The lateral extension of the planes can be adjusted with the <code>&lt;&gt;</code> (extension) and <code>&gt;&lt;</code> (compression) buttons. The visualization mode that is active when clicking the <code>OK</code> button is kept after closing the window. Clicking the <code>Cancel</code> button closes the window and deletes the visualization.
+</p>
+<a name="close">
+<div class="subtitle">Finishing bilayer building</div>
+<p>
+You can accept the bilayer by clicking the <code>OK</code> button. If the membrane normal was fitted or the midpoint displaced, the structure is transformed into a frame where the membrane normal is the z axis and the central plane is at z=0 and the model is redisplayed. Otherwise the coordinate frame is not changed. In either case the window is closed and the current visualization state of the bilayer is kept. All parameters of the bilayer are stored with the model.
+</p>
+<p>
+The <code>Cancel</code> button serves for closing the window without any change to the model. All parameters of the bilayer are lost.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2010.1, edited 2010/01/08</div>
+</body>
+</html>
+

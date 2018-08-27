@@ -1,0 +1,18 @@
+% Localization test restraints for PutP with respect to homology model PutMr
+% Restraints from B. J. Gaffney, M.D. Bradshaw, J. Freed, P. Borbat, Biophys. J. 2012, 103, 2134-2144
+# PDB PutMr % this file (GUnnar9_energyminimized.pdb) needs to be loaded into MMM before selecting localization
+# ENSEMBLE 20 3
+# OUTPUT PutP_446
+# LOCATE R446 0.5 MTSL
+5	5.02	0.71
+80	3.30	0.46
+149	2.59	0.56
+164	2.25	0.47
+210	4.40	0.81
+233	3.51	0.32
+294	4.56	0.88
+326	4.36	0.71
+391	1.73	0.48
+400	1.40	0.27
+450	2.30	0.25
+# END

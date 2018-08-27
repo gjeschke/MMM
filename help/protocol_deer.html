@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: DEER simulation protocol</title>
+</head>
+<body>
+
+<div class="pagetitle">DEER simulation protocol</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="getting_started.html"> Getting started</A> &bull; <A href="protocol_labeling_DEER.html"> Protocol for spin labeling and DEER simulation </A> &bull; <A href="protocol_load.html">Loading the protein </A> &bull; <A href="protocol_sitescan.html">Site scan</A> &uarr;  |  &darr; </pre>
+
+<div class="subtitle">Simulate DEER traces based on the computed rotamers</div>
+<p>
+MMM allows simulating a DEER trace and the distance distribution based on the computed rotamers. To simulate the DEER trace use the menu item:
+<p>
+<code>EPR/DEER</code>
+<p>
+A window will appear where you can select which computed side chains to use for the DEER simulation (in this case there are only two computed sites: 106 and 160).
+<p>
+Select the site 106, press <code>+</code> to add it in the spin system, then select the second site, press <code>+</code>.
+<p>
+Once you selected the first pair of spins, the DEER trace and the distance distribution will appear.
+<p>
+<img src="img/DEER.jpg" width="762" height="590" alt="MMM screen shot">
+</p>
+<p>
+To copy the figures, <code>Detach</code> them and copy/paste the Matlab figures by using the menu of the detached figures.
+<p>
+<div class="subtitle">Compare simulated and experimental DEER traces</div>
+<p>
+To compare the computed DEER trace with the experimental one, choose
+<p>
+<code>Load Xepr</code> (to load the original DEER trace in Xepr format)
+And choose the <code>Fit options</code> for the background.
+<p>
+Or
+<p>
+<code>Load Deer Analysis</code> (to load the processed DEER data that were saved with DeerAnalysis)
+<p>
+The latter option is recommended in the case the background correction was difficult to perform, and the analysis has been optimized. However, if you have doubts about the background correction performed in DeerAnalysis, you should also try whether the model-based approach of MMM can find a more convincing fit.
+<p>
+You find the experimental data and DeerAnalysis result for this label pair in the LHCII subdirectory of MMM.
+<p>
+The comparison will appear in the same window. To copy the comparison plots, detach the figures as before. With the <code>Save</code> button you can save the underlying data as ASCII files and process them in other programs (e.g. Origin or, if you must, Excel).
+<p>
+<img src="img/DEER_comparison.jpg" width="765" height="595" alt="MMM screen shot">
+</p>
+Comparison of the computed and experimental traces gives a qualitatively good agreement in this case. Beware that close to position 106 there is a residue with missing atoms (green amino acid in the Hierarchy window). The possible influence of missing atoms on the calculation must be investigated.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/12/15</div>
+</body>
+</html>

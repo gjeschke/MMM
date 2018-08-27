@@ -1,0 +1,9 @@
+%  #  	 PDB-ID 	 chain 	 model 	 residue 	 type 	 rotamers  	 partition fct.  	 std. dev. (nm)
+   1   	 1JSU    	 C    	  1  	    27   	 SER 	    166   	      1.11038   	      0.595
+   2   	 1JSU    	 C    	  1  	    36   	 VAL 	     78   	      0.87213   	      0.566
+   3   	 1JSU    	 C    	  1  	    45   	 LEU 	    105   	      1.07202   	      0.564
+   4   	 1JSU    	 C    	  1  	    54   	 GLU 	    105   	      1.16858   	      0.567
+   5   	 1JSU    	 C    	  1  	    63   	 ASP 	     37   	      0.45888   	      0.377
+   6   	 1JSU    	 C    	  1  	    72   	 GLY 	    127   	      1.71800   	      0.573
+   7   	 1JSU    	 C    	  1  	    81   	 LYS 	    111   	      0.62036   	      0.617
+   8   	 1JSU    	 C    	  1  	    90   	 ARG 	     65   	      1.78125   	      0.463

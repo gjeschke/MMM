@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Menu/Edit</title>
+</head>
+<body>
+
+<div class="pagetitle">Menu/Edit</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  <A href="user_interface.html"> User interface </A> <A href="main_window.html"> Main window </A> <A href="menu.html"> Menu </A> &uarr;  |  </pre>
+
+<div class="subtitle">Undo</div>
+<p>
+Undo last command, if possible. Although MMM has a multi-level undo for certain commands, not all changes in a model can be undone. Please save your model periodically or before you apply strong changes.
+</p>
+<div class="subtitle">Redo</div>
+<p>
+Redo last undone command.
+</p>
+<div class="subtitle">Annotation</div>
+<p>
+Annotate currently selected object (see <a href="annotation_window.html">annotation window</a>). This menu item is enabled only if a single object is selected.
+</p>
+<a name="keyword">
+<div class="subtitle">Find by keyword</div>
+<p>
+Find objects that are annotated with a certain keyword. See also <a href="find_by_key_window.html">keyword finder</a>. This function also allows for selecting all objects associated with a certain keyword and inspecting annotations of objects. For example, you can find residues with missing atoms, residues involved in metal binding, or residues, for which spin label rotamers were computed.
+</p>
+<div class="subtitle">Center</div>
+<p>
+Centers the current structure. All atomistic and coarse grained coordinates are changed, so that the mean of all atom coordinates is zero. This function takes time as the graphics has to be recomputed (the current structure may shift with respect to other structures).
+<a name="symmetry">
+<div class="subtitle">Symmetry frame</div>
+<p>
+Determine a symmetry axis or pseudo-symmetry axis from selected objects. For a C(n) rotation axis this requires that n objects are selected and that each of these objects has the same number of coordinates. Example: Three equivalent chains in a homotrimer define a C(3) axis. The structure is rotated so that the symmetry axis becomes the z axis. This requires recomputation of graphics and thus takes some time.
+</p>
+<p>
+If the selected n objects do not conform to C(n) symmetry, an approximate pseudo-symmetry axis is determined that minimizes the root mean square deviation of the mean coordinates of equivalent points from the axis. Note also that in some cases apparently equivalent chains may have different numbers of water atoms. In this case MMM states that the objects do not define a symmetry axis. Workaround: Define domains that contain only the amino acid residues and determine symmetry axis from them.
+<a name="bundle">
+<div class="subtitle">Assign TM helices and strands</div>
+<p>
+Allows for assignment of helices and strands as transmembrane (TM) helices and strands, for computation of the mean axis of a helix bundle or &beta;-barrel (approximate membrane normal), and for a coordinate transformation that makes this axis the <i>z</i> axis of the structure frame. This is a necessary step before <a href="menu_build.html#bilayer">building a bilayer</a>, unless the membrane normal was derived by <a href="#symmetry">symmetry</a>.
+</p>
+<p>
+A <a href="assign_TM.html">special window</a> opens to aid the assignment and to visualize the approximate membrane normal.
+</p>
+<a name="magic_fit">
+</p>
+<div class="subtitle">Superimpose structures</div>
+<p>
+Superimpose a "moving" structure onto a template structure by transforming the coordinate frame of the former structure (rotation and translation). The superposition minimizes r.m.s.d. of atom coordinates of the two structures or of selected parts of the two structures. Coordinates of the template structure do not change. Coordinates of the moving structure change.
+</p>
+<p>
+A dialog opens that allows for selection of the template and moving structure from popupmenus that contain all structures in the model. The fit mode can be selected by three radiobuttons and a checkbox. To superimpose cofactors, use the <code>all atom</code> mode. Superposition of peptide chains usually works better when selecting only backbone atoms ar even only the C<sup>&alpha;</sup> atoms.
+</p>
+<p>
+It is assumed that the same chain identifiers (uppercase letters) correspond to equivalent chains in both structures and that, within each chain, residues with the same numbers correspond to each other. If the <code>selected only</code> checkbox is deactivated (default), all common residues in all chains of both structures are used for r.m.s.d. minimization. If one or both structures have several coordinate sets (models) for a chain the first coordinate sets (<code>{1}</code> in MMM <a href="addressing.html">addressing</a>) are used for minimization. 
+</p>
+<p>
+The chains and residues to be uused in r.m.s.d. minimization can be freely selected. Selection is always on residue level. Cofactors can be selected by their residue numbers. Note that cofactors may be ignored if only backbone or C<sup>&alpha;</sup> atoms are fitted. 
+</p>
+<p>
+Selections in the two structures may differ, but only residues that are selected in both structures are considered in fitting.  
+</p>
+<p>
+The <code>Save</code> button allows for saving the affine transformation matrix (a 4&times;4 matrix specifying rotation and translation) for an active coordinate transformation of the moving structure to a text file. Use the <code>Cancel</code> button if you only want to save this matrix without actually changing coordinates of the moving structure. Use the <code>OK</code> button to actually transform the moving structure.
+<p/>
+<p>
+Do not forget to save the MMM model (project) or a PDB file of the transformed structure.
+</p>
+<a name="domain">
+<div class="subtitle">Domain</div>
+<p>
+Define domain from selected objects or add selected objects to a domain.
+</p>
+<a name="references">
+<div class="subtitle">References</div>
+<p>
+Search, import, edit, inspect, and manage literature (and webpage) references. Abstracts and fulltext can be downloaded if the link information is available.
+</p>
+<a name="reports">
+</p>
+<div class="subtitle">Reports</div>
+<p>
+A very basic editor for plain text files. Can be used for inspecting result files from DEER simulations or accessibility predictions and is automatically opened after accessibility computations. Text can be changed and saved. Not suitable for large files and not convenient for heavy editing.
+</p>
+<a name="fit">
+</p>
+<div class="subtitle">Fit from template</div>
+<p>
+Structure modeling based on sparse distance constraints and coarse-grained <a href="ENM.html">elastic network models</a>. The elastic network model is derived from a template structure, which can be either a structure of the same system in a different state or a homology model. The template structure must be the current structure in MMM (select in the <a href="hierarchy_window.html">hierarchy window</a>). There is a <a href="fit_from_template.html">dedicated window</a> for importing constraints and performing the fit. Note that this window can take minutes to an hour to open (depending on size of the structure), as setup and normal mode analysis of an <a href="ANM.html">anisotropic network model</a> is involved. 
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2010.1, edited 2010/08/13</div>
+</body>
+</html>
+

@@ -1,0 +1,94 @@
+
+--- Restraint fulfillment for model 1 with weight 0.499 ---
+
+
+Residue 71
+
+
+Residue 72
+
+
+Residue 73
+
+Beacon restraint [45.40,  5.55] Å to residue 107 fulfilled at <r> = 45.85
+Beacon restraint [46.80,  6.59] Å to residue 257 fulfilled at <r> = 45.14
+Beacon restraint [50.10,  6.73] Å to residue 280 fulfilled at <r> = 47.20
+Beacon restraint [21.00,  6.47] Å to residue 501 fulfilled at <r> = 23.74
+
+Residue 74
+
+
+Residue 75
+
+
+Residue 76
+
+Beacon restraint [43.60,  5.78] Å to residue 107 fulfilled at <r> = 45.61
+Beacon restraint [37.60,  7.58] Å to residue 257 fulfilled at <r> = 36.21
+Beacon restraint [41.70,  7.58] Å to residue 280 fulfilled at <r> = 40.75
+Beacon restraint [25.90,  6.10] Å to residue 501 fulfilled at <r> = 29.23
+
+Residue 77
+
+
+Residue 78
+
+
+Residue 79
+
+Beacon restraint [32.00,  5.05] Å to residue 107 fulfilled at <r> = 42.18
+Beacon restraint [24.20,  6.28] Å to residue 257 fulfilled at <r> = 30.47
+Beacon restraint [40.50,  5.94] Å to residue 280 fulfilled at <r> = 48.53
+Beacon restraint [23.10,  5.35] Å to residue 501 fulfilled at <r> = 18.11
+
+Residue 80
+
+
+Residue 81
+
+
+Residue 82
+
+Beacon restraint [46.40,  5.99] Å to residue 107 fulfilled at <r> = 47.39
+Beacon restraint [27.70,  7.21] Å to residue 257 fulfilled at <r> = 27.09
+Beacon restraint [51.40,  6.73] Å to residue 280 fulfilled at <r> = 46.52
+Beacon restraint [22.90,  6.79] Å to residue 501 fulfilled at <r> = 28.22
+
+Residue 83
+
+
+Residue 84
+
+
+Residue 85
+
+Beacon restraint [43.00,  5.73] Å to residue 107 fulfilled at <r> = 45.76
+Beacon restraint [20.50,  7.00] Å to residue 257 fulfilled at <r> = 23.41
+Beacon restraint [46.50,  6.40] Å to residue 280 fulfilled at <r> = 43.91
+Beacon restraint [28.90,  6.22] Å to residue 501 fulfilled at <r> = 31.78
+
+Residue 86
+
+
+Residue 87
+
+
+--- Final statistics ---
+
+Total runtime: 3 h 0 min.
+ 0.08% of maximum number of MC trials spent.
+Ensemble with 1 models generated.
+6 backbone models were generated.
+44.58% of all trials had restraint violations.
+This is a success rate of 554166.6 ppm.
+ 1.89% of all trials had internal loop backbone clashes.
+53.52% of all trials hand backbone clashes with the protein.
+The sidegroup clash threshold was  1.2 Å.
+ 0.00% of the backbone models lead to internal sidegroup clashes.
+83.33% of the backbone models lead to sidegroup clashes with the protein.
+
+The run had a time limit of: 3 h 0 min.
+The run had a limit of 500000000 Monte Carlo trials.
+20 models had been requested with an ensemble probability of 0.50.
+The number of Gaussian-type restraints was 20.
+Ramachandran statistics without secondary structure elements was used.

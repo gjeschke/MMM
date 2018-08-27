@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Demo model of LHCII</title>
+</head>
+<body>
+
+<div class="pagetitle">Demo model of LHCII</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  &uarr;  |  &darr;  <a href="#references">References</a> </pre>
+
+<div class="subtitle">Concepts</div>
+<p>
+This model of major plant light harvesting complex LHCII demonstrates who information on a biostructural problem can be organized in MMM. LHCII is a complex of a 25 kDa membrane protein with eight chlorophyll <i>a</i>, six chlorophyll <i>b</i> and four carotenoid molecules that forms trimers and crystallizes with some lipid molecules in well defined positions. Two highly resolved crystal structures are available, with PDB identifiers 1RTW (spinach)<sup>1</sup> and 2BHW (pea).<sup>2</sup> Functions of LHCII involve collection of photons from sunlight and transfer of the excitation energy towards photosynthetic reaction centers,<sup>3</sup> non-photochemical quenching of excitation energy under excessive light irradiation,<sup>4</sup> regulation of the balance between reaction rates at photosynthetic reaction centers I and II,<sup>5</sup> and probably promotion of stacking of the thylakoid membrane in chloroplasts (grana formation).<sup>6</sup> 
+<p>
+The demo model uses the following concepts:
+<ul>
+<li> <a href="#superposition">Superposition of two structures</a> </li>
+<li> <a href="#synonym">Synonyms for structure names</a> </li>
+<li> <a href="#annotation">Annotation</a> </li>
+<li> <a href="#bibliography">Bibliography (literature references)</a> </li>
+<li> <a href="#autosearch">Automatic periodic reference list update</a> </li>
+<li> <a href="#sitescan">Spin labeling sitescan</a> </li>
+</ul>
+</p>
+<a name="superposition">
+<div class="subtitle">Superposition of two structures</div>
+<p>
+The two structures are very similar.<sup>3</sup> To visualize this, the PDB file 1RWT was edited to retain only one trimer (chains B, F, and G). The edited file is available in the LHCII subfolder as <code>1RWT_BFG.pdb</code>. The original PDB file could also have been used, but this would have made the model unnecessarily large.
+<p>
+Structure 2BHW was <a href="protocol_load.html#symmetry">transformed into its symmetry frame</a>, where the C3 axis of the trimer is the <i>z</i> axis. The viewing direction is along the C3 axis, which is coincident with the membrane normal. Structure 2BHW was displayed as a ribbon model with colorscheme chain, i.e. the three chains A, B, and C are colored on a red via green to blue scale. The edited structure 1RWT was <a href="menu_edit.html#magic_fit">superimposed</a> onto the structure of 2BHW by minimizing the root mean square deviation of the backbone atom coordinates of residues 55-86 of chain B from the corresponding atom coordinates of chain B of structure 2BHW. Chains B, F, and G of structure 1RWT were displayed as a grey ribbon model.
+<p>
+The superposition is almost perfect, despite the fact that the two sequences differ in 16 amino acids. You can see these differences by <a href="selection.html">selecting</a> chains B of both models in the hierarchy window and using the <a href="menu_analysis.html#alignment">Analysis/Sequence alignment</a> menu item
+<p>
+The frame transformations and the editing of 1RWT were <a href"#annotations">annotated</a> at structure level. This is good practice- if you change anything with respect to the original structure, you should annotate it. Some changes, such as spin labeling, are automatically annotated by MMM.
+</p>
+<a name="synonym">
+<div class="subtitle">Synonyms for structure names</div>
+<p>
+PDB identifiers are somewhat cryptic. The two structures are from proteins of two different plants, spinach and pea. Hence, the <a href="commands.html#synonym">synonym</a> "spinach" was assigned to 1RWT and the synonym "pea" two 2BHW. Thus, <a href="object_concept.html">objects</a> in the two structures can be <a href="addressing.html">addressed</a> with structure name 1RWT or spinach resp. 2BHW or pea. In its own address display, MMM uses the last defined synonym, in this case the plant names.
+</p>
+<p>
+Although this is not used in the LHCII model, chains can also be assigned synonyms. This is useful for complexes of several different proteins, where chains are better addressed by their protein name than by a one-letter chain identifier (which might even differ between different structures of the same complex).
+</p>
+<a name="annotation">
+<div class="subtitle">Annotation</div>
+<p>
+Information on structure/function relationships is in terms of interactions between parts of the structure (objects in MMM) with other of parts of the structure or with substrate molecules or in terms of the consequence of a structural change on properties of the protein. Such information should be stored with the structural model and it should be assigned to the part of the structure that is concerned.
+<p>
+Hence, MMM allows for <a href="annotation_window.html">annotating</a> whole structures, chains, residues, atoms, and atom locations with free-text comments. Furthermore, keywords can be assigned to such objects, so that annotations for a certain concept can be found easily. Finally, objects can also be assigned literature <a href="#bibliography">references</a>. Hence, the annotation of an object can also inform the user of the model which papers refer to this particular object, i.e., to a residue with known functional relevance.
+</p>
+<p>
+The LHCII demo model is heavily annotated, mainly based on Ref. 3. An overview is obtained most easily via the <a href="menu_edit.html#key">Edit/Find by keyword</a> menu item, which opens the <a href="find_by_key_window.html">Keyword finder</a>.
+<p>
+The keyword list is alphabetically ordered. As an example, click on the keyword <code>conserved residues</code>. The listbox on the right now displays a list of all residues that were annotated as reserved. The first one, <code>[pea](A){1}139; GLU</code> is selected. Click the button <code>Show annotation</code> and answer the query about discarding the old selection with <code>Yes</code>. The annotation window for this residue opens. To find the annotation page about residue conservation you have to scan through the pages with <code>Page</code> control in the upper left corner of the window. You find the annotation on p. 4. You can close the annotation window with the <code>OK</code> button.
+<p>
+MMM also makes some automatic annotations when <a href="pdb_info.html">reading the PDB file</a> or when a command leads to changes in the model. Slide the keyword list down and select <code>metal centers</code>. In the <code>Referring objects</code> list on the right, select <code>[pea](A){1}601.MG; CLA</code>. Click <code>Show annotations</code>. For this automatic annotation, the annotation window automatically opens at the corresponding page. You can see here which atoms in the structure coordinate the magnesium atom of CLA 601.
+<p>
+<a name="bibliography">
+<div class="subtitle">Bibliography (literature references)</div>
+<p>
+MMM includes a basic <a href="reference_window.html">reference manager</a>, which is accessible via the <img src="img/book_sim.gif" alt="(blue book)"> toolbutton. The LHCII demo model contains 51 references on structure and function of LHCII and on structures of closely related light harvesting complexes. 
+<p>
+You can inspect a reference by clicking on the <code>Abstract</code> button in the reference window. The abstract appears in the web browser, if the reference is known to PubMed (see <code>Reference number</code> 5 as an example). When the abstract is found on PubMed, you are asked whether you want to use the PubMed record for update of the bibliographic information. This is particulary useful for references that were "in press" or available only on-line when they were first imported into the model (update then provides the full information, once available). If the reference is unknown to PubMed, no web browser window opens, but a message is displayed in the <code>Message board</code> of the main window (see <code>Reference number</code> 51 as an example).
+<p>
+You may have fulltext access via the <img src="img/webicon.gif" alt="(blue globe with green continents)"> fulltext button, depending on entitlements of your institution. If the bibliographic information includes a digital object identifier (DOI), a web browser is opened directly at the journal homepage for this paper (see <code>Reference number</code> 5 as an example. If not, MMM tries to localize the reference via SFX (see <code>Reference number</code> 50 as an example). The default setting of MMM specifies the SFX server of ETH Zurich. You may want to use the SFX server of the library of your home institution instead. Only this server will guide you to fulltext access for papers that are not available free of charge, but are subscribed by your institution.
+<p>
+<a name="autosearch">
+<div class="subtitle">Automatic periodic reference list update</div>
+<p>
+The reference manager of MMM has a <a href="search_PubMed.html">search function for PubMed</a>. By using the <code>Autosearch</code> button in the search window, you can store search terms and the date when this particular search was performed. Whenever the model is opened later, MMM checks how old the last search is and searches again if more than seven days have passed (only new references from that time period are added or updated).
+<p>
+The LHCII demo model contains two autosearches for reviews on LHCII, one with the search term "LHCII" and another one with "LHC-II". You can inspect these searches via the <code>Autosearches</code> listbox in the search window. Above the listbox you find a <code>Deactivate</code> button for deactivating this search without deleting it, and a <code>Delete</code> button for deleting it. If  a search is deactivated, an <code>Acitvate</code> button is available for reactivating it. Only the active autosearches are performed when loading the model.
+<p>
+<a name="references">
+<div class="subtitle">References</div>
+<p>
+[1] Liu, Z., H. Yan, K. Wang, T. Kuang, and J. Zhang <i> et al.</i>. 2004. Crystal structure of spinach major light-harvesting complex at 2.72 A resolution. <i>Nature</i>. 428:287-92.
+<p>
+[2] Standfuss, J., A. C.  Terwisscha van Scheltinga, M. Lamborghini, and W. Kühlbrandt. 2005. Mechanisms of photoprotection and nonphotochemical quenching in pea light-harvesting complex at 2.5 A resolution. <i>EMBO J.</i>. 24:919-28.
+<p>
+[3] Barros, T. and W. Kühlbrandt. 2009. Crystallisation, structure and function of plant light-harvesting Complex II. <i>Biochim. Biophys. Acta</i>. 1787:753-72.
+<p>
+[4] van Grondelle, R. and V. I. Novoderezhkin. 2006. Energy transfer in photosynthesis: experimental insights and quantitative models. <i>Phys. Chem. Chem. Phys.</i>. 8:793-807.
+<p>
+[5] Allen, J.F. and J. Forsberg. 2001. Molecular recognition in thylakoid structure and function. <i>Trends. Plant. Sci</i>. 6:317-26.
+<p>
+[6] Dekker, J.P. and E. J. Boekema. 2004. Supramolecular organization of thylakoid membrane proteins in green plants. <i>Biochim. Biophys. Acta</i>. 1706:12-39.
+</p>
+<a name="sitescan">
+<div class="subtitle">Spin labeling sitescan</div>
+<p>
+A <a href="spin_labeling.html">spin labeling site scan</a> was performed on chain A of structure 2BHW. An <a href="2BHW_Chain_A_site_scan_IA1_175K_conservative.html">overview of the results</a> is available in HTML format.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/12/16</div>
+</body>
+</html>
+

@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: DEER simulation</title>
+</head>
+<body>
+
+<div class="pagetitle">DEER simulation and fit</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="specialized.html"> Special tasks </A> &uarr;  |  &darr;  </pre>
+
+<div class="subtitle">DEER simulations and fits in MMM</div>
+<p>
+The DEER window is intended for the following tasks:
+<ul>
+<li>simulation of spin label distance distributions, including distance distributions between spin labels and native paramagnetic centers or between paramagnetic centers</li>
+<li>prediction of minimum and optimum values for the (maximum) dipolar evolution time in DEER/PELDOR or DQ-EPR</li>
+<li>estimation of multi-spin effects on dipolar evolution functions and form factors for systems with more than two labels</li>
+<li>direct comparison of predicted and experimental data</li>
+<li>tests on the likely reason for differences between predicted and experimental data (see <a href="#any_rotamers">Any rotamers?</a> and <a href="#range_analysis">range analysis</a> functions)<\li> 
+<li>comparison of MMM (rotamer library) predictions of distance distributions and simulated form factors or primary DEER data with those form PRONOX or MtsslWizard</li>
+</ul>
+This window can be accessed via the menu item <a href="menu_EPR.html#DEER">EPR/DEER</a>, but only if the current structure has at least two paramagnetic centers. Paramagnetic centers can be spin labels or selected atoms. See the help page on <a href="spin_labeling.html">spin labeling</a> to find out how structures are spin labeled. See the help page on <a href="selection.html">selection</a> to find out how particular atoms are selected.
+</p>
+<p>
+If you work with systems with more than two labels, it is strongly suggested to <a href="#load">load experimental data</a> before you define the spin system as this avoids unneccessary long recomputations. For spin pairs, the sequence of inputs does not matter.
+</p>
+<a name="spin_system">
+<div class="subtitle">Defining the spin system</div>
+<p>
+The labeled sites can be selected from the <code>Labels & selected atoms</code> list box, where they are listed in MMM's <a href="addressing.html">address format</a>. The first tag in square brackets is the structure tag (often a PDB identifier), the second tag in parentheses the chain identifier, the number in curly brackets a number of the coordinate set (usually always 1, except for NMR structures) and the last number without any brackets the residue number. For selected atoms, the address is followed by a semi-colon and the residue name.
+</p>
+<p>
+Note that paramagnetic centers other than spin labels are defined by the location(s) of a single atom. Centers of spin density that are defined by several atoms are not supported in this version. If the selected atom has several alternate locations, all locations will contribute to the distance distribution.
+</p>
+<p>
+Pick the site (spin-labeled residue or atom) by clicking on the corresponding line in the list box. You can then select <i>only this site</i> with the <code>!</code> button above the list, you can add this site to an existing spin system with the <code>+</code> button, and remove it from the spin system with the <code>-</code> button. Double selections of the same site or deselections of a site that is not in the spin system are ignored; a message window is displayed.
+</p>
+<p>
+The <code>++</code> button selects all labeled sites. Be careful if you have many labeled sites, as this can lead to rather long computations.
+</p>
+<p>
+The currently defined <code>Spin system</code> is displayed in the corresponding panel to the left. If the system contains at least two labels, the distance distribution and form factor are automatically computed and displayed.
+</p>
+<a name="load">
+<div class="subtitle">Loading experimental data</div>
+<p>
+Experimental data can be loaded directly in Bruker's Xepr (EleXsys) format via the <code>Load Xepr</code> button. In this case, no experimental distance distribution is available and only the primary data, not a form factor can be fitted.
+</p>
+<p>
+If you have experimental data in other formats, or want to preprocess them, or want to compare also an experimental distance distribution, use DeerAnalysis. MMM can import data from DeerAnalysis version 2006 or later. Such data are loaded via the <code>Load DeerAnalysis</code> button.
+</p>
+<a name="options">
+<div class="subtitle">Fit options</div>
+<p>
+If experimental data are available, MMM tries to fit the primary data by using the simulated distance distribution for two spins or simulated rotamer distributions for more than two spins together with a homogeneous background function. This may allow to detect errors in background correction made in model-free pre-processing.
+</p>
+<p>
+The <code><i>background model</i></code> can be selected from the corresponding popup menu. The options are <code>3D</code> (soluble proteins or membrane proteins in detergent micelles), <code>2D</code> (membrane proteins in large unilamellar vesicles or bilayers), <code>fractal</code> (may sometimes better fit membrane proteins), or <code>none</code> (may be a good option if concentration was very low). In the fractal mode, the dimension is a fit parameter.
+</p>
+<p>
+You may also decide whether or not the modulation depth is fitted (activate or deactivate the corresponding checkbox). Usually it is appropriate to treat modulation depth as afit parameter and this is also the default behavior. When loading data from DeerAnalysis, the modulation depth is initialized according to the background correction that was performed in DeerAnalysis. Otherwise, you can directly input modulation depth in the corresponding edit field.
+</p>
+<a name="twospin">
+<div class="subtitle">Spin label pairs</div>
+<p>
+In many cases the system of interest contains just two spin labels. After <a href="#spin_system">selecting the labels</a> the predicted <code>Distance distribution</code> is automatically displayed as a red plot. If experimental data were <a href="#load">loaded</a> in DeerAnalysis format, the experimental distribution is displayed as a black line. The C<sup>&alpha;</sup>-C<sup>&alpha;</sup> distance is plotted as a vertical dotted green line. The distance range is automatically selected so that it contains all plotted distributions and the C<sup>&alpha;</sup>-C<sup>&alpha;</sup> distance. Contributions at distances below 1 nm are suppressed in the distance distribution and distances below 1.5 nm in the simulation.
+</p>
+<p>
+MMM determines the mean value <code>&lt;r&gt;</code> and standard deviation <code>sr</code> of the predicted distance distribution, excluding distances below 1 nm. Furthermore, the program makes two predictions for the maximum dipolar evolution time (interpulse delay &tau;<sub>2</sub> in four-pulse DEER). The minimum dipolar evolution time <code><i>Minimum tmax</i></code> should suffice to obtain a reliable experimental value for the mean distance. The optimum dipolar evolution time <code><i>Optimum tmax</i></code> should provide a reliable value for the width, and in most cases, also a reliable shape of asymmetric distributions. Both values are given in microseconds. All values are displayed left of the plot.
+<p>
+The form factor (dipolar evolution function after background correction) is also automatically computed in a time range between zero and the optimum dipolar dipolar evolution time. If the optimum dipolar evolution time exceeds 8 &mu;s, the simulated data are restricted to the range between 0 and 8 &mu;s.
+</p>
+<p>
+If experimental data are available, the form factor is computed in the time range of the experimental data, but not before zero time. If the experimental data were loaded in Xepr (EleXsys) format, the <code><i>Zero time</i></code> can be manually adjusted in the corresponding edit field. For data loaded in DeerAnalysis format, no further zero time correction is possible.
+</p>
+<p>
+The <code>DEER trace</code> plot can be either the form factor (if no experimental data are availbale or the <code>Form factor</code> checkbox is activated) or the primary data. If primary data were loaded in Xepr format, form factor display is not possible, the corresponding checkbox is disabled.
+</p>
+<p>
+In either case the predicted data are displayed as a red trace and the experimental data- if any are availabel- as a black trace. A normalized root mean square deviation between experimental and simulated data is displayed in the <code><i>r.m.s.d.</i></code> field left of the plot. The modulation depth is automatically fitted unless the <code>Fit modulation depth</code> checkbox in the <code>Fit options</code> panel is deactivated (do this only if you have a good reason). The fit value is displayed in the edit field right of the checkbox.
+</p>
+<p>
+If primary experimental data are displayed, the background contribution is also automatically fitted, according to the <code><i>Background model</i></code> selected in the corresponding popup menu of the <code>Fit options</code> panel. Use model <code>none</code> if you do not want a background fit. The fit value <code>Background decay</code> constant is also displayed in the <code>Fit options</code> panel.
+</p>
+<a name="multispin">
+<div class="subtitle">More than two spin labels</div>
+<p>
+If the spin system contains more than two labels most functionality is the same as for <a href="#twospin">spin pairs</a>. The predicted mean distance, standard deviation, minimum and optimum dipolar evolution time now correspond to the total distance distribution, which is the sum of all pair distributions. This distribution is displayed as a red line in the <code>Distance distribution</code> plot.
+</p>
+<p>
+The individual distributions and their corresponding C<sup>&alpha;</sup>-C<sup>&alpha;</sup> distance are displayed in shades between green (first pair) and blue (last pair). This traces are clickable. When clicked, they are displayed as bold lines and the corresponding spin pair is shown in the <code><i>Sel. distr.</i></code> field above the plot.
+</p>
+<p>
+The form factor and primary data are now simulated considering multi-spin effects (combination frequencies). This takes much longer than a pair computation. Up to expected computation times of about 2 minutes on a current PC, a systematic computation for combinations of all rotamers of all labels is performed. If the expected computation time is longer, a Monte Carlo simulation is performed for 100000 arbitrary orientations and selections of rotamer combinations. In all multi-spin simulations, distances shorter than 1.5 nm are <i>not</i> suppressed.
+</p>
+<p>
+The importance of multi-spin correlations depends on modulation depth (G. Jeschke, M. Sajid, M. Schulte, A. Godt, <i>Phys. Chem. Chem.
+Phys.</i> <b>2009</b>, <i>11</i>, 6580-6591.). If experimental data were imported from DeerAnalysis, the modulation depth determined by background fitting in DeerAnalysis is assumed as total experimental modulation depth. Otherwise a default value of 0.4 is assumed. You can input the total modulation depth in the edit field right of the <code><i>Fit modulation depth</i></code> checkbox, independently of the presence of experimental data. A new input leads to re-computation of multi-spin effects. Note that the input value changes due to automatic fitting of the modulation depth (if selected), yet the input value is still used for the simulation. If you want the fitted value to be used in the simulation, you have to explicitly input the same value that is displayed in the edit field after the fit (sorry, there are reasons for that).
+</p>
+<p>
+If no experimental data are present, the form factor simulated without multi-spin correlations is also displayed as a magenta dotted trace.
+</p>
+<a name="copy">
+<div class="subtitle">Copying and printing plots</div>
+<p>
+The plots can be detached as separate Matlab figures via the corresponding <code>Detach</code> buttons. Use the figure menu to copy or plot (or edit) them.
+</p>
+<div class="subtitle">Saving simulated data</div>
+<p>
+The <code>Save</code> button in the left bottom corner of the window can be used to save the simulated data in text (ASCII) format, similar to the output format of DeerAnalysis. 
+In any case the three files <code>*_res.txt</code>,  <code>*_distr.dat</code> and <code>*_fit.dat</code> are saved, where * stands for the basis file name that can be given in a file dialog window. The file <code>*_res.txt</code> contains information on simulation and fit parameters, the file <code>*_distr.dat</code> the distance distribution and the file <code>*_fit.dat</code> the form factor. The contents of file <code>*_res.txt</code> are self-explaining.
+</p>
+<p>
+In file <code>*_distr.dat</code> the first column is the distance axis. If experimental data were loaded from DeerAnalysis, the second column is the experimental distance distribution and the third column the predicted one. Otherwise, the second column is the predicted distance distribution. The distance range extends from 0 to 15 nm.
+</p>
+<p>
+Likewise, in file <code>*_fit.dat</code> the first column is the time axis. If any experimental data were loaded, the second column is the experimental form factor and the third column the predicted one. Otherwise, the second column is the predicted form factor.
+</p>
+<p>
+A fourth file <code>*_bckg.dat</code> exists if and only if experimental data were loaded. This file contains in the first column the time axis, in the second column the primary experimental data (zero time corrected), in the third column the fitted background function, and in the fourth column the predicted primary data.
+</p>
+<a name="any_rotamers">
+<div class="subtitle">"Any rotamers?"- Is the assumed backbone model wrong?</div>
+<p>
+There exist four major causes for deviations between experimental distance distributions and those predicted <i>via</i> rotamer computations:
+<ul>
+<li>precision of the rotamer library approach is limited</li>
+<li>sidechain conformations in the underlying model (for instance in the crystal structure used to compute rotamers) is not the same as in the EPR sample (crystal vs. solution, detergent vs. lipid environment)</li>
+<li>the experimental distribution contains artefacts due to multispin contributions, aggregation, or imperfect background correction</li>
+<li>the structure of the protein or nucleic acid backbone differs between the underlying model and the EPR measurement</li>
+</ul>
+It may be of methodological interest to study the first two causes and it is certainly important to understand the third one. However, the fourth one is of most interest in a biological context.
+<p>
+The <code>Any rotamers?</code> button helps to check, whether the deviation could be explained by one of the first two causes or both. The algorithm is based on the idea that the complete rotamer library (e.g. 210 rotamers for MTSSL) 
+samples the full conformational space available to the label. If no combination of rotamers at the two labeling sites can explain a measured distances, this distance must have arisen from either experimental imperfections
+or a difference in backbone structure between model and reality. In particular, if the major fraction of a distance distribution cannot be explained by any combination of rotamers and singly labelled samples exclude 
+strong aggregation or background problems, the protein structure in the EPR tube differs from the structural model.
+</p>
+<p>
+The <code>Any rotamers?</code> button is accessible only after an experimental distance distribution was loaded. When you click on it, all pairs of rotamers are used to fit the experimental distance distribution, 
+regardless of predicted rotamer populations. This neglects any clashes with neighboring sidechains or other parts of the protein and any conformational preferences of the labels. The best-fit distribution is displayed as a thick red dotted line.
+If this distribution covers the major part of the experimental distribution, minor differences are most likely only background or aggregation problems, perhaps also a minor contribution from othe backbone conformations.
+If a major part of the experimental distribution is not covered, there is no way for the underlying structural model to be in agreement with experiment. 
+</p>
+<p>
+Note that the argument cannot be turned around. If "Any rotamers?" can fit the experimental distribution, there might still be significant differences between backbone structure in the model and in reality. Better understanding can be gained with the <code>Range analysis</code> feature described below.
+</p>
+<a name="range_analysis">
+<div class="subtitle">"Range analysis"- Which rotamers are over- or underrepresented?</div>
+<p>
+Suppose there is a difference between predicted and experimental distance distribution that can be mended by "Any rotamers?" (see above). Then the <code>Range analysis</code> feature 
+may help to understand the cause.
+<p>
+Range analysis provides statistics on &chi;<sub>1</sub>/&chi;<sub>2</sub> rotamers in a text file and visualization of rotamers that significantly contribute to the distance distribution
+in a certain range. To use visualization, you need to display the cloud of spin label rotamers before you open the DEER window. You should also color this cloud for contrast with black, for instance by setting residue color to red.
+<p>
+Select a range by direct input into the edit fields for the left (blue) and right (magenta) cursor, or use the <code>&lt;</code> and <code>&gt;</code> buttons for these cursors.
+Now click the <code>Range analysis</code> button. The algorithm finds all rotamer pairs that contribute significantly to the distance distribution in this range. From the list of pairs, the contributing rotamers at the 
+first and second site will be determined. Rotamer statistics for the nine possible &chi;<sub>1</sub>/&chi;<sub>2</sub> rotamers [(m,m); (m,t); (m,p); (t,m); (t,t); (t,p); (p,m); (p,t); (p,p)] is computed 
+both for the full distribution and for the selected range. Comparison in a table shows whether a given &chi;<sub>1</sub>/&chi;<sub>2</sub> rotamer contributes more or less in this range compared to the full distribution.
+The rotamers contributing significantly in the selected range are colored black.
+<p>
+If the whole clouds are colored black and the tables show no significant differences in &chi;<sub>1</sub>/&chi;<sub>2</sub> distributions, rotamers in the selected range are not a specific subgroup of all rotamers.
+However, sometimes the situation is clear cut and a certain brach of the cloud (half-cloud) is black, the other one still of the original color. This phenomenon may be seen for one or both sides. 
+It is then usually correlated to a preference for certain &chi;<sub>1</sub>/&chi;<sub>2</sub> rotamers. 
+</p>
+<p>
+Suppose now that you have analyzed a range which occurs in the predicted distribution, but not in the experimental one. In this case you know that the black branch of rotamers is relatively suppressed with respect to the red branch.
+Depending on your system, this may have one of the following reasons:
+<ul>
+<li>nearby sidechains have different conformations in the EPR tube than in the underlying model</li>
+<li>your protein interacts with another protein and the suppressed branch is near the binding interface</li>
+<li>preferential interactions favour the red branch, but are not accounted for in the current rotamer computation algorithm</li>
+</ul>
+Note that the inverse problem of computing contributing rotamers from a known distance distribution is not unique. In general, if several pairs contribute at the same distance, their relative population is unknown.
+Therefore, the algorithm is only approximate, the result still depends somewhat on the rotamer populations from the original computation. For this reason it is good practice to look at least at two distance distributions for a residue where you suspect 
+suppression (or enhancement) of a branch of the rotamer cloud. If analysis of both distributions suggests similar branch suppression, the effect is probably real.
+<a name="PRONOX">
+<div class="subtitle">Comparison mit PRONOX</div>
+<p>
+For pair distributions, comparison with PRONOX (M. M. Hatmal, Y. Y. Li, Hegde BG, Hegde PB, C. C. Jao, R. Langen, I. S. Haworth, Biopolymers 97 (2012) 35-44) has been implemented. PRONOX can be run on a web server that can in turn be accessed with the <code>P</code> pushbutton below the panel <code>Labels & selected atoms</code>. PRONOX expects absolute residue numbers in the PDB file as input. The absolute number for the currently picked residue is given at the bottom of the  <code>Labels & selected atoms</code> panel. Note that you must specifically tell PRONOX when you wish to label a glycine (results are wrong when you forget this). You may be better off using the low clash mode (0.4 instead of 0.75 in column vdW for both sites) by default (see G. Jeschke, Progr. Nucl. Magn. Reson. Spectr. 2013, submitted).
+<p>
+After running PRONOX, you end up at the result page. Save the distance file by right-clicking on the view <code>distances</code> link. By default this file has the extension <code>.add</code>. You may want to inspect the results before by left-clicking on the same link and scrolling down (this wil show you whether the computation was successful).
+</p>
+<p>
+Now you can load the <code>.add</code> file into MMM using the <code>Load PRONOX</code> pushbutton. Depending on the number of conformations this can take quite long. If an MMM distance distribution is already displayed at this time, the PRONOX distance distribution will be shown as a dark blue dotted line. If experimental data are loaded these will also be shown as solid black lines and the PRONOX DEER trace or form factor as a dark blue dotted line.
+</p>
+<p>
+The PRONOX data are not displayed unless also an MMM distance distribution (red line) is displayed. They remain stored, however, for future display until the DEER window is closed. PRONOX data can be overwritten by loading a new data set.
+</p>
+<a name="MtsslWizard">
+<div class="subtitle">Comparison mit MtsslWizard</div>
+<p>
+For pair distributions, comparison with MtsslWizard (G. Hagelueken, R. Ward, J. H. Naismith, O. Schiemann, Appl. Magn. Reson. 42 (2012) 377-391) has been implemented. MtsslWizard is a plugin for PyMOL, see the corresponding <a href="http://pymolwiki.org/index.php/MtsslWizard">PyMOL Wiki page</a>. You need to install PyMOL and the plugin to work with it. Save the results as a <code>.txt</code> file, as is default in MtsslWizard. 
+<p>
+Now you can load the <code>.txt</code> file into MMM using the <code>Load MtsslWizard</code> pushbutton. This can take a few seconds. If an MMM distance distribution is already displayed at this time, the MtsslWizard distance distribution will be shown as a dark green dotted line. If experimental data are loaded these will be shown as solid black lines and the MtsslWizard DEER trace or form factor as a dark green dotted line.
+</p>
+<p>
+The MtsslWizard data are not displayed unless also an MMM distance distribution (red line) is displayed. They remain stored, however, for future display until the DEER window is closed. MtsslWizard data can be overwritten by loading a new data set.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2013, edited 2013/02/14</div>
+</body>
+</html>
+

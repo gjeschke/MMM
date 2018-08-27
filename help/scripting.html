@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Scripting</title>
+</head>
+<body>
+
+<div class="pagetitle">Scripting</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  &uarr;  |  &darr;  <A href="commands.html"> Commands </a> </pre>
+
+<div class="subtitle">What is scripting?</div>
+<p>
+Some tasks in MMM are best performed using the basic <a href="commands.html">command language</a>. Although commands can be input one by one <i>via</i> the <a href="command_line.html">command line</a>, it may sometimes be more convenient and reliable to write commented command scripts.
+</p>
+<p>
+In particular, definition of secondary structure elements and of synonyms for the structure name and for particular chains is most conveniently performed directly after reading a PDB file using an <a href="#initialization">initialization script</a>.
+</p>
+<div class="subtitle">Syntax</div>
+<p>
+The same <a href="commands.html">command syntax</a>applies as for the <a href="command_line.html">command line</a>. In addition, comments can be added after a command or as separate lines. A comment is introduced by the <code>%</code> character. In pure comment lines the <code>%</code> character must be the first character, except for spaces.
+</p>
+<p>
+Nonexisting commands or commands with wrong arguments are simply ignored and the remaining script is further executed. The corresponding error messages are shown in the <a href="message_board.html">message board</a>.
+</p>
+<a name="initialization">
+<div class="subtitle">Initialization scripts</div>
+<h4>Introduction</h4>
+<p>
+Initialization scripts are useful when a structure is read from a PDB file. For instance, secondary structure information in PDB files is often nonsensical and therefore is not used by most protein visualization programs. MMM uses the assignments of secondary structure types in a PDB file (but not the lists of helices and sheets, which are often not self-consistent), but it is still better to redefine secondary structure elements, using the nomenclature and residue ranges given in an accompanying paper.
+</p>
+<p>
+Furthermore, the common names of a protein complex or of its constituents (peptide chains) cannot be reliably extracted from PDB files. These names can be defined as synonyms. Otherwise, the structure can be addressed only by the PDB identifier and the chains by uppercase characters.
+</p>
+<p>
+Finally, default display behavior (ribbon plot for peptide chains, no display of cofactors) may not be intended. If an initialization script is performed, MMM suppresses default display. If the script does not contain show commands, nothing is displayed, although the structure is still loaded.
+</p>
+<h4>How to write an initialization script?</h4>
+<p>
+An initialization script may contain any <a href="commands.html">command</a> that could be executed from the <a href="command_line.html">command line</a>, except for the <code>undo</code> and <code>redo</code> commands. It must have the same file name as the PDB file (except for the extension), must have the extension <code>.mmm</code> and must be stored in the same directory as the PDB file.
+</p>
+<h4>How is the initialization script executed?</h4>
+<p>
+After reading a PDB file, MMM checks if a corresponding initialization script exists. If so, the user is asked whether it should be run. If the user answers 'No', secondary structure definitions from the PDB file are locked and default graphics is displayed (ribbon plot without cofactors). If the user answers 'Yes', secondary structure definitions are unlocked and the script is executed. Default graphics display is skipped. The script defines which graphics, if any, is to be displayed.
+</p>
+<h4>Why to write an initialization script?</h4>
+<p>
+If you want to redefine secondary structure, do it in an initialization script. Every other way is bound to create a mess. And you want to redefine it, as the secondary structure information in a PDB file often is a mess, too.
+</p>
+<div class="subtitle">An example script</div>
+<p>
+This is an initialization script for PDB file 1ZCD.
+</p>
+<p><code>synonym [*] NhaA % assigns the synonym 'NhaA' to the current structure</code> 
+<p><code>undefine % undefines any existing secondary structure elements (defined during PDB read)</code>
+<p><code>% the following lines define transmembrane helices and the strands mentioned in the accompanying paper</code>
+<p><code>loop [NhaA] l1 9 11</code>
+<p><code>helix [NhaA] I 12 30</code>
+<p><code>loop [NhaA] l2 31 43</code>
+<p><code>sheet [NhaA] a 44 50</code>
+<p><code>loop [NhaA] l3 51 52</code>
+<p><code>sheet [NhaA] b 53 58</code>
+<p><code>helix [NhaA] II 59 85</code>
+<p><code>loop [NhaA] l4 86 94</code>
+<p><code>helix [NhaA] II 95 116</code>
+<p><code>loop [NhaA] l5 117 120</code>
+<p><code>helix [NhaA] IVp 121 131</code>
+<p><code>loop [NhaA] lIV 132 133</code>
+<p><code>helix [NhaA] IVc 134 143</code>
+<p><code>loop [NhaA] l6 144 149</code>
+<p><code>helix [NhaA] V 150 175</code>
+<p><code>loop [NhaA] l7 176 181</code>
+<p><code>helix [NhaA] VI 182 200</code>
+<p><code>loop [NhaA] l8 201 204</code>
+<p><code>helix [NhaA] VII 205 218</code>
+<p><code>loop [NhaA] l9 219 222</code>
+<p><code>helix [NhaA] VIII 223 236</code>
+<p><code>loop [NhaA] l10 237 246</code>
+<p><code>helix [NhaA] IX 247 271</code>
+<p><code>loop [NhaA] l11 272 289</code>
+<p><code>helix [NhaA] X 290 311</code>
+<p><code>loop [NhaA] l12 312 326</code>
+<p><code>helix [NhaA] XIc 327 336</code>
+<p><code>loop [NhaA] lIX 337 339</code>
+<p><code>helix [NhaA] XIp 340 350</code>
+<p><code>loop [NhaA] l13 351 356</code>
+<p><code>helix [NhaA] XII 357 382</code>
+<p><code>loop [NhaA] l14 383 384</code>
+<p><code>show [NhaA] ribbon % display a ribbon plot</code>
+<p><code>% and show the residues in the strands also as stick plots</code> 
+<p><code>show [NhaA](A)&lt;E.a&gt; stick</code>
+<p><code>show [NhaA](A)&lt;E.b&gt; stick</code>
+<p><code>detach % detaches the model panel into a separate model window</code>
+</p>
+<div class="subtitle">Limitations</div>
+<p>
+The <a href="commands.html#undo">undo</a> and <a href="commands.html#redo">redo</a> commands cannot be executed in scripts.
+</p>
+<p>
+In scripts, commands that cannot be undone are performed without previous query. 
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/10/06</div>
+</body>
+</html>
+

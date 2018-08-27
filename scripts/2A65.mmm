@@ -1,0 +1,27 @@
+echo Redefining secondary structure according to Yamashita et al.,
+echo Nature, 2005, 437, 215-223
+hide [2A65]
+unlock 
+undefine [2A65]
+helix [2A65] TM1 11 37 TM
+helix [2A65] TM2 41 71 TM
+helix [2A65] IL1 77 84
+helix [2A65] TM3 88 124 TM
+helix [2A65] EL2 137 152
+helix [2A65] TM4 166 184 TM
+helix [2A65] TM5 191 213 TM
+sheet [2A65] B1 217 218
+sheet [2A65] B2 221 222
+helix [2A65] EL3 223 231
+helix [2A65] TM6 241 266 TM
+helix [2A65] TM7 276 305 TM
+helix [2A65] EL4a 308 317
+helix [2A65] EL4b 321 331
+helix [2A65] TM8 336 369 TM
+helix [2A65] TM9 375 395 TM
+helix [2A65] TM10 399 424 TM
+helix [2A65] IL5 429 437
+helix [2A65] TM11 447 477 TM
+helix [2A65] TM12 483 513 TM
+lock
+show [2A65] ribbon

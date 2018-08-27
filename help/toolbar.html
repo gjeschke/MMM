@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Toolbar</title>
+</head>
+<body>
+
+<div class="pagetitle">Toolbar</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  <A href="user_interface.html"> User interface </A> <A href="main_window.html"> Main window </A> &uarr;  |  </pre>
+
+<div class="subtitle">What can you do with the toolbar?</div>
+<p>
+The toolbar provides quick access to the most frequently used functions of MMM. Follows a description of all buttons.
+</p>
+<div class="subtitle"><img src="img/toolbar_save.png" alt="(blue diskette symbol)"> Save</div>
+<p>
+Saves the current model in a <i>temporary</i> directory with a generic file name based on date and time (backup save). The model is saved in MMM's binary format and includes all display and selection information, except for the state of the user interface (open windows).
+</p>
+<p>
+Note that the file is not saved with the file name and in the directory that were given in the previous use of the <a href="menu_file.html#save_as">File/Save as..</a> menu item, although this is the standard behavior of most programs. MMM does not do that to avoid that you unintentionally overwrite an old file. The reasoning is that you may want to keep copies of different versions of a model, for instance, with different coarse graining or different types of labels attached. 
+</p>
+<p>
+Note also that MMM checks every 30 days whether there are old files (older than 30 days) in its temporary directory and offers the user to delete them. Hence, you are strongly advised to copy temporary files that you actually want to keep to another directory immediately after an MMM session. This is particularly important if several users share the same installation of MMM.
+</p>
+<div class="subtitle"><img src="img/toolbar_open.png" alt="(manila folder symbol)"> Open</div>
+Opens an MMM model, asking for the file name. The file dialog starts in the current directory. Change to the /tmp directory to select the last saved file for recovery.
+<div class="subtitle"><img src="img/toolbar_lock.png" alt="(golden padlock)"> Lock (toggle button)</div>
+<p>
+Locks/unlocks secondary structure definitions. By default, secondary structure definitions are locked except during execution of an initialization script immediately after loading a PDB file. 
+</p>
+<p>
+The reason for locking secondary structure assignments is maintaining consistency in coarse graining. When locked, the user cannot indvertently redefine secondary structure by clicking or executing secondary structure definition commands.
+</p>
+<a name="detach">
+<div class="subtitle"><img src="img/toolbar_detach.png" alt="(miniature helix bundle with curved arrow to the top left)"> Detach</div>
+Detaches the 3D display as a separate <a href="model_window.html">model window</a> that can be resized and maximized. Use this if you want to copy the model to the clipboard or if you want to see details. Zooming the model and detail views also require a detached model window. The 3D graphics can be reattached by toolbar button, display submenu item or simply by closing the model window.
+<div class="subtitle"><img src="img/toolbar_attach.png" alt="(miniature helix bundle with curved arrow to the bottom right)"> Attach</div>
+Reattaches the 3D display to the main window. If the 3D graphics is too large, press the "View all" button.
+<a name="view_selection">
+<div class="subtitle"><img src="img/toolbar_view_selection.png" alt="(red arrow pointing down right to a quarter green sphere)"> View selected</div>
+<p>
+Zooms the camera so that the selected objects completely fill the model window. This works properly only with the detached model window (graphics is not clipped to the model panel).
+</p>
+<div class="subtitle"><img src="img/toolbar_view_all.png" alt="(four red arrow pointing to a full green sphere)"> View all</div>
+<p>
+Zooms the camera so that all displayed graphics is seen.
+</p>
+<div class="subtitle"><img src="img/toolbar_select.png" alt="(cursor arrow)"> Selection mode (toggle button)</div>
+<p>
+When selection mode is on (button pressed down), left clicking on a graphic object selects the corresponding structure object and undoes previous selections.
+</p>
+<p>
+Left clicking, while the shift key is pressed, selects the clicked object in addition to the previous selection. This is also achieved by clicking with the middle mouse button.
+</p>
+<p>
+Left clicking on a selected object, when the Ctrl key is pressed, unselects this object and does not change the remaining selections. This is also achieved by clicking with the right mouse button.
+</p>
+<p>
+A (left) double click on an object removes all selections.
+</p>
+<p>
+The current selections are listed in the message board. Note that only up to about 20 selected objects fit the message board (the last 20 are displayed).
+</p>
+<p>
+The Selection mode button is released when clicking the Rotate, Zoom, or Pan buttons. Note that the Selection button has to be activated if the 3D graphics is attached and the <a href="command_line.html">command line</a> is to be used.
+</p>
+<div class="subtitle"><img src="img/toolbar_rotate.png" alt="(circular arrow)"> Rotate (toggle button)</div>
+<p>
+When Rotate is on (button pressed down), mouse clicks and movements in the <a href="model_panel.html">model panel</a> or <a href="model_window.html">model window</a> allow for rotating the object.
+</p>
+<p>
+Click left and draw for rotating the camera around the object, release to update the view indicator in the <a href"view_control.html">view control panel</a>.
+</p>
+<p> Click left while pressing the shift key (or click with the middle button) and draw to rotate the vertical axis of the camera around the view direction.
+</p>
+<p>
+The Rotate button is released when clicking the Selection mode, Zoom, or Pan buttons.
+</p>
+<p>
+In the Rotate mode, atom graphics may be partially or fully suppressed to avoid extreme slowdown of the graphical user interface. Atom graphics is automatically restored to the previous state when you return to the Selection mode or during copying or exporting of the visualization.
+</p>
+<div class="subtitle"><img src="img/toolbar_zoom.png" alt="(diagonal double arrow)"> Zoom (toggle button)</div>
+<p>
+When Zoom is on (button pressed down), mouse clicks and movements in the <a href="model_panel.html">model panel</a> or <a href="model_window.html">model window</a> allow for zooming the object.
+</p>
+<p>
+Click left and draw down to enlarge the graphics (zoom in), click and draw up to shrink it (zoom out).
+</p>
+<p> Click left while pressing the shift key (or click with the middle button) to pan (move the graphics midpoint by drawing) while in Zoom mode..
+</p>
+<p>
+The Zoom button is released when clicking the Selection mode, Rotate, or Pan buttons.
+</p>
+<p>
+In the Zoom mode, atom graphics may be partially or fully suppressed to avoid extreme slowdown of the graphical user interface. Atom graphics is automatically restored to the previous state when you return to the Selection mode or during copying or exporting of the visualization.
+</p>
+<div class="subtitle"><img src="img/toolbar_pan.png" alt="(pink hand)"> Pan (toggle button)</div>
+<p>
+When Pan is on (button pressed down), mouse clicks and movements in the <a href="model_panel.html">model panel</a> or <a href="model_window.html">model window</a> move the midpoint of the graphics in the viewing plane.
+</p>
+<p>
+The Pan button is released when clicking the Selection mode, Rotate, or Zoom buttons.
+</p>
+<p>
+In the Pan mode, atom graphics may be partially or fully suppressed to avoid extreme slowdown of the graphical user interface. Atom graphics is automatically restored to the previous state when you return to the Selection mode or during copying or exporting of the visualization.
+</p>
+<a name="color">
+<div class="subtitle"><img src="img/toolbar_color.png" alt="(sphere with rainbow stripes)"> Color selection</div>
+<p>
+Assign a uniform color or a color scheme to the currently selected objects. A <a href="color_selection.html">color selection window</a> opens.
+</p>
+<a name="transparency">
+<div class="subtitle"><img src="img/toolbar_transparency.png" alt="(overlapping blue and mauve spheres)"> Transparency selection</div>
+<p>
+Assign a transparency to the currently selected objects. A <a href="transparency_selection.html">transparency selection window</a> opens.
+</p>
+<a name="graphics">
+<div class="subtitle"><img src="img/toolbar_graphics.png" alt="(cutout of a ball&stick model)"> Graphics mode</div>
+<p>
+Assign graphics modes to the currently selected objects. A <a href="graphics_window.html">graphics mode window</a> opens.
+</p>
+<a name="copy">
+<div class="subtitle"><img src="img/camera.gif" alt="(camera)"> Copy to clipboard</div>
+<p>
+Copies the current 3D visualization in the detached <a href="model_window.html">model window</a> to the clipboard. This toolbutton is active only when the model window is detached. If necessary, use the <a href="#detach">detach toolbutton</a> before.
+</p>
+<a name="annotation">
+<div class="subtitle"><img src="img/toolbar_annotation.png" alt="(white i on green background)"> Annotation</div>
+<p>
+Is active only if exactly one object is selected and allows for editing the annotations (notes, keywords, and references) for this object. An <a href="annotation_window.html">annotation window</a> opens.
+</p>
+<a name="context">
+<div class="subtitle"><img src="img/toolbar_context.png" alt="(three red question marks near a green sphere)"> Context</div>
+<p>
+Is active only if exactly one object is selected. Searches for other objects on the same hierarchy level that are close to the selected object.
+</p>
+<p>
+A dialog opens for specifying the context radius. Default values are suggested, 3.5 Å for atoms and atom locations, 8 Å for residues, and 40 Å for chains.
+</p>
+<p>
+Results are displayed in the message board.
+</p>
+<a name="distance">
+<div class="subtitle"><img src="img/toolbar_distance.png" alt="(two green spheres connected by a red stick)"> Distance</div>
+<p>
+Is active only if exactly two objects are selected. Displays the distance between atoms (and atom locations) or the distance between mean coordinates of other objects (residues, cofactors, chains).
+</p>
+<p>
+Results are displayed in the message board.
+</p>
+<a name="angle">
+<div class="subtitle"><img src="img/toolbar_angle.png" alt="(three green spheres connected by two black sticks and a red stick)"> Angle</div>
+<p>
+Is active only if exactly three objects are selected. Displays the angle between objects at the second selected object. For objects larger than atoms, mean coordinates are used.
+</p>
+<p>
+Results are displayed in the message board.
+</p>
+<a name="dihedral">
+<div class="subtitle"><img src="img/toolbar_dihedral.png" alt="(four green spheres connected by black sticks and two red circle segtments)"> Dihedral</div>
+<p>
+Is active only if exactly four objects are selected. Displays the dihedral angle (torsion angle) defined by these objects in the sequence of selection (see selection list in message board). For objects larger than atoms, mean coordinates are used.
+</p>
+<p>
+Results are displayed in the message board.
+</p>
+<div class="subtitle"><img src="img/toolbar_labeling.png" alt="(black N-O bond with red dot for unpaired electron)"> Spin labeling</div>
+<p>
+Attach spin label to the selected residues. Selected objects other than residues are ignored. Use Menu/EPR/Site scan to do this for a whole chain.
+</p>
+<p>
+A window for specifying <a href="labeling_window.html">labeling conditions</a> opens. 
+</p>
+<p>
+After specifying conditions and clicking on OK, computation progress is displayed in the message board. A status bar window shows progress and approximated computation time left for each single residue. The computation for a residue can be interrupted by trying to close the status bar window.
+</p>
+<p>
+Note that these computations can take long (several minutes per residue). Consider running a site scan (see <a href="menu_EPR.html">submenu EPR</a>) over lunch break or over night. With a completed site scan, (in silico) spin labeling takes only seconds and you know beforehand which sites are favorable.
+</p>
+<a name="references">
+<div class="subtitle"><img src="img/book_sim.gif" alt="(blue book)"> References</div>
+<p>
+Search, import, edit, inspect, and manage literature (and webpage) references. Abstracts and fulltext can be downloaded if the link information is available.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/11/11</div>
+</body>
+</html>
+

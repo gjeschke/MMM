@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Selection</title>
+</head>
+<body>
+
+<div class="pagetitle">Selection</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  |  &darr; </pre>
+
+<div class="subtitle">What is selection good for?</div>
+<p>
+Interactive manipulation and <a href="visualization.html">visualization</a> of a structural model requires that functions are applied to only part of the structure. This part of the structure is defined by the selected <a href="object_concept.html">objects</a>, such as selected chains, residues, or atoms. For instance, you may want to change color of only a few residues involved in substrate binding of an enzyme. You can explicitly select the objects as explained below or implicitly select them by an <a href="addressing.html">address</a> as a <a href="commands.html">command</a> argument, in this case the first argument of the <code>color</code> command.
+</p>
+<P>
+At any time no object can be exlicitly selected, a single object can be selected, or a collection of objects at the same or at different hierarchy levels can be selected.
+</p>
+<div class="subtitle">Storing a selection</div>
+<p>
+You might want to store complex selections for later use. This can be done by defining the selection as a domain, using either the <a href="commands.html#domain">domain * <i>domain_name</i></a> command or the <a href="menu_edit.html#domain">Edit/Domain...</a> menu item.
+</p>
+<div class="subtitle">Interactive selection</div>
+<p>
+<h4>Hierarchy window</h4>
+The <a href="hierarchy_window.html">hierarchy window</a> privides an overview of all structures in the model from structure model, via chains, different coordinate sets for chains in NMR models, residues and cofactors, atoms, down to atom locations. On each level objects can be picked and selected by mouse clicks. This is the best way for systematic selection if you do not know the structure yet, as it combines inspection and selection.
+</p>
+<h4>Model window or model panel</h4>
+<p>
+In the 3D <a href="model_window.html">model window</a> or <a href="model_panel.html">model panel</a> of the main window, objects can be <a href="model_window.html#click_selection">selected by clicking</a>. This is most convenient if you want to know what is close to an object.
+<div class="subtitle">Selection by command</div>
+<p>
+Objects can also be selected via the <a href="commands.html#select">select command</a>. The address format of MMM is rather powerful and allows to build complex selections quite fast. This is the most convenient selection mode if you already know your structure and if you are familiar with MMM's  <a href="addressing.html">address system</a>.
+</p>
+<div class="subtitle">Selection by keyword</div>
+<p>
+If the model is annotated, objects may be assigned keywords. You can then easily display and select all or part of the objects associated with a certain keyword via the <a href="menu_edit.html#keyword">Edit/Find by keyword</a> menu item. See also description of the <a href="find_by_key_window.html">find by keyword window</a>.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/11/05</div>
+</body>
+</html>
+

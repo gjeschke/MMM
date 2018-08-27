@@ -1,0 +1,51 @@
+% RigiFlex restraints for FnIII-3,4 domains of integrin alpha6/beta4, 02.06.2017
+% N. Alonso-García, I. García-Rubio, J. A. Manso, R. M. Buey, H. Urien, 
+% A. Sonnenberg, G. Jeschke, J. M. de Pereda, Acta Cryst. 2015, D71, 969-985
+# PDB INT0 INTG
+# ENSEMBLE 20 0.6827
+# MODELS 15 % number of rigid-body arrangements
+# MAXTIME 4 % time for making rigid-body arrangements
+# FLEXTIME 1 % time for making each subensemble of a flexible segment for one arrangement
+# BUILDTIME 12 % time for assembling rigid-body arrangements and flexible segments
+# RIGID (A)
+(A)1463 MTSL
+(A)1472 MTSL
+(A)1497 MTSL
+# RIGID (B)
+(B)1598 MTSL
+(B)1608 MTSL
+(B)1626 MTSL
+# DEER MTSL
+(A)1463	(B)1608	2.9	0.5
+(A)1472	(B)1608	4.3	0.5
+(A)1485	(B)1608	5.9	0.5
+(A)1497	(B)1608	3.8	0.5
+(A)1504	(B)1608	5.2	0.5
+(A)1497	(B)1598	1.4	0.5
+(A)1504	(B)1598	2.5	0.5
+(A)1472	(B)1590	2.7	0.5
+(A)1472	(B)1626	3.6	0.5
+(A)1497	(B)1626	2.73	0.5
+(A)1504	(B)1626	4.4	0.5
+(A)1472	(B)1630	3.63	0.5
+(A)1504	(B)1630	4.55	0.5
+# SAXS SASDAT6.dat 3.0 % SAXS_integrin.dat
+(A) (B) !1
+# SUPERIMPOSE (A)
+# PFLEX 1549 1571 (A)1548 (B)1572
+ :SEQ ESQVHPQSPLCPLPGSAFTLSTP
+ :MODELS 5 0.6827
+ :DEER MTSL
+  (A)1485	#1559	5.1	0.5
+  #1559		(B)1608	4.5	0.3
+% chain colors for display script
+# COLOR (A) crimson
+# COLOR (B) darkgreen
+# END
+
+
+
+
+
+
+

@@ -1,0 +1,27 @@
+echo Redefining secondary structure according to Bayrhuber et al.,
+echo PNAS, 2008, 105, 15370-15375
+hide [2JK4]
+unlock 
+undefine [2JK4]
+helix [2JK4] H1 11 21
+sheet [2JK4] S1 29 37 TM
+sheet [2JK4] S2 45 51 TM
+sheet [2JK4] S3 57 64 TM
+sheet [2JK4] S4 72 79 TM
+sheet [2JK4] S5 83 91 TM
+sheet [2JK4] S6 98 106 TM
+sheet [2JK4] S7 113 123 TM
+sheet [2JK4] S8 126 135 TM
+sheet [2JK4] S9 140 149 TM
+sheet [2JK4] S10 152 161 TM
+sheet [2JK4] S11 170 176 TM
+sheet [2JK4] S12 183 188 TM
+sheet [2JK4] S13 193 199 TM
+sheet [2JK4] S14 207 213 TM
+sheet [2JK4] S15 220 230 TM
+sheet [2JK4] S16 234 240 TM
+sheet [2JK4] S17 245 252 TM
+sheet [2JK4] S18 260 267 TM
+sheet [2JK4] S19 276 286 TM
+lock
+show [2JK4] ribbon

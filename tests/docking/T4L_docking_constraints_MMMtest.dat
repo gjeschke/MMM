@@ -1,0 +1,19 @@
+% Distance constraints for T4 lysozyme "rigid body docking"
+# PDB 2LZM 2LZM_1
+# DEER MTSL 175
+ (A)61       (A)135      4.72     0.22  % Borbat:2002 % involves hinge region, stronger second component neglected
+ (A)65       (A)135      4.63     0.22  % Borbat:2002 % involves hinge region
+ (A)59       (A)159      4.19     0.27  % Kazmier:2011 % involves hinge region
+ (A)62       (A)134      4.11     0.15  % Kazmier:2011 % involves hinge region
+ (A)64       (A)122      3.41     0.25  % Kazmier:2011 % involves hinge region
+ (A)80       (A)135      3.68     0.10  % Borbat:2002
+ (A)82       (A)132      2.63     0.35  % Kazmier:2011
+ (A)82       (A)155      3.58     0.25  % Kazmier:2011
+ (A)83       (A)123      2.05     0.34  % Kazmier:2011
+ (A)93       (A)123      2.48     0.23  % Kazmier:2011
+ (A)93       (A)154      2.51     0.24  % Kazmier:2011
+ (A)94       (A)132      3.17     0.13  % Kazmier:2011
+ (A)108      (A)155      3.52     0.23  % Kazmier:2011
+ (A)109      (A)134      3.06     0.28  % Kazmier:2011
+# END
+

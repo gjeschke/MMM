@@ -1,0 +1,93 @@
+
+--- Restraint fulfillment for model 1 with weight 0.399 ---
+
+
+Residue 3
+
+Beacon restraint [26.60, 16.76] Å to residue 34 fulfilled at <r> = 22.04
+Beacon restraint [15.00, 17.34] Å to residue 59 fulfilled at <r> = 13.85
+Depth restraint [18.70, 35.00] Å fulfilled at <r> = 26.50
+Oligomer restraint [36.50, 12.80] Å fulfilled at <r> = 30.51
+
+Residue 4
+
+Depth restraint [17.50, 35.00] Å fulfilled at <r> = 29.00
+Oligomer restraint [37.20, 12.10] Å fulfilled at <r> = 34.68
+
+Residue 5
+
+
+Residue 6
+
+
+Residue 7
+
+Beacon restraint [26.70, 16.95] Å to residue 34 fulfilled at <r> = 23.33
+Beacon restraint [19.20, 17.62] Å to residue 59 fulfilled at <r> = 21.47
+Depth restraint [17.90, 35.00] Å fulfilled at <r> = 34.00
+Oligomer restraint [40.00, 11.80] Å fulfilled at <r> = 45.34
+
+Residue 8
+
+
+Residue 9
+
+Depth restraint [17.50, 35.00] Å violated at <r> = 36.50
+Oligomer restraint [43.10, 13.40] Å fulfilled at <r> = 51.23
+
+Residue 10
+
+Depth restraint [18.90, 35.00] Å fulfilled at <r> = 34.00
+Oligomer restraint [46.40, 14.60] Å fulfilled at <r> = 58.22
+
+Residue 11
+
+Beacon restraint [24.50, 16.38] Å to residue 34 fulfilled at <r> = 18.94
+Beacon restraint [15.00, 18.01] Å to residue 59 fulfilled at <r> = 27.64
+Depth restraint [17.30, 35.00] Å fulfilled at <r> = 31.00
+Oligomer restraint [45.70, 11.70] Å fulfilled at <r> = 45.62
+
+Residue 12
+
+Depth restraint [20.60, 35.00] Å fulfilled at <r> = 28.50
+Oligomer restraint [49.60, 13.60] Å fulfilled at <r> = 57.47
+
+Residue 13
+
+
+--- Final statistics ---
+
+Total runtime: 0 h 1 min.
+ 0.00% of maximum number of MC trials spent.
+Ensemble with 1 models generated.
+2 backbone models were generated.
+ 0.00% of all trials had restraint violations.
+This is a success rate of 1000000.0 ppm.
+ 0.00% of all trials had internal loop backbone clashes.
+80.00% of all trials hand backbone clashes with the protein.
+The sidegroup clash threshold was  1.2 Å.
+ 0.00% of the backbone models lead to internal sidegroup clashes.
+50.00% of the backbone models lead to sidegroup clashes with the protein.
+
+The run had a time limit of: 2 h 0 min.
+The run had a limit of 500000000 Monte Carlo trials.
+1 models had been requested with an ensemble probability of 0.50.
+The number of Gaussian-type restraints was 13.
+Ramachandran statistics without secondary structure elements was used.
+
+--- Distribution shifts and overlaps ---
+
+Shift [Å]	Overlap
+-4.93	0.902
+-3.68	0.807
+-5.99	0.859
+-2.52	0.917
+-3.76	0.903
+ 0.71	0.921
+ 5.34	0.879
+ 8.13	0.884
+11.82	0.830
+-6.04	0.895
+ 9.84	0.883
+-0.08	0.875
+ 7.87	0.837

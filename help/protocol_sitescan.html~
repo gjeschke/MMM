@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Site scan protocol</title>
+</head>
+<body>
+
+<div class="pagetitle">Site scan protocol</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="getting_started.html"> Getting started</A> &bull; <A href="protocol_labeling_DEER.html"> Protocol for spin labeling and DEER simulation </A> &bull; <A href="protocol_load.html">Loading the protein </A> &uarr;  |  &darr;  &bull; <A href="protocol_deer.html">DEER simulation</A> </pre>
+
+<div class="subtitle">Hierarchy window, residues selection</div>
+<p>
+MMM provides a Hierarchy display (<code>Display/Hierarchy</code>) which displays the primary sequence (with missing residues or atoms marked), the chains (A, B, C), and the cofactors (in this case carotenoids, chlorophylls, and lipids) as defined in the PDB file. Selection of residues or chains can also be performed here.
+<p>
+<img src="img/hierarchy.jpg" width="750" height="594" alt="MMM screen shot">
+</p>
+<p>
+The sequence color code means:
+<ul>
+<li><font color="black"><b>Black</b></font> amino acids: all atoms are present</li>
+<li><font color=#848484><b>Grey</b></font> aa: the backbone is missing</li>
+<li><font color="green"><b>Green</b></font> aa: atoms of the side chain are missing</li>
+<li><font color="red"><b>Red</b></font> aa: selected aa, last selection is a bit lighter than older ones</li>
+</ul>
+<p>
+In the primary sequence shown in the hierarchy window all residues can be clicked.
+<p>
+Left click on residue S106 selects <i>only</i> this residue (the previous selection LUX 501 (A,B,C) will be discarded). This corresponds to the command line:
+<p>
+<code>select [2BHW](A){:}106</code>
+<p>
+Middle click (or Shift + left click) on residue S160 adds this residue to the existing selection. This corresponds to the command line:
+<p>
+<code>select [2BHW](A){:}106,160</code>
+<p>
+or simply (because only one PDB identifier and one model is present)
+<p>
+<code>select (A)106,160</code>
+<p>
+For more information on the hierarchy window, use the <img src="img/helpicon.png" alt="white question mark on green background">  button.
+</p>
+<div class="subtitle">Site scan: rotamer analysis on 106 and 160</div>
+<p>
+To spin label <i>in silico</i> positions 106 and 160 (already selected) and simulate the interspin distances, <a href="spin_labeling.html">spin labels</a> can be attached to the protein using a rotamer library approach.
+<p>
+To compute the rotamers go to:
+<p>
+<code>EPR/Site scan/selected residue</code>
+<p>
+<img src="img/site_scan.jpg" width="505" height="275" alt="MMM screen shot">
+</p>
+<p>
+This window allows choosing residue types, intra- and/or inter-chain distances. Ignore the additional saving options for methodological work (or look them up in the <a href="spin_labeling.html">complete spin labeling description</a>). In the case at hand two sites (106, 160) are already selected, thus just press <code>OK</code>.
+<p>
+<b>Remark:</b> If you want to calculate favorable attachment sites by scanning the whole protein, select the three chains A, B, C. In the site scan you can remove side chains which you do not want to label (e.g. Pro, Gly…) and decide if you need all intra-chain distances in the further analysis.
+<p>
+Now choose the spin label (MTSL or IA-PROXYL) and the temperature defining the rotamers populations (cryogenic or ambient).
+<p>
+<img src="img/MTS.jpg" width="419" height="141" alt="MMM screen shot">
+</p>
+<p>
+Choose <code>IA-PROXYL</code> at <code>175 K</code>. Then press <code>OK</code>.
+<p>
+You can choose to save the Site analysis in HTML format (recommended). The default file name (you can change it) is:
+<p>
+MMM-site_scan_2009-12-14_10-47-19.html
+<p>
+Now the calculation is running and you can see the computation details in the message board. When the site scan is completed a message will appear asking if you want to open the result file in web browser (For scanning the entire protein it is recommended to run the program overnight).
+<p>
+<img src="img/result.jpg" width="782" height="589" alt="MMM screen shot">
+</p>
+<p>
+The result file is opened in the Matlab browser and looks like this:
+<p>
+<img src="img/result_file.jpg" width="691" height="1079" alt="MMM screen shot">
+<p>
+The output of the rotamer calculation gives important information on the r.m.s.d. of the NO positions attached at one site and the number of rotamers (correlated to the accessible space, thus the mobility of the spin label), the partition function (numbers &lt;0.05 denote sites difficult to label due to steric hindrance).
+<p>
+At this point save the model (recommended). The model (MAT file) will be saved with the symmetry frame given, and the results of the rotamer calculation. No spin labels have yet been attached to the model, so it can be used as starting model again to calculate the rotamers on other sites.
+<p>
+When you reload the model residues, for which rotamers were computed in a previous site scan, can be found via the <code>Edit/Find by keyword</code> menu item. The keyword for this is "rotamers computed". Via the <code>Show annotation</code> button in the keyword finder you can also access the statistics information (number of rotamers, partition function, NO position r.m.s.d.) for a residue without searching in the HTML file.
+<p>
+In the following, we assume a view in the lipid bilayer plane, perpendicular to the C3 symmetry axis. Select this by setting <code>x</code> in the <code>View</code> panel popup menu.
+<p>
+Now attach the pre-computed rotamers to the sites using the menu item:
+<p>
+<code>EPR/Attach pre-computed rotamers</code>
+<p>
+or the button <img src="img/toolbar_labeling.png" alt="(black N-O bond with red dot for unpaired electron)">.
+<p>
+Choose the rotamers you computed (<code>IA-PROXYL</code>, <code>cryogenic</code>).
+<p>
+At this point the original Ser residues at positions 106 and 160 have been replaced by the spin labeled side chains computed (n rotamers). This attachment cannot be undone! Thus, the model from now on will contain the attached rotamers, and it is not recommended to use it to perform additional calculations on other sites (the attached rotamers will be taken into account in the new calculation).
+<p>
+To show the attached rotamers on the model use the menu item:
+<p>
+<code>Display/3D display mode</code>
+<p>
+<img src="img/display.jpg" width="431" height="332" alt="MMM screen shot">
+</p>
+<p>
+Choose <code>Atom graphics/Ball & stick</code>, <code>Auxiliary graphics/Labels</code>, <code>Okay</code>
+<p>
+This will take a while, but eventually you will see a display like this:
+<p>
+<img src="img/attached_labels.jpg" width="776" height="580" alt="MMM screen shot">
+</p>
+The two spin labeled sites are shown. The violet clouds denote the position of the NO group, with size according to population. The rotamers are displayed in ball and stick representation.
+<p>
+The yellow color on the side chains will disappear if you give the command <code>unselect *</code>.  
+<p>
+To copy the figure, detach the model with the <img src="img/toolbar_detach.png" alt="(miniature helix bundle with curved arrow to the top left)"> toolbutton or right click on the model and choose detach.
+<p>
+<img src="img/save_picture.jpg" width="780" height="797" alt="MMM screen shot">
+</p>
+On the detached window, right-click to see the context menu, choose copy (this takes a while, the model window will shortly flash white at the moment of copying) and paste the resulting figure (in the clipboard in extended metafile format) where you need. You can also use the camera toolbutton <img src="img/camera.gif" alt="(camera)"> in the main window for copying.  If you want to save the picture as a file in one of many graphics format, you can use the menu item <a href="menu_file.html#export">File/Export visualization</a> of the main window.
+<p>
+To increase resolution, you can enlarge the window and zoom the protein region under investigation with the tools provided. 
+<p>
+You may now want to switch atom graphics off to get faster response from the graphical user interface. To do so, click twice on the <code>Atom graphics on</code> button in the <code>View</code> panel of the main window. The button will change to red <code>Atom graphics off</code>.
+<p>
+You may save the model with the spin labels attached, but it is recommended not to overwrite the model that was saved directly after the site scan. When you reload a model with attached labels, you can find the labeled residues via the <code>Edit/Find by keyword</code> menu item. The keyword for this is "spin label attached".
+<p>
+You may now continue with a <a href="protocol_deer.html">DEER simulation</a>.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/12/15</div>
+</body>
+</html>

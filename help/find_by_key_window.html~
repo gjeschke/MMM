@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Find by keyword</title>
+</head>
+<body>
+
+<div class="pagetitle">Find by keyword</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="specialized.html"> Special tasks </A> &uarr;  |  &darr;  </pre>
+
+<div class="subtitle">The keyword concept of MMM</div>
+<p>
+Structure objects, such as residues, chains, or atoms can be annotated with information on function, biochemical experiments, observations in MD simulations etc. To easily find objects that are associated with a certain concept, such as substrate transport or pH-dependent structural changes, keywords can be assigned to objects in the <a href="annotation_window.html">annotation window</a>.
+</p>
+<p>
+To demonstrate the annotation and keyword concept the MMM distribution contains an annotated and referenced model for major plant light harvesting complex II (<code>LHCII_MMM.mat</code>).
+</p>
+<p>
+The keyword finder window contains a list of keywords (left), a list of objects(right) and buttons for <a href="#selection">selecting objects</a>, for <a href="#annotation">displaying the annotation</a> that contains the keyword, and <a href="#close">closing the window</a>.
+</p>
+<a name="selection">
+<div class="subtitle">Selection by keyword</div>
+<p>
+By default objects are added to the already existing selection, if any. If you want to start with a clean slate, first click the <code>Clear</code> button.
+<p>
+If you click on an item in the <code>Keywords</code> list, the <code>Referring objects</code> list is filled with all objects that have an annotation with this keyword. Only a single keyword can be picked at once. You can then pick one or several objects from the <code>Referring objects</code> list (hold down the <code>Shift</code> or <code>Ctrl</code> keys during clicking for picking multiple objects). By clicking the <code>Select</code> button, you add all picked objects to the selection. Alternatively, you can use the <code>Select all</code> button to add all objects from the <code>Referring objects</code> list to the selection.
+</p>
+<a name="annotation">
+<div class="subtitle">Displaying annotation</div>
+<p>
+To display the <a href="annotation_window.html">annotation</a> of a picked object, click the <code>Show annotation</code> button. If several objects are picked in the <code>Referring objects</code> list, the annotation will be shown for the first picked item. Note that this and only this object will be selected after the annotation window is opened. If a selection of objects exists when you click the button, a question dialog opens and you are given the opportunity to cancel your request and keep the old selection.
+</p>
+<p>
+Note also that you can return to the keyword finder only after you have closed the <a href="annotation_window.html">annotation window</a>.
+<p>
+<a name="close">
+<div class="subtitle">Closing the window</div>
+<p>
+Click the <code>OK</code> button. All existing selections will be kept.
+</p>
+</p><div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/10/21</div>
+</body>
+</html>
+

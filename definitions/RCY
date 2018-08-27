@@ -1,0 +1,56 @@
+RESIDUE   RCY     49
+CONECT      C1C    4 C1X  H1C1 H1C2 H1C3
+CONECT      C1X    4 C1C  C1V  N1V  C1U 
+CONECT      C1V    4 C1X  H1V1 H1V2 H1V3
+CONECT      N1V    3 C1X  O1J  C1W 
+CONECT      O1J    2 N1V  HO1J
+CONECT      C1W    4 N1V  C1Y  C1Z  C1M 
+CONECT      C1Y    4 C1W  H1Y1 H1Y2 H1Y3
+CONECT      C1Z    4 C1W  H1Z1 H1Z2 H1Z3
+CONECT      C1M    4 C1W  C1U  H1M1 H1M2
+CONECT      C1U    4 C1X  C1M  N1R  H1U 
+CONECT      N1R    3 C1U  C1Q  C1P 
+CONECT      C1Q    3 N1R  O1H  C1S 
+CONECT      O1H    1 C1Q 
+CONECT      C1P    3 N1R  O1G  C1L 
+CONECT      O1G    1 C1P 
+CONECT      C1L    4 C1P  C1S  H1L1 H1L2
+CONECT      C1S    4 C1Q  C1L  SG   H1S 
+CONECT      SG     2 C1S  CB  
+CONECT      CB     4 SG   CA   HB1  HB2 
+CONECT      CA     4 CB   C    N    HA  
+CONECT      C      3 CA   O    OXT 
+CONECT      O      1 C   
+CONECT      N      3 CA   HN1  HN2 
+CONECT      OXT    2 C    HXT 
+CONECT      H1C1   1 C1C 
+CONECT      H1C2   1 C1C 
+CONECT      H1C3   1 C1C 
+CONECT      H1V1   1 C1V 
+CONECT      H1V2   1 C1V 
+CONECT      H1V3   1 C1V 
+CONECT      HO1J   1 O1J 
+CONECT      H1Y1   1 C1Y 
+CONECT      H1Y2   1 C1Y 
+CONECT      H1Y3   1 C1Y 
+CONECT      H1Z1   1 C1Z 
+CONECT      H1Z2   1 C1Z 
+CONECT      H1Z3   1 C1Z 
+CONECT      H1M1   1 C1M 
+CONECT      H1M2   1 C1M 
+CONECT      H1U    1 C1U 
+CONECT      H1L1   1 C1L 
+CONECT      H1L2   1 C1L 
+CONECT      H1S    1 C1S 
+CONECT      HB1    1 CB  
+CONECT      HB2    1 CB  
+CONECT      HA     1 CA  
+CONECT      HXT    1 OXT 
+CONECT      HN1    1 N   
+CONECT      HN2    1 N   
+END   
+HET    RCY             49
+HETSYN     RCY 3-maleimido-proxyl-L-cysteine
+HETNAM     RCY S-[(3S,3'R)-1'-hydroxy-2',2',5',5'-tetramethyl-2,5-diox
+HETNAM   2 RCY o-1,3'-bipyrrolidin-3-yl]-L-cysteine
+FORMUL      RCY    C15 H25 N3 O5 S1

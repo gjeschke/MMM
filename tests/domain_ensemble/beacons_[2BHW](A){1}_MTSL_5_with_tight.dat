@@ -1,0 +1,23 @@
+% Optimum beacon sites for localization of residue (A)201
+% Predicted distances between  2.5 and  3.5 nm
+% site 1 address  site 2 address  site 3 address  site 4 address  site 5 address  Figure of merit
+  [2BHW](A){1}25  [2BHW](A){1}71  [2BHW](A){1}77  [2BHW](A){1}89 [2BHW](A){1}107          2.557
+  [2BHW](A){1}25  [2BHW](A){1}75  [2BHW](A){1}77  [2BHW](A){1}89 [2BHW](A){1}107          2.558
+  [2BHW](A){1}25  [2BHW](A){1}77  [2BHW](A){1}89 [2BHW](A){1}107 [2BHW](A){1}138          2.558
+  [2BHW](A){1}25  [2BHW](A){1}77  [2BHW](A){1}89 [2BHW](A){1}107 [2BHW](A){1}135          2.568
+  [2BHW](A){1}25  [2BHW](A){1}78  [2BHW](A){1}89 [2BHW](A){1}105 [2BHW](A){1}184          2.576
+  [2BHW](A){1}25  [2BHW](A){1}78  [2BHW](A){1}89 [2BHW](A){1}105 [2BHW](A){1}180          2.588
+  [2BHW](A){1}25  [2BHW](A){1}71  [2BHW](A){1}74  [2BHW](A){1}89 [2BHW](A){1}107          2.593
+  [2BHW](A){1}25  [2BHW](A){1}74  [2BHW](A){1}75  [2BHW](A){1}89 [2BHW](A){1}107          2.593
+  [2BHW](A){1}25  [2BHW](A){1}74  [2BHW](A){1}89 [2BHW](A){1}107 [2BHW](A){1}138          2.594
+  [2BHW](A){1}25  [2BHW](A){1}74  [2BHW](A){1}89 [2BHW](A){1}107 [2BHW](A){1}135          2.598
+  [2BHW](A){1}25  [2BHW](A){1}89 [2BHW](A){1}105 [2BHW](A){1}180 [2BHW](A){1}184          2.602
+  [2BHW](A){1}25  [2BHW](A){1}89 [2BHW](A){1}105 [2BHW](A){1}135 [2BHW](A){1}184          2.604
+  [2BHW](A){1}25  [2BHW](A){1}69  [2BHW](A){1}78  [2BHW](A){1}89 [2BHW](A){1}105          2.605
+  [2BHW](A){1}25  [2BHW](A){1}74  [2BHW](A){1}89 [2BHW](A){1}105 [2BHW](A){1}180          2.606
+  [2BHW](A){1}25  [2BHW](A){1}73  [2BHW](A){1}78  [2BHW](A){1}89 [2BHW](A){1}105          2.606
+  [2BHW](A){1}25  [2BHW](A){1}89 [2BHW](A){1}107 [2BHW](A){1}138 [2BHW](A){1}184          2.608
+  [2BHW](A){1}25  [2BHW](A){1}77  [2BHW](A){1}89 [2BHW](A){1}105 [2BHW](A){1}135          2.608
+  [2BHW](A){1}25  [2BHW](A){1}77  [2BHW](A){1}89 [2BHW](A){1}107 [2BHW](A){1}131          2.608
+  [2BHW](A){1}25  [2BHW](A){1}74  [2BHW](A){1}89 [2BHW](A){1}105 [2BHW](A){1}184          2.608
+  [2BHW](A){1}25  [2BHW](A){1}71  [2BHW](A){1}89 [2BHW](A){1}107 [2BHW](A){1}184          2.609

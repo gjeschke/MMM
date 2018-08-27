@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Visualization</title>
+</head>
+<body>
+
+<div class="pagetitle">Visualization</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  |  &darr; </pre>
+
+<div class="subtitle">What can MMM visualize?</div>
+<p>
+MMM visualizes proteins and cofactors in common display formats, such as ribbon models, stick models, space-filling models or wire models. In addition, <a href="densities.html">density cubes</a> and bilayers can be visualized. For <a href="spin_labeling.html">spin labels</a> a special visualization mode displays only the midpoints of N-O bonds as spheres with the sphere radius encoding population of spin label conformations (rotamers). During development of MMM, further visualization modes will be added.
+</p>
+<div class="subtitle">Default visualization</div>
+<p>
+By default, MMM displays a ribbon model of a protein with color according to secondary structure and does not display cofactors after loading a PDB file. When opening a model that was stored in MMM format, the previous appearance of the model is restored.
+</p>
+<div class="subtitle">Interactive visualization</div>
+<p>
+Interactive visualization requires that objects are selected by one of the standard <a href="selection.html">selection methods</a>. The display mode can then be selected via the <a href="toolbar.html#graphics"><img src="img/toolbar_graphics.png" alt="(cutout of a ball&stick model)">Graphics mode  toolbutton</a> or the <a href="menu_display.html#3D">Display/3D display mode</a> menu item.
+</p>
+<div class="subtitle">Visualization via the command line</div>
+<p>
+Objects can be <a href="addressing.html">addressed</a> and visualized at once via the <a href="commands.html#show">show command</a>.
+</p>
+<div class="subtitle">Visualizing binding sites</div>
+<p>
+Binding sites can be selected and visualized using the <a href="sites_window.html#visualize">sites window</a>.
+</p>
+<div class="subtitle">Colors and color schemes</div>
+<p>
+MMM allows for assigning colors to each individual object or to several selected objects at once by color name, from a palette, or by direct input of RGB (red/green/blue) color codes.
+</p>
+<p>
+Color assignment to <a href="selection.html">selected objects</a> is possible via the <a href="toolbar.html#color"><img src="img/toolbar_color.png" alt="(sphere with rainbow stripes)">Color  toolbutton</a> or the <a href="menu_display.html#color">Display/Color</a> menu item.
+</p>
+<p>
+In the same way color schemes can be assigned, such as color by chain, by sequence, by B factor, or by charge.
+</p>
+<p>
+Without previous selection, color can be assigned by the the <a href="commands.html#color">color command</a> or a color scheme by the the <a href="commands.html#colorscheme">colorscheme command</a>.
+</p>
+<div class="subtitle">Transparency</div>
+<p>
+For each individual object or several selected objects a transparency between 0 (fully transparent, invisible) and 1 (fully opaque) can be selected. Transparency values smaller than zero correspond to default transparency, which is opaque, unless alternate conformations are specified. In the latter case the transparency value corresponds to the population of the conformation.
+</p>
+<p>
+Transparency assignment to <a href="selection.html">selected objects</a> is possible via the <a href="toolbar.html#transparency"><img src="img/toolbar_transparency.png" alt="(overlapping blue and mauve spheres)">Transparency  toolbutton</a> or the <a href="menu_display.html#transparency">Display/Transparency</a> menu item.
+</p>
+<p>
+Without previous selection, transparency can be assigned by the the <a href="commands.html#transparency">transparency command</a>.
+</p>
+<div class="subtitle">View selection</div>
+<p>
+MMM can automatically zoom in on selected objects. Use the <a href="commands.html#zoom">zoom in</a> command or the <a href="toolbar.html#view_selection"><img src="img/toolbar_view_selection.png" alt="(red arrow pointing down right to a quarter green sphere)">View selected toolbutton</a> or the <a href="menu_display.html#view_selection">Display/View selection</a> menu item.
+</p>
+<div class="subtitle">Depth cueing</div>
+<p>
+A better 3D impression can be obtained with <a href="depth_cueing.html">emulated depth cueing</a>. Note that this does not mix well with object transparency.
+</p>
+<div class="subtitle">Switching off atom graphics</div>
+<p>
+To speed up the user interface and interactive rotation, zoom, and pan of 3D graphics, atom graphics can be temporarily <a href="view_control.html#atom_graphics">reduced or switched off</a>.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/11/05</div>
+</body>
+</html>
+

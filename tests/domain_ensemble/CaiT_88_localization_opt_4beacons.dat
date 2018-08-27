@@ -1,0 +1,11 @@
+% Localization test restraints for MTSL at residue 88 with respect to CaiT structure 2WSX, optimum choice of 4 beacons in the range [2.5,4.5] nm
+% Simulated test data
+# PDB 2WSX
+# ENSEMBLE 20 3
+# OUTPUT CaiT_88R1
+# LOCATE 88R1 0.5 MTSL 298 full
+107	3.95	0.29
+257	2.63	0.45
+280	3.33	0.54
+501	3.37	0.39
+# END

@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Gaussian network models</title>
+</head>
+<body>
+
+<div class="pagetitle">Gaussian network models</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="ENM.html"> Elastic network models </A>  &bull;  &uarr;  |  &darr;  </pre>
+
+<div class="subtitle">Introduction</div>
+<p>
+A Gaussian network model (GNM) is a special <A href="ENM.html"> Elastic network model </A> that considers only the amplitude of residue fluctuations, but not their direction. For instance, a GNM can predict the B factors (temperature factors) in crystal structures, while a more involved <A href="ANM.html"> Anisotropic network model </A> would be required to predict anisotropic temperature factors. With respect to an ANM a GNM has the advantages that normal mode analysis is 27 times faster and that interpretation is easier, as fluctuation of each residue and correlation of each residue pair are characterized by a single number, instead of a 3&times; 3 matrix.
+</p>
+<p>
+In MMM, GNMs are used to aid domain assignment, diagnose ENM performance via comparison of experimental and predicted B factors, and to recognize dynamic correlations between residues <i>via</i> the <A href="#covariance"> covariance matrix</A>.
+</p>
+<p>
+Once computed, the GNM is stored with the structure and is saved, when the whole MMM model is saved. Likewise, the C<sup>&alpha;</sup> network (coarse-grained structure) is stored and saved with the model. Hence, on repeated activation the GNM window opens much faster than on first activation.
+</p>
+<div class="subtitle">GNM computation in MMM</div>
+<p>
+An GNM for the current structure is computed and an inspection window is opened via the GNM menu item in the <a href="menu_dynamics.html">Dynamics menu</a>. Note that computation can take between a few seconds and a few minutes, depending on size of the structure. Computation time scales with the third power of the number of amino acid residues. Computation is always for the current structure, which can be picked in the <a href="hierarchy_window.html">hierarchy window</a>.
+</p>
+<p>
+MMM uses force constants for residue pairs that scale with the inverse square of the C<sup>&alpha; </sup>-C<sup>&alpha; </sup> distance between the two residues. This provides better agreement of predicted and experimental B factors than other ENM-based approaches (L. Yang , G. Song, R.-L. Jernigan, Proc. Natl. Acad. Sci. USA 
+2009, 106, 12347–12352) and leads to a well resolved <A href="#covariance"> covariance matrix</A>.
+</p>
+<a name="limitations">
+<div class="subtitle">Limitations</div>
+<p>
+Elastic network models have some tolerance against missing residues in the core of a protein, however, for quantitative work you may want to have a continuous peptide chain. If the template structure is incomplete (missing stretches of residues), consider (homology) modeling or other reconstruction, for instance with the Modeller software. Although such modelling is worse than having reliable experimental data, it is certainly better than ignoring the problem.
+</p>
+<p>
+Computation of a GNM can fail for more than 6000 residues in the structure due to memory limitations with a typical dekstop or laptop computer at the time of writing. Use a computer with larger memory available to Matlab to avoid this problem.
+</p>
+<a name="covariance">
+<div class="subtitle">Covariance matrix</div>
+<p>
+In a GNM, each residue has only one isotropic coordinate <i>q<sub>i</sub></i>. For a pair of residues <i>i</i> and <i>j</i> we now consider correlated coordinate changes, i.e., we ask the question whether the coordinates <i>q<sub>i</sub></i> and <i>q<sub>j</sub></i> move strongly and in the same direction in a given normal mode. We sum over all normal modes, weighing them with the inverse corresponding eigenvalue to account for different vibration amplitudes. The result &lang; &Delta;<i>q<sub>i</sub></i> &Delta;<i>q<sub>j</sub></i> &rang; is the matrix element <i>C<sub>ij</sub></i> of the covariance matrix <b>C</b>. This covariance matrix can be computed from the eigenvectors and eigenvalues of the Hessian. The diagonal elements are proportional to predicted B factors.
+</p>
+<p>
+Large positive elements of the covariance matrix correspond to strongly correlated motion of residues <i>i</i> and <i>j</i>, the residues belong to the same domain or connect domains. Negative values indicate anticorrelated motion, the residues belong to different domains. Small absolute values indicate that motion of the residues is (nearly) uncorrelated.
+</p>
+<p>
+A two-dimensional plot of the covariance matrix provides a fast overview of domains in a protein and allows to pinpoint residue-residue contacts that are crucial for transmitting mechanical perturbations between remote parts of the structure. For this reason, such a plot is shown in the upper left corner of the GNM window. In select mode, correlation peaks (black off-diagonal points in the plot) can be identified (addresses of the correlated residues are displayed in the text line above the plot) and the corresponding residues are selected (and highlighted in the 3D model). In the inspect mode the residues are identified, but not selected. Use the <a href="toolbar.html#view_selection"><img src="img/toolbar_view_selection.png" alt="(red arrow pointing down right to a quarter green sphere)"> View selected</a> tool button in the main window to zoom into the contact in the 3D model window. In zoom mode, a detail of the covariance matrix can be visualized by zooming into the plot (left click into the plot and hold left mouse button down, drag mouse to create a detail rectangle, release left mouse button when the rectangle has the proper extension).
+</p>
+<p>
+For multi-chain protein complexes, diagonal blocks of the covariance matrix that correspond to individual chains can be marked with the toolbar button. Existing selections can be cancelled with the toolbar button.
+</p>
+<p>
+The covariance matrix plot is also linked to the auxiliary plot window (right upper corner of the GNM window), if the latter plot is used for display of individual normal modes. In this case, range selections made in the normal mode are also shown as dashed green lines in the covariance matrix.
+</p>
+<a name="mode_distribution">
+<div class="subtitle">Mode distribution</div>
+<p>
+The auxiliary plot (upper right corner of the GNM window) can display different types of information. Immediately after the window is opened, the distribution of vibration frequencies is displayed (normalized vibration frequency versus mode number).
+</p>
+<a name="B_factors">
+<div class="subtitle">B factors</div>
+<p>
+B factor prediction can be displayed in the auxiliary plot by selecting the corresponding item from the popup menu. If the current structure is a crystal structure and B factors are defined, experimental B factors are shown as a black line. Predicted B factors are shown as a red line and are scaled and shifted by a constant offset for optimum superposition with the experimental B factor. The constant offset should be zero according to theory and is often quite small, but in some cases the experimental B factors obviously do have such an offset.
+</p>
+<a name="individual_mode">
+<div class="subtitle">Individual normal modes</div>
+<p>
+Residue fluctuations in individual normal modes can be visualized in the auxiliary plot by selecting the <code>Single mode</code> item of the popup menu. The black line is a plot of the normalized eigenvector. Residues with large positive or negative amplitudes move strongly in this mode, residues with zero amplitude do not move. Residue pairs with the same sign of the amplitude move in a correlated way in this mode, while residues with with different signs move in an anticorrelated way. Often the first mode indentifies the domains, while the next slow modes identify subdomains. Note that mode numbers in GNM can not be directly compared to mode numbers in ANM, which have by a factor three more modes.
+</p>
+<p>
+In the single-mode display of the auxiliary plot, ranges of residues can be marked by left-clicking (lower limit of range) or right-clicking (upper limit) into the plot. If desired, the range can be automatically optimized to a range of residues with the same sign of amplitude by clicking the <code>Optimize range</code> button. All residues in the range can be selected for domain selection or definition by clicking the <code>Select range</code> button. Alternatively, the residues can be marked by the same color in the 3D model window by clicking the <code>Color</code> button for domain visualization.  
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2010.1, edited 2010/08/12</div>
+</body>
+</html>
+

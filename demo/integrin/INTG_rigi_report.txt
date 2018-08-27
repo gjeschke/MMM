@@ -1,0 +1,139 @@
+--- DEER restraint report ---
+
+Restraint file used: D:\papers\MMM_protein_SCience\integrin\integrin_rigiflex_restraints.dat
+
+Maximum number of models: 15
+Probability threshold   :  0.68
+SAXS fit chi^2 threshold:  9.00
+Probability threshold   : 6.827000e-01
+Maximum runtime         :  1.0 h
+Maximum number of trials: 500000000
+Shuffled seed used for pseudo-random number generator
+Parallelization granularity: 10000
+
+15 models were generated.
+
+Rigid body 1, ref. point 1 (A)1463 to rigid body 2, ref. point 1 (B)1598
+<r> = 14.9 Å, sigr =  3.9 Å (unrestrained).
+Mean overlap of distributions for the ensemble: 0.7619.
+
+Rigid body 1, ref. point 1 (A)1463 to rigid body 2, ref. point 2 (B)1608
+<r> = 31.5 Å, sigr =  3.1 Å for restraint <r> = 29.0 Å, sigr =  5.0 Å (overlap: 0.8958).
+Mean overlap of distributions for the ensemble: 0.7578.
+
+Rigid body 1, ref. point 1 (A)1463 to rigid body 2, ref. point 3 (B)1626
+<r> = 31.7 Å, sigr =  4.3 Å (unrestrained).
+Mean overlap of distributions for the ensemble: 0.8882.
+
+Rigid body 1, ref. point 2 (A)1472 to rigid body 2, ref. point 1 (B)1598
+<r> = 24.5 Å, sigr =  4.6 Å (unrestrained).
+Mean overlap of distributions for the ensemble: 0.4989.
+
+Rigid body 1, ref. point 2 (A)1472 to rigid body 2, ref. point 2 (B)1608
+<r> = 41.5 Å, sigr =  3.0 Å for restraint <r> = 43.0 Å, sigr =  5.0 Å (overlap: 0.8985).
+Mean overlap of distributions for the ensemble: 0.6927.
+
+Rigid body 1, ref. point 2 (A)1472 to rigid body 2, ref. point 3 (B)1626
+<r> = 36.7 Å, sigr =  4.0 Å for restraint <r> = 36.0 Å, sigr =  5.0 Å (overlap: 0.9733).
+Mean overlap of distributions for the ensemble: 0.8405.
+
+Rigid body 1, ref. point 3 (A)1497 to rigid body 2, ref. point 1 (B)1598
+<r> = 12.8 Å, sigr =  3.0 Å for restraint <r> = 14.0 Å, sigr =  5.0 Å (overlap: 0.7947).
+Mean overlap of distributions for the ensemble: 0.5376.
+
+Rigid body 1, ref. point 3 (A)1497 to rigid body 2, ref. point 2 (B)1608
+<r> = 37.9 Å, sigr =  2.0 Å for restraint <r> = 37.0 Å, sigr =  5.0 Å (overlap: 0.8154).
+Mean overlap of distributions for the ensemble: 0.7212.
+
+Rigid body 1, ref. point 3 (A)1497 to rigid body 2, ref. point 3 (B)1626
+<r> = 25.1 Å, sigr =  3.7 Å for restraint <r> = 27.3 Å, sigr =  5.0 Å (overlap: 0.9426).
+Mean overlap of distributions for the ensemble: 0.8928.
+
+Auxiliary restraint (A)1485 to (B)1608
+<r> = 58.7 Å, sigr =  3.0 Å for restraint <r> = 59.0 Å, sigr =  5.0 Å) (overlap: 0.9207).
+Mean overlap of distributions for the ensemble: 0.4065.
+
+Auxiliary restraint (A)1504 to (B)1608
+<r> = 53.9 Å, sigr =  1.8 Å for restraint <r> = 52.0 Å, sigr =  5.0 Å) (overlap: 0.7567).
+Mean overlap of distributions for the ensemble: 0.6165.
+
+Auxiliary restraint (A)1504 to (B)1598
+<r> = 27.2 Å, sigr =  2.7 Å for restraint <r> = 25.0 Å, sigr =  5.0 Å) (overlap: 0.8584).
+Mean overlap of distributions for the ensemble: 0.7361.
+
+Auxiliary restraint (A)1472 to (B)1590
+<r> = 27.7 Å, sigr =  4.6 Å for restraint <r> = 27.0 Å, sigr =  5.0 Å) (overlap: 0.9860).
+Mean overlap of distributions for the ensemble: 0.7862.
+
+Auxiliary restraint (A)1504 to (B)1626
+<r> = 45.7 Å, sigr =  2.9 Å for restraint <r> = 44.0 Å, sigr =  5.0 Å) (overlap: 0.8981).
+Mean overlap of distributions for the ensemble: 0.9635.
+
+Auxiliary restraint (A)1472 to (B)1630
+<r> = 36.6 Å, sigr =  4.4 Å for restraint <r> = 36.3 Å, sigr =  5.0 Å) (overlap: 0.9885).
+Mean overlap of distributions for the ensemble: 0.9096.
+
+Auxiliary restraint (A)1504 to (B)1630
+<r> = 50.8 Å, sigr =  2.9 Å for restraint <r> = 45.5 Å, sigr =  5.0 Å) (overlap: 0.7607).
+Mean overlap of distributions for the ensemble: 0.9322.
+
+--- Potential further core restraints ordered by expected restraint strength ---
+
+(A)1472-(B)1598 with ensemble overlap 0.4989
+(A)1463-(B)1598 with ensemble overlap 0.7619
+(A)1463-(B)1626 with ensemble overlap 0.8882
+
+--- Restraint file ---
+
+% RigiFlex restraints for FnIII-3,4 domains of integrin alpha6/beta4, 02.06.2017
+% N. Alonso-García, I. García-Rubio, J. A. Manso, R. M. Buey, H. Urien, 
+% A. Sonnenberg, G. Jeschke, J. M. de Pereda, Acta Cryst. 2015, D71, 969-985
+# PDB INT0 INTG
+# ENSEMBLE 20 0.6827
+# MODELS 15 % number of rigid-body arrangements
+# MAXTIME 1 % time for making rigid-body arrangements
+# FLEXTIME 1 % time for making each subensemble of a flexible segment for one arrangement
+# BUILDTIME 12 % time for assembling rigid-body arrangements and flexible segments
+# RIGID (A)
+(A)1463 MTSL
+(A)1472 MTSL
+(A)1497 MTSL
+# RIGID (B)
+(B)1598 MTSL
+(B)1608 MTSL
+(B)1626 MTSL
+# DEER MTSL
+(A)1463	(B)1608	2.9	0.5
+(A)1472	(B)1608	4.3	0.5
+(A)1485	(B)1608	5.9	0.5
+(A)1497	(B)1608	3.8	0.5
+(A)1504	(B)1608	5.2	0.5
+(A)1497	(B)1598	1.4	0.5
+(A)1497	(B)1608	3.7	0.5
+(A)1504	(B)1598	2.5	0.5
+(A)1472	(B)1590	2.7	0.5
+(A)1472	(B)1626	3.6	0.5
+(A)1497	(B)1626	2.73	0.5
+(A)1504	(B)1626	4.4	0.5
+(A)1472	(B)1630	3.63	0.5
+(A)1504	(B)1630	4.55	0.5
+# SAXS SASDAT6.dat % SAXS_integrin.dat
+(A) (B) !1
+# SUPERIMPOSE (A)
+# PFLEX 1549 1571 (A)1548 (B)1572
+ :SEQ ESQVHPQSPLCPLPGSAFTLSTP
+ :MODELS 5 0.6827
+ :DEER MTSL
+  (A)1485	#1559	5.1	0.5
+  #1559		(B)1608	4.5	0.3
+% chain colors for display script
+# COLOR (A) crimson
+# COLOR (B) darkgreen
+# END
+
+
+
+
+
+
+

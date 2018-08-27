@@ -1,0 +1,23 @@
+% Network fit and superposition for localizing LOPTC in liopxygenase structure 1YGE
+% Restraints from B. J. Gaffney et al., Biophys. J. 2012, 103, 2134-2144
+# PDB 1YGE % if this file is loaded into MMM before selecting network,
+% the network is fitted to the five reference points
+# ENSEMBLE 20 2
+# OUTPUT Gaffney_network
+# NETWORK SBL1 0.5 MTSL 298 full % constraints
+270	480	3.25	0.30
+270	569	3.70	0.30
+270	619	4.70	0.30
+270	782	3.80	0.30
+480	569	3.75	0.30 % comment out this line for Monte Carlo test
+480	619	4.65	0.30
+480	782	5.25	0.30
+569	619	4.40	0.30
+569	782	5.20	0.30
+619	782	2.20	0.30
+LOP	270	2.30	0.30
+LOP	480	4.30	0.30
+LOP	569	3.80	0.30
+LOP	619	4.70	0.30
+LOP	782	3.75	0.30
+# END

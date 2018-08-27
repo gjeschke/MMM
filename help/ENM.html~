@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Elastic network models</title>
+</head>
+<body>
+
+<div class="pagetitle">Elastic network models</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  &bull; <A href="model_concept.html"> Model concept </A> &bull; <A href="coarse_graining.html"> Coarse graining </A> &uarr |  &darr;  <a href="GNM.html">Gaussian network model</a> &bull; <a href="ANM.html">Anisotropic network model</a> &bull; <a href="fit_from_template.html">Fitting with network models</a>
+</pre>
+
+<div class="subtitle">Introduction</div>
+<p>
+An elastic network model (ENM) represents each particle of a system as a point-like node and interactions between particles by a spring with a certain force constant. For visualization you can think of small metal balls connected by springs. In the context of MMM the particles are actually pseudo-particles, corresponding to amino acid residues. The location of the network nodes (balls) is at the C<sup>&alpha; </sup> coordinate of the residue.
+</p>
+<p>
+There exist several different ways of assigning the force constants. A very popular choice is to use a uniform force constant up to a certain cutoff radius, which is typically 7.3 &#8491; for residue-based <a href="GNM.html">Gaussian network models</a> and about 13 &#8491; for residue-based <a href="ANM.html">Anisotropic network model</a> models (defined in global variables <code>ENM_param.rc</code> and <code>ENM_param.rc_ANM</code> that are set it <code>initialize_MMM.m</code>). Although MMM has setup subroutines <code>setup_GNM.m</code> and <code>setup_ANM.m</code> for such cutoff-based ENMs, all functions supplied through the graphical user interface use a polynomial dependence of force constants on pair distance <i>r</i>. This reflects recent discussions that indicate better performance and physical foundation of this choice (L. Yang , G. Song, R.-L. Jernigan, Proc. Natl. Acad. Sci. USA 
+2009, 106, 12347–12352; K. Hinsen, Proc. Natl. Acad. Sci. USA 
+2009, 106, E128). In particular, an <i>r</i><sup>-2</sup> dependence is used for the isotropic Gaussian network models, as this provides best prediction of crystallographic B factors and highly resolved <a href="GNM.html#covariance">covariance matrices</a>. For anisotropic network models an <i>r</i><sup>-6</sup> dependence following (K. Hinsen et al. Chem Phys. 2000, 261, 25-37.) is used, whereas force constants of first and second neighbors in the peptide sequence are amplified by a factor of 10000 to stabilize peptide bond geometry (this is justified by the narrow distribution of first and second neighbor distances in known protein structures). 
+</p>
+<p>
+Vibrational dynamics of an ENM with <i>N</i> nodes, corresponding to a peptide chain with <i>N</i> residues, is easily computed by setting up the Hessian matrix from the force constants and solving the eigenproblem of this matrix. The first six eigenvalues are zero and the corresponding eigenvectors describe global rotation and translation of the whole network. The remaining 3<i>N</i>-6 eigenvalues are all positive and are squared vibration frequencies of the <i>normal modes</i>. The eigenvector of each normal mode describes the amplitude and- for anisotropic network models- the direction of relative movement of the nodes with this particular vibrational frequency. 
+</p>
+<p>
+The relevance of such normal mode analysis derives from the fact that slow modes, i.e. the modes with the lowest vibrational frequencies, contribute most to large amplitude vibrations. They correspond to deformations for which the network is "soft". It stands to reason and has been tested for many pairs of known protein structures that large-amplitude structural changes of proteins proceed mainly along a few slow modes.
+</p>
+<p>
+For this reason, slow normal modes can be used to visualize potential large-amplitude dynamics. They can also be used as a basis for <a href="fit_from_template.html">fitting structural transitions</a> from a small number of distance constraints (W. Zheng, B. R. Brooks, Biophys. J. 2006, 90, 4327-4336).
+</p>
+<p>
+see also: M. M. Tirion, Phys. Rev. Lett. 1996, 77, 1905; I. Bahar, T.R. Lezon, A. Bakan, I.H. Shrivastava, Chem. Rev. 2010, 110, 1463-1497.
+</p>
+<div class="subtitle">Limitations</div>
+<p>
+ENMs are coarse-grained models. If they were originally derived from an atomistic template structure, they can be fine-grained to atomistic models even after deformation, but you should be aware that such a fine-grained model is only a rough approximation for true atom positions.
+</p>
+<p>
+Further limitations, even on the level of C<sup>&alpha; </sup> traces arise from the approximations inherent in modeling- the rather crude assignment of universal force constants and the assumption of harmonic motion close to each point where a network model is set up and analyzed.
+</p>
+<p>
+If an ENM is used for fitting of structural transitions, you cannot expect that the final structure has a C<sup>&alpha; </sup> r.m.s.d. better than 1 &#8491; , even if there are plenty of constraints with very small errors in the constraints. Typically you should expect errors of 2-3 &#8491;. This limitation arises mostly from the restriction to a small number of slow modes. If all 3<i>N</i>-6 modes could be used, perfect agreement would be achieved in the absence of errors in the constraints. However, this would require that 3<i>N</i>-6 lineraly independent constraints are known, which is unrealistic.
+</p>
+In practice, errors in the distance constraints limit precision, so that it does not make sense to use a large number of normal modes for fitting. Typically, a single chain can be fitted with about 10 modes (W. Zheng, B. R. Brooks, Biophys. J. 2006, 90, 4327-4336).
+</p>
+<p>
+A limitation on network size (residue number) arises from the need to set up and diagonalize the Hessian matrix. With a contemporary PC or laptop computer, systems with up to 2000 residues are accessible. 
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2010.1, edited 2010/08/10</div>
+</body>
+</html>
+

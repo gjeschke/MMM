@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Hierarchy window</title>
+</head>
+<body>
+
+<div class="pagetitle">Hierarchy window</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  <A href="user_interface.html"> User interface </A> &uarr;  |  &darr;  &bull; <a href="#limitations">Limitations</a> </pre>
+
+<div class="subtitle">What can you do in the hierarchy window?</div>
+<P>
+The hierarchy window is mainly used for obtaining an overview of a structure and for selecting objects. The structures within an MMM model (project), the chains within each structure and their sequences, the presence of several coordinates sets (models) for a chain, the presence and nature of cofactors, the atom identifiers for each residue or cofactor, and the presence of alternate locations for atoms can all be easily recognized. Furthermore, secondary structure definitions are displayed with the sequence and secondary structure assignments of residues can be changed, although such changes are discouraged (see below).
+</p>
+<div class="subtitle">Inspection of the structure</div>
+<p>
+The hierarchy window contains popup menus for structures, chains, coordinate sets, and cofactors and listboxes for atoms and atom locations. When you preselect a new structure or new chain in the corresponding popup menus the <a href="#sequence">sequence display</a> this structure or chain are made current. The current structure and chain are also displayed in the titel of the main window. All popup menus on lower levels are updated to refelect this choice, while the listboxes are not updated. Preselection in the popup menu is for inspection, it does yet not add the structure or chain to the list of selected objects (see <a href="#selection">Selection</a>). 
+Link buttons provide access to the 
+</p>
+<p>
+To display the atoms of a residue or cofactor, this residue or cofactor must be added to the selected objects (see <a href="#selection">Selection</a>). You can always remove it again.
+</p>
+<a name="sequence">
+<div class="subtitle">Sequence inspection</div>
+<p>
+The sequence is displayed in single-letter code format with vertical lines at residues 0, 10, 20, etc. and 50 residues per line. Non-standard residues are displayed as a question mark. When you click on the question mark, the PDB residue type is identified in the <code>Information</code> line on the bottom and in the title of the <code>Atoms</code> listbox.
+</p>
+<p>
+Models created from properly formatted PDB files with MMM 2010 or later contain information on the type of sequence (peptide, DNA, RNA, unknown polymer). This information is shown in the title of the sequence panel and panel background color is used to alert the user. For DNA, nucleotides are represented by upper-case letters, for RNA by lower-case letters.
+</p>
+<p>
+If secondary structure is defined, it is displayed schematically above the single-letter codes. Thin green sawtooth lines correspond to loops, thick orange wavy lines to helices, and thick blueish straight lines to strands (sheets).
+</p>
+<p>
+Residues that exist in the original sequence, but are not defined in the atomic or coarse-grained structure, are shown as grey letters and do not respond to clicking. Residues that are defined in the actual structure, but for which atoms are missing (usually side group atoms) are shown with bold dark green single-letter codes. When clicking on these single-letter codes, you can see in the <code>Atoms</code> listbox which atoms are defined in the structure.
+</p>
+<p>
+Information on hydropathy, helix propensity, charge can be displayed as background color by activating the corresponding radiobuttons. For hydropathy and helix propensity the color code is a blue (low) to yellow (high) scale. In other words, hydrophobic residues are yellow and helix breakers (Gly, much more Pro) are blue. For charge, a single positive charge is coded light blue, a single negative charge light red. Double charges (not yet implemented) correspond to darker color shades.
+</p>
+<p>
+DSSP secondary structure assignment (if available, see <a href="third_party.html#DSSP">third-party software</a>) can be visualized by color coding of the residue letters. In this color coding &alpha;-helices (DSSP code H) are copper (like the wavy helix line), unassigned residues limegreen (like the loop line), and extended strand residues (DSSP code E) steelblue (like the strand bar). Other types are B (isolated &beta;-bridge, lightskyblue), G (3<sub>10</sub>-helix, sandybrown), I (&pi;-helix orangered), T (turn, darkgreen), and S (bend, forestgreen). These colors roughly match the corresponding simplified secondary structure assignment, which knows only helix, strand (sheet), and loop. Slight differences with even automatic secondary structure assignment are possible, as MMM repairs small gaps or extends secondary structure elements if the backbone dihedrals of neighboring residues are very close to canonical values for the secondary structure.
+</p>
+<a name="selection">
+<div class="subtitle">Selection of objects</div>
+<p>
+Structures, chains, coordinate sets, coifactors, atoms, and locations can be selected by the corresponding <code>!</code> and <code>+</code> buttons and unselected by the <code>-</code> buttons. The <code>!</code> unselects all previously selected objects and makes the object preselected in the popup menu or listbox the only selected object. The <code>+</code> button adds this object to the existing selection and the <code>-</code> button removes it from the existing selection.
+</p>
+<p>
+All cofactors can be added at once by the <code>++</code> button and removed at once by the <code>--</code> button.
+</p>
+<p>
+Residues are selected by clicking in the sequence display. Single residues are selected by clicking on their single-letter code. The left mouse button selects exclusively the clicked residue, corresponding to a <code>!</code> button, the middle mouse button adds the residue to the selection, corresponding to the <code>+</code> button, and the right mouse button unselects the residue, corresponding to the <code>-</code> button. Instead of the middle mouse button you can also use the left button while pressing the <code>Shift</code> key, instead of the right mouse button, the left mouse button while pressing the <code>Ctrl</code> key.
+</p>
+<p>
+The current residue is highlighted in bright red color, while other selected residues are highlighted in a slightly darker shade of red.
+</p>
+<p>
+All residues in a secondary structure element can be selected, added to the selection, or removed from the selection by clicking on the corresponding graphic element in the sequence display. Green sawtooth lines denote loops, orange wavy lines helices, and blueish straight lines strands (sheets). The last residue of the last selected secondary structure element becomes the current residue.
+</p>
+<p>
+Double clicking in the sequence panel, but outside the sequence, unselects everything.
+</p>
+<p>
+For the last selected residue or cofactor, all atoms that are specified in the structure ar listed in the <code>Atoms</code> listbox. The title of this listbox is updated to display the current residue or cofactor. Likewise, if alternate locations exist for the last selected atom, they are displayed in the <code>Locations</code> listbox and the title of this listbox is updated.
+</p>
+<p>
+Residue selection in the hierarchy window is slightly inconvenient when you want to select by number of residue and very inconvenient when you want to select ranges of residues that are not whole secondary structure elements or residues by amino acid type. In such cases you better select by <a href="commands.html#select">command</a>.
+</p>
+<a name="limitations">
+<div class="subtitle">Limitations</div>
+<p>
+Some PDB structures contain several residues with the same number, distinguished by "insertion codes". Somebody meant well when introducing this, but in retrospect it is a very bad idea that creates a lot of confusion. To avoid mismatch between residue numbers in the sequence display and in the PDB file, MMM <i>excludes</i> all residues with an insertion code from the sequence. Such residues cannot be selected by clicking in the sequence display, but they are accessible by clicking on 3D graphics or via the <a href="commands.html#select">select command</a>. Use <code>select [1N8S](A)30B</code> to select residue 30 with insertion code B in chain A of structure 1N8S.\
+<p>
+It is also possible to have residue number zeros or even negative residue numbers in PDB files. In that case, MMM renumbers residues starting at 1.
+</p>
+<p>
+If a chain contains one or more residues with an insertion code or residues with numbers smaller than one, the displayed sequence is built from scratch, i.e., missing residues at the N terminus are represented by question marks (identity unknown) and missing residues at the C terminus are not shown at all.
+</p>
+<p>
+The SEQRES records of PDB files do not always match the residue numbering in the ATOM records. MMM checks for such mismatches and if they are found, the displayed sequence is also built from scratch. Again, structure 1N8S (now chain C, which is actually the C-terminal part of chain A with a large number of residues missing in between the end of chain A and the beginning of chain C) is a good example.
+</p>
+<p>
+Secondary structure of DNA/RNA sequences is not recognized.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2010.1, edited 2010/12/7</div>
+</body>
+</html>
+

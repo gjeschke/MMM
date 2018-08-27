@@ -1,0 +1,9700 @@
+
+--- Restraint fulfillment for model 1 with weight 0.478 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.31
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.58
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.52
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.07
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.10
+Monitored oligomer distance is <r> = 40.88
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 51.37
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.12
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.25
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 41.09
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 45.41
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.85
+Monitored oligomer distance is <r> = 15.69
+
+--- Restraint fulfillment for model 2 with weight 0.476 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.86
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.81
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 24.98
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.34
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 36.52
+Monitored oligomer distance is <r> = 32.09
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 51.27
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 54.06
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 56.94
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 46.55
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 45.03
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 41.25
+Monitored oligomer distance is <r> = 37.25
+
+--- Restraint fulfillment for model 3 with weight 0.496 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 38.48
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 31.64
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 17.57
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 29.33
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 39.21
+Monitored oligomer distance is <r> = 40.49
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.59
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.81
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 49.83
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 38.87
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 44.71
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.89
+Monitored oligomer distance is <r> = 10.99
+
+--- Restraint fulfillment for model 4 with weight 0.457 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.19
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 37.20
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.32
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.02
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.22
+Monitored oligomer distance is <r> = 38.56
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 47.94
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 50.77
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.57
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 44.36
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 45.14
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 40.19
+Monitored oligomer distance is <r> = 28.01
+
+--- Restraint fulfillment for model 5 with weight 0.451 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.17
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 33.78
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 18.10
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 27.90
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 39.10
+Monitored oligomer distance is <r> = 44.13
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 51.10
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.29
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.84
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 42.77
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 46.93
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 45.06
+Monitored oligomer distance is <r> = 18.98
+
+--- Restraint fulfillment for model 6 with weight 0.496 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.49
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.97
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 20.70
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 26.62
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 39.22
+Monitored oligomer distance is <r> = 43.17
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 55.55
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 57.23
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 53.55
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.58
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 52.83
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.32
+Monitored oligomer distance is <r> = 16.98
+
+--- Restraint fulfillment for model 7 with weight 0.467 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.99
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.37
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.56
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.04
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 36.34
+Monitored oligomer distance is <r> = 34.51
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 48.17
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 50.01
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.25
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 41.74
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 40.09
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 38.92
+Monitored oligomer distance is <r> = 32.67
+
+--- Restraint fulfillment for model 8 with weight 0.487 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.98
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 37.69
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 22.65
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 25.63
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 39.23
+Monitored oligomer distance is <r> = 43.71
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 48.77
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.33
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.08
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.49
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 49.53
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.35
+Monitored oligomer distance is <r> = 21.22
+
+--- Restraint fulfillment for model 9 with weight 0.483 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.35
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.39
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.71
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.01
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.13
+Monitored oligomer distance is <r> = 32.38
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 49.73
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.77
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.47
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 41.71
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 47.25
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 34.14
+Monitored oligomer distance is <r> = 16.03
+
+--- Restraint fulfillment for model 10 with weight 0.451 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.54
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.93
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.23
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 22.66
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 34.58
+Monitored oligomer distance is <r> = 35.28
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 52.25
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 54.58
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.41
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 44.03
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 51.36
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.43
+Monitored oligomer distance is <r> = 18.87
+
+--- Restraint fulfillment for model 11 with weight 0.497 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.88
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.98
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 20.18
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 27.12
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 39.76
+Monitored oligomer distance is <r> = 45.43
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 52.62
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 54.83
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 51.21
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 45.41
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 54.96
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 38.98
+Monitored oligomer distance is <r> = 29.45
+
+--- Restraint fulfillment for model 12 with weight 0.485 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.33
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.28
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 19.60
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 26.05
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 38.28
+Monitored oligomer distance is <r> = 43.15
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 49.60
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.99
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 49.20
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 44.54
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 52.86
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.88
+Monitored oligomer distance is <r> = 28.05
+
+--- Restraint fulfillment for model 13 with weight 0.489 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.54
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 37.50
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 22.75
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 26.56
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 39.97
+Monitored oligomer distance is <r> = 43.45
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 55.65
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 57.38
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 55.52
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 42.88
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 48.99
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 41.27
+Monitored oligomer distance is <r> = 14.54
+
+--- Restraint fulfillment for model 14 with weight 0.480 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.14
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.03
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 22.04
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.10
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 34.71
+Monitored oligomer distance is <r> = 32.80
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.48
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.52
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 53.06
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 42.22
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 44.17
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.92
+Monitored oligomer distance is <r> = 23.04
+
+--- Restraint fulfillment for model 15 with weight 0.495 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.63
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.23
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 19.06
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 27.80
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 39.97
+Monitored oligomer distance is <r> = 46.98
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 49.26
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.43
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 48.55
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.48
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 51.72
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.47
+Monitored oligomer distance is <r> = 26.24
+
+--- Restraint fulfillment for model 16 with weight 0.375 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 38.72
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 33.18
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 22.23
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.30
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 33.90
+Monitored oligomer distance is <r> = 27.11
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 49.94
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.47
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 55.34
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 45.05
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 43.10
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.72
+Monitored oligomer distance is <r> = 37.01
+
+--- Restraint fulfillment for model 17 with weight 0.491 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.48
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.98
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.04
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.33
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.52
+Monitored oligomer distance is <r> = 31.24
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 52.90
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.89
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 53.93
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 39.75
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 40.92
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.40
+Monitored oligomer distance is <r> = 25.93
+
+--- Restraint fulfillment for model 18 with weight 0.458 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.19
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.61
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.35
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.82
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.44
+Monitored oligomer distance is <r> = 32.28
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 54.46
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 56.46
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 54.99
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.38
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 49.11
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 36.64
+Monitored oligomer distance is <r> = 14.14
+
+--- Restraint fulfillment for model 19 with weight 0.487 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.62
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.61
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 19.49
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 25.92
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.70
+Monitored oligomer distance is <r> = 41.40
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 46.70
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 49.85
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.08
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 44.69
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 48.87
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 40.57
+Monitored oligomer distance is <r> = 24.61
+
+--- Restraint fulfillment for model 20 with weight 0.457 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.93
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 37.23
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.45
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 25.42
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 38.56
+Monitored oligomer distance is <r> = 39.38
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 48.97
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.67
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.01
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.88
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 47.28
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.90
+Monitored oligomer distance is <r> = 22.33
+
+--- Restraint fulfillment for model 21 with weight 0.478 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.25
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.79
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 24.92
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 22.24
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 34.34
+Monitored oligomer distance is <r> = 30.79
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 48.03
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.30
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.98
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 45.71
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 47.42
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 36.26
+Monitored oligomer distance is <r> = 28.07
+
+--- Restraint fulfillment for model 22 with weight 0.491 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.31
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.43
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 22.11
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.63
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 34.62
+Monitored oligomer distance is <r> = 31.26
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 48.20
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.22
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.08
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 44.94
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 47.76
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 36.72
+Monitored oligomer distance is <r> = 25.35
+
+--- Restraint fulfillment for model 23 with weight 0.486 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.76
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 37.53
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 25.08
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.25
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.07
+Monitored oligomer distance is <r> = 34.64
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 46.85
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 49.63
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 51.24
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.59
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 44.74
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 35.90
+Monitored oligomer distance is <r> = 27.07
+
+--- Restraint fulfillment for model 24 with weight 0.458 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.43
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 37.23
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 22.83
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.56
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.93
+Monitored oligomer distance is <r> = 40.71
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.58
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.31
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.98
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 41.41
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 42.66
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 40.99
+Monitored oligomer distance is <r> = 25.25
+
+--- Restraint fulfillment for model 25 with weight 0.486 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.71
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.96
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 20.81
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 27.71
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 40.92
+Monitored oligomer distance is <r> = 47.71
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.76
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.60
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 51.17
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 46.57
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 54.80
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.98
+Monitored oligomer distance is <r> = 30.52
+
+--- Restraint fulfillment for model 26 with weight 0.463 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.92
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.78
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.48
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.09
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.64
+Monitored oligomer distance is <r> = 34.76
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 52.70
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 54.98
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 53.51
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.70
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 49.78
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.83
+Monitored oligomer distance is <r> = 15.70
+
+--- Restraint fulfillment for model 27 with weight 0.491 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.51
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.74
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 22.97
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 25.46
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 38.25
+Monitored oligomer distance is <r> = 38.95
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 53.96
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 54.88
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.17
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 38.98
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 45.69
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 35.78
+Monitored oligomer distance is <r> = 10.11
+
+--- Restraint fulfillment for model 28 with weight 0.458 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 38.40
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 32.77
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.80
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.23
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 33.57
+Monitored oligomer distance is <r> = 26.60
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 52.27
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.88
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 53.97
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 41.35
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 43.41
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 36.48
+Monitored oligomer distance is <r> = 22.69
+
+--- Restraint fulfillment for model 29 with weight 0.376 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 39.25
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.93
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 24.31
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 27.74
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 38.32
+Monitored oligomer distance is <r> = 31.62
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 55.23
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 57.61
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 56.83
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 45.27
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 50.21
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 36.98
+Monitored oligomer distance is <r> = 18.08
+
+--- Restraint fulfillment for model 30 with weight 0.478 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.40
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 37.01
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.87
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 25.85
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 39.09
+Monitored oligomer distance is <r> = 43.29
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.91
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.82
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.71
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 42.02
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 48.87
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.42
+Monitored oligomer distance is <r> = 17.23
+
+--- Restraint fulfillment for model 31 with weight 0.482 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.38
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 37.62
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 24.30
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.72
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 36.95
+Monitored oligomer distance is <r> = 37.01
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 47.59
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 50.60
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.97
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 44.93
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 44.96
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.90
+Monitored oligomer distance is <r> = 30.88
+
+--- Restraint fulfillment for model 32 with weight 0.487 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 39.32
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.04
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.51
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.71
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 33.49
+Monitored oligomer distance is <r> = 25.54
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 47.50
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 49.76
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 51.88
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 42.48
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 41.78
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 34.71
+Monitored oligomer distance is <r> = 30.33
+
+--- Restraint fulfillment for model 33 with weight 0.412 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.70
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.17
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 19.73
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 26.86
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 38.34
+Monitored oligomer distance is <r> = 39.99
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 51.87
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.17
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 51.79
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 39.66
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 44.38
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.80
+Monitored oligomer distance is <r> = 13.71
+
+--- Restraint fulfillment for model 34 with weight 0.479 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.20
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.02
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.87
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.68
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.19
+Monitored oligomer distance is <r> = 38.57
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 54.85
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 56.77
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 55.36
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.35
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 48.93
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 40.49
+Monitored oligomer distance is <r> = 14.55
+
+--- Restraint fulfillment for model 35 with weight 0.480 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.99
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.41
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 20.54
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.57
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.04
+Monitored oligomer distance is <r> = 35.09
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 48.21
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.20
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.11
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 45.35
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 51.60
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 36.55
+Monitored oligomer distance is <r> = 26.65
+
+--- Restraint fulfillment for model 36 with weight 0.492 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.92
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.34
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.39
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.39
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 34.74
+Monitored oligomer distance is <r> = 30.39
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 48.23
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.70
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.53
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 46.53
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 50.06
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 35.95
+Monitored oligomer distance is <r> = 26.68
+
+--- Restraint fulfillment for model 37 with weight 0.446 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.40
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.80
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.89
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.94
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.12
+Monitored oligomer distance is <r> = 40.96
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 51.14
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.29
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 51.59
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 42.87
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 49.27
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 38.14
+Monitored oligomer distance is <r> = 17.34
+
+--- Restraint fulfillment for model 38 with weight 0.434 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.47
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.97
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 20.23
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 26.22
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 38.25
+Monitored oligomer distance is <r> = 40.54
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.65
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.09
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.37
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 40.24
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 41.84
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 41.83
+Monitored oligomer distance is <r> = 23.75
+
+--- Restraint fulfillment for model 39 with weight 0.441 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.15
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.23
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 19.22
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 27.42
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 38.98
+Monitored oligomer distance is <r> = 42.60
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.65
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.38
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 49.44
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 41.64
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 49.62
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.86
+Monitored oligomer distance is <r> = 18.99
+
+--- Restraint fulfillment for model 40 with weight 0.492 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.20
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.46
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 20.89
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 25.97
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 38.94
+Monitored oligomer distance is <r> = 44.06
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 47.67
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 50.92
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.91
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 45.62
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 50.33
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 40.82
+Monitored oligomer distance is <r> = 25.76
+
+--- Restraint fulfillment for model 41 with weight 0.481 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.61
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.87
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.59
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.27
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.11
+Monitored oligomer distance is <r> = 36.86
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 52.81
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 54.74
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 56.57
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.99
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 43.02
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 43.26
+Monitored oligomer distance is <r> = 34.95
+
+--- Restraint fulfillment for model 42 with weight 0.461 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.20
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 32.75
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 17.28
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 27.46
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.99
+Monitored oligomer distance is <r> = 41.56
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 49.91
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.33
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 51.38
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.31
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 48.69
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 42.73
+Monitored oligomer distance is <r> = 19.32
+
+--- Restraint fulfillment for model 43 with weight 0.420 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.08
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.82
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.61
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 26.97
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 40.02
+Monitored oligomer distance is <r> = 44.16
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 49.96
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.00
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.29
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 45.87
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 51.53
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 40.23
+Monitored oligomer distance is <r> = 24.56
+
+--- Restraint fulfillment for model 44 with weight 0.447 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.72
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 37.06
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.72
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.61
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.45
+Monitored oligomer distance is <r> = 37.08
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 49.75
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.02
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 51.79
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 42.61
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 46.40
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 36.36
+Monitored oligomer distance is <r> = 19.57
+
+--- Restraint fulfillment for model 45 with weight 0.478 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.32
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.18
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 19.64
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 25.35
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.60
+Monitored oligomer distance is <r> = 42.48
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 47.94
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 50.25
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.07
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 41.99
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 45.76
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 40.65
+Monitored oligomer distance is <r> = 19.49
+
+--- Restraint fulfillment for model 46 with weight 0.467 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.63
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.20
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.12
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 26.97
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 39.70
+Monitored oligomer distance is <r> = 43.74
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 51.56
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.63
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.15
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 44.13
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 53.38
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 36.26
+Monitored oligomer distance is <r> = 27.00
+
+--- Restraint fulfillment for model 47 with weight 0.428 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.76
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.97
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 22.69
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.64
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 36.94
+Monitored oligomer distance is <r> = 36.04
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 53.26
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 55.69
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 54.35
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 44.79
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 50.84
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.72
+Monitored oligomer distance is <r> = 18.50
+
+--- Restraint fulfillment for model 48 with weight 0.472 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.15
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.97
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 22.71
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.45
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.52
+Monitored oligomer distance is <r> = 39.39
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 53.11
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 55.60
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 55.90
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 44.87
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 47.89
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 42.35
+Monitored oligomer distance is <r> = 23.46
+
+--- Restraint fulfillment for model 49 with weight 0.490 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.29
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.86
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 24.82
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 22.90
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.04
+Monitored oligomer distance is <r> = 31.53
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 49.29
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.42
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.63
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 42.48
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 43.34
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 35.91
+Monitored oligomer distance is <r> = 25.91
+
+--- Restraint fulfillment for model 50 with weight 0.442 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.25
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.72
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.06
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.39
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 36.89
+Monitored oligomer distance is <r> = 38.97
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 49.42
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.93
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.99
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.54
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 45.19
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 41.50
+Monitored oligomer distance is <r> = 25.53
+
+--- Restraint fulfillment for model 51 with weight 0.451 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.03
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.50
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 20.43
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 26.76
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 39.08
+Monitored oligomer distance is <r> = 42.59
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 54.38
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 56.31
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.63
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 44.34
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 53.73
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 38.61
+Monitored oligomer distance is <r> = 23.07
+
+--- Restraint fulfillment for model 52 with weight 0.426 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.02
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.98
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.24
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 25.67
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.43
+Monitored oligomer distance is <r> = 37.49
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 53.27
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 54.55
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 51.82
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 40.21
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 47.41
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 36.16
+Monitored oligomer distance is <r> = 10.58
+
+--- Restraint fulfillment for model 53 with weight 0.479 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.31
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 37.28
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 22.55
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 26.25
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 39.64
+Monitored oligomer distance is <r> = 42.91
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 48.90
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.63
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.84
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 44.16
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 49.63
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.69
+Monitored oligomer distance is <r> = 21.16
+
+--- Restraint fulfillment for model 54 with weight 0.498 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.64
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.26
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.52
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.99
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.12
+Monitored oligomer distance is <r> = 30.51
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 54.47
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 57.38
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 57.65
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 47.08
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 50.71
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.67
+Monitored oligomer distance is <r> = 23.92
+
+--- Restraint fulfillment for model 55 with weight 0.397 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.27
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.43
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.83
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.48
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.53
+Monitored oligomer distance is <r> = 32.82
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 52.07
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.81
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 53.90
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 41.80
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 44.11
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 38.45
+Monitored oligomer distance is <r> = 22.19
+
+--- Restraint fulfillment for model 56 with weight 0.460 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.90
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 37.98
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 24.11
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.59
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.22
+Monitored oligomer distance is <r> = 38.50
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.93
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.88
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 55.73
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 46.10
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 46.87
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 42.48
+Monitored oligomer distance is <r> = 30.58
+
+--- Restraint fulfillment for model 57 with weight 0.464 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.77
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.41
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.98
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.43
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 34.49
+Monitored oligomer distance is <r> = 29.12
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.74
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.61
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 54.30
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 42.50
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 41.77
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.60
+Monitored oligomer distance is <r> = 31.98
+
+--- Restraint fulfillment for model 58 with weight 0.499 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.38
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.97
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 24.31
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 22.89
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 34.36
+Monitored oligomer distance is <r> = 29.69
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 52.03
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.49
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 53.57
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 40.75
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 42.60
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 35.40
+Monitored oligomer distance is <r> = 23.50
+
+--- Restraint fulfillment for model 59 with weight 0.472 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.04
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 37.46
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 24.47
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.84
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 36.87
+Monitored oligomer distance is <r> = 35.84
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 48.57
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 50.89
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.51
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 42.39
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 46.68
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 34.20
+Monitored oligomer distance is <r> = 19.12
+
+--- Restraint fulfillment for model 60 with weight 0.485 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.99
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.12
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.38
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.06
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.22
+Monitored oligomer distance is <r> = 33.41
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 51.13
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.98
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 54.59
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 45.28
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 48.18
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 38.89
+Monitored oligomer distance is <r> = 24.21
+
+--- Restraint fulfillment for model 61 with weight 0.399 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.89
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.13
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.97
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 25.04
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 36.69
+Monitored oligomer distance is <r> = 34.97
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.40
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.77
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.56
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.14
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 47.07
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.22
+Monitored oligomer distance is <r> = 19.63
+
+--- Restraint fulfillment for model 62 with weight 0.444 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 44.38
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 38.46
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.75
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 25.89
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 39.94
+Monitored oligomer distance is <r> = 43.86
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.41
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.97
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 53.40
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.97
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 46.96
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 41.19
+Monitored oligomer distance is <r> = 21.83
+
+--- Restraint fulfillment for model 63 with weight 0.484 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.60
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.90
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 20.56
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 25.75
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 38.39
+Monitored oligomer distance is <r> = 42.58
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 53.23
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 55.63
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 54.50
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 44.51
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 50.13
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 42.53
+Monitored oligomer distance is <r> = 17.09
+
+--- Restraint fulfillment for model 64 with weight 0.463 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.04
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 33.24
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 18.48
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 26.80
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.78
+Monitored oligomer distance is <r> = 39.70
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 47.78
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 50.55
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 49.97
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.81
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 48.96
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.18
+Monitored oligomer distance is <r> = 22.02
+
+--- Restraint fulfillment for model 65 with weight 0.482 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.00
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.23
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 22.41
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.34
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.99
+Monitored oligomer distance is <r> = 33.92
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 45.75
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 48.18
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 49.11
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 41.75
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 43.80
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 34.66
+Monitored oligomer distance is <r> = 22.52
+
+--- Restraint fulfillment for model 66 with weight 0.479 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.73
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 37.54
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.67
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 22.46
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.94
+Monitored oligomer distance is <r> = 37.91
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.11
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.57
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 51.92
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.39
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 48.21
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.01
+Monitored oligomer distance is <r> = 18.56
+
+--- Restraint fulfillment for model 67 with weight 0.484 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 38.69
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 32.96
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.63
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.94
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 33.47
+Monitored oligomer distance is <r> = 27.25
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 47.07
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 49.42
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.24
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 42.06
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 44.13
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 33.80
+Monitored oligomer distance is <r> = 22.96
+
+--- Restraint fulfillment for model 68 with weight 0.478 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.79
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 37.29
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.78
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 26.40
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 39.79
+Monitored oligomer distance is <r> = 45.22
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.76
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.00
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.25
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.86
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 52.05
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.22
+Monitored oligomer distance is <r> = 24.01
+
+--- Restraint fulfillment for model 69 with weight 0.473 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.73
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.71
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 20.00
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 25.80
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 38.32
+Monitored oligomer distance is <r> = 43.36
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 51.52
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.63
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.84
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 38.76
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 44.05
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 40.13
+Monitored oligomer distance is <r> = 12.04
+
+--- Restraint fulfillment for model 70 with weight 0.500 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.41
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 37.71
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 24.67
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.25
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 36.43
+Monitored oligomer distance is <r> = 36.08
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 51.79
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 55.16
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 55.41
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 47.66
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 52.01
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.22
+Monitored oligomer distance is <r> = 25.52
+
+--- Restraint fulfillment for model 71 with weight 0.482 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.20
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 33.23
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 17.46
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 26.58
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.41
+Monitored oligomer distance is <r> = 42.63
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 52.45
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.79
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 51.72
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 40.05
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 46.16
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 43.56
+Monitored oligomer distance is <r> = 12.02
+
+--- Restraint fulfillment for model 72 with weight 0.467 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.15
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.55
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.09
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.08
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 33.61
+Monitored oligomer distance is <r> = 28.30
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 48.19
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.50
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 53.86
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 46.23
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 46.74
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.85
+Monitored oligomer distance is <r> = 30.89
+
+--- Restraint fulfillment for model 73 with weight 0.455 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.03
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.04
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 18.78
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 27.71
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 39.13
+Monitored oligomer distance is <r> = 43.07
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 53.24
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 55.19
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.89
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.08
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 50.31
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 42.08
+Monitored oligomer distance is <r> = 15.12
+
+--- Restraint fulfillment for model 74 with weight 0.472 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.43
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.61
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 19.96
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 26.49
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 38.93
+Monitored oligomer distance is <r> = 43.76
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 51.78
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.22
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.68
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 40.34
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 43.48
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 42.97
+Monitored oligomer distance is <r> = 19.29
+
+--- Restraint fulfillment for model 75 with weight 0.496 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.45
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.87
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 22.36
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 25.07
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 36.39
+Monitored oligomer distance is <r> = 33.38
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 57.19
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 58.44
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 57.08
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 41.89
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 46.38
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.90
+Monitored oligomer distance is <r> = 18.59
+
+--- Restraint fulfillment for model 76 with weight 0.491 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.30
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.54
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 22.56
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.74
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 34.60
+Monitored oligomer distance is <r> = 30.48
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 53.35
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 56.03
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 55.31
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 45.67
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 50.94
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.86
+Monitored oligomer distance is <r> = 19.44
+
+--- Restraint fulfillment for model 77 with weight 0.484 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.52
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.91
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 22.86
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.01
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.13
+Monitored oligomer distance is <r> = 31.28
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 47.09
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 50.76
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 54.81
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 47.90
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 45.67
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 41.33
+Monitored oligomer distance is <r> = 40.09
+
+--- Restraint fulfillment for model 78 with weight 0.497 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.76
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.48
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 24.71
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.36
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.20
+Monitored oligomer distance is <r> = 30.69
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 47.66
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 50.64
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.66
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 44.80
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 45.40
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 36.28
+Monitored oligomer distance is <r> = 29.48
+
+--- Restraint fulfillment for model 79 with weight 0.476 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.92
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.86
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.10
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.78
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 36.78
+Monitored oligomer distance is <r> = 37.82
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 49.27
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.36
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.23
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 45.42
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 50.08
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.87
+Monitored oligomer distance is <r> = 24.09
+
+--- Restraint fulfillment for model 80 with weight 0.488 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 39.94
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.07
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 25.22
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.39
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 33.16
+Monitored oligomer distance is <r> = 23.88
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 52.71
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 54.99
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 55.18
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.97
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 46.82
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 34.27
+Monitored oligomer distance is <r> = 22.57
+
+--- Restraint fulfillment for model 81 with weight 0.476 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.42
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.01
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 24.26
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.00
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 34.55
+Monitored oligomer distance is <r> = 29.95
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 52.37
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 54.98
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 56.56
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 45.67
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 46.37
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.34
+Monitored oligomer distance is <r> = 30.09
+
+--- Restraint fulfillment for model 82 with weight 0.495 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.69
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.14
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 19.62
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 26.77
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 38.24
+Monitored oligomer distance is <r> = 40.21
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 55.87
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 57.25
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.63
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 42.93
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 53.42
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.96
+Monitored oligomer distance is <r> = 21.01
+
+--- Restraint fulfillment for model 83 with weight 0.477 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.14
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.59
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.02
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.72
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 36.47
+Monitored oligomer distance is <r> = 33.89
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 49.65
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.08
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.38
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 43.56
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 50.23
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 32.94
+Monitored oligomer distance is <r> = 21.57
+
+--- Restraint fulfillment for model 84 with weight 0.420 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.38
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 36.41
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 25.06
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.49
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 36.12
+Monitored oligomer distance is <r> = 30.47
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 47.75
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.22
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.85
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 46.27
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 48.24
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 35.43
+Monitored oligomer distance is <r> = 29.37
+
+--- Restraint fulfillment for model 85 with weight 0.494 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.19
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.71
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 20.10
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 26.38
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 38.21
+Monitored oligomer distance is <r> = 40.16
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 54.44
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 55.17
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.43
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 38.34
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 45.01
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.10
+Monitored oligomer distance is <r> = 10.07
+
+--- Restraint fulfillment for model 86 with weight 0.491 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.97
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.13
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 19.19
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 26.64
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 38.16
+Monitored oligomer distance is <r> = 41.22
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 55.48
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 56.95
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 54.63
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 41.79
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 48.42
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 42.71
+Monitored oligomer distance is <r> = 12.42
+
+--- Restraint fulfillment for model 87 with weight 0.499 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.45
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 33.89
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 20.27
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.36
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.72
+Monitored oligomer distance is <r> = 35.52
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 53.23
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 54.27
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.90
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 39.31
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 47.45
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 35.35
+Monitored oligomer distance is <r> = 10.10
+
+--- Restraint fulfillment for model 88 with weight 0.426 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.50
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.57
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.69
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.43
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.77
+Monitored oligomer distance is <r> = 33.57
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 51.24
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.24
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 54.25
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 42.70
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 43.62
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.94
+Monitored oligomer distance is <r> = 27.09
+
+--- Restraint fulfillment for model 89 with weight 0.483 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.54
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.91
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.67
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.13
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 34.84
+Monitored oligomer distance is <r> = 31.91
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 47.92
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.39
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 51.78
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 46.70
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 51.02
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 35.55
+Monitored oligomer distance is <r> = 27.93
+
+--- Restraint fulfillment for model 90 with weight 0.469 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 42.44
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.99
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 21.13
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 25.71
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 38.31
+Monitored oligomer distance is <r> = 41.37
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 53.25
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 54.79
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 51.22
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 41.97
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 51.01
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 36.47
+Monitored oligomer distance is <r> = 18.34
+
+--- Restraint fulfillment for model 91 with weight 0.444 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.27
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 33.88
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 20.05
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 25.77
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.01
+Monitored oligomer distance is <r> = 36.93
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.05
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.59
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.47
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 44.83
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 52.40
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 36.27
+Monitored oligomer distance is <r> = 25.19
+
+--- Restraint fulfillment for model 92 with weight 0.443 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.83
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.46
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.79
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.86
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.10
+Monitored oligomer distance is <r> = 30.33
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 49.92
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 51.71
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 53.69
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 42.22
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 40.91
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 37.93
+Monitored oligomer distance is <r> = 32.62
+
+--- Restraint fulfillment for model 93 with weight 0.423 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 43.14
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 37.34
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.63
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.57
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 37.84
+Monitored oligomer distance is <r> = 38.82
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 49.74
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.34
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 53.97
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 44.36
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 45.06
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 41.06
+Monitored oligomer distance is <r> = 28.67
+
+--- Restraint fulfillment for model 94 with weight 0.478 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.65
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.30
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.34
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.76
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 36.12
+Monitored oligomer distance is <r> = 31.79
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.51
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.44
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 51.55
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 41.44
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 45.95
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 33.76
+Monitored oligomer distance is <r> = 16.35
+
+--- Restraint fulfillment for model 95 with weight 0.481 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.96
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.47
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 23.52
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 23.60
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 34.98
+Monitored oligomer distance is <r> = 30.70
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 54.80
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 56.38
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 56.98
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 42.92
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 43.86
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.95
+Monitored oligomer distance is <r> = 29.50
+
+--- Restraint fulfillment for model 96 with weight 0.463 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 39.09
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 32.08
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 17.76
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 27.84
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 38.03
+Monitored oligomer distance is <r> = 39.49
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.15
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 53.05
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 51.39
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 45.83
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 52.86
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 40.53
+Monitored oligomer distance is <r> = 26.47
+
+--- Restraint fulfillment for model 97 with weight 0.445 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.01
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.97
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 22.34
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 22.68
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 34.16
+Monitored oligomer distance is <r> = 31.63
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.55
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.57
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 51.07
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 41.85
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 47.70
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 34.00
+Monitored oligomer distance is <r> = 14.90
+
+--- Restraint fulfillment for model 98 with weight 0.476 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.09
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 33.82
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 20.25
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 25.06
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 36.04
+Monitored oligomer distance is <r> = 35.11
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 54.98
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 55.83
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 55.51
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 40.04
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 41.62
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 42.14
+Monitored oligomer distance is <r> = 27.13
+
+--- Restraint fulfillment for model 99 with weight 0.491 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 40.88
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 35.19
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 22.74
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 24.09
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 35.57
+Monitored oligomer distance is <r> = 32.51
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 46.11
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 49.14
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 52.11
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 44.70
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 43.77
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 38.57
+Monitored oligomer distance is <r> = 33.00
+
+--- Restraint fulfillment for model 100 with weight 0.383 ---
+
+
+Residue 123
+
+
+Residue 124
+
+
+Residue 125
+
+
+Residue 126
+
+Beacon restraint [38.30,  6.28] Å to residue 55 fulfilled at <r> = 41.52
+Beacon restraint [31.30,  6.34] Å to residue 62 fulfilled at <r> = 34.77
+Beacon restraint [22.80,  6.40] Å to residue 72 fulfilled at <r> = 19.84
+Beacon restraint [26.70,  5.88] Å to residue 87 fulfilled at <r> = 27.16
+Beacon restraint [37.10,  7.96] Å to residue 101 fulfilled at <r> = 39.06
+Monitored oligomer distance is <r> = 42.77
+
+Residue 127
+
+
+Residue 128
+
+
+Residue 129
+
+
+Residue 130
+
+
+Residue 131
+
+
+Residue 132
+
+
+Residue 133
+
+
+Residue 134
+
+
+Residue 135
+
+
+Residue 136
+
+
+Residue 137
+
+
+Residue 138
+
+
+Residue 139
+
+
+Residue 140
+
+
+Residue 141
+
+
+Residue 142
+
+
+Residue 143
+
+
+Residue 144
+
+
+Residue 145
+
+
+Residue 146
+
+
+Residue 147
+
+
+Residue 148
+
+
+Residue 149
+
+Beacon restraint [46.00,  9.95] Å to residue 55 fulfilled at <r> = 50.07
+Beacon restraint [54.30,  6.93] Å to residue 62 fulfilled at <r> = 52.12
+Beacon restraint [52.50,  7.66] Å to residue 72 fulfilled at <r> = 50.82
+Beacon restraint [43.30,  6.22] Å to residue 87 fulfilled at <r> = 41.87
+Beacon restraint [44.20, 11.27] Å to residue 101 fulfilled at <r> = 47.40
+Internal restraint [38.60,  8.08] Å to residue 126 fulfilled at <r> = 39.94
+Monitored oligomer distance is <r> = 17.57

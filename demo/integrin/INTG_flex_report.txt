@@ -1,0 +1,408 @@
+--- Generation of flexible termini and linkers for rigid-body model INTG ---
+
+### Flexible peptide section 1 in rigid-body arrangment 1 ###
+
+### Flexible peptide section 1 in rigid-body arrangment 2 ###
+
+--- Restraint fulfillment for model 1 with weight 0.663 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){2}1485 fulfilled at <r> = 47.31
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){2}1608 fulfilled at <r> = 47.52
+
+--- Restraint fulfillment for model 2 with weight 0.345 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){2}1485 fulfilled at <r> = 52.20
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){2}1608 fulfilled at <r> = 44.53
+
+--- Restraint fulfillment for model 3 with weight 0.555 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){2}1485 fulfilled at <r> = 54.49
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){2}1608 fulfilled at <r> = 44.48
+
+--- Restraint fulfillment for model 4 with weight 0.628 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){2}1485 fulfilled at <r> = 53.07
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){2}1608 fulfilled at <r> = 44.21
+
+--- Restraint fulfillment for model 5 with weight 0.356 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){2}1485 fulfilled at <r> = 50.79
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){2}1608 fulfilled at <r> = 46.11
+Generation of 5 models took 0 h 38 min 8 s
+ 458 s/model
+Models were stored in structure 3 and in PDB files starting with INTG_r2_f1_1549_1571.
+ 0.01% of allowed number of trials was used.
+16 backbone models were generated.
+ 7.12% of all trials failed by restraint violation.
+ 4.69% of all trials failed by internal loop clashes.
+85.12% of all trials failed by clashes of the loop with the rigid bodies.
+ 6.25% of all backbones failed by sidechain clashes within the loop.
+62.50% of all backbones failed by sidechain clashes with rigid bodies.
+ 2.02% of all trials did not reach terminal anchor residue.
+ 0.90% of all trials failed Ramachandran angles at terminal anchor.
+--- Distribution shifts and overlaps ---
+
+Shift [Å]	Overlap
+ 0.44	0.924
+ 0.44	0.894
+
+### Flexible peptide section 1 in rigid-body arrangment 3 ###
+
+--- Restraint fulfillment for model 1 with weight 0.375 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){3}1485 fulfilled at <r> = 54.27
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){3}1608 fulfilled at <r> = 47.16
+
+--- Restraint fulfillment for model 2 with weight 0.638 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){3}1485 fulfilled at <r> = 54.15
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){3}1608 fulfilled at <r> = 44.34
+Generation of 2 models took 1 h 0 min 0 s
+1800 s/model
+Models were stored in structure 4 and in PDB files starting with INTG_r3_f1_1549_1571.
+ 0.03% of allowed number of trials was used.
+17 backbone models were generated.
+ 9.55% of all trials failed by restraint violation.
+ 2.48% of all trials failed by internal loop clashes.
+86.67% of all trials failed by clashes of the loop with the rigid bodies.
+11.76% of all backbones failed by sidechain clashes within the loop.
+76.47% of all backbones failed by sidechain clashes with rigid bodies.
+ 0.71% of all trials did not reach terminal anchor residue.
+ 0.49% of all trials failed Ramachandran angles at terminal anchor.
+--- Distribution shifts and overlaps ---
+
+Shift [Å]	Overlap
+ 3.20	0.857
+ 0.38	0.794
+
+### Flexible peptide section 1 in rigid-body arrangment 4 ###
+
+### Flexible peptide section 1 in rigid-body arrangment 5 ###
+
+### Flexible peptide section 1 in rigid-body arrangment 6 ###
+
+--- Restraint fulfillment for model 1 with weight 0.488 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){6}1485 fulfilled at <r> = 54.18
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){6}1608 fulfilled at <r> = 46.39
+Generation of 1 models took 1 h 0 min 5 s
+3605 s/model
+Models were stored in structure 5 and in PDB files starting with INTG_r6_f1_1549_1571.
+ 0.02% of allowed number of trials was used.
+2 backbone models were generated.
+ 8.95% of all trials failed by restraint violation.
+ 2.46% of all trials failed by internal loop clashes.
+84.67% of all trials failed by clashes of the loop with the rigid bodies.
+ 0.00% of all backbones failed by sidechain clashes within the loop.
+50.00% of all backbones failed by sidechain clashes with rigid bodies.
+ 2.91% of all trials did not reach terminal anchor residue.
+ 0.84% of all trials failed Ramachandran angles at terminal anchor.
+--- Distribution shifts and overlaps ---
+
+Shift [Å]	Overlap
+ 3.18	0.853
+ 1.39	0.780
+
+### Flexible peptide section 1 in rigid-body arrangment 7 ###
+
+### Flexible peptide section 1 in rigid-body arrangment 8 ###
+
+--- Restraint fulfillment for model 1 with weight 0.682 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){8}1485 fulfilled at <r> = 52.01
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){8}1608 fulfilled at <r> = 44.30
+
+--- Restraint fulfillment for model 2 with weight 0.642 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){8}1485 fulfilled at <r> = 50.83
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){8}1608 fulfilled at <r> = 47.92
+Generation of 2 models took 1 h 0 min 2 s
+1801 s/model
+Models were stored in structure 6 and in PDB files starting with INTG_r8_f1_1549_1571.
+ 0.06% of allowed number of trials was used.
+24 backbone models were generated.
+ 5.86% of all trials failed by restraint violation.
+ 1.20% of all trials failed by internal loop clashes.
+92.63% of all trials failed by clashes of the loop with the rigid bodies.
+25.00% of all backbones failed by sidechain clashes within the loop.
+66.67% of all backbones failed by sidechain clashes with rigid bodies.
+ 0.15% of all trials did not reach terminal anchor residue.
+ 0.14% of all trials failed Ramachandran angles at terminal anchor.
+--- Distribution shifts and overlaps ---
+
+Shift [Å]	Overlap
+ 0.43	0.932
+ 1.05	0.842
+
+### Flexible peptide section 1 in rigid-body arrangment 9 ###
+
+--- Restraint fulfillment for model 1 with weight 0.649 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){9}1485 fulfilled at <r> = 53.49
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){9}1608 fulfilled at <r> = 46.98
+
+--- Restraint fulfillment for model 2 with weight 0.118 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){9}1485 fulfilled at <r> = 51.77
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){9}1608 fulfilled at <r> = 44.63
+Generation of 2 models took 1 h 0 min 3 s
+1801 s/model
+Models were stored in structure 7 and in PDB files starting with INTG_r9_f1_1549_1571.
+ 0.02% of allowed number of trials was used.
+7 backbone models were generated.
+ 5.44% of all trials failed by restraint violation.
+ 2.25% of all trials failed by internal loop clashes.
+90.33% of all trials failed by clashes of the loop with the rigid bodies.
+ 0.00% of all backbones failed by sidechain clashes within the loop.
+71.43% of all backbones failed by sidechain clashes with rigid bodies.
+ 1.41% of all trials did not reach terminal anchor residue.
+ 0.49% of all trials failed Ramachandran angles at terminal anchor.
+--- Distribution shifts and overlaps ---
+
+Shift [Å]	Overlap
+ 2.23	0.913
+ 1.62	0.798
+
+### Flexible peptide section 1 in rigid-body arrangment 10 ###
+
+--- Restraint fulfillment for model 1 with weight 0.494 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){10}1485 fulfilled at <r> = 49.48
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){10}1608 fulfilled at <r> = 45.88
+
+--- Restraint fulfillment for model 2 with weight 0.611 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){10}1485 fulfilled at <r> = 53.27
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){10}1608 fulfilled at <r> = 47.01
+
+--- Restraint fulfillment for model 3 with weight 0.588 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){10}1485 fulfilled at <r> = 52.55
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){10}1608 fulfilled at <r> = 42.29
+
+--- Restraint fulfillment for model 4 with weight 0.662 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){10}1485 fulfilled at <r> = 53.66
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){10}1608 fulfilled at <r> = 47.20
+
+--- Restraint fulfillment for model 5 with weight 0.649 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){10}1485 fulfilled at <r> = 53.95
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){10}1608 fulfilled at <r> = 46.59
+Generation of 5 models took 0 h 48 min 26 s
+ 581 s/model
+Models were stored in structure 8 and in PDB files starting with INTG_r10_f1_1549_1571.
+ 0.03% of allowed number of trials was used.
+15 backbone models were generated.
+ 2.90% of all trials failed by restraint violation.
+ 1.82% of all trials failed by internal loop clashes.
+94.48% of all trials failed by clashes of the loop with the rigid bodies.
+ 0.00% of all backbones failed by sidechain clashes within the loop.
+66.67% of all backbones failed by sidechain clashes with rigid bodies.
+ 0.45% of all trials did not reach terminal anchor residue.
+ 0.30% of all trials failed Ramachandran angles at terminal anchor.
+--- Distribution shifts and overlaps ---
+
+Shift [Å]	Overlap
+ 1.74	0.935
+ 0.85	0.841
+
+### Flexible peptide section 1 in rigid-body arrangment 11 ###
+
+--- Restraint fulfillment for model 1 with weight 0.661 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){11}1485 fulfilled at <r> = 52.13
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){11}1608 fulfilled at <r> = 43.33
+Generation of 1 models took 1 h 0 min 0 s
+3600 s/model
+Models were stored in structure 9 and in PDB files starting with INTG_r11_f1_1549_1571.
+ 0.04% of allowed number of trials was used.
+10 backbone models were generated.
+13.68% of all trials failed by restraint violation.
+ 1.73% of all trials failed by internal loop clashes.
+83.78% of all trials failed by clashes of the loop with the rigid bodies.
+20.00% of all backbones failed by sidechain clashes within the loop.
+70.00% of all backbones failed by sidechain clashes with rigid bodies.
+ 0.52% of all trials did not reach terminal anchor residue.
+ 0.26% of all trials failed Ramachandran angles at terminal anchor.
+--- Distribution shifts and overlaps ---
+
+Shift [Å]	Overlap
+ 1.13	0.928
+-1.67	0.815
+
+### Flexible peptide section 1 in rigid-body arrangment 12 ###
+
+--- Restraint fulfillment for model 1 with weight 0.678 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){12}1485 fulfilled at <r> = 55.86
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){12}1608 fulfilled at <r> = 45.95
+
+--- Restraint fulfillment for model 2 with weight 0.555 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){12}1485 fulfilled at <r> = 47.27
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){12}1608 fulfilled at <r> = 43.26
+
+--- Restraint fulfillment for model 3 with weight 0.633 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){12}1485 fulfilled at <r> = 48.74
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){12}1608 fulfilled at <r> = 47.42
+
+--- Restraint fulfillment for model 4 with weight 0.604 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){12}1485 fulfilled at <r> = 50.63
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){12}1608 fulfilled at <r> = 42.14
+
+--- Restraint fulfillment for model 5 with weight 0.628 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){12}1485 fulfilled at <r> = 55.11
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){12}1608 fulfilled at <r> = 47.84
+Generation of 5 models took 0 h 18 min 10 s
+ 218 s/model
+Models were stored in structure 10 and in PDB files starting with INTG_r12_f1_1549_1571.
+ 0.01% of allowed number of trials was used.
+13 backbone models were generated.
+ 3.92% of all trials failed by restraint violation.
+ 4.66% of all trials failed by internal loop clashes.
+88.31% of all trials failed by clashes of the loop with the rigid bodies.
+ 0.00% of all backbones failed by sidechain clashes within the loop.
+61.54% of all backbones failed by sidechain clashes with rigid bodies.
+ 1.98% of all trials did not reach terminal anchor residue.
+ 0.97% of all trials failed Ramachandran angles at terminal anchor.
+--- Distribution shifts and overlaps ---
+
+Shift [Å]	Overlap
+ 0.70	0.918
+ 0.41	0.826
+
+### Flexible peptide section 1 in rigid-body arrangment 13 ###
+
+--- Restraint fulfillment for model 1 with weight 0.385 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){13}1485 fulfilled at <r> = 49.90
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){13}1608 fulfilled at <r> = 43.82
+
+--- Restraint fulfillment for model 2 with weight 0.524 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){13}1485 fulfilled at <r> = 53.42
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){13}1608 fulfilled at <r> = 47.06
+
+--- Restraint fulfillment for model 3 with weight 0.319 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){13}1485 fulfilled at <r> = 51.70
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){13}1608 fulfilled at <r> = 45.17
+
+--- Restraint fulfillment for model 4 with weight 0.549 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){13}1485 fulfilled at <r> = 54.14
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){13}1608 fulfilled at <r> = 42.54
+
+--- Restraint fulfillment for model 5 with weight 0.584 ---
+
+
+Residue 1559
+
+Beacon restraint [51.00,  5.02] Å to residue [INTG](A){13}1485 fulfilled at <r> = 51.46
+Beacon restraint [45.00,  3.04] Å to residue [INTG](B){13}1608 fulfilled at <r> = 47.79
+Generation of 5 models took 0 h 22 min 8 s
+ 266 s/model
+Models were stored in structure 11 and in PDB files starting with INTG_r13_f1_1549_1571.
+ 0.03% of allowed number of trials was used.
+10 backbone models were generated.
+ 3.15% of all trials failed by restraint violation.
+ 0.90% of all trials failed by internal loop clashes.
+95.67% of all trials failed by clashes of the loop with the rigid bodies.
+ 0.00% of all backbones failed by sidechain clashes within the loop.
+50.00% of all backbones failed by sidechain clashes with rigid bodies.
+ 0.13% of all trials did not reach terminal anchor residue.
+ 0.12% of all trials failed Ramachandran angles at terminal anchor.
+--- Distribution shifts and overlaps ---
+
+Shift [Å]	Overlap
+ 1.30	0.913
+ 0.41	0.838
+
+### Flexible peptide section 1 in rigid-body arrangment 14 ###
+
+### Flexible peptide section 1 in rigid-body arrangment 15 ###

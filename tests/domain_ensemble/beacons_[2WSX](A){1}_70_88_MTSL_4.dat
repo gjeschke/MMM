@@ -1,0 +1,23 @@
+% Optimum beacon sites for localization of residue (A)70,88
+% Predicted distances between  2.5 and  3.5 nm
+% site 1 address  site 2 address  site 3 address  site 4 address  Figure of merit
+ [2WSX](A){1}275 [2WSX](A){1}285 [2WSX](A){1}425 [2WSX](A){1}501          3.423
+ [2WSX](A){1}275 [2WSX](A){1}285 [2WSX](A){1}331 [2WSX](A){1}501          3.448
+ [2WSX](A){1}275 [2WSX](A){1}285 [2WSX](A){1}429 [2WSX](A){1}501          3.469
+ [2WSX](A){1}279 [2WSX](A){1}285 [2WSX](A){1}425 [2WSX](A){1}501          3.479
+ [2WSX](A){1}275 [2WSX](A){1}285 [2WSX](A){1}327 [2WSX](A){1}501          3.499
+ [2WSX](A){1}275 [2WSX](A){1}285 [2WSX](A){1}426 [2WSX](A){1}501          3.501
+ [2WSX](A){1}203 [2WSX](A){1}275 [2WSX](A){1}285 [2WSX](A){1}501          3.506
+ [2WSX](A){1}275 [2WSX](A){1}285 [2WSX](A){1}428 [2WSX](A){1}501          3.510
+ [2WSX](A){1}101 [2WSX](A){1}275 [2WSX](A){1}285 [2WSX](A){1}501          3.510
+ [2WSX](A){1}279 [2WSX](A){1}285 [2WSX](A){1}428 [2WSX](A){1}501          3.516
+ [2WSX](A){1}275 [2WSX](A){1}285 [2WSX](A){1}433 [2WSX](A){1}501          3.520
+ [2WSX](A){1}204 [2WSX](A){1}275 [2WSX](A){1}285 [2WSX](A){1}501          3.522
+ [2WSX](A){1}164 [2WSX](A){1}275 [2WSX](A){1}285 [2WSX](A){1}425          3.524
+ [2WSX](A){1}164 [2WSX](A){1}275 [2WSX](A){1}285 [2WSX](A){1}331          3.530
+ [2WSX](A){1}275 [2WSX](A){1}285 [2WSX](A){1}330 [2WSX](A){1}501          3.538
+ [2WSX](A){1}275 [2WSX](A){1}285 [2WSX](A){1}422 [2WSX](A){1}501          3.547
+ [2WSX](A){1}279 [2WSX](A){1}285 [2WSX](A){1}429 [2WSX](A){1}501          3.550
+ [2WSX](A){1}164 [2WSX](A){1}279 [2WSX](A){1}285 [2WSX](A){1}425          3.564
+ [2WSX](A){1}275 [2WSX](A){1}285 [2WSX](A){1}440 [2WSX](A){1}501          3.580
+ [2WSX](A){1}164 [2WSX](A){1}275 [2WSX](A){1}285 [2WSX](A){1}327          3.588

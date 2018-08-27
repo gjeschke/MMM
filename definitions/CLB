@@ -1,0 +1,47 @@
+RESIDUE   CLB     42
+CONECT      N      3 CA   H    H2  
+CONECT      CA     4 N    CB   C    HA  
+CONECT      CB     4 CA   OB3  HB2  HB3 
+CONECT      OB3    2 CB   B   
+CONECT      C      3 CA   O    OXT 
+CONECT      O      1 C   
+CONECT      OXT    2 C    HXT 
+CONECT      N9     3 C8   C10  HN9 
+CONECT      C8     4 N9   C7   B    H8  
+CONECT      C7     4 C8   C1   H71  H72 
+CONECT      C1     3 C7   C2   C6  
+CONECT      C2     3 C1   C3   HC2 
+CONECT      C3     3 C2   C4   H3  
+CONECT      C6     3 C1   C5   H6  
+CONECT      C5     3 C6   C4   H5  
+CONECT      C4     3 C3   C5   CL4 
+CONECT      CL4    1 C4  
+CONECT      OB1    2 B    HOB1
+CONECT      OB2    2 B    HOB2
+CONECT      B      4 OB3  C8   OB1  OB2 
+CONECT      C10    3 N9   O10  C11 
+CONECT      O10    1 C10 
+CONECT      C11    4 C10  H111 H112 H113
+CONECT      H      1 N   
+CONECT      H2     1 N   
+CONECT      HA     1 CA  
+CONECT      HB2    1 CB  
+CONECT      HB3    1 CB  
+CONECT      HXT    1 OXT 
+CONECT      HN9    1 N9  
+CONECT      H8     1 C8  
+CONECT      H71    1 C7  
+CONECT      H72    1 C7  
+CONECT      HC2    1 C2  
+CONECT      H3     1 C3  
+CONECT      H6     1 C6  
+CONECT      H5     1 C5  
+CONECT      HOB1   1 OB1 
+CONECT      HOB2   1 OB2 
+CONECT      H111   1 C11 
+CONECT      H112   1 C11 
+CONECT      H113   1 C11 
+END   
+HET    CLB             42
+HETNAM     CLB D-PARA-CHLOROPHENYL-1-ACETAMIDOBORONIC ACID ALANINE
+FORMUL      CLB    C13 H19 B1 Cl1 N2 O6 1-

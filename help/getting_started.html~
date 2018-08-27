@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Getting started</title>
+</head>
+<body>
+
+<div class="pagetitle">Getting started</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &uarr |  &darr; &bull; <a href="protocol_labeling_deer.html">Protocol for spin labeling & DEER simulation (tutorial) </a> &bull;  <a href="demo_model.html">Demo model of LHCII </a>
+</pre>
+
+<a name="installation">
+<div class="subtitle">Installation</div>
+<p>
+MMM comes as a ZIP file with everything you need, except for optional <a href="third_party.html">third-party software</a> that you need to download and install yourself for licensing reasons. Unpack the ZIP file into a directory of your choice. Add the directory to the Matlab path, for instance by using the <code>File/Set path...</code> menu item in the Matlab main window. Save the Matlab path by clicking the <code>Save</code> button if you want to keep it for future Matlab sessions. If you click the <code>Apply</code> button the path is set only for the current session.
+</p>
+<p>
+You can now start MMM either via the Matlab Start button (left bottom corner of the main window) by selecting item <code>Toolboxes/MMM/Start</code> or by typing <code>MMM</code> in the Matlab command window.
+</p>
+<p>
+For better performance, you may want to change the preferred PDB server (faster downloading of PDB files) and the SFX server (easier fulltext access for references without digital object identifier). Go to the <a href="menu_file.html#preferences">File/Preferences</a> menu item. Change the SFX server address in the edit field to the one of your home institution. If you do not have one, you can try the one of TU Berlin given above the edit field. This SFX server first creates the DOI the next step brings you to the journal homepage, which will recognize whether your institution has a subscription to this journal. Nevertheless, it is strongly recommended that you find the address of your own institution's SFX server (Berlin's taxpayers may not want to sponsor your research).
+<p>
+<a name="demo">
+<div class="subtitle">Demo script</div>
+<p>
+<img src="img/main_window.jpg" width="409" height="313" alt="main window picture missing">
+<p>
+You can load a demo script <code>cover_picture_2009.mmm</code> via the <a href="scripting.html">script</a> load button marked with a red arrow in the screenshot above. This demonstrates several features of MMM, including <a href="commands.html#download">PDB download</a>, structure display, selection of residues and cofactors, coordinate frame transform to make a symmtry axis the new <i>z</i> axis, display of a solvent accessible surface (if Michel Sanner's <a href="third_party.html#MSMS">MSMS</a> program is also installed), spin labeling, and spin label display. The script will run without MSMS being installed, just the solvent accessible surface will not be computed and displayed.
+</p>
+<p>
+If you are not connected to the internet, you need to use the script <code>cover_picture_2009_no_internet.mmm</code>.
+<p>
+Running the script takes about ten minutes on a not too old laptop computer, it is usually faster with a desktop computer. Update of the 3D model display may be a bit slower than update of the Message board, hence, display update may lag behind the explanation. The script demonstrates capabilities of MMM and working with <a href="commands.html">commands</a> and <a href="scripting.html">scripts</a>. The same functionality is accessible via the graphical <a href="user_interface.html">user interface</a>.
+</p>
+<p>
+After running the script, the cover picture is in the clipboard.
+</p>
+<a name="PDB">
+<div class="subtitle">Demo PDB file and initialization script</div>
+<p>
+The folder <code>LHCII</code> contains the PDB file <code>2BHW</code>. You can load this via the <a href="menu_file.html#new">File/New/From PDB.../local file</a> menu item. An initialization script <code>2BHW.mmm</code> exists in the same folder. This script shows how to define secondary structure when loading a PDB file and how to control initial model display. You may also decide not to use this script (MMM asks). You will then end up with standard display and secondary structure assignement from the PDB file. You can obtain a better automatic secondary structure assignment by installing the <a href="third_party.html#DSSP">DSSP</a> program of Kabsch and Sander.  
+</p>
+<p>
+The model freshly created from the PDB file will already contain a few <a href="reference_window.html">references</a> and will already have a few automatic <a href="annotation_window.html">annotations</a> that can be inspected most easily with the keyword finder accessible via the via the <a href="menu_edit.html#key">Edit/Find by keyword</a> menu item.
+</p>
+<a name="model"
+<div class="subtitle">Demo model</div>
+<p>
+MMM comes with a demo model of major plant light harvesting complex LHCII, which you find in the subfolder LHCII as file <code>LHCII_demo_model.mat</code>. This model can be loaded via the <a href="menu_file.html#open">File/Open...</a> menu item. It demonstrates concepts such as superposition of two structures, synonyms for structure names, annotation of a model, using a bibliography, and automatic literature search. See <a href="demo_model.html">description of the LHCII model</a> for a more detailed explanation.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/12/14</div>
+</body>
+</html>
+

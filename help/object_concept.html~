@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Object concept</title>
+</head>
+<body>
+
+<div class="pagetitle">Object concept</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  &uarr;  |  &darr;    &bull; <A href="addressing.html">Addressing</A>  
+</pre>
+
+<div class="subtitle">What are objects in MMM?</div>
+<p>
+Objects are parts of a structure, such as macromolecule chains, cofactor molecules, amino acid residues, or atoms. Thus, there is a hierarchy of objects: A chain consists of residues which in turn consist of atoms. Several objects on the same hierarchy level can be combined to an object on a higher hierachy level. For instance, several residues can make up a secondary structure element, such as a helix. On a larger scale, several residues can make up a domain.  
+</p>
+<div class="subtitle">Why is an object concept useful?</div>
+<p>
+A hierarchy of structure objects allows to define structure and structural state transitions with the resolution and detail that is appropriate for understanding of function and is justified by the underlying experimental data (see als <a href="model_concept.html">Model concept</a>). Depending on available experimental data and flexibility of different parts of the structure, it may be appropriate to specify one domain of a peptide chain with fully atomistic detail (as a collection of atoms) and another domain, for instance a terminal loop, at lower resolution as a section of space accessible to this domain. A hierarchy of objects allows to add more detail when more information becomes available.
+</p>
+<div class="subtitle">What information is stored with an object?</div>
+<p>
+An object always contains chemical structure information, for instance the sequence of residues for a peptide chain or the structural topology for a cofactor. If information on a lower hierarchy level is available, the object also stores the addresses of all its child objects.  
+</p>
+<p>
+An object is related to the spatial structure by point coordinates, angles, and possibly a local frame. For a simple spherical object, such as an atom location, only the midpoint coordinates are specified. Objects at higher hierarchical levels may have more coordinates, for instance a residue can be specified by the C<sup><snmaller>&alpha <larger></sup> coordinates, two backbone dihedrals, and an appropriate number of sidechain dihedrals. A cylinder model of a helix is specified by two endpoint coordinates. This coarse-graining allows for a reduction in the number of free parameters of the model to match the number of available experimental and (safe) internal restraints. 
+</p>
+<p>
+For visualization, an object is related to one or more graphics objects. The type and addresses of these graphics objects are also stored with the structure object.
+</p>
+<p>
+Objects are related to function. For instance, a certain atom or residue of a peptide chain may be involved in substrate binding or a residue may be a phosphorylation site involved in regulation. Such information, which is often known from biochemical experiments, is stored in the form of clear text annotations. Such <a href="annotation.html">annotations</a> can be associated with objects on any hierarchy level. Objects can also be assigned a keyword, such as "galactose binding site" or "trimerization" or "cancerogeneous mutation" and references which mention this particular object.
+</p>
+<div class="subtitle">What can be done with an object?</div>
+<p>
+Objects can be <a href="selection.html">selected</a> and then be interrogated for information stored with them. They can be modified, as happens for mutation or spin-labeling of a residue. Furthermore, objects can be <a href="visualization.html">visualized</a>. They can be transformed in space, i.e., be rotated or translated with respect to the other objects. Distances, angles, and dihedral angles between objects can be displayed.
+</p>
+<div class="subtitle">How are objects identified?</div>
+<p>
+Each object in MMM has a <a href="addressing.html">systematic address</a>. This address is displayed when information on an object is output. It can be used for object selection via the <a href="command_line.html">command line</a> or in <a href="scripting.html">scripts</a>, and also in Matlab source code. For instance, [2BHW](B)123.CA refers to the C<sup><snmaller>&alpha <larger></sup> atom of residue 123 in chain B of structure 2BHW, while [2BHW](C) addresses the whole chain C in the same structure.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/09/25</div>
+</body>
+</html>
+

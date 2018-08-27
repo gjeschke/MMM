@@ -1,0 +1,17 @@
+RESIDUE   URA     12
+CONECT      N1     3 C2   C6   HN1 
+CONECT      C2     3 N1   O2   N3  
+CONECT      O2     1 C2  
+CONECT      N3     3 C2   C4   HN3 
+CONECT      C4     3 N3   O4   C5  
+CONECT      O4     1 C4  
+CONECT      C5     3 C4   C6   H5  
+CONECT      C6     3 N1   C5   H6  
+CONECT      HN1    1 N1  
+CONECT      HN3    1 N3  
+CONECT      H5     1 C5  
+CONECT      H6     1 C6  
+END   
+HET    URA             12
+HETNAM     URA URACIL
+FORMUL      URA    C4 H4 N2 O2

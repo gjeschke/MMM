@@ -1,0 +1,24 @@
+function ecoor = anchor_correction(ecoor,corr)
+% function ecoor = anchor_correction(ecoor,corr)
+% 
+% Correction of an extended coordinate set of an RNA loop for matching the
+% C5'-terminal anchor, use mk_RNA_insert_bb.m and mk_RNA to obtain
+% corr and ecoor
+%
+% ecoor [m,4] coordinate array for m atoms, first column is residue
+%       number, columns 2-4 are Cartesian coordinates
+% corr  correction parameters, structure   
+%       .trans  translation vector
+%       .rot    4-element vector, elements 1:3 specify rotation axis,
+%               element 4 specifies rotation angle in degrees
+%
+% G. Jeschke, 13.1.2017
+
+[m,~] = size(ecoor);
+for k = 1:m
+    tm1 = affine('translation',k*corr.trans/m);
+    tm2 = affine('rotn',k*pi*corr.rot(4)/180/m,corr.rot(1:3));
+    tm = tm1*tm2;
+    ccoor = [ecoor(k,2:4) 1]*tm';
+    ecoor(k,2:4) = ccoor(1:3);
+end;

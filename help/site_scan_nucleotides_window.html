@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Site scan setup for nucleotides</title>
+</head>
+<body>
+
+<div class="pagetitle">Site scan setup for nucleotides</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> <A href="user_interface.html"> User interface </A> &uarr;  <A href="spin_labeling.html"> Spin labeling </A> &uarr; |  &darr;  </pre>
+
+<div class="subtitle">What can you do in the site scan setup for nucleotides?</div>
+<p>
+This window appears when a spin labeling site scan is initiated from the <a href="menu_epr.html#site_scan"> EPR/Site scan</a> menu item and the selection or current chain contain only nucleotide residues. Here you can select which types of residues
+are included in the site scan and you can determine what analysis of the set of labeled residues should be performed.
+</p>
+<a name="residue_types">
+<div class="subtitle">Residue types</div>
+<p>
+This allows to restrict a sites scan to certain types of residues. Only those residue types can be selected for which rotamer libraries are registered with MMM. The first such residue type is automatically enabled. Please note that there may be restrictions on combining residue types, depending on library. If you are not sure, select only one nucleotide type per site scan.
+</p>
+<a name="z_analysis">
+<div class="subtitle">Membrane depth analysis</div>
+<p>
+In a membrane protein, you might want to know where spin labels are situated with respect to the lipid bilayer. If you have created a <a href="build_bilayer.html">lipid bilayer</a> the <i>z</i> axis is
+the bilayer normal and <i>z</i>=0 corresponds to the central plane of the bilayer. You can analyze all spin-labelled residues for their mean <i>z</i> coordinate and distribution width of the <i>z</i> coordinate by 
+activating the <code>z axis is unique axis</code> checkbox.
+</p>
+<a name="distance_analysis">
+<div class="subtitle">Distance analysis</div>
+<p>
+If the scan contains at least two residues, intraspin distances can be analyzed. For large site scans, the computation time and result file size of a complete distance analysis can be 
+rather larger. Therefore it is recommended to restrict the analysis to the information that you really need.
+</p>
+<p>
+Distances between residues within the same chain are intrachain distances. You can include or exclude them from analysis, by activating radiobutton <code>all</code> or <code>none</code>, respecively.
+</p>
+<p>
+Distances between residues in different chains are interchain distances. You can include all interchain distances, only distances between residues with the same number in different chains, or exclude all of them from analysis, by activating radiobuttons <code>all</code>, <code>equivalent</code>, or <code>none</code>, respecively.
+</p>
+<p>
+In a homooligomer (with perfect symmetry), analysis can be sped up by performing the site scan for only a single chain and creating spin label positions in other monomers by symmetry. This assumes that the <i>z</i> axis is the symmetry axis. The multiplicity of the axis (2 for homodimer, 3 for trimer, ...) must be specified.
+</p>
+<a name="statistics">
+<div class="subtitle">Additional statistics files</div>
+<p>
+By default, analysis output is written to a HTML file and displayed in a web browser. If you want to track a problem or use quantitative information in other analysis programs, clear text output may be preferable.
+<p>
+To generate text files with full statistics output, activate the checkbox <code>Save statistics</code>. To save separate PDB files for all rotamers with significant population, activate the checkbox <code>Save PDB rotamers</code>. Be careful in both cases, but in particular with the saving of PDB files. In a large site scan this can easily create thousands or even tens of thousands of PDB files.
+</p>
+</p><div class="subsubtitle">Version</div>
+<div class="comment">version 2014.1, edited 2014/01/15</div>
+</body>
+</html>
+

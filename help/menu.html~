@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Menu</title>
+</head>
+<body>
+
+<div class="pagetitle">Menu</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  <A href="user_interface.html"> User interface </A> <A href="main_window.html"> Main window </A> &uarr;  |  &darr;  &bull; <A href="menu_file.html">File</A>  &bull; <A href="menu_edit.html">Edit</A>  &bull; <A href="menu_build.html">Build</A>  &bull; <A href="menu_display.html">Display</A>  &bull; <A href="menu_analysis.html">Analysis</A>  &bull; <A href="menu_EPR.html">EPR</A> &bull; <A href="menu_biochemistry.html">Biochemistry</A> &bull; <A href="menu_predict.html">Predict</A> &bull; <A href="menu_help.html">Help</A> </pre>
+
+<div class="subtitle">What can you do with the menu?</div>
+<p>
+Please use the hierarchical links above to explore the functionality of the submenus.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/09/17</div>
+</body>
+</html>
+

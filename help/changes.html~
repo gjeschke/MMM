@@ -1,0 +1,288 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Change history</title>
+</head>
+<body>
+
+<div class="pagetitle">Change history</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  &uarr;  |  &darr;  </pre>
+
+<a name="2017.2">
+<div class="subtitle">Changes of version 2017.2 with respect to 2017.1</div>
+<p>
+<b>Added functionality</b>
+<p>
+<ul>
+<li>
+Some previously undocumented <a href="commands.html">commands</a> have been documented and thus made accessible.
+</li>
+<li>
+The currently selected objects can be saved to a PDB file from the <a href="menu_file.html#save_selection">File menu</a>. Objects may come from different structures. If there is more than one model for chains, the user is responsible for the number of models being consistent between different chains. 
+</li>
+</ul>
+
+<a name="2017.1">
+<div class="subtitle">Changes of version 2017.1 with respect to 2015.1</div>
+<p>
+<b>Added functionality</b>
+<p>
+<ul>
+<li>
+Intrinsically disordered proteins or protein domains can be modelled with or without using distance distribution restraints, secondary structure propensities, and- for membrane proteins- water accessibilities. See <A href="menu_build.html#domain_ensemble">Ensemble builder</A>. See G. Jeschke, Proteins 2016, 84, 544-560.
+</li>
+<li>
+Rotamer libraries have been added for Tormyshev's MTS-trityl label and the V1 label from Hubbell's group.
+</li>
+</ul>
+<b>Bug fixes</b>
+<p>
+<ul>
+<li>The broken link to the PubMed literature search engine was fixed.</li>
+<li>The PDB reader was made somewhat more tolerant with respect to files that do not strictly conform to PDB rules.</li>
+</ul>
+<a name="2015.1">
+<div class="subtitle">Changes of version 2015.1 with respect to 2013.2</div>
+<p>
+This version is compatible with the new graphics engine of Matlab R2014. As a consequence, rotating and scaling of models is much faster, whereas generation of model graphics is somewhat slower (if Matlab 2014 or later is used).
+<p>
+<b>Changed functionality</b>
+<p>
+<ul>
+<li>
+The default rotamer libraries for MTSL have been replaced by new versions based on Monte Carlo scans of torsion angle space and the UFF force field. These new libraries are parametrized for a wek S&delta;-C&alpha; interaction and perform slightly better as judged by tests against a set of 80 distance distributions for doubly spin-labelled T4 lysozyme. The old libraries are still available by direct selection if the lock toolbutton <img src="img/toolbar_lock.png" alt="(golden padlock)"> is deactivated before rotamer computation.
+</li>
+<li>
+Chains with more than 1'000 residues can now be displayed and worked with in the hierarchy window.
+</li>
+<li>
+The previous limit of 20'000 atoms per chain for reading PDB files is lifted. MMM now first scans the PDB file for the highest atom number and then allocates sufficient memory. 
+</li>
+<li>
+The <a href="commands.html#rotamers">rotamers command</a> now defaults to ambient temperature (298 K) rather than cryogenic temperature (175 K), as systematic comparison with experimental data has shown that ambient-temperature computations agree better with experiment. 
+</li>
+</ul>
+<a name="2015.1.new">
+<p>
+<b>New functionality</b>
+<p>
+<ul>
+<li>
+With the <a href="domain_ensemble.html">domain ensemble</a> window, accessible via the <a href="menu_build.html#domain_ensemble">Build menu</a> it is now possible to model peptide chain segments that are not resolved in a crystal structure. The Monte Carlo modeller supports N-terminal, C-terminal and inserted loops and label-to-label distance distribution restraints, bilayer insertion depth restraints, and secondary structure restraints. Special handling is provided for distance distribution restraints stemming from homooligomers in which all protomers are singly labeled at the same site. 
+</li>
+<li>
+Additional spin labels are available: IA-Proxyl attached to 4-thiouracil (IAP-4TU), Maleimido-Proxyl (MA-PROXYL), brominated MTSL (Br-MTSL), M8DOTA-Gd, MTS attached to 4-thiouracil (MTS-4TU), label R5 attached to thiophosphate of a nucleotide (R5-TP), spin-labeled vitamin B12 (CNC-NO), Maleimido-Gd-DOTA (DOTA-Gd), Maleimido-Gd-DTPA (DTPA-Gd), and the Hubbell-Fleissner unatural amino acid label K1 (HF-K1).
+</li>
+<li>
+The <a href="deer_window.html">DEER window</a> now allows for computing distance distributions averaged over an ensemble, for instance for NMR structures. The feature can be activated or deactivated with a checkbox above the label selection listbox. For non-ensemble structures, the feature has no effect. The feature is not applicable for multi-spin effects (more than two labels selected). In that case, a warning is displayed in the main window and the checkbox is automatically deactivated. 
+</li>
+<li>
+The <a href="menu_edit.html#magic_fit">magic fit feature in the Edit menu</a> can now be used to superimpose individual models in an ensemble structure onto a target structure. See also the description of the <a href="magic_fit.html">magic fit window</a>.
+</li>
+<li>
+The <a href="commands.html#libcomp">libcomp command</a> allows for systematic comparison of spin label position predictions by two different rotamer libraries. It can be used for comparing alternative libraries for the same label or for comparing different label types. 
+</li>
+<li>
+<a href="commands.html#plot">A plot command</a> allows for plotting lines between two atoms specified by their MMM <a href="addressing.html">addresses</a>. This is useful for visualizing constrained distances in a model. 
+</li>
+</ul>
+</p>
+<b>Bug fixes</b>
+<p>
+<ul>
+<li>The check for agreement between sequence definition in PDB files (SEQRES) and actual sequence did not work for DNA and RNA. DNA and RNA sequences from PDB files with SEQRES records are now properly displayed in the Hierarchy window.</li>
+</ul>
+<a name="2013.1">
+<div class="subtitle">Changes of version 2013.2 with respect to 2013</div>
+
+<a name="2013.1.new">
+<p>
+<b>New functionality</b>
+<p>
+<ul>
+<li>
+<a href="docking_window.html">Grid search based rigid-body docking</a> has been added to the <a href="menu_predict.html">Predict/quaternary menu</a>. Given at least 4, but preferably more, distance constraints between protomers in a homooligomer or at least 6, but preferably more distance constraints between the two protomers in a heterodimer, MMM can perform an exhaustive search of parameter space to determine relative orientation and translation of the protomers. The grid search result can be automatically refined by non-linear least squares minimization of the distance constraint deviation. On the occasion of adding this functionality to the Predict menu, links in this menu were updated, outdated links removed, and a new prediction site for conserved domains and a link to the ExPASy site added.
+</li>
+<li>
+Given at least three, but better at least five distance distributions between reference sites and a point, this point can be <a href="localization.html">localized</a>. The distributions can be provided as mean distance/standard deviation or as DeerAnalysis output files. Visual output indicates uncertainty of the localization. A PDB file can be written that characterizes uncertainty by an ensemble of models for the localized point.
+</li>
+<li>
+Given at least 3<i>M</i>-6 pairwise distance distributions in a set of <i>M</i> points, a <a href="network.html">network model</a> can be created for the set of points. If at least three points are reference sites in a structure, the network model is fitted to the structure. The distributions can be provided as mean distance/standard deviation or as DeerAnalysis output files. Visual output indicates uncertainty of the network points. A PDB file can be written that characterizes uncertainty by an ensemble of models for the network. This is a slightly extended implementation of a distance matrix geometry approach suggested in <a href="http://dx.doi.org/10.1016/j.bpj.2012.10.002">Gaffney et al., Biophys. J. 2012, 103, 2134-2144</a>, which should be cited when using this feature. 
+</li>
+</ul>
+<b>Bug fixes</b>
+<p>
+<ul>
+<li>A flag for separate coloring of N-O midpoint spheres (<code>show <i>adr</i> label</code>) for the &chi;<sub>3</sub> p/m rotamers was inadvertently switched on in the first 2013 distribution. This led to an error when displaying N-O midpoint spheres for IA-Proxyl labels. The flag is now switched off. It can be switched on (line 23 of <code>plot_label.m</code> in the <code>\private</code> subdirectory) to have separate coloring for MTSL. For IA-Proxyl, this flag is now ignored. Thanks to Enrica Bordignon for reporting.</li>
+<li>When rotamers were actually attached to the structure and a PDB file was written out, superposition of the backbone atoms of the labeled residue was slightly off. This led to a small change in C&alpha;-C&beta; distance and a slight tilt of the sidegroup. Predictions of distance distributions or other properties of the rotamer distribution were not affected. The problem has been fixed. Thanks to Gregor Hagelueken for reporting.</li>
+</ul>
+
+<a name="2013">
+<div class="subtitle">Changes of version 2013 with respect to 2011.2</div>
+
+<a name="2013.new">
+<p>
+<b>New functionality</b>
+<p>
+<ul>
+<li>
+Estimate of the quality of models for structural transitions was added in menu <a href="menu_analysis.html#fom">Analysis/Model comparison</a>. You need an elastic
+network model and a homology model for the same structural transition to use this.
+</li>
+<li>
+Spin labeling and spin labeling site scans now allow for using adapted rotamer libraries. To protect inexperienced users, this feature 
+is locked (similar to secondary structure editing). See <a href="labeling_window.html">Labeling conditions</a>.
+</li>
+<li>
+Rotamer computations can now be tested systematically and automatically against sets of experimental mean distances measured on known protein structures.
+See <a href="commands.html#libtest">libtest command</a>.
+</li>
+<li>
+The PDB reader now tolerates CYANA output PDB files that contain pseudo-atoms and XPLOR files that contain dummy atoms.
+</li>
+<li>
+<a href="third_party.html#tinker">Interfacing to the Tinker suite</a> of molecular force field and molecular dynamics programs has been prepared (not yet used in standard MMM functionality). 
+</li>
+<li>
+Rotamer libraries can now define their own optimized 'forgive factor'. The new adapted libraries do so. 
+</li>
+</ul>
+<b>Bug fixes</b>
+<p>
+<ul>
+<li>Setting the x, y, or z axis to the viewing direction (Build menu) sometimes deformed the structure. This was fixed.</li>
+<li>Missing Latex font issue in the reference window (on some computer systems) was solved.</li>
+<li>The reference window now supports the new file extension <code>.ciw</code> of the ISI data base bibliography output (Web of Science).</li>
+</ul>
+<a name="2011.2">
+<div class="subtitle">Changes of version 2011.2 with respect to 2011.1</div>
+
+<a name="2011_2_new">
+<p>
+<b>New functionality</b>
+<p>
+<p>
+Fitting of conformational changes with Modeller and of constraint-supported homology modeling in general is implemented in the <code>Build</code> menu as <a href="fit_from_template_Modeller.html">Fit from template/Modeller</a>. 
+</p>
+The algorithm for elastic network model-based fitting of conformational changes is improved and for both features, help files were extended.
+</p>
+
+<a name="2011.1">
+<div class="subtitle">Changes of version 2011.1 with respect to 2011</div>
+
+<a name="2011_1_new">
+<p>
+<b>New functionality</b>
+<p>
+<p>
+Fitting of conformational changes with an elastic network model approach is implemented in the <code>Build</code> menu as <a href="fit_from_template.html">Fit from template/ENM</a>. 
+</p>
+<a name="2011">
+<div class="subtitle">Changes of version 2011 with respect to 2010</div>
+
+<a name="2011_fixed">
+<p>
+<p>
+<b>Bug fixes</b>
+<p>
+<ul>
+<li>Some issues with PDB reading and saving (incompatibilities with some formats and output errors in certain contexts) were fixed.</li>
+<li>Reference import from SciFinder was corrected to obtain a consistent output format for references retrieved by different search engines.</li>
+<li>Double-dash for page ranges was missing in Latex bibitem, this was corrected.</li>
+</ul>
+
+<a name="2011_new">
+<p>
+<b>New functionality, speed-up and better handling</b>
+<p>
+<ul>
+<li>Rotamer computation and site analysis are faster by more than a factor of ten.</li>
+<li>The HTML output format for site scans was improved (more compact, easier to read).</li>
+<li>Elastic network models can be derived and analyzed, see <a href="menu_dynamics.html">Dynamics menu</a>.</li>
+<li>Protein motion can be visualized using the <a href="commands.html#motion">motion command</a>.
+<li>Modeller from the Sali lab was interfaced for loop reconstruction, see <a href="third_party.html#Modeller">Third-party software</a>. Homology modelling will follow later.</li>
+<li><a href="third_party.html#MUSCLE">MUSCLE from Robert C. Edgar</a> was interfaced for sequence alignment and is bundled with MMM, see <a href="menu_analysis.html#alignment">Analysis menu</a>.</li>
+<li>Structure superposition of different proteins can now be based on sequence alignment, see <a href="magic_fit.html#aligned">Structure superposition window</a>.
+<li>A new tool button (red St Andrew's cross) allows to cancel all current selections.</li> 
+<li>Reference formatting with author list abbreviation by <i>et al.</i> now allows for a different maximum number of authors without <i>et al.</i> and to be listed if <i>et al.</i> is used. See <code>def_reference_formats.m</code> definition <code>reference_formats(19)</code> for an example of how to do that.</li>
+</ul>
+
+<a name="2010">
+<div class="subtitle">Changes of version 2010 with respect to 2009</div>
+
+<a name="2010_fixed">
+<p>
+<b>Bug fixes</b>
+<p>
+<ul>
+<li>version 2009 did not bond nucleotides in RNA and DNA, did not recognize DNA/RNA sequences, and had no ribbon graphics for DNA/RNA</li>
+<li>when selecting a residue in version 2009, atom graphics was not highlighted yellow</li>
+<li>subsequent coordinate transformations (center, symmetry) sometimes lead to wrong center coordinates in version 2009</li>
+<li>in some PDB files, sequence information (SEQRES) does not match coordinate information, MMM 2009 corrected for this only for single-chain proteins, now it works also for protein oligomers</li>
+<li>spin labeling site scans of selected residues did not properly distinguish between intrachain and interchain pairs</li>
+<li>spin labeling failed when a structure contained elements whose atomic number was larger than the one of the last defined element (iron)</li> 
+<li>
+some official PDB files have wrong formatting of the metal coordination remark (example: 1K4C), these ones could not be read by MMM 2009, now they can be read, but metal coordination information is not repaired
+<li>
+on attachment of labels, internal sequence representation was not updated, i.e. the native residue type was still displayed in the hierarchy window</li>
+<li>
+A new bug appeared in Matlab 2010a- the internal web browser now fails with many web pages. This was fixed by making the default browser of the operating system also MMM's default browser. As some older Matlab versions have some problems with transmitting the URL to some browsers, you can still select use of the Matlab browser under <code>Menu/File/Preferences</code>. Don't forget to save your preferences. 
+</li>
+<li>
+MMM can now read PDB files with negative residue numbers and residue number 0. Astonishingly, this is not excluded by PDB format specification and such files exist on the PDB server. MMM uses renumbering of residues in this case.</li> 
+</li>
+<li><code>colorscheme sequence</code> is now properly based on the number of residues in the peptide or nucleotide chain, excluding cofactors and water</li>
+</ul>
+</p>
+<a name="2010_new">
+<b>New functionality</b>
+<p>
+<ul>
+<li>Spin label rotamer computation automatically disregards water molecules in the structure.</li>
+<li>DEER formfactor simulations take into account multi-spin effects if more than two spin labels are selected, see description of <a href="deer_window.html#multispin">DEER window</a>.</li>
+<li>To provide complete and precise control of model view direction, the camera up vector is now displayed in the view panel and can be set by the <a href="commands.html#camup">camup command</a> and by the <a href="commands.html#view">view command</a> with six arguments.</li>
+<li>The model view, including zoom, can now be stored with the <code>M</code> button in the <code>View panel</code>, and can be retrieved later with the <code>memory</code> subitem of the <code>View panel</code> popupmenu.</li>
+<li>When saving a model in MMM format, the current view, including zoom, and the detachment state of the 3D display are stored. When a model saved in MMM 2010 or later is reloaded, these properties are restored.</li>
+<li>The 3D plot can be zoomed in/out in any state of view control with the mouse scroll wheel.</li>
+<li>A new <a href="commands.html#colorscheme">colorscheme</a> has been added that helps to visualize variability in NMR structure ensembles or structure ensembles generated by elastic network model based fitting from a template.</li>
+<li>A new <a href="commands.html#colorscheme">colorscheme</a> <code>difference</code> has been added that visualizes residue-by-residue differences between two structures (accessible only via command line).</li>
+<li>Lipid bilayers can be inserted into a model and can be fitted to &alpha;-helical bundles or &beta;-barrels (<a href="menu_build.html#bilayer">Build/Bilayer</a> menu item).</li>
+<li>P-31 Mims ENDOR spectra can be predicted for structures that contain phosphorous nuclei, in particualr DNA and RNA, and for structures that contain a lipid bilayer.</li> 
+<li>Solvent accessibilities can be computed for residues and cofactors if <a href="third_party.html#MSMS">MSMS</a> is installed (<a href="menu_analysis.html#accessibility">Analysis/Accessibility</a> menu item). This feature is experimental.</li>
+<li>Helices and strands can be assigned as transmembrane (TM) and the structure can be transformed into a frame where the mean axis of an &alpha;-helical bundle or &beta;-barrel is the z axis (<a href="menu_edit.html#bundle">Edit/Assign TM helices and strands</a> menu item).</li>
+<li>If DSSP information is present, secondary structure can be reassigned according to this information. Such information is created when reading a PDB file, if <a href="third_party.html#DSSP">DSSP</a> is installed. Differences to secondary structure information in original experimental PDB files is minor, but it may help in modelling.</li>
+<li>Structures can be transformed into the current viewing frame, so that atom coordinates coincide with current appearance of the model (<a href="menu_build.html#transform">Build/Transform to viewing frame</a> menu item).</li>
+<li>Structure superposition with the <a href="menu_edit.html#superimpose">Edit/Superimpose structures...</a> menu item can now check residue correspondence. The feature also works (when disabling this check) if in both structures the same number of objects of the same type (for instance 40 residues each) are selected. This objects are superimposed in the sequence of selection.</li>
+<li>A very basic editor for display of and minor changes in plain text files was added (<a href="menu_edit.html#reports">Edit/Reports</a> menu item).</li>
+<li>Sidechains can be repacked (or generated), if the third-party software <a href="third_party.html#SCWRL4">SCWRL4</a> is installed. Use the <a href="menu_build.html#repack">Build/Grow/repack sidechains</a> menu item for instance to test how sensitive predicted spin label rotamers are to sidechain positions.</li>
+<li>Structures can be copied, so that changed structures can be easily compared to the original structure (<a href="menu_build.html#copy">Build/Copy structure</a> menu item).</li>
+<li>Non-native residues can be replaced by their native equivalents (<a href="menu_build.html#replace">Build/Replace non-standard residues</a> menu item), for instance selnocysteine and selenomethionine by cysteine and methionine, respectively.  Use this if you want to compute spin label rotamers at such sites. This feature also allows to remove spin labels (residue is replaced by cysteine, orientation of C<sup>&beta;</sup> and S corresponds to leading rotamer).</li>
+<li>Commands <a href="commands.html#repack">repack</a>, <a href="commands.html#scopy">scopy</a>, and <a href="commands.html#replace">replace</a> provide script access to these new functions.</li>
+<li>Crystal contacts can be analyzed (<a href="menu_analysis.html#crystal_scwrl4">Edit/Reports</a> menu item) via repacking sidechains by SCWRL4 in the absence and presence of the crystal environment and visualizing residue-by-residue differnces with <code>colorscheme difference</code>.</li>
+<li>The <code>Analysis</code> menu also provides access to crystal contact and contact of structural units analyses via the OCA server at Weizmann institute.</li>
+<li>The hierarchy window has two new buttons in the <code>Structure</code> field for direct access to PDBwiki and electron density visualization for this structure. The PDBwiki page contains many further links. The electron density server also contains very useful other links.</li>
+<li>More pseudo-PDB formats (PDB output files of other sofware that do not conform to the specified PDB format) can be read by MMM.</li>
+<li>Masses of structures, chains, and chain models are now reported without counting water molecules. The command <code>mass</code> has an option <code>-water</code> to count water.</li>
+<li>Determination of (pseudo-)symmetry axes and symmetry transform now generally disregards water molecules.</i>
+<li>MMM checks whether third-party software (MSMS, DSSP, SCWRL4) is accessible on the Matlab path. If not, menu items are blocked that depend on such software.</li>
+<li>Unit cell information for crystal structures (CRYST1, ORIGXn, SCALEn records) is now read from and written to PDB files. Be aware that this information may not be meaningful in PDB output files if you have changed the structure.</li>
+<li>Sessions are now logged by default (you can switch this off with the checkbox <code>log</code> at the top of the <code>Message board</code> panel.</li>
+<li>Logging of the session is now done by default (you can switch it off with the checkbox <code>log</code> at the top of the <code>Message board</code> panel).</li>
+<li>The log file is easily accessible by the <code>Show log</code> button at the top of the <code>Message board</code> panel. This provides full access to history of the Message board and of the command line.</li>
+<li>Bug reports can now be created for sending to us (<a href="menu_help.html#bug_report">Help/Create bug report</a> menu item).</li>
+</ul>
+</p>
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2013, edited 2013/01/16</div>
+</body>
+</html>
+

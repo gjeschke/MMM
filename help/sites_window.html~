@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Binding sites</title>
+</head>
+<body>
+
+<div class="pagetitle">Binding sites</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="specialized.html"> Special tasks </A> &bull; <A href="more_specialized.html"> Special tasks (II) </A> &uarr;  |  &darr;  </pre>
+
+<div class="subtitle">What are sites in MMM?</div>
+<p>
+In MMM, the term "sites" is used in two ways, for <i>binding sites</i>, as in this page, and for <i>labeling sites</i> (see <a href="site_scan.html">spin labeling site scans</a>).
+</p>
+<p>
+Information on binding sites may be <a href="menu_file.html#new">imported from a PDB file</a> or may be <a href="#new_site">supplied by the user</a>.
+</p>
+<p>
+In general, binding sites are defined as a set of residues involved in binding of a cofactor. In contrast, metal coordination is defined by a set of coordinating atoms. If such information exists, it can be found via the <code>metal coordination</code> keyword with the <a href="find_by_key_window.html">keyword finder</a>.
+</p>
+<p>
+The sites window can be accessed via the <a href="menu_analysis.html#sites">Analysis/Sites</a> menu item.
+</p>
+<a name="selection">
+<div class="subtitle">Selection of residues in a site</div>
+<p>
+By default objects are added to the already existing selection, if any. If you want to start with a clean slate, first click the <code>Clear</code> button.
+<p>
+If you click on an item in the <code>Sites</code> list, the <code>Residues and cofactors</code> list is filled with all objects that have an annotation with this keyword. Only a single keyword can be picked at once. You can then pick one or several objects from the <code>Residues and cofactors</code> list (hold down the <code>Shift</code> or <code>Ctrl</code> keys during clicking for picking multiple objects). By clicking the <code>Select</code> button, you add all picked objects to the selection. Alternatively, you can use the <code>Select all</code> button to add all objects from the <code>Resiidues and cofactors</code> list to the selection.
+</p>
+<a name="annotation">
+<div class="subtitle">Displaying annotation</div>
+<p>
+To display the <a href="annotation_window.html">annotation</a> of a picked residue or cofactor, click the <code>Show annotation</code> button. If several objects are picked in the <code>Residues and cofactors</code> list, the annotation will be shown for the first picked item. Note that this and only this object will be selected after the annotation window is opened. If a selection of objects exists when you click the button, a question dialog opens and you are given the opportunity to cancel your request and keep the old selection.
+</p>
+<p>
+Note also that you can return to the sites window only after you have closed the <a href="annotation_window.html">annotation window</a>.
+<p>
+<a name="visualize">
+<div class="subtitle">Visualizing a binding site</div>
+<p>
+This procedure will cancel all existing <a href="selection.html">selections</a>. After opening the sites window via the <a href="menu_analysis.html#sites">Analysis/Sites</a> menu item, select the binding site that you wish to visualize from the <code>Sites</code> listbox. Now first click the <code>Clear</code> button, then click the <code>Select all</code> button.
+</p>
+<p>
+Via the <a href="toolbar.html#graphics"><img src="img/toolbar_graphics.png" alt="(cutout of a ball&stick model)">Graphics mode toolbutton</a> select the desired graphics mode; "stick" will usually work best. Detach the 3D model with the <a href="toolbar.html#detach"><img src="img/toolbar_detach.png" alt="(red arrow pointing down right to a quarter green sphere)">Detach toolbutton</a> if you did not do this before. Now click the <a href="toolbar.html#view_selection"><img src="img/toolbar_view_selection.png" alt="(red arrow pointing down right to a quarter green sphere)">View selected toolbutton</a> to zoom in on the binding site. <a href="model_window.html#best_view">Adjust the view</a> if necessary. Now click on the <code>Depth cueing</code> button in the main window and <a href="depth_cueing.html">adjust depth cueing</a> if necessary.
+</p>
+<p>
+</p>
+<a name="new_site">
+<div class="subtitle">Defining a new binding site</div>
+<p>
+To define a new binding site, <a href="selection.html">select</a> the residues and cofactors involved in the binding before you access the sites window. After opening the sites window (use the <a href="menu_analysis.html#sites">Analysis/Sites</a> menu item), the preliminary definition of the new site is found as the last item of the <code>Sites</code> list. Pick this site by clicking on it and check that the <code>Residues and cofactors</code> listed in the right listbox are indeed the ones that belong to the site (if not, close the window by <code>Cancel</code> and correct the selection). Edit the site <code>Description</code> in the corresponding edit field and select an <code>Evidence type</code> from the popup menu. Now click the <code>New</code> button.
+</p>
+<p>
+The site is now defined, but not yet stored and the <code>New</code> button is disabled. The residues involved in the site have been automatically annotated. To complement these annotations with additional information from your experiments (or from literature), pick these residues one by one in the <code>Residues and cofactors</code> listbox, then click the <code>Show annotation</code> button, go to the page with <code>*Binding sites</code> annotations and make your comments.
+<p>
+The new site will only be stored, once you close the window with the <code>OK</code> button. If you do not want to store it, use the <code>Cancel</code> button.
+</p>
+<div class="subtitle">Editing a site description</div>
+<p>
+A binding site is identified by a three-character tag (starting with "AC1") and a short free text description. Tags are assigned automatically and can not be edited. Editing the descriptions of those sites that were imported from a PDB file is discouraged, but possible. If you want to add additional information, better use the residue <a href="annotation_window.html">annotations</a> accessible via the <code>Show annotations</code> window.
+</p>
+<p>
+If you wish to edit the description of a user-defined site, pick this site in the <code>Sites</code> listbox and correct the text in the <code>Description</code> edit line. The changed description will be displayed in the list immediately, but will be stored in the model only once you leave the sites window with the <code>OK</code> button. You can cancel changes by closing the window with the <code>Cancel</code> button.
+</p>
+<div class="subtitle">Selecting evidence type</div>
+<p>
+For binding sites imported from a PDB file, the evidence type is <code>atomistic structure</code> and should not be changed, although this is possible. For <a href="#new_site">new binding sites</a> defined by the user, the default mode <code>conjecture</code> should be changed to something more meaningful, such as <code>mutation/assay</code>, <code>other biochemistry</code>, <code>homology</code>, or <code>spectroscopy</code>. Further explanations can be given in residue <a href="annotation_window.html">annotations</a>.
+</p>
+<a name="close">
+<div class="subtitle">Closing the window</div>
+<p>
+Click the <code>OK</code> button. All existing selections will be kept. A <a href="#new_site">newly defined site</a> will be stored and edited site descriptions will be updated. If the <code>Description</code> or <code>Evidence type</code> of a new site were edited but the <code>New</code> button was not clicked, the new site is not fully defined. In this case there is a query whether you want to close the window without defining the new site.
+</p>
+<p>
+Alternatively, click the <code>Cancel</code> button. All existing selections will be kept. A <a href="#new_site">newly defined site</a> will not be stored and edited site descriptions will not be updated. There is a query whether you really want to discard edits.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/11/10</div>
+</body>
+</html>
+

@@ -1,0 +1,166 @@
+HEADER    SITE NETWORK                            19-Sep-13   SBL1
+TITLE     BAX SPIN LABEL LOCATIONS SBL1
+REMARK   4
+REMARK   4 SBL1 COMPLIES WITH FORMAT V. 3.20, 01-DEC-08
+REMARK   5
+REMARK   5 WRITTEN BY MMM (SITE NETWORK)
+MODEL        1
+HETATM    1 NAL  270 A   1     -16.062 -13.230  -4.883  1.00  0.10          NA
+HETATM    2 NAL  480 A   2     -16.294  19.146  12.487  1.00  0.10          NA
+HETATM    3 NAL  569 A   3      -6.661  28.445  -7.416  1.00  0.10          NA
+HETATM    4 NAL  619 A   4      25.957   3.778  14.385  1.00  0.10          NA
+HETATM    5 NAL  782 A   5      23.469 -16.339  -0.638  1.00  0.10          NA
+HETATM    6 NAL  LOP A   6      -3.609  -7.400 -23.135  1.00  0.10          NA
+ENDMDL
+MODEL        2
+HETATM    1 NAL  270 A   1     -15.662 -14.430  -3.283  0.84  0.10          NA
+HETATM    2 NAL  480 A   2     -15.494  20.746  10.887  0.99  0.10          NA
+HETATM    3 NAL  569 A   3      -7.061  28.445  -5.416  0.98  0.10          NA
+HETATM    4 NAL  619 A   4      26.357   4.978  12.785  0.98  0.10          NA
+HETATM    5 NAL  782 A   5      22.669 -17.939   0.562  0.94  0.10          NA
+HETATM    6 NAL  LOP A   6      -2.409  -5.800 -23.535  0.89  0.10          NA
+ENDMDL
+MODEL        3
+HETATM    1 NAL  270 A   1     -16.462 -11.630  -6.083  0.78  0.10          NA
+HETATM    2 NAL  480 A   2     -17.094  17.546  13.687  0.98  0.10          NA
+HETATM    3 NAL  569 A   3      -5.861  28.845  -9.416  0.98  0.10          NA
+HETATM    4 NAL  619 A   4      25.557   2.178  15.585  0.97  0.10          NA
+HETATM    5 NAL  782 A   5      24.669 -14.739  -1.438  0.94  0.10          NA
+HETATM    6 NAL  LOP A   6      -4.809  -9.000 -22.735  0.85  0.10          NA
+ENDMDL
+MODEL        4
+HETATM    1 NAL  270 A   1     -14.862 -14.830  -5.283  0.77  0.10          NA
+HETATM    2 NAL  480 A   2     -14.294  21.946   9.687  0.95  0.10          NA
+HETATM    3 NAL  569 A   3      -8.661  28.045  -6.616  0.93  0.10          NA
+HETATM    4 NAL  619 A   4      25.557   0.178  16.785  0.92  0.10          NA
+HETATM    5 NAL  782 A   5      25.069 -13.139  -2.638  0.82  0.10          NA
+HETATM    6 NAL  LOP A   6      -4.409  -5.400 -23.535  0.79  0.10          NA
+ENDMDL
+MODEL        5
+HETATM    1 NAL  270 A   1     -16.462 -11.630  -3.683  0.72  0.10          NA
+HETATM    2 NAL  480 A   2     -17.894  15.946  14.887  0.93  0.10          NA
+HETATM    3 NAL  569 A   3      -4.661  28.845  -7.416  0.93  0.10          NA
+HETATM    4 NAL  619 A   4      26.757   6.178  11.185  0.89  0.10          NA
+HETATM    5 NAL  782 A   5      21.469 -19.139   1.762  0.81  0.10          NA
+HETATM    6 NAL  LOP A   6      -2.809  -9.400 -22.735  0.76  0.10          NA
+ENDMDL
+MODEL        6
+HETATM    1 NAL  270 A   1     -14.462 -12.830  -3.683  0.70  0.10          NA
+HETATM    2 NAL  480 A   2     -18.694  14.346  16.087  0.88  0.10          NA
+HETATM    3 NAL  569 A   3      -7.861  28.445  -9.416  0.93  0.10          NA
+HETATM    4 NAL  619 A   4      25.157  -1.422  17.985  0.86  0.10          NA
+HETATM    5 NAL  782 A   5      23.469 -15.939  -2.638  0.80  0.10          NA
+HETATM    6 NAL  LOP A   6      -1.609  -7.800 -23.135  0.74  0.10          NA
+ENDMDL
+MODEL        7
+HETATM    1 NAL  270 A   1     -16.062 -13.630  -6.883  0.68  0.10          NA
+HETATM    2 NAL  480 A   2     -13.494  23.146   8.087  0.87  0.10          NA
+HETATM    3 NAL  569 A   3      -8.261  28.045  -3.816  0.92  0.10          NA
+HETATM    4 NAL  619 A   4      27.157   2.178  13.985  0.84  0.10          NA
+HETATM    5 NAL  782 A   5      23.469 -15.939   1.362  0.77  0.10          NA
+HETATM    6 NAL  LOP A   6      -5.609  -7.000 -23.135  0.74  0.10          NA
+ENDMDL
+MODEL        8
+HETATM    1 NAL  270 A   1     -18.062 -12.430  -4.883  0.64  0.10          NA
+HETATM    2 NAL  480 A   2     -17.094  19.546  10.487  0.87  0.10          NA
+HETATM    3 NAL  569 A   3      -5.461  28.845 -11.416  0.91  0.10          NA
+HETATM    4 NAL  619 A   4      25.557   6.978  12.785  0.83  0.10          NA
+HETATM    5 NAL  782 A   5      22.269 -17.939  -1.438  0.76  0.10          NA
+HETATM    6 NAL  LOP A   6      -2.809  -3.800 -23.935  0.63  0.10          NA
+ENDMDL
+MODEL        9
+HETATM    1 NAL  270 A   1     -17.262 -14.830  -4.483  0.63  0.10          NA
+HETATM    2 NAL  480 A   2     -14.694  20.346  12.887  0.86  0.10          NA
+HETATM    3 NAL  569 A   3      -5.061  28.845  -5.416  0.90  0.10          NA
+HETATM    4 NAL  619 A   4      25.157   5.778  14.385  0.83  0.10          NA
+HETATM    5 NAL  782 A   5      22.669 -17.539   2.562  0.70  0.10          NA
+HETATM    6 NAL  LOP A   6      -3.609  -6.600 -25.135  0.62  0.10          NA
+ENDMDL
+MODEL       10
+HETATM    1 NAL  270 A   1     -14.462 -12.430  -6.083  0.61  0.10          NA
+HETATM    2 NAL  480 A   2     -18.294  17.946  12.087  0.84  0.10          NA
+HETATM    3 NAL  569 A   3      -6.261  28.045  -3.416  0.88  0.10          NA
+HETATM    4 NAL  619 A   4      26.757   0.578  15.185  0.82  0.10          NA
+HETATM    5 NAL  782 A   5      21.469 -19.539  -0.238  0.68  0.10          NA
+HETATM    6 NAL  LOP A   6      -4.409 -11.000 -22.335  0.61  0.10          NA
+ENDMDL
+MODEL       11
+HETATM    1 NAL  270 A   1     -14.462 -16.030  -3.683  0.58  0.10          NA
+HETATM    2 NAL  480 A   2     -15.894  20.746   8.887  0.84  0.10          NA
+HETATM    3 NAL  569 A   3      -3.861  28.845  -9.816  0.88  0.10          NA
+HETATM    4 NAL  619 A   4      24.357   1.778  17.185  0.80  0.10          NA
+HETATM    5 NAL  782 A   5      24.669 -14.339   0.562  0.68  0.10          NA
+HETATM    6 NAL  LOP A   6      -4.009  -8.600 -24.735  0.58  0.10          NA
+ENDMDL
+MODEL       12
+HETATM    1 NAL  270 A   1     -16.062 -12.830  -2.083  0.56  0.10          NA
+HETATM    2 NAL  480 A   2     -15.494  18.746  14.487  0.84  0.10          NA
+HETATM    3 NAL  569 A   3      -7.461  28.445 -11.416  0.87  0.10          NA
+HETATM    4 NAL  619 A   4      24.757   4.178  15.985  0.80  0.10          NA
+HETATM    5 NAL  782 A   5      24.669 -14.739  -3.838  0.68  0.10          NA
+HETATM    6 NAL  LOP A   6      -0.809  -4.600 -23.935  0.58  0.10          NA
+ENDMDL
+MODEL       13
+HETATM    1 NAL  270 A   1     -17.662 -10.430  -4.883  0.53  0.10          NA
+HETATM    2 NAL  480 A   2     -16.294  17.146  15.687  0.82  0.10          NA
+HETATM    3 NAL  569 A   3      -9.861  27.645  -5.016  0.85  0.10          NA
+HETATM    4 NAL  619 A   4      24.757  -3.422  18.785  0.80  0.10          NA
+HETATM    5 NAL  782 A   5      25.069 -12.739  -0.638  0.65  0.10          NA
+HETATM    6 NAL  LOP A   6      -3.609  -8.200 -21.135  0.56  0.10          NA
+ENDMDL
+MODEL       14
+HETATM    1 NAL  270 A   1     -14.862 -10.830  -4.883  0.52  0.10          NA
+HETATM    2 NAL  480 A   2     -19.094  12.746  17.287  0.82  0.10          NA
+HETATM    3 NAL  569 A   3      -7.861  27.645  -1.816  0.84  0.10          NA
+HETATM    4 NAL  619 A   4      27.557   3.378  12.385  0.78  0.10          NA
+HETATM    5 NAL  782 A   5      26.269 -11.539  -3.038  0.64  0.10          NA
+HETATM    6 NAL  LOP A   6      -3.209  -6.200 -21.535  0.55  0.10          NA
+ENDMDL
+MODEL       15
+HETATM    1 NAL  270 A   1     -13.262 -14.430  -4.083  0.51  0.10          NA
+HETATM    2 NAL  480 A   2     -19.094  16.346  13.287  0.80  0.10          NA
+HETATM    3 NAL  569 A   3      -3.461  28.845 -11.816  0.83  0.10          NA
+HETATM    4 NAL  619 A   4      26.357   7.778   9.985  0.78  0.10          NA
+HETATM    5 NAL  782 A   5      20.269 -20.339   2.962  0.61  0.10          NA
+HETATM    6 NAL  LOP A   6      -6.409 -10.200 -22.335  0.52  0.10          NA
+ENDMDL
+MODEL       16
+HETATM    1 NAL  270 A   1     -14.062 -14.030  -2.083  0.49  0.10          NA
+HETATM    2 NAL  480 A   2     -13.494  21.546  11.687  0.80  0.10          NA
+HETATM    3 NAL  569 A   3      -5.461  28.445 -13.416  0.82  0.10          NA
+HETATM    4 NAL  619 A   4      24.357  -5.422  19.585  0.74  0.10          NA
+HETATM    5 NAL  782 A   5      21.469 -18.739   3.762  0.59  0.10          NA
+HETATM    6 NAL  LOP A   6      -1.609  -7.000 -25.135  0.50  0.10          NA
+ENDMDL
+MODEL       17
+HETATM    1 NAL  270 A   1     -18.062 -12.830  -6.883  0.49  0.10          NA
+HETATM    2 NAL  480 A   2     -17.094  15.546  16.887  0.79  0.10          NA
+HETATM    3 NAL  569 A   3      -9.861  27.645  -2.616  0.81  0.10          NA
+HETATM    4 NAL  619 A   4      23.957   0.178  18.385  0.74  0.10          NA
+HETATM    5 NAL  782 A   5      24.669 -17.539   0.562  0.58  0.10          NA
+HETATM    6 NAL  LOP A   6      -0.409  -6.200 -22.735  0.50  0.10          NA
+ENDMDL
+MODEL       18
+HETATM    1 NAL  270 A   1     -16.062 -16.430  -4.883  0.46  0.10          NA
+HETATM    2 NAL  480 A   2     -15.494  22.346   7.687  0.79  0.10          NA
+HETATM    3 NAL  569 A   3      -9.861  28.445  -8.216  0.80  0.10          NA
+HETATM    4 NAL  619 A   4      26.357  -1.822  16.385  0.72  0.10          NA
+HETATM    5 NAL  782 A   5      24.269 -17.939  -1.838  0.58  0.10          NA
+HETATM    6 NAL  LOP A   6      -2.409  -5.000 -25.535  0.49  0.10          NA
+ENDMDL
+MODEL       19
+HETATM    1 NAL  270 A   1     -18.062 -12.830  -2.883  0.45  0.10          NA
+HETATM    2 NAL  480 A   2     -12.694  24.346   6.487  0.77  0.10          NA
+HETATM    3 NAL  569 A   3      -8.261  29.645  -7.816  0.76  0.10          NA
+HETATM    4 NAL  619 A   4      23.557  -1.822  19.185  0.70  0.10          NA
+HETATM    5 NAL  782 A   5      21.469 -16.339   0.162  0.57  0.10          NA
+HETATM    6 NAL  LOP A   6      -6.009  -8.600 -24.335  0.49  0.10          NA
+ENDMDL
+MODEL       20
+HETATM    1 NAL  270 A   1     -15.262 -15.630  -1.683  0.44  0.10          NA
+HETATM    2 NAL  480 A   2     -19.494  11.146  18.487  0.76  0.10          NA
+HETATM    3 NAL  569 A   3      -9.461  27.245  -0.616  0.76  0.10          NA
+HETATM    4 NAL  619 A   4      23.557  -7.422  20.385  0.70  0.10          NA
+HETATM    5 NAL  782 A   5      25.469 -12.739  -4.638  0.56  0.10          NA
+HETATM    6 NAL  LOP A   6      -4.809  -9.800 -20.735  0.46  0.10          NA
+ENDMDL

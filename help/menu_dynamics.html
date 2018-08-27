@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Menu/Dynamics</title>
+</head>
+<body>
+
+<div class="pagetitle">Menu/Dynamics</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  <A href="user_interface.html"> User interface </A> <A href="main_window.html"> Main window </A> <A href="menu.html"> Menu </A> &uarr;  |  </pre>
+
+<a name="general">
+<div class="subtitle">General remarks</div>
+<p>
+Features for coarse-grained structural dynamics are currently under development. They are not included in public release of MMM 2010. The corresponding menu items are thus disabled.
+</p>
+<a name="GNM">
+<div class="subtitle">Gaussian network model</div>
+<p>
+Computes a residue-level Gaussian network model with nodes at coordinates of the C<sup>&alpha;</sup> atoms. Dependence of force constants on C<sup>&alpha;</sup>-C<sup>&alpha;</sup> distance is optimized for obtaining good agreement of computed and experimental B factors and for providing a well resolved covariance matrix.
+</p>
+<p>
+On 32-bit Matlab, the structure must not have more than 3600 residues. Network computation may take minutes for large protein complexes. Computation time scales with the cube of the number of residues.
+<p>
+See <a href="GNM.html">GNM window</a> for further information.
+</p>
+<a name="ANM">
+<div class="subtitle">Anisotropic network model</div>
+<p>
+Computes a residue-level anisotropic network model with nodes at coordinates of the C<sup>&alpha;</sup> atoms. Dependence of force constants on C<sup>&alpha;</sup>-C<sup>&alpha;</sup> distance is optimized for obtaining a good description of large-scale domain movements.
+</p>
+<p>
+On 32-bit Matlab, the structure must not have more than 1200 residues. Network computation may take tens of minutes for large protein complexes. Computation time scales with the cube of the number of residues.
+<p>
+See <a href="ANM.html">ANM window</a> for further information.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2011, edited 2011/12/16</div>
+</body>
+</html>
+

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+
+<toc version="1.0">
+
+<tocitem target="overview.html" image="/img/MMM_icon.gif/">MMM overview
+  <tocitem target="user_interface.html" image="$toolbox/matlab/icons/figureicon.gif">User interface</tocitem>
+  <tocitem target="commands.html" image="$toolbox/matlab/icons/reficon.gif">Commands</tocitem>
+  <tocitem target="addressing.html" image="$toolbox/matlab/icons/reficon.gif">Addressing structure objects</tocitem>
+  <tocitem target="license.html" image="$toolbox/matlab/icons/notesicon.gif">License</tocitem>
+  <tocitem target="credits.html" image="$toolbox/matlab/icons/tool_hand.png">Credits</tocitem>
+  <tocitem target="http://www.epr.ethz.ch/software/index/" image="$toolbox/matlab/icons/webicon.gif">MMM Web Site</tocitem>
+</tocitem>
+
+</toc>
+

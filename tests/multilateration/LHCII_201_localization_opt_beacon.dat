@@ -1,0 +1,11 @@
+% Localization test restraints for MTSL at residue 201 with respect to LHCII structure 2BHW, optimum choice of beacons
+% Simulated test data
+# PDB 2BHW
+# ENSEMBLE 20 3
+# OUTPUT LHCII_201R1
+# LOCATE 201R1 0.5 MTSL 298 full
+28	3.73	0.37
+73	3.17	0.11
+89	2.70	0.32
+105	3.32	0.40
+# END

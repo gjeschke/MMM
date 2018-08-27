@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Set labeling conditions</title>
+</head>
+<body>
+
+<div class="pagetitle">Set labeling conditions</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> <A href="user_interface.html"> User interface </A> &uarr;  <A href="spin_labeling.html"> Spin labeling </A> &uarr; |  &darr;  </pre>
+
+<div class="subtitle">What can you do in this window?</div>
+<p>
+This window appears when a spin labeling site scan is initiated from the <a href="menu_epr.html#site_scan"> EPR/Site scan</a> menu item after the <code>OK</code> button was clicked in the <a href="site_scan_window.html">site scan window</a> for amino acid residues. In a site scan of several chains, this window appears once for every chain (as individual proteins in a complex might be differently labeled).
+</p>
+<p>
+You can select the type of label and the target temperature for rotamer computations. If you have unlocked functions 
+for experienced users (<a href="commands.html#unlock">unlock command</a> or <img src="img/toolbar_lock.png" alt="(golden padlock)"> Lock/Unlock (toggle button)),
+you can explicitly select a rotamer library by file name.
+</p>
+<a name="label">
+<div class="subtitle">Label type</div>
+<p>
+Here you can select the type of label. Currently, only methanethiosulfonato spin label (MTSL) and iodoacetamido-PROXYL spin label (IA-Proxyl) are supported.
+</p>
+<a name="temperature">
+<div class="subtitle">Temperature selection</div>
+<p>
+Currently, two main temperature selections are supported. Use <code>cryogenic</code> for low-temperature experiments on both soluble and membrane proteins. The target temperature of 175 K is close to the glass transition temperature of the solvation shell of soluble proteins as well as the glass transition temperature of lipid bilayers. This was previously the recommended setting for DEER and P-31 Mims ENDOR. However, tests on proteins with known structure indicated that ambient temperature libraries perform slightly better even for experiments performed at cryogenic temperatures.
+</p>
+<p>
+We now recommend to use <code>ambient</code> for all experiments. This sets the target temperature to 298 K.
+</p>
+<p>
+It is possible to directly input the target temperature, which leads to Boltzmann scaling of internal rotamer populations. There is no strict theoretical justification for this. It is a reasonable approximation at temperatures close to the ones where rotamer libraries were derived (175 and 298 K), however, the temperature dependence may then be insignificant with respect to uncertainty of the approach anyway. We generally recommend to stick to the preset values for cryogenic and ambient temperature experiments. The direct input feature is provided for tests.
+</p>
+<a name="library">
+<div class="subtitle">Library selection</div>
+<p>
+This feature is available only if functions for experienced users have been unlocked.
+A popupmenu lists all rotamer library files (all <code>.mat</code> files in subdirectory <code>rotamer_libraries</code>).
+You can directly select one of these libraries. In addition, you need to mark the checkbox <code>use special library:</code>.
+This choice overrides temperature and label selection.
+</p>
+<p>
+Currently available rotamer libraries are of the form <code>R1A_<i>T</i>_<i>type</i>.mat</code>, where <code><i>T</i></code>
+is either <code>175K</code> or <code>298K</code> and <code><i>type</i></code> 
+is <code>090619</code> (original MMM libraries for MTSL), <code>culled</code> (all rotamers with respect to chi1 and chi2
+removed that were never observed in crystal structures), <code>xray</code> (chi1, chi2 probabilities as in the set of all reliable
+x-ray structures), <code>flat</code> (equal probabilities for all rotamers), <code>sezer12</code> (chi1, chi2 probabilities as in 
+the MD computations of D. Sezer, J. H. Freed, B. Roux 2008 <i>J. Phys. Chem. B</i> 122:5755-5767, Table 10), or <code>warsh</code> 
+(chi1, chi2 probabilities as in D. T. Warshaviak, L. Serbulea, K. N. Houk, W. L. Hubbell 2011 <i>J. Phys. Chem. B</i> 115:397-405).
+</p>
+</p><div class="subsubtitle">Version</div>
+<div class="comment">version 2014.1, edited 2014/01/15</div>
+</body>
+</html>
+

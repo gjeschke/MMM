@@ -1,0 +1,24 @@
+% Restraints for N-terminal domain residues 3-13 of LHCII, G. Jeschke 2015/05/27
+# PDB	2BHW:A   
+# DOMAIN 3 13
+# CANCHOR [2BHW](A)14
+# SEQUENCE SATTKKVASSG
+# ENSEMBLE 100 0.5
+# DEER	IA-PROXYL 298
+3	34	0	0 % N. Fehr, heterogeneous trimer
+3	59	0	0 % N. Fehr, heterogeneous trimer
+7	34	0	0 % N. Fehr, heterogeneous trimer
+7	59	0	0 % N. Fehr, heterogeneous trimer
+11	34	0	0 % N. Fehr, heterogeneous trimer
+11	59	0	0 % N. Fehr, heterogeneous trimer
+# OLIGOMER 3 IA-PROXYL 298
+3	0	0 % A. Müller, C. Dockter, singly labeled trimer
+4	0	0 % A. Müller, C. Dockter, singly labeled trimer
+7	0	0 % A. Müller, C. Dockter, singly labeled trimer
+9	0	0 % A. Müller, C. Dockter, singly labeled trimer
+10	0	0 % A. Müller, C. Dockter, singly labeled trimer
+11	0	0 % A. Müller, C. Dockter, singly labeled trimer
+12	0	0 % A. Müller, C. Dockter, singly labeled trimer
+# END
+
+

@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Third-party software</title>
+</head>
+<body>
+
+<div class="pagetitle">Third-party software</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  &uarr;  |  &darr;  &bull; <A href="license.html"> License </a> &bull; <a href="#install">General installation</a> &bull; <a href="#citation"> Citing third-party software</a> </pre>
+
+<div class="subtitle">Why does MMM depend on software that is not included in the distribution?</div>
+<p>
+For many problems in bioinformatics, good software exists that is free for academic use. In many cases the underlying algorithms are not trivial, so that recoding would be time-consuming and would result in modules that are much less tested (and could be much less trusted) than established software. 
+</p>
+<p>
+Existing programs are of three types:
+<ul>
+<li>programs that are accessible only via web server<li>
+<li>programs that can be downloaded, but are accessible only via their own user interface</li>
+<li>programs with command line access and clearly defined input and output formats</li>
+</ul>
+The policy of MMM about these types of programs is as follows. Communication with web servers is via saving input in MMM, uploading it with a browser, downloading the results, which are sometimes provided via e-mail, and importing them into MMM.
+</p>
+<p>
+Some web servers allow for direct queries, specification of a well defined output format and provide a web page in this format. In this case MMM connects directly. There are also web services with clearly defined interface. The current version does not yet access such services, but future versions will communicate directly with them.
+</p>
+<p>
+For downloadable programs with their own user interface and no command-line version communication is via saving files from MMM (usually in PDB format), reimporting them into the third-party program, processing them, exporting them from this program, and reimporting into MMM.
+</p>
+<p>
+For command-line programs with clearly defined interface, MMM provides direct access via menu items or dedicated windows. This functionality works only when the corresponding program is installed. Generally, such programs are not bundled with MMM. The user is responsible for obtaining the license from the original authors, downloading and installing the program. Third-party programs are bundled with MMM only when the original authors explicitly permit redistribution. In these cases, they are listed in the <a href="credits.html">Credits</a>.
+</p>
+<a name="install">
+<div class="subtitle">General installation procedure for third-party software</div>
+<p>
+In the list below, you find web access links for this software (<a href="mailto:gunnar.jeschke@phys.chem.ethz.ch?subject=MMM: broken link&body=Dear MMM authors, the following third-party software could not be accessed:">please report broken links</a>). Check whether you need a license (sometimes you can simply download), apply for the license, download the software. Now there are two possibilities. In the first one, install the software in the <code>third_party</code> subdirectory of MMM. You can have nested subdirectories in this subdirectory. In principle, third-party software packages can also have their own subdirectory under the MMM main directory. After a restart, MMM will automatically find the software (as long as the authors did not change the calling syntax (<a href="mailto:gunnar.jeschke@phys.chem.ethz.ch?subject=MMM: third-party&body=Dear MMM authors, the following third-party software was installed but did not work:">please report such cases</a>).
+</p>
+<p>
+As a second possibility, you can install the program wherever you wish (in fact, you might already use the programe and it <i>is</i> installed somewhere else). In this case, Matlab needs to know the path to the program (see <code>Viewing and Setting the Search Path</code> in Matlab help). In some cases, for instance for Modeller, MMM must be able to write in a subdirectory of the program directory. Under Windows, such programs cannot be installed in <code>C:/Programs</code> (or similar), they must be installed in your Documents folder.
+</p>
+<a name="DSSP">
+<div class="subtitle">DSSP (Secondary structure assignment)</div>
+<p>
+This is the standard program for unambiguous definition of secondary structure. It can be downloaded from a <a href="http://swift.cmbi.kun.nl/gv/dssp/">DSSP Homepage</a> at  Radboud University Nijmegen where the group of <a href="http://swift.cmbi.ru.nl/gv/start/index.html">Gerd Vriend</a> maintains it. We use it in MMM to reassign secondary structure in PDB files and to obtain initial estimates on accessibility of residues. The proper citations are:
+Joosten RP, Te Beek TAH, Krieger E, Hekkelman ML, Hooft RWW, Schneider R, Sander C, Vriend G, NAR 2010; <a href="http://dx.doi.org/10.1093/nar/gkq1105">DOI access</a> and Kabsch W, Sander C, Biopolymers. 1983 22 2577-2637. A MS Windows version of DSSP is bundled with MMM under the Boost licence (see <code>/third_party</code> subdirectory for the license file).
+<a name="Modeller">
+<div class="subtitle">Modeller (homology modeling without or with experimental restraints)</div>
+<p>
+This is an extensive, well tested homology modeling package from the <a href="http://www.salilab.org/modeller/">Sali lab</a>. Actually, in this case the tail MMM is wagging the dog Modeller. However, Andrej Sali encourages programming of user interfaces for Modeller. The proper citation:
+<p>
+N. Eswar, M. A. Marti-Renom, B. Webb, M. S. Madhusudhan, D. Eramian, M. Shen, U. Pieper, A. Sali. Comparative Protein Structure Modeling With MODELLER. Current Protocols in Bioinformatics, John Wiley & Sons, Inc., Supplement 15, 5.6.1-5.6.30, 2008.
+has the short names <code>Eswar:2008_modeller</code>.
+</p>
+<p>
+We strongly recommend to install Modeller for MMM use in a subdirectory of MMM. In any case it cannot be installed in a Windows program directory, since MMM must be able to write a batch file in the smae directory where the executable resides.
+</p>
+<p>
+Different Modeller versions have different names of the executable. This name can be specified in the preferences window, for instance <code>mod9v10</code> for version 9.10 published in September 2011.
+</p>
+<p>
+MMM can use Modeller to repair gaps in PDB structures (mostly missing loops). We plan to provide an interface for homology modeling in the next version.
+</p>
+<a name="MSMS">
+<div class="subtitle">MSMS (Solvent accessible surface)</div>
+<p>
+This neat program by <a href="http://www.scripps.edu/~sanner/">Michel Sanner</a> can be downloaded from the <a href="http://www.scripps.edu/~sanner/html/msms_home.html">Molecular Surfaces Computation Homepage</a>. We use it in MMM to visualize solvent-accessible surfaces and to compute water and oxygen accessibility parameters for spin labels. The proper citation:
+<p>
+Sanner, M.F., A. J. Olson, and J. C. Spehner. 1996. Reduced surface: an efficient way to compute molecular surfaces. <i> Biopolymers</i>. 38:305-20.
+<p>
+has the short name <code>Sanner:1996_msms</code>.
+</p>
+<a name="MUSCLE">
+<div class="subtitle">MUSCLE (Sequence alignment)</div>
+<p>
+This compact, fast, and easy-to-interface program is downloadable from <a href="http://www.drive5.com/muscle/">Robert C. Edgar</a>'s homepage and can compute pairwise as well as multiple sequence alignments. The proper citation:
+<p>
+Edgar, Robert C. (2004), MUSCLE: multiple sequence alignment with high accuracy and high throughput, Nucleic Acids Research 32(5), 1792-97. 
+<p>
+has the short name <code>Edgar:2004_muscle</code>.
+<p>
+Starting from MMM 2011, MUSCLE is bundled with MMM with permission from Robert C. Edgar.
+</p>
+<a name="SCWRL4">
+<div class="subtitle">SCWRL4 (Sidechain generation and repacking)</div>
+<p>
+Software for generation or repacking of sidechains by use of a rotamer library. This can be downloaded from the <a href="http://dunbrack.fccc.edu/scwrl4/">Dunbrack lab webpage</a>.
+<p>
+G. G. Krivov, M. V. Shapovalov, and R. L. Dunbrack, Jr. 2009. Improved prediction of protein side-chain conformations with SCWRL4. <i>Proteins</i> 77:778-795.
+<p>
+has the short name <code>Krivov:2009_scwrl4</code>.
+</p>
+<a name="Tinker">
+<div class="subtitle">Tinker (molecular force field computations)</div>
+<p>
+Tinker is a modular package for molecular force field and molecular dynamics computions that can be obtained from the <a href="http://dasher.wustl.edu/ffe/">Ponder lab</a>. 
+Tinker interfacing is prepared and tested, but not yet used in standard MMM functionality (there is an advanced feature in elastic network model based fitting of structural transitions). If you want to access Tinker in your own programming, see for example routines <code>put_Tinker_coor.m</code>,
+<code>read_Tinker_xyz.mm</code>, <code>get_Tinker_energy.m</code>, <code>get_Tinker_minimize.m</code>. 
+<p>
+The following Tinker binaries and force field parameter files should be on the Matlab path <i>in the same directory</i>:
+<p>
+pdbxyz.exe, minimize.exe, analyze.exe, testgrad.exe, xyzpdb.exe, oplsua.prm, oplsaa.prm, amber99.prm, charmm19.prm
+<p>
+Citation:
+</p>
+<p>
+J.W. Ponder, F.M. Richards 1987. <i>J. Comput. Chem.</i> 8:1016-1024.
+</p>
+<a name="citation">
+<div class="subtitle">How to cite third-party software</div>
+<p>
+Whenever you use functionality of MMM that does depend on third-party software, you should cite not only MMM but also this software. MMM makes this easy for you by automatically adding the appropriate reference to the bibliography of the model (if the original authors provided one or we could find one). If you are an original author who is unhappy with the selected citation, <a href="mailto:gunnar.jeschke@phys.chem.ethz.ch?subject=MMM: citation&body=Dear MMM authors, the citation for my software is not the correct one:">please contact us</a>. The <code>short name</code> for the appropriate citation is given in the description of the particular module above.
+</p>
+<p>
+It is the responsibility of an MMM user that the citation appears not only in the model bibliography, but also in papers, if the use of this program was substantial in solving a problem or preparing a figure.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2013, edited 2013/01/16</div>
+</body>
+</html>
+

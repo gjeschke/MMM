@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Model building</title>
+</head>
+<body>
+
+<div class="pagetitle">Model building</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="specialized.html"> Special tasks </A> &uarr;  |  &darr;  <A href="fit_from_template.html"> Fit from template </A>  &bull; <A href="fit_from_template_Modeller.html"> Fit from template (Modeller) </A> </pre>
+
+<div class="subtitle">Modeling concept</div>
+<h4>General concept</h4>
+<p>
+MMM uses distance constraints between spin labels together with a template structure to generate a new structural model. If Modeller is used, additional constraints on secondary structure can be specified.  
+</p>
+<p>
+The template structure can be an experimental structure for the same protein in a different state or for a homologous protein. This structure needs to be provided as a PDB file.
+<p>
+The constraints must be provided in a <a href="#constraint_file">constraint file</a>, which may also be used to define additional parameters of the model building.
+</p>
+<p>
+The relation between label-to-label distance constraints and the protein structure is based on <a href="spin_labeling.html">rotamer library predictions</a>. Similar to MD predictions of spin label conformations (K. Sale <i>et al.</i>JACS, 2005, 127, 9334-9335), this may introduce uncertainty of about 0.3 nm, which adds to the experimental uncertainty in the mean distance. This uncertainty should be kept in mind when interpreting structural models obtained by this approach. 
+</p>
+<h4>Elastic network models</h4>
+<p>
+MMM implements an adapted version of the Zheng/Brooks algorithm (W. Zheng, B. R. Brooks, Biophys. J. 2006, 90, 4327-4336) for driving an <a href"ENM.html">elastic network model</a> by a small set of distance constraints. The underlying <a href"ANM.html">anisotropic network model</a> is subjected to a normal mode analysis and a small number of low-frequency normal modes is used to model structural transitions.
+</p>
+<p>
+This approach should only be used for protein state transitions. In other words, an experimental structure of the protein in a different state should be known. 
+</p>
+<p>
+Depending on the type of state transition, this approach may or may not lead to a good description. If you suspect a hinge movement, it will very likely provide a good to excellent result, provided you have at least ten distance constraints. If the protein partially unfolds during the state transition, this approach will very likely fail. If you are unsure, <a href="mailto:gjeschke@ethz.ch">contact us</a> or wait for our forthcoming paper on this approach.
+</p>
+<p>
+Description of the <a href="fit_from_template.html">Fit from template window</a> provides additional information on the approach.
+</p>
+<h4>Constraint-supported homology modeling</h4>
+<p>
+Homology modeling is based on <a href="http://en.wikipedia.org/wiki/Anfinsen%27s_dogma">Anfinsen's dogma</a> which states that the native structure of a protein is determined by the amino acid sequence. Accordingly, sequence similarity should imply structural similarity. This idea is formalized in the <a href="http://www.salilab.org/modeller/">Modeller software</a>, which MMM interfaces. See the <a href="third_party.html#Modeller">third-party software page</a> for information on how to install Modeller for MMM.
+</p>
+<p>
+Modeller requires a sequence alignment between the template structure and target structure. If sequence identity is good, such an alignment can be done with <a href="third_party.html#MUSCLE">MUSCLE</a>, which is bundled with MMM. If sequence identity is poor, alignments from servers or MUSCLE may need to be optimized. A future version of MMM will implement an algorithm that uses EPR distance constraints for optimization of the alignment. 
+</p>
+<p>
+Uncertainty of homology models depends on the level of sequence identity. MMM analyzes the GA341 score, provided by Modeller, to exclude very poor models. Furthermore, the capability of Modeller to generate and rank (by the DOPE score) ensembles of models is used. We strongly advise that you create ensembles of at least 10 models to estimate uncertainty.  
+</p>
+<p>
+Homology modeling with experimental distance constraints works best for moderate sequence identity. At very low sequence identity (midnight zone, less than 20%) models may be very uncertain. At very high sequence identity, homology constraints may overwhelm experimental distance constraints. Therefore, homology modeling with distance constraints is not the method of choice for state transitions of a protein (100% sequence identity), although in simple cases, such as hinge movements, it may still work reasonably well.
+</p>
+<p>
+Description of the <a href="fit_from_template_Modeller.html">Fit from template/Modeller window</a> provides additional information on the approach.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2011, edited 2011/12/16</div>
+</body>
+</html>
+

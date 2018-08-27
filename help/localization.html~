@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Localization of spin labels</title>
+</head>
+<body>
+
+<div class="pagetitle">Localization of spin labels</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="specialized.html"> Special tasks </A> &uarr;  </pre>
+
+<div class="subtitle">What is localization?</div>
+<h4>General concept</h4>
+<p>
+Localization determines possible coordinates for a single point in space from distances to a set of known reference points. This is also known as trilateration or multilateration and, in the first papers in the field of pulse dipolar EPR spectroscopy, has been termed triangulation. MMM uses the general term localization because the implementation goes beyond multilateration by taking into account the uncertainty of the known distances.
+</p>
+<p>
+Typical application scenarios are the localization of spin-labeled cofactors or substrates with respect to a protein, see <a href="http://dx.doi.org/10.1016/j.bpj.2012.10.002">Gaffney et al., Biophys. J. 2012, 103, 2134-2144</a> or the localization of a spin-labeled residue in a domain that is not resolved in a crystal structure or NMR structure. If you wish to localize <i>several</i> unknown points, you can still use localization by running it for each individual point and combining the results from the output PDB files. However, if you have a sufficient number of distances also between the unknown points, you should consider <a href="network.html">network determination</a>, which is also required if the number of reference points is insufficient. 
+</p>
+<h4>Limitations</h4>
+<p>
+At least three distances to distinct reference points are required. In this case localization will result in an ambigous result, with two sets of coordinates that are mirror images with respect to the reference point triangle. This ambiguity is resolved by a fourth reference point unless the symmetry is accidentally maintained by the fourth point. In practice, localization with four reference points still results in substantial uncertainty if the distances are uncertain. This is always the case with spin labels, since predictions of spin label conformational distribution are uncertain. Hence, whenever possible, at least five reference points should be used. 
+</p>
+<p>
+The point to be localized can also be a paramagnetic center that is not a spin label. However, the current implementation can directly compute reference coordinates from a given structure only for spin labels. Other reference points have to be specified with their full coordinates in the <a href="#constraints">constraint file</a>. Currently it is not possible to mix automatic coordinate computation for spin labels with direct specification of other reference points. As a workaround you may determine mean spin label reference coordinates with the <a href="deer_window.html">DEER window</a> and write these coordinates in the constraint file.
+</p>
+<h4>Algorithm</h4>
+<p>
+The multilateration problem with more than three reference points can be linearized, however, such linearization is numerically unstable with respect to errors in the given distances (W. S. Murphy Jr., Master thesis, Colorado School of Mines, 2007). We use linearization to compute a first guess for the unknown coordinates and avoid the instability by non-linear least squares minimization starting from this guess. With three reference points (trilateration) the two possible point coordinates are computed from analytical formulas.
+</p>
+<p>
+The coordinates obtained by multilateration is only used to predict a region (or two regions for trilateration) in space where the label can be located. We define this region as a cube with 6 nm side length whose center is the multilaterated point. This cube is sampled by a grid with uniform spacing &Delta;x = &Delta;y = &Delta;z = 0.4 &#8491;. We now compute the probability for the spin label to be located at a given grid point. From the <i>n</i> experimental distances to the reference points and the corresponding distances of the grid point to the reference points we calculate probabilities <i>p<sub>i</sub></i> (<i>i</i> = 1... <i>n</i>) that these distances are consistent with experiment. This is done either by assuming a Gaussian distribution of the individual distances, with mean values and standard deviations given in the <a href="#constraints">constraint file</a>, or by using a numerical distribution that must be specified also in the constraint file. Assuming that the distance distributions are uncorrelated, the total probability for the label to be located at this grid point is the product of the <i>n</i> individual probabilities.  
+</p>
+<p>
+After computing this total probability at all grid points, we know the probability density distribution in the cube at 0.4 &#8491; resolution. We now find a level <i>l</i><sub>&frac12;</sub> of the normalized probability density so that an probability density isosurface at this level includes 50% of the total probability. This level is determined at 1% resolution of the maximum probability density. For an unambigous localization, the isosurface is displayed as a red semitransparent surface object. For an ambiguous localization, one of the solutions is displayed by a red and the other one by a gree isosurface. Note that inclusion of 50% of the total probability is also usual practice in displaying thermal ellipsoids in crystal structures of small molecules. 
+</p>
+<p>
+Two important quality measures are reported in the <b>Message board</b>. The highest location probability is a measure for the maximum probability that all distance constraints are simultaneously fulfilled at any point in space. A perfect solution has a value of 1. Values smaller than 1 are to be expected even if the distance distributions are known exactly, since they will be correlated to some extent and this correlation was neglected in computing probability density. However, values smaller than 0.25 usually indicate problems with the experimental constraints. The second quality measure is the maximum relative probability at density cube border. A good solution has 0.00%, but values of a few percent are acceptable. Values larger than 10% indicate that the experimental constraints are insufficient for localization. If the constraints are very poor, it may even happen that the 50% isosurface extends beyond the 6 nm cube. This is easily recognized by the displayed surface not being closed. In such cases, additional experimental constraints are required.
+</p>
+<p>
+For interactive analysis of the result in MMM or other PDB viewers the spatial probability distribution can be sampled by an ensemble of point coordinates. For that, the volume enclosed by the 50% isosurface is successively filled by spheres, starting at the point of maximum probability density. The next spheres are also located in the point of maximum probability density, but under the constraint that they do not intersect any of the spheres that were put before. The spheres are displayed as grey balls with a transparency corresponding to relative probability density at their center. Number and diameter of the spheres can be specified in the <a href="#constraints">constraint file</a>. If the specification is missing only a single sphere with a diameter 2 &#8491; is created at the point of maximum probability density.
+</p>
+<p>
+The ensemble of spheres that sample the 50% probability density volume can be written out as a PDB file (see <a href="#constraints">constraint file</a>). The spheres are specified as sodium atoms, each sphere corresponding to a separate model. Relative probability densities at the sphere centers are stored as occupations. This file can be re-read by MMM and is also compatible with Accelrys Discovery, Chimera, PyMol, and Swiss-PdbViewer 4.1.0.
+</p>
+<a name="constraints">
+<div class="subtitle">Constraint file</div>
+<p>
+A constraint file serves for both specifying the distance constraints between the reference points and the point to be localized and for controling output. A typical constraint file looks like this:
+</p>
+<p>
+<code>% Localization test restraints for SBL1 with respect to lipoxygenase structure 1YGE<p>
+<code>% Restraints from B. J. Gaffney, M.D. Bradshaw, J. Freed, P. Borbat, Biophys. J. 2012, 103, 2134-2144<p>
+<code># PDB 1YGE % this file needs to be loaded into MMM before selecting localization<p>
+<code># ENSEMBLE 20 3<p>
+<code># OUTPUT Gaffney_SBL1<p>
+<code># LOCATE SBL1<p>
+<code>270	2.30	0.45<p>
+<code>480	4.30	0.45<p>
+<code>569	3.80	0.45<p>
+<code>619     4.70    0.45<p>
+<code>782	3.75    0.45<p>
+<code># END<p>
+</code>
+</p>
+This file is provided as <code>localization_test.dat</code> in MMM subdirectory <code>\test\multilateration</code>.
+<p>
+Lines starting with a percent character. <code>%</code>, are comment lines. Lines starting with a hash characters, <code>#</code>, are command lines. Other lines provide additional arguments to the previous command. The optional <code># PDB</code> command specifies the reference structure. The reference structure must have been loaded before into MMM and must be the active structure. If there is a mismatch between the tag of the active structure and the identifier specified in the <code># PDB</code> command, a dialog window pops up for confirmation. Apart from activating this security question, the <code># PDB</code> command has no function.
+</p>
+<p>
+The optional <code># ENSEMBLE</code> command specifies how many spheres shall be used for sampling the 50% probability volume (default 1) and which diameter they shall have (default 2 &#8491;).   
+</p>
+<p>
+The optional <code># OUTPUT</code> command specifies whether a PDB file with the localization information is written. If the command is present without an argument, a PDB file with name <code>locations_<i>tag</i>.pdb</code> is written, where <code><i>tag</i></code> is the tag specified with the <code># LOCATE</code> command. A user-defined filename can be specified as an argument of the <code># OUTPUT</code> command, as in the example above. If the filename argument does not have an extension <code>.pdb</code>, this extension is automatically appended. Unless a full path name is given, the PDB file is written to the directory from which the constraint file was loaded.
+</p>
+<p>
+The mandatory <code># LOCATE</code> command signifies that the following lines until the next command are constraint lines. Its first argument is the tag for the localized point (<code>SBL1</code> in the example) that is also used for tagging the 50% isosurface, as a PDB identifier in the output PDB file, and in an automatically generated filename for the output PDB file. If this tag is missing, it defaults to <code>loc</code>, although it is not recommended to omit the tag. The second, optional argument can be used to specify the isosurface level (probability included in the volume, defaults to 0.5). As a third, optional argument, the type of labels at the reference points can be specified (currently either <code>MTSL</code> or <code>IA-Proxyl</code>, with <code>MTSL</code> being the default. As a fourth, optional argument, the temperature of the rotamer library can be specified. It defaults to <code>298</code> K.
+</p>
+<p>The <code># LOCATE</code> command is followed by as many constraint lines as there are reference points. Each constraint line has at least three arguments. The first argument is the address of the spin-labeled residue, either just the residue number or an MMM address, such as <code>(B)23</code> for residue 23 in chain B of the active structure. The second argument is the experimental mean distance (in nanometers) between the reference label and the paramagnetic center to be localized. The third argument is the standard deviation of this distance, also in nanometers. Distances and standard deviations can alternatively be specified in &#8491;ngstroems. For that the <code># LOCATE</code> command has to be preceded by the command <code># UNITS A</code> or <code># UNITS ANGSTROEM</code>.
+</p>
+<p>
+Constraint lines can specify the filename of a distance distribution file in DeerAnalysis output format. In that case probability densities are taken from the experimental distribution rather than computed from the mean distance and standard deviation. Unless a full pathname is provided, MMM expects the distance distribution file in the same directory from which the constraint file was loaded.
+</p>
+<p>
+If necessary, coordinates for reference points can be directly specified with the <code># REFERENCE</code> command, as in the following example:
+</p>
+<code># REFERENCE<p>
+<code>D50	-28.0	13.5	18.2<p>
+<code>D166	-16.4	-3.2	-10.9<p>
+<code>D217	-24.8	-17.8	20.0<p>
+<code>D220	-14.6	-25.8	3.4<p>
+<code># LOCATE SANO<p>
+<code>D50	3.40	0.46<p>
+<code>D166	3.13	0.31<p>
+<code>D217	3.76	0.12<p>
+<code>D220      3.94    0.24<p>
+<code># END<p>
+<p>
+The lines after the <code># REFERENCE</code> command consist of the reference site tag and the <i>x</i>, <i>y</i>, and <i>z</i> coordinates. Please note that coordinates are specified in Angstroems, irrespective of the units for distance restraints. If a <code># REFERENCE</code> command exists, <i>all</i> reference sites must be specified by coordinates.</p>
+<p>If you want to mix spin labeled reference sites and other reference sites, you need to determine mean spin label coordinates manually and write them into the constraint file. To do so, <a href="selection.html">select</a> the residues to be spin labelled and perform a <a href="spin_labeling.html">spin labeling site scan</a>, attach the labels by clicking the labeling toolbutton<img src="img/toolbar_labeling.png" alt="(black N-O bond with red dot for unpaired electron)">. Then go to the  <a href="deer_window.html">DEER window</a> and select the labeled sites, one by one, in the <code>Labels & selected atoms</code> listbox. The coordinates in Angstroem appear below the listbox.</p>
+<p>It is good practice to finish the constraint file by an <code># END</code> command.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2013, edited 2013/09/04</div>
+</body>
+</html>
+

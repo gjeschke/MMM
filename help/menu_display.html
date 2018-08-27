@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Menu/Display</title>
+</head>
+<body>
+
+<div class="pagetitle">Menu/Display</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  <A href="user_interface.html"> User interface </A> <A href="main_window.html"> Main window </A> <A href="menu.html"> Menu </A> &uarr;  |  </pre>
+
+<a name="view_selection">
+<div class="subtitle">View selection</div>
+<p>
+Zoom camera to the selected objects. To further enhance a detail view, you may use emulated <a href"depth_cueing.html">depth cueing</a> (button in the <a href="view_control.html">view panel</a>).
+</p>
+<div class="subtitle">View whole model</div>
+<p>
+Sets camera properties so that the whole model is seen.
+</p>
+<div class="subtitle">Hierarchy</div>
+<p>
+Open the <a href="hierarchy_window.html">hierarchy window</a> for object selection, editing of secondary structure, and sequence display.
+</p>
+<a name="color">
+<div class="subtitle">Color</div>
+<p>
+Assign color (by name or from palette) or color scheme to selected objects (see <a href="color_selection.html">color selection window</a>).
+</p>
+<a name"transparency">
+<div class="subtitle">Transparency</div>
+<p>
+Assign transparency to selected objects (see <a href="transparency_selection.html">transparency selection window</a>).
+</p>
+<a name="3D">
+<div class="subtitle">3D display mode</div>
+<p>
+Assign a 3D display mode (e.g. wire, stick, space-filling, ribbon, string) to selected objects (see <a href="graphics_window.html">graphics mode window</a>).
+</p>
+<a name="density">
+<div class="subtitle">Density</div>
+<p>
+Control display of density cubes. A dialog appears that allows to select the density cube from a list of all previously loaded data sets (see <a href="menu_file.html#density">File menu help</a> for how to load density cubes).
+</p>
+<p>
+The contour level is relative to the range of the density data and can vary between 0 and 1. It can be changed by direct input of the number or with a slider; the two controls are coupled. By default data are normalized to the density integral. At a level of 0.8 then and isosurface is drawn that includes 80% of all density. In this mode, larger levels correspond to larger density clouds.
+</p>
+<p>
+If the <code>normalize to integral</code> checkbox is deactivated, data are normalized to maximum density. At a level of 0.8 then only voxels are shown that have at least 80% of the maximum density. In this mode, larger levels correspind to smaller density clouds.
+</p>
+<p>
+In both modes, a level &ge; 0.999 suppresses display. This can also be used to hide a previously displayed density cube.
+<p>
+Transparency of the density cloud can be specified between 0 (invisible) and 1 (opaque). Opaque looks most impressive if nothing inside the cloud needs to be seen. Otherwise the default value of 0.5 (semi-transparent) is usually a good compromise.
+</p>
+<p>
+The color of the density cloud can be specified via a palette by using the <code>Color</code>.
+</p>
+<p>
+Density display resets the camera view so that all displayed objects are seen.
+</p>
+The density surface is also assigned an address <code>$density:<i>tag</i></code>, where <i>tag</i> is the tag provide above. The surface is known by this address to the <a href="commands.html#show">show</a>, <a href="commands.html#hide">hide</a>, <a href="commands.html#color">color</a>, and <a href="commands.html#transparency">transparency</a> commands, which affect only the visualization, but not the underlying data. By using the <a href="commands.html#delete">delete</a> command, both the surface and the underlying data are deleted. If the surface is to be redisplayed later, the density data have to be <a href="menu_file.html#density">reloaded</a>.  
+<p>
+<i>Examples:</i>
+<p>
+<code>color $density:spin aliceblue</code> % changes color of the density cloud with tag "spin" to a very pale blue
+<p>
+<code>hide $density:spin</code> % hides the surface with tag "spin"
+<p>
+<code>show $density:spin</code> % redisplays the surface with tag "spin" after being hidden, this is fast, no recomputation required
+<p>
+<code>delete $density:spin</code> % deletes the surface with tag "spin" and the underlying data
+<p>
+The last command frees the memory and storage space of the density cube, which may be substantial.
+</p>
+<div class="subtitle">Depth cueing</div>
+<p>
+Switch on emulated depth cueing to obtain a "more 3D" impression (see <a href"depth_cueing.html">depth cueing description</a>).
+</p>
+<a name="localization">
+<div class="subtitle">Localization</div>
+<p>
+Displays possible locations of a spin label with respect to a reference structure as an isoprobability surface. The localization can also be presented as an ensemble of pseudo-atoms at possible spin label localizations and can be saved into a PDB file in that way. See <a href="localization.html">Spin label localization</a> for detailed explanation.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2013.1, edited 2013/08/15</div>
+</body>
+</html>
+

@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Credits</title>
+</head>
+<body>
+
+<div class="pagetitle">Credits</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  &uarr;  |  &darr;  &bull; <A href="license.html"> License </a> &bull; <a href="#contributed">Contributed software</a> &bull; <a href="#grant">Financial support</a> </pre>
+
+<img src="img/EPRatETH.png" width="177" height="94" alt="EPR@ETH">
+<div class="subtitle">Rotamer libraries and spin labeling</div>
+<p>
+Yevhen Polyhach, ETH Zurich
+</p>
+<div class="subtitle">Speed up, site scan output, user interface advice</div>
+<p>
+Stefan Stoll, University of Washington
+</p>
+<div class="subtitle">Broader compatibility of PDB writer</div>
+<p>
+Morgan Bye, Henry Wellcome Unit for Biological EPR, University of East Anglia, Norwich. U.K.
+</p>
+<div class="subtitle">User interface, graphics, architecture of the program and data structure</div>
+<p>
+Gunnar Jeschke, ETH Zurich
+</p>
+<div class="subtitle">Consultant on design and functionality, protocols</div>
+<p>
+Enrica Bordignon, ETH Zurich
+</p>
+<div class="subtitle">Helpful discussions and suggestions</div>
+<p>
+Christoph Dockter, Gregor Hagelueken, Daniel Hilger, Heinrich Jung, Harald Paulsen, Kay Diederichs, Tona von Hagens
+</p>
+<div class="subtitle">Example DEER data for LHCII</div>
+<p>
+Aleksei Volkov
+</p>
+<a name="contributed">
+<div class="subtitle">Contributed software</div>
+<p>
+<i>obtained via <a href="http://www.mathworks.com/matlabcentral/fileexchange/">Matlab Central</a>  unless links are given</i>
+<h4>General machinery for 3D rotations and Euler angles</h4>
+SpinCalc.m by <i>John Fuller</i>, 2009
+<h4>Rotation, zoom, and pan of the 3D model</h4>
+<p>
+view3D.m by <i>Torsten Vogel</i>, 1999</p>
+<h4>3D tube (basis of ribbon models)</h4>
+<p>
+tubeplot.m by <i>Janus H. Wesenberg</i>, 2004
+</p>
+<h4>Fast 3D sphere plot</h4>
+<p>
+BuildSphere.m by <i>Luigi Giaccari</i>, 2009
+<h4>Periodic table of elements</h4>
+<p>
+pertable.m by <i>Gerhard Nieuwenhuiys</i>, 2009
+</p>
+<h4>Status bar for computation progress</h4>
+<p>
+statusbar.m by <i>Marcel Leutenegger</i>, 2007
+</p>
+<h4>Coordinate transform of density cubes</h4>
+<p>
+affine.m by <i>Jimmy Shen</i>, 2009 (renamed affine_cube.m)
+</p>
+<p>
+<h4>Sequence alignment</h4>
+<p>
+<a href="http://www.drive5.com/muscle/">muscle.exe</a> by <i>Robert C. Edgar</i>, 2010. Please cite:
+<p>
+Edgar, Robert C. (2004), MUSCLE: multiple sequence alignment with high accuracy and high throughput, Nucleic Acids Research 32(5), 1792-97.
+</p>
+<div class="subtitle">Data</div>
+<h4>Residue-specific Ramachandran plots</h4>
+<p>
+digitized from PDF of: Sven Hovmöller, Tuping Zhou, Tomas Ohlson (2002) <i>Conformations of amino acids in proteins.</i> Acta Cryst. D <b>58</b>, 768-776.
+</p>
+<a name="references">
+<div class="subtitle">References</div>
+<p>
+The following reference is recommended when you use MMM for predictions of spin label conformations and distance distributions:
+<ul>
+<li>Y. Polyhach, E. Bordignon, G. Jeschke, <i>Phys. Chem. Chem. Phys.</i>, 2010, . DOI: 10.1039/c0cp01865a <a href="http://dx.doi.org/10.1039/c0cp01865a">Full text</a></li>
+</ul>
+The following additional reference is recommended when you use MMM for site scans, to decide which sites to label:
+<ul>
+<li>Y. Polyhach, G. Jeschke, <i>Spectrosc. Int. J.</i>, 2010, <b>24</b>, 651-659. <a href="http://dx.doi.org/10.3233/SPE-2010-0490">Full text</a></li>
+</ul>
+</p>
+These references are automatically added to the model when you perform rotamer computations or a site scan for whole chains.
+</p>
+The following additional references are recommended when you use MMM for modeling of structural transitions with elastic networks:
+<ul>
+<li>G. Jeschke, <i>J. Chem. Theor. Comput.</i>, 2012, <b>8</b>, 3854-3863. <a href="http://dx.doi.org/10.1021/ct300113z">Full text</a></li>
+<li>G. Jeschke, <i>Z. Phys. Chem.</i>, 2012, <b>226</b>, 1359-1414. <a href="http://dx.doi.org/10.1524/zpch.2012.0289">Full text</a></li>
+</ul>
+If you use the network feature, please cite the original work that proposed a very similar approach:
+<ul>
+<li>B. Gaffney, M.D. Bradshaw, S.D. Frausto, F. Wu, J.H. Freed, P. Borbat <i>Biophys. J.</i>, 2013, <b>103</b>2134-2144. <a href="http://dx.doi.org/10.1016/j.bpj.2012.10.002">Full text</a>
+</ul>
+</p>
+<a name="grant">
+<div class="subtitle">Financial support</div>
+<p>
+The open-source project MMM is supported by Swiss National Science Foundation, grants SNF 200021_121579, 200020_132255, and 200020_14441.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2013, edited 2013/01/16</div>
+</body>
+</html>
+

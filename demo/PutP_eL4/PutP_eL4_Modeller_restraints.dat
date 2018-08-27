@@ -1,0 +1,42 @@
+% Restraints for DEER-augmented homology modelling of PutP
+% M. Raba, S. Dunkel, D. Hilger, K. Lipiszko, Y. Polyhach, G. Jeschke, 
+% S. Bracher, J. P. Klare, M. Quick, H. Jung, H.-J. Steinhoff 
+% Structure 2014, 22, 769-780
+%
+% alignment from: E. Olkhova, M. Raba, S. Bracher, D. Hilger, H. Jung
+% J. Mol. Biol. 2011, 406, 59-74
+%
+# PDB	2XQ2:A                            
+# CHAINS A
+# DEER	MTSL	298
+50	304	4.08	0.88	% Lipiszko, mean of apo/Na+/Na+&proline
+91	371	3.89	0.22	% Lipiszko, mean of apo/Na+/Na+&proline
+190	371	2.90	0.33	% Lipiszko, mean of apo/Na+/Na+&proline
+298 	446	5.48	0.3	% Lipiszko long-distance peak 
+299	318	2.7	0.5	% short distance peak Klare
+294	326	3.14	0.63	% Hilger
+294	446	4.56	0.88	% Hilger
+326	446	4.36	0.71	% Hilger
+# HELICES
+9-24
+44-55
+61-70
+78-94
+127-138
+140-145
+166-173
+192-210
+% 214-223 % EL6 aligned according to Olkhova
+236-243
+277-280
+283-293
+296-306 % helical structure eL4a in eL4 according to Steinhoff/Klare
+312-321 % helical structure eL4b in eL4 according to Steinhoff/Klare
+326-340
+375-389
+404-412
+418-419
+436-443
+# END
+
+

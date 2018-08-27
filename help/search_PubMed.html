@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Search PubMed</title>
+</head>
+<body>
+
+<div class="pagetitle">Search PubMed</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> <A href="user_interface.html"> &bull; User interface </A> &bull; <A href="annotation_window.html"> Annotations</A> &bull; <A href="reference_window.html"> References</A> &uarr;  |  &darr; </pre>
+
+<div class="subtitle">Two functions of this window</div>
+<p>
+The search window can be used for <a href="#PubMed">PubMed</a> literature search and for <a href="#internal">searching a reference in an existing bibliography</a>. Neither of these searches is case sensitive, i.e., it does not matter whether words are written in lower case or upper case. A search for <code>j magn reson</code> will also find <code>J Magn Reson</code> and <code>J MAGN RESON</code>.
+</p>
+<a name="PubMed">
+<div class="subtitle">What is PubMed?</div>
+<p>
+PubMed is a freely accessible, powerful database search engine sponsored by the National Institute of Health (NIH) of the USA and maintained by the <a href="http://www.ncbi.nlm.nih.gov/">National Center for Biotechnology Information (NCBI)</a>. For work on biomacromolecular models, the literature database of PubMed, MEDLINE, should be generally sufficient to retrieve relevant references. See the <a href="http://www.ncbi.nlm.nih.gov/journals">journal list</a> for coverage. To find dissertations and book sections, you may want to use <a href="reference_window.html#SciFinder">CAS SciFinder</a>, if you have access to it and to find references in more obscure journals or see how often papers are cited, you may want to use <a href="reference_window.html#ISI">ISI Web of Science</a>. The latter two search engines are not for free, but your institution may have a license.
+</p>
+<p>
+PubMed is distinguished by an easy and flexible internet access, by unique identifiers for references, and by good support of digital object identifiers (DOIs) for fulltext access. Furthermore, PubMed maintains a systematic classification (keyword) system for references. Although searches for combinations of several concepts may be easier and more successful with CAS SciFinder, PubMed is often the search engine of choice.
+</p>
+<a name="search_terms">
+<div class="subtitle">What can be searched?</div>
+<h4>Concepts</h4>
+<p>
+Concepts may include the names of proteins, their functions, chemical modifications, and general concepts, such as "structure" or "crystallization" or "NMR". Different concepts are separated by a semi-colon. Hence, the query <code>LHCII structure</code> will yield less results than the query <code>LHCII; structure</code>. In the former case, "LHCII structure" is a single concept and the two words must appear in this sequence in the record. In the latter case, the two words can separately occur anywhere in the record.
+</p>
+<p>
+Concepts can be searched in <code>all fields</code> of a record, which is the default, or only in <code>title & abstract</code>, only in the <code>keywords</code> or only in <code>major topics</code>. Consider the last two options if your original search returns too many references.
+<p>
+<i>Example:</i>
+<p>
+<code>light-harvesting; state transition; phosphorylation;</code>
+</p>
+<h4>Authors</h4>
+<p>
+Authors can be searched by giving only their surname, the surname with up to two initials (space between surname and initials, no space between two initials) or the surname and the first name. The option with surname and first name is discouraged, as it works only for newer records and does not work with all journals.
+</p>
+<p>
+Names of several authors are separated by semi-colons. Commas and full stops are ignored.
+</p>
+<p>
+The search can be restricted to the <code>first author</code> or <code>last author</code>. The latter version may help to restrict results to the main field of interest of senior authors who are involved in many collaborations.
+</p>
+<p>
+<i>Example:</i>
+<code>Perutz MF; Kendrew J</code>
+</p>
+<h4>Years</h4>
+<p>
+Restricts the search to a single year or a period of a few years. Use this if you search for the older references on a topic where very many papers were publihsed recently. PubMed will generally return the newest references first and because of the restriction in the <code>Maximum number</code> of records you may not be able to access the older references otherwise. If you input in the format <code>1989-</code> the input is automatically amended with the current year for the end of the range, e.g. <code>1989-2009</code>. If you input in the format <code>-1989</code>, the input is automatically amended to a period that should include the earliest references in PubMed, <code>1900-1989</code>.
+</p>
+<p>
+In <a href="#automatic">automatic searches</a>, the <code>Years</code> field is ignored and only new references added to PubMed between the previous search and the automatic search are considered.
+</p>
+<i>Example:</i>
+<p>
+in Concepts: <code>LHCII</code>
+<p>
+in Years: <code>1945-1985</code>
+<p>
+<h4>Reviews</h4>
+<p>
+Activate the <code>reviews only</code> checkbox to search for only reviews.
+</p>
+<h4>Maximum number</h4>
+<p>
+You are unlikely to closely examine more than 50 references, indeed you may find that your patience wears out earlier. Use the <code>Maximum number</code> popup menu to restrict yourself to 10 or 20 results.
+</p>
+<p>
+MMM will report in the Message board of the main window how many references were really found in trhe search. If the maximum number was indeed found, you have received only the most recent papers (and the earlier ones tend to be more important!). Try to narrow down your search.
+</p>
+<h4>Journal</h4>
+<p>
+This is useful mainly if you want to import a specific reference that you already know. Use either the abbreviated form or full name of the journal. Full stops for the abbreviated form are not required (and are ignored, if present).
+</p>
+<p>
+<i>Examples:</i>
+<p>
+combine Concept <code>protein</code> with option <code>reviews only</code> with:
+<p>
+<code>J Chem Biol</code>
+<p>
+or
+<p>
+<code>Angewandte Chemie</code>
+</p>
+<a name="keywords">
+<div class="subtitle">Keyword list</div>
+<p>
+If the model contains at least one structure that was downloaded from the protein data bank (PDB), keywords were imported. These keywords are displayed in the <code>Keyword list</code>. Since they describe the context of a given structure, they are a good starting point for literature search. 
+</p>
+<p>
+You can select only one keyword as a <code>Concept</code> by clicking on the <code>!</code> button above the list or add a keyword to the concepts by clicking on the <code>+</code> button.
+</p>
+<div class="subtitle">Running the search</div>
+<p>
+Click the <code>Search</code> button. MMM will not query PubMed. If the interent connection is broken, an error message is displayed both in the Message board of the main window and as a message box and control returns to the search window. Otherwise the search window closes and the new references, if any, are added to the reference window. The Message board of the main window reports how many references were found and how many of those did already exist in the refereence list.
+</p>
+<p>
+For existing references, bibliographic information is updated, except for the short name. This fixes references of papers that were in press when you first searched them.
+</p>
+<a name="automatic">
+<div class="subtitle">Autosearch and saving searches</div>
+<p>
+The <code>Autosearch</code> feature provides for automatic updates of the reference list or can be used to store search terms and modes for later use.
+</p>
+<p>
+Define your <a href="#search_terms">search terms and modes</a> and click on the <code>Autosearch</code> button. A question dialog appears that asks for a (short) name for the search. If this name alredy exists as name of another search or if you provided an empty name, a message box appears, the search is not stored and not performed and control returns to the search window.
+</p>
+<p>
+If a valid search name was provided, the search is stored and performed for the first time. The search window closes and control returns to the reference window, if PubMed can be accessed. If not, the internet connection is probably broken and a message box appears. Note that the search is still stored and will be automatically performed when the model is loaded for the next time (and the internet is accessible).
+</p>
+<p>
+If PubMed could be accessed, the access date is store with the search. This search will now be performed whenever the model is opened in MMM and the previous search results are older than 7 days. Only records that were added to PubMed between the previous search and the new search will be downloaded (plus a safety margin of one day). That way, old references that you deleted are not donwloaded again, although a deleted reference may occasionally appear a second time due to the safety margin (but not a third time).
+</p>
+<p>
+If you do not want such automatic updates, but you still want to save the search for later manual searching, open the search window again by clicking the <code>Search</code> button in the <a href="reference_window.html">reference window</a>, pick the search from the <code>Autosearches</code> popup menu and <code>Deactivate</code> it with the corresponding button. The search remains stored and can always be reactivated with the <code>Activate</code> button. Note that many active automatic searches may slow down opening of the model considerably.
+</p>
+<p>
+To delete the search terms and modes, use the <code>Delete</code> button. Note that changes in searches are stored immediately. Even if you use the <code>Cancel</code> button to close the search window, theses changes remain. 
+</p>
+<div class="subtitle">Overwhelming number of references</div>
+<p>
+The number of results can be restricted with the <code>Maximum number</code> popum menu. Generally, MMM does not allow to retrieve more than 100 references with a single search, as its reference manager is not equipped for automatic selection (search in search results).
+</p>
+<p>
+If you are back in the <a href="reference_window.html">reference window</a> and still overwhelmed with the number of references, close the reference window with the <code>Cancel</code> button, reopen it, reopen <code>Search</code> and try a more focused search (more search terms, or search only in <code>keywords</code> or even <code>major topics</code> or restriction to <code>only reviews</code> or to the last few <code>years</code>.
+</p>
+<p>
+If you need search in search results, use the official interface of <code>PubMed</code>, available through a link near the top of the search window (right click the <a href="http://preview.ncbi.nlm.nih.gov/sites/entrez?db=PubMed&itool=toolbar">PubMed</a> link). In this case you have to <a href="reference_window.html#PubMed">save and reimport</a> the references.
+</p>
+<a name="internal">
+<div class="subtitle">Searching a reference in the existing bibliography</div>
+<p>
+The search mask can as well be used to find a reference in the existing bibliography (all references accessible in the <a href="reference_window.html">reference window</a>). If the search does not find a matching reference, control remains with the search window and a message is displayed in the Message board of the main window. If the search finds exactly one matching reference, the search window closes automatically and the found reference is displayed in the <a href="reference_window.html">reference window</a>.
+</p>
+<p>
+If the search returns more than one matching reference, another window opens for selection of one of these references by the user. After selection and a click on the <code>OK</code> button of the selection window, both the selection and search window are closed automatically and the selected reference is displayed in the <a href="reference_window.html">reference window</a>. If the <code>Cancel</code> button is clicked, the selection window closes and control returns to the search window. Click <code>Cancel</code> in the search window, if you want to return to the reference window.
+</p>
+<p>
+For bibliography searches, the concepts field is converted to a field <code>Title words</code>. Independent phrases or words for search in the title field are separated by semi-colon. As an example <code>high field</code> will only find references whose title contains the phrase "high field" exactly as written, "high-field" will not be matched. In contrast <code>high; field</code> will also find references that contain the phrase "high-field" in the title (but also "High-spin compounds measured at low fields").
+</p>
+<p>
+The concepts modes (<code>Where to search?</code>) are ignored in bibliography searches; words are searched only in the title (MMM does not store the abstract or keywords).
+</p>
+<p>
+The <code>Maximum number</code> selection is also ignored. A bibliography search will always return <i>all matching references</i> and offer the user the choice in an alphabetically ordered list.
+</p>
+<p>
+All other search fields and the modes <code>first author</code>, <code>last author</code>, and <code>reviews only</code> can be used.
+</p>
+<div class="subtitle">Closing the search window</div>
+<p>
+The search window closes automatically after a successful <code>Search</code> or <code>Autosearch</code>. This will not happen if the internet connection is broken (to avoid that you loose your search terms and modes). In that case and if you can't fix the connection, save the search by clicking the <code>Autosearch</code> button and then close the window with the <code>Cancel</code> button.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/11/13</div>
+</body>
+</html>
+

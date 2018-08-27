@@ -1,0 +1,36 @@
+hide [2BHW]
+hide [1RWT]
+unlock
+undefine [2BHW]
+loop [2BHW](:) Nterminal 10 54
+helix [2BHW](:) 1 55 87 
+loop [2BHW](:) L1/2 88 96
+helix [2BHW](:) 2 97 105
+loop [2BHW](:) L2/3 106 123
+helix [2BHW](:) 3 124 144
+sheet [2BHW](:) S3a 145 146
+loop [2BHW](:) T3b 147 148
+sheet [2BHW](:) S3c 149 150
+loop [2BHW](:) L3/4 151 169
+helix [2BHW](:) 4 170 201
+loop [2BHW](:) B4/5 202 204
+helix [2BHW](:) 5 205 214
+loop [2BHW](:) Cterminal 215 232
+undefine [1RWT]
+loop [1RWT](:) Nterminal 14 54
+helix [1RWT](:) 1 55 87 
+loop [1RWT](:) L1/2 88 96
+helix [1RWT](:) 2 97 105
+loop [1RWT](:) L2/3 106 123
+helix [1RWT](:) 3 124 144
+loop [1RWT](:) L3/4 145 169
+helix [1RWT](:) 4 170 201
+loop [1RWT](:) B4/5 202 204
+helix [1RWT](:) 5 205 214
+loop [1RWT](:) Cterminal 215 231
+lock
+show [2BHW] ribbon
+colorscheme [2BHW] Bfactor_tight
+show [1RWT] ribbon
+color [1RWT] grey
+

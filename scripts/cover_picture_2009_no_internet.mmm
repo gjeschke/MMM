@@ -1,0 +1,57 @@
+% Now loading PDB file from local disk
+pdbload 2BHW
+% selecting cofactors that define the C3 symmetry axis
+select [2BHW](:)501
+% and transforming to the frame where the C3 axis is the z axis
+symmetry
+% unselecting everything
+unselect *
+% displaying a ribbon model 
+show [2BHW] ribbon
+% and setting its color to grey
+color [2BHW] grey
+% showing all carotenoids in chain A as stick models
+show [2BHW](A)"NEX","LUX","XAT" stick
+% and coloring them gold
+color [2BHW](A)"NEX","LUX","XAT" gold
+% showing all chlorophyll a molecules in chain B as stick models
+show [2BHW](B)"CLA" stick
+% and coloring them darkgreen
+color [2BHW](B)"CLA" darkgreen
+% showing all chlorophyll b molecules in chain B as stick models
+show [2BHW](B)"CHL" stick
+% and coloring them lawngreen
+color [2BHW](B)"CHL" lawngreen
+% changing to a viewing direction in the membrane plane
+view -0.970 0.243 0
+% computing and displaying the solvent accessible surface
+% (this requires MSMS by Michel Sanner to be installed)
+SAS [2BHW] native
+% changing color of solvent accessible surface to cornflowerblue to have better contrast with chlorophyll
+color $SAS:native cornflowerblue
+% computing and attaching spin label rotamers at residue 106 in all chains
+% this would be time for having a coffee
+% or should we pop up a commercial here?
+rotamers [2BHW](:)106 IA-PROXYL cryo
+label [2BHW](:)106 IA-PROXYL cryo
+% displaying stick plots of labels, this takes quite some time, as there are many rotamers
+% (but you are still drinking your coffee, aren't you?)
+show [2BHW](:)106 stick
+color [2BHW](:)106 red
+% showing N-O bond midpoint distributions
+show [2BHW](:)106 label
+% detaching the 3D window
+detach
+% and adjusting camera zoom so that the whole structure is seen
+zoom out
+% copying the picture to the clipboard
+copy
+% and hiding the label stick graphics, as they make the user interface quite slow
+hide [2BHW](:)106
+show [2BHW](:)106 ribbon
+color [2BHW](:)106 red
+show [2BHW](:)106 label
+% if this was very fast and you see nothing, your internet connection is broken
+% in this case, please use cover_picture_2009_no_internet.mmm
+% Thank you for watching. We are now finished.
+

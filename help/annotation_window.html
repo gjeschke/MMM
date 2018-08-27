@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Annotation</title>
+</head>
+<body>
+
+<div class="pagetitle">Annotation</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> <A href="user_interface.html"> User interface </A> &uarr;  |  &darr;  &bull; <a href="reference_window.html">References</a> </pre>
+
+<div class="subtitle">What can you do with the annotation window?</div>
+<p>
+An MMM model contains more information than just structure data. MMM can be used like a laboratory notebook for exploring structure/function relationships. Observations made during work with the model and information retrieved from papers can be stored where they belong- with the chains, residues, or atoms concerned. This information can be retrieved by selecting this object or by <a href="menu_edit.html#keyword">keyword search</a>. <a href="reference_window.html">References</a> can be stored together with their fulltext links.
+</p>
+<p>
+This window is accessible only if a single object is selected (you can see that in the <a href="message_board.html">message board</a> and by availability of the corresponding <a href="toolbar.html#annotation">tool button</a> <img src="img/toolbar_annotation.png" alt="(white i on green background)">.
+</p>
+<div class="subtitle">Pages</div>
+<p>
+A default annotation with two pages exists for any object. User annotations start at page 3, you can use as many pages as you wish. The current <code>Page</code> is displayed in the left upper corner of the window, it is not possible to directly input the page number. Instead, navigate with the <code>&lt;</code> and <code>&gt;</code> buttons.
+</p>
+<h4>Default pages</h4>
+<p>
+Page 1 gives the <a href="addressing.html">MMM address</a> of the selected object with a detailed description of what it means. The type of residue (three-character PDB code, which is the three-letter code for amino acids), the mass and the mean coordinates are also displayed. If the object is a whole structure, header information from the PDB file is also displayed and the number of atoms and residues is listed.
+</p>
+<p>
+If <a href="third_party.html#DSSP">DSSP</a> secondary structure information is available, the first page of an residue lists the DSSP secondary structure assignment, the predicted water accessibility (ignoring water access blocking by cofactors), and the backbone dihedrals.
+<p>
+Page 2 contains a list of objects that are close to the selected objects (structural context). The distance to these objects (between mean coordinates) is also shown. A default context radius is used to generate this list, which is 3.5 &Aring; for atoms, 8 &Aring; for residues, and 40 &Aring; for chains. Note that context with a non-default radius can be displayed in the message board via the corresponding <a href="toolbar.html#context">tool button</a> <img src="img/toolbar_context.png" alt="(three red question marks near a green sphere)">.
+<p>
+If <a href="third_party.html#DSSP">DSSP</a> secondary structure information is available, the second page of an residue alsolists hydrogen bonding partners and hydrogen bond energies.
+</p>
+<p>
+Additional automatic annotation pages may exist, if there was special information in the PDB file or if a task performed in MMM has annotated the object.
+</p>
+<div class="subtitle">Privacy</div>
+<p>
+Non-default annotations (pages 3 and higher) can be assigned privacy levels. That way you can share your model file without sharing all the (possibly insecure or still confidential) information you have stored with it. All information tagged <code>Public</code> is always stored, all information tagged <code>group</code> is stored only if you save your model for private use or exchange within your group, and all information tagged <code>user</code> is only stored when you save the model for private use.
+</p>
+<p>
+Note that MMM saves by default in private mode, so that information is not unintentionally lost.
+</p>
+<p>
+<a href="#keywords">Keywords</a> do not have individual privacy modes. It is the policy of MMM to save all keywords that are referred to by any object with a public annotation. If the model is saved for sharing with the group, additionally all keywords are saved that are referred to by any object with an annotation visible to the group. The same policy applies to references. In particular, references and keywords that are not used by any object are not stored when a files is saved for shring with the group or public, while they are stored if the project is saved in the normal way <code>Save</code> and <code>Save as...</code> items of the file menu.
+</p>
+<a name="keywords">
+<div class="subtitle">Keywords</div>
+<p>
+The <code>Keyword list</code> displays all keywords that are currently defined <i>in your model</i> in alphabetical order. Note that all keywords starting with capital letters are found before all keywords starting with small letters. You can define a new keyword using the <code>New</code> button for the <code>Keywords</code> field. Defining a new keyword automatically adds it to the <code>Keywords</code> field of the current object.
+</p>
+<p>
+To add or remove a keyword from the <code>Keywords</code> field <i>of the current object</i>, select it in the <code>Keyword list</code> and click the <code>+</code> or <code>-</code> button.
+</p>
+<p>
+Keywords are assigned to the object, not to an individual annotation page. If you want to remember to which annotation the keyword belongs, mention it in the <code>Annotation text</code> edit field.
+</p>
+<a name="automatic">
+<div class="subtitle">Automatic annotation</div>
+<p>
+The following annotations are automatically generated by MMM:
+<ul>
+<li>binding sites from SITE and REMARK 800 records in PDB files</li>
+<li>metal coordination information from REMARK 620 in PDB files</li>
+<li>missing atoms information from REMARK 470 in PDB files</li>
+<li>information on spin-labeled residues by the spin labeling module</li>
+</ul>
+<p>
+Automatic annotations start with an asterisk <code>*</code> in the first line immediately followed by a keyword. The first line should not be edited, as otherwise MMM cannot amend the annotation if further annotations of the same type are made (they will then end up on extra pages).
+</p>
+<a name="references">
+<div class="subtitle">References</div>
+<p>
+The <code>Reference list</code> displays all <a href="reference_window.html">references</a> that are currently defined <i>in your model</i> in alphabetical order of their short names. Note that all short names starting with capital letters are listed before all short names starting with small letters. You can add new references to the model by using the <code>New</code> button for the <code>References</code> field. Adding references automatically adds the current citation in the <a href="reference_window.html">Reference window</a> to the <code>References</code> field of the current object.
+</p>
+<p>
+To add or remove a citation from the <code>References</code> field <i>of the current object</i>, select it in the <code>Reference list</code> and click the <code>+</code> or <code>-</code> button.
+</p>
+<p>
+References are assigned to the object, not to an individual annotation page. If you want to remember to which annotation the reference belongs, mention it in the <code>Annotation text</code> edit field.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/10/21</div>
+</body>
+</html>
+

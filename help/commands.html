@@ -1,0 +1,883 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Commands</title>
+</head>
+<body>
+
+<div class="pagetitle">Commands</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  <A href="user_interface.html"> User interface </A> <A href="main_window.html"> Main window </A> <A href="command_line.html"> Command line </A> &uarr;  |  &darr;  </pre>
+<p>
+In the following, commands are listed alphabetically.
+</p>
+<a name="attach">
+<div class="subtitle">attach</div>
+<p>
+Attaches the 3D <a href="model_window.html">model window</a> as the <a href="model_panel.html">model panel</a> to the main window. If the 3D model is already displayed in the main window, the command has no effect. The command can be undone by <code>detach</code>.
+</p>
+<a name="bckg">
+<div class="subtitle">bckg</div>
+<p>
+Changes the background color of the <a href="model_window.html">model window</a> or <a href="model_panel.html">model panel</a>. Possible arguments are <code>grey</code> (default), <code>white</code> (enforced with <a href="depth_cueing.html">depth cueing</a> or for copying to the clipboard) and <code>black</code>.
+</p>
+<p>
+<i>Example:</i> 
+</p>
+<P>
+<code>bckg white</code>
+</p>
+<a name="beacons">
+<div class="subtitle">beacons</div>
+<p>
+Computes beacon (reference) residue sets in an ordered domain for localization of a spin-labelled residue in a disordered domain. Arguments are the address of the last residue in the ordered domain that precedes the disordered domain (anchor residue), the spin label type, the number of beacons (4-6), and, optionally, a minimum and maximum distance [nm] from a beacon to the anchor residue. Furthermore, a maximum number of beacon sets can be specified. This is based on a spin labeling site scan and computation of the position dilution of precision (see G. Jeschke, Proteins 2016, 84, 544-560.). The list of beacon sets with their figure of merit is displayed in the report editor and can be saved from there.
+</p>
+</p>
+<i>Examples:</i>
+</p>
+<p>
+<code>beacons 164 MTSL 4 1.5 5 25 </code> % for a loop after residue 164, compute the 25 best sets of 4 MTSL beacons in the distance range from 1.5 to 5 nm
+</p>
+<p>
+The minimum and maximum distance default to 2.5 and 3.5 nm, respectively, the maximum number of sets defaults to 20. The minimum distance cannot be shorter than 0.3 nm (lower values are automatically corrected).
+</p>
+<a name="camup">
+<div class="subtitle">camup</div>
+<p>
+Sets a defined camera up vector (rotation about viewing direction).
+</p>
+<p>
+If called with one argument, the camera up direction can be <code>x|-x|y|-y|z|-z</code>, whereas <code>+x|+y|+z</code> are accepted for <code>x|y|z</code>. If called with three arguments, the three numbers define the camera up vector. Note that +z or 0 0 1 is the default camera up vector. The current camera up vector is displayed in the <code>View</code> panel (dark green numbers). This command resets the camera zoom so that all displayed graphics is seen.
+</p>
+<i>Examples:</i>
+</p>
+<p>
+<code>camup -z</code> % topple the model upside down w.r.t. normal viewing direction
+</p>
+<p>
+<code>camup 0 0.707 0.707</code> % turn the camera up vector to an arbitrary, but well defined direction 
+<p>
+<a name="color">
+<div class="subtitle">color</div>
+<p>
+Changes the color of <a href="object_concept.html">objects</a>, such as chains, residues, atoms, or atom locations. The objects can be selected via their systematic <a href="addressing.html">address</a> or the color of all currently selected objects (address <code>*</code>) can be changed. The color argument can be an <a href="http://www.december.com/html/spec/colorsvg.html">SVG named color</a> or an RGB triple (red, green, and blue fraction between 0 and 1).
+</p>
+<p>
+<i>Examples:</i>
+</p>
+<p>
+<code>color (B)123-138 limegreen</code>
+</p>
+<p>
+<code>color "His" 0 1 1</code>
+</p>
+<p>
+<code>color * blue</code>
+</p>
+<p>
+Color changes can be taken back by issuing an <a href="#undo">undo</a> command (multiple undo possible).
+<a name="colorscheme">
+<div class="subtitle">colorscheme</div>
+<p>
+Applies a colorscheme to <a href="object_concept.html">objects</a>, such as chains, residues, atoms, or atom locations. The objects can be selected via their systematic <a href="addressing.html">address</a> or the colorscheme of all currently selected objects (address <code>*</code>) can be changed. The second argument can be one of the following color schemes:
+</p>
+<p>
+Color scheme <code>secondary</code> assigns standard metal colors to secondary structure elements in ribbon plots (helices: copper, sheets: steelblue, loops: gold). 
+</p>
+<p>
+Color scheme <code>chain</code> assigns rainbow colors from blue to red to the chains starting from chain A to the last chain. 
+</p>
+<p>
+Color scheme <code>sequence</code> assigns rainbow colors from blue to red within a chain starting from the N terminus to the C terminus. 
+</p>
+<p>
+Color scheme <code>Bfactor</code> assigns rainbow colors from blue to red according to the B factor, with the blue end corresponding to a coordinate r.m.s.d. of about 0.45 &Aring; (B factor 16) and the red end to about 1.5 &Aring; (B factor 169). Color grade is proportional to the r.m.s.d., i.e. to the square root of the B factor.
+</p>
+<p>
+Color scheme <code>Bfactor_tight</code> assigns rainbow colors from blue to red according to the B factor, with the blue end corresponding to the minimum B factor and the red end to the maximum B factor in the structure. Color grade is proportional to the r.m.s.d., i.e. to the square root of the B factor.
+</p>
+<p>
+Color scheme <code>charge</code> assigns rainbow colors from blue to red according to charge. Dark blue: +2, blue +1, grey 0, red: -1, dark red: -2. 
+</p>
+<p>
+Color scheme <code>hydropathy</code> assigns rainbow colors from blue to red according to hydropathy, with the blue end corresponding to the most hydrophilic and the red end to the most hydrophobic residues. 
+</p>
+<p>
+Color scheme <code>helix_propensity</code> assigns rainbow colors from blue to red according to helix propensity, with the blue end corresponding to residues that tend to form and alpha helix and the red end to helix-breaking residues (Pro). Color grade is proportional to the square root of helix propensity. 
+</p>
+<p>
+Color scheme <code>ensemble</code> assigns rainbow colors from blue to red according to per residue C<sup>&alpha;</sup> r.m.s.d. of individual structures from the mean structure of an ensemble (PDB structures with several models, such as NMR structures, or ensembles generated by elastic network model based fitting from a template). The blue end corresponds to the minimum r.m.s.d. and the red end to the maximum r.m.s.d. of any residue the structure. Color grade is proportional to the r.m.s.d. Note that <i>relative</i> variability within the structure is visualized by color, absolute variability has to be visualaized by superimposing all structures. This colorscheme applies only at residue level to ribbon, coil, C<sup>&alpha;</sup> stick and C<sup>&alpha;</sup> wire models.
+</p>
+<i>Examples:</i>
+</p>
+<p>
+<code>colorscheme (:) Bfactor</code>
+</p>
+Colorscheme changes cannot be undone.
+<a name="compact">
+<div class="subtitle">compact</div>
+<p>
+Compacts an ensemble model by r.m.s.d. superposition of all ensemble members onto the one that has the smallest mean-square deviation from all others (central conformation). Individual conformations are rotated and translated so that the ensemble looks most compact (see G. Jeschke, Proteins 2016, 84, 544-560).
+</p>
+<p>
+Arguments are an address (only structure or chain) and either <code>'all'</code> for an all-atom computation (default) or <code>'backbone'</code> for considering only backbone atoms for compaction. The central conformation (representative model) is listed in the message board with its mean r.m.s.d. to all other conformations. Likewise, the conformation that is on average most remote from all the others is listed. The final orientation is in the eigenframe of the inertia tensor of the representative model. 
+</p>
+<i>Examples:</i>
+</p>
+<p>
+<code>compact backbone</code> % compact the ensemble considering only the N,CA, and C atoms in the backbone
+</p>
+<p>
+Ensemble compaction cannot be undone.
+<p>
+<a name="copy">
+<div class="subtitle">copy</div>
+<p>
+Copies the current visualization in the detached <a href="model_window.html">model window</a> to the clipboard. If the 3D model is attached, use the command sequence <a href="#detach">detach</a>, <code>copy</code>, <a href="#attach">attach</a>.
+<p>
+The copy format is determined in Matlab general preferences, accessible via the <code>File/Preferences...</code> menu item of the Matlab main window. In the left list, go to the <code>Figure Copy Template</code> item and the <code>Copy Options</code> subitem. For MS Windows we recommend <code>Preserve information (metafile if possible)</code> and in all cases we recommend <code>Force white background</code>. We also recommend to activate the <code>Match figure screen size</code> checkbox.
+<a name="delete">
+<div class="subtitle">delete</div>
+<p>
+Deletes an object together with the underlying data. Use the <a href="#hide">hide</a> command to delete (or hide) only the graphical representation of the object.
+</p>
+<p>
+Currently, this is supported only for surfaces. Future versions will allow to delete structures, coordinate sets, chains, residues, atoms, or atom locations.
+<p>
+<i>Example:</i>
+<p>
+<code>delete $SAS:SAS_1</code> % deletes the <a href="menu_build.html#SAS">solvent accessible surface</a> with tag SAS_1
+</p>
+<a name="detach">
+<div class="subtitle">detach</div>
+<p>
+Detaches the 3D <a href="model_panel.html">model panel</a> as a separate <a href="model_window.html">model window</a>. If the 3D model is already detached, the command has no effect. The command can be undone by the <a href="#attach">attach</a> command. Loading a new PDB structure or model automatically reattaches the model window.
+</p>
+<a name="distance">
+<div class="subtitle">distance</div>
+<p>
+Predicts the distance between spin labels attached to two residues and its standard deviation. If several rotamer libraries of the same type exist, a measure for the uncertainty of the prediction is given. The results can be written to a file, otherwise they are output to the message board.
+</p>
+<p>
+<i>Syntax:</i>
+</p>
+<P>
+<code>distance <i>addr1</i> <i>addr2</i> <i>label</i> [<i>file name</i>]</code>
+</p>
+<i>Examples:</i>
+</p>
+<p>
+<code>distance 72 131 IA-Proxyl</code> % prediction for iodoacetamido-Proxyl attached to residues 72 and 131
+</p>
+<a name="domain">
+<div class="subtitle">domain</div>
+<p>
+Defines a set of residues or whole secondary structure elements (helices, sheets, loops) as a domain. If the domain already exists, the command can be used with the <code>+</code> modifier to add residues or secondary structure elements to a domain. A domain is associated with a structure, not a chain, hence it can contain residues and cofactors from different chains. Individual atoms or whole chains cannot be added to a domain.
+</p>
+<p>
+<i>Syntax:</i>
+</p>
+<P>
+<code>domain (+) <i>address</i> <i>domain_name</i></code>
+<p>
+Any other command can then use <code>|<i>domain_name</i>|</code> as a valid address.
+</p>
+<i>Examples:</i>
+</p>
+<p>
+<code>domain 12-40,83-97 translocation </code> % defines residues 12-40 and 83-97 in the current structure as a domain with name "translocation"
+</p>
+<p>
+<code>domain [NhaA]&lt;H.IVp&gt; substrate-binding</code> % defines helix IVp in structure NhaA as substrate binding domain
+</p>
+<p>
+<code>domain + [NhaA]&lt;H.IVc&gt; substrate-binding</code> % adds helix IVc in structure NhaA to the substrate binding domain
+</p>
+<p>
+<code>color [NhaA]|substrate-binding| crimson</code> % changes color of the substrate binding domain ins structure NhaA
+<p>
+The command cannot be undone and does not need to be undone. You can always redefine a domain by using <code>domain</code> without the <code>+</code> mode.
+</p>
+<a name="download">
+<div class="subtitle">download</div>
+<p>
+Download structure from PDB web server. The structure is not displayed, but display is initialized if it was not before. Internet access is required. A valid PDB identifier (case insensitive) must be provided.
+</p>
+<p>
+<i>Usage:</i>
+</p>
+<P>
+<code>download <i>pdb_identifier</i></code>
+</p>
+<a name="dssp">
+<div class="subtitle">dssp</div>
+<p>
+Reassigns secondary structure according to DSSP information, if present. 
+Such information is created when reading a PDB file, if <a href="third_party.html#DSSP">DSSP</a> is installed.
+This requires application of <code>unlock</code> before and <code>lock</code> after, as secondary structure information is protected.
+</p>
+<p>
+<i>Usage:</i>
+</p>
+<P>
+<code>dssp <i>address</i></code>
+</p>
+<p>
+where <i>address</i> may pertain to a whole structure, to a chain, one model of a chain or a range of residues.
+<p>
+<a name="echo">
+<div class="subtitle">echo</div>
+<p>
+Displays the text argument in the Message Board of the Main Window. This is mainly intended for <a href="scripting.html">scripts</a> to inform the script user of performed actions.
+</p>
+<a name="helix">
+<div class="subtitle">helix</div>
+<p>
+Defines a stretch of residues as a helix and assigns a name to this helix. The first argument specifies the structure and chain, the second argument the name, the third and fourth argument the range of residues. As an optional argument, the fifth argument specifies a special helix type. Currently, the only special type is TM (transmembrane).
+</p>
+<p>
+This command is mainly intended for initialization scripts (see <a href="scripting.html">Scripting</a>). MMM does not check for consistency of secondary structure definitions and does not update the display after redefinition. By default, secondary structure definitions are locked (see commands <a href="#lock">lock</a> and <a href="#unlock">unlock</a>) and an ERROR message is displayed when the <code>helix</code> command is issued.
+</p>
+<p>
+The hierarchy window is automatically closed, as current display becomes invalid.
+<p>
+<i>Example:</i>
+</p>
+<p>
+<code>unlock</code> % unlocks secondary structure definition, unnecessary in initalization scripts 
+</p>
+<p>
+<code>undefine</code> % deletes previous secondary structure definitions
+</p>
+<p>
+<code>helix (A) H1 10 30</code> % in chain A assign residues 10-30 as helix H1
+<p>
+<code>helix (A) TM1 45 66 TM</code> % in chain A assign residues 45-66 as transmembrane helix TM1
+</p>
+<p>
+The command cannot be undone. Use <a href="#undefine">undefine</a> to undefine all helices.
+</p>
+<a name="help">
+<div class="subtitle">help</div>
+<p>
+Without an argument, <code>help</code> displays the list of available commands in the <a href="message_board.html">message board</a>. With a valid command as an argument, the command help page is opened at the corresponding line. With any other argument, an error message is displayed in the <a href="message_board.html">message board</a>.
+</p>
+<a name="hide">
+<div class="subtitle">hide</div>
+<p>
+Hides (deletes) the graphics of <a href="object_concept.html">objects</a>, such as chains, residues, atoms, or atom locations. The objects can be selected via their systematic <a href="addressing.html">address</a> or all currently selected objects (address <code>*</code>) can be hidden.
+</p>
+<p>
+<i>Example:</i>
+</p>
+<p>
+<code>hide [2BHW](B)123-138</code> % hides residues 123-138 in chain B of structure 2BHW
+</p>
+<p>
+The <code>hide</code> command does not hide spin label graphics (spheres for midpoint of the N-O bond and molecular frame). Use <code>show (C)147 label_hide</code> to hide label graphics for residue 147 in chain C (sorry for the nonsensical syntax, see <a href="#show">show</a>).
+</p>
+<a name="inertiaframe">
+<div class="subtitle">inertiaframe</div>
+<p>
+Transforms all models (conformations) in an ensemble to the eigenframes of their respective inertia tensor. If you are not sure that you want this, use <a href="#compact">compact</a> instead.
+</p>
+<a name="label">
+<div class="subtitle">label</div>
+<p>
+Attaches precomputed rotamers for a spin label at a given site (or sites). No undo is available. In many cases you might rather want to use the <a href="menu_epr.html#site_scan">Site scan</a> and <a href="menu_epr.html#label">Attach precomputed labels</a> items of the <code>EPR</code> menu. Mainly intended for scripts.
+<p>
+<i>Usage:</i>
+<p>
+<code>label <i>address</i> <i>type</i> <i>temperature</i></code>
+<p>
+where address must be provided and must address a residue or several residues. The other arguments are optional. <code><i>type</i></code> specifies the label and can be <code>MTSL</code> or <code>IA-PROXYL</code> with allowed synonyms MTSSL and R1A for MTSL and IA1 and IAP for IA-PROXYL. This argument defaults to <code>MTSL</code>. <code><i>temperature</i></code> can be <code>cryo</code> (175 K) or <code>ambient</code> (298 K) or any number specifying a temperature in Kelvin. It defaults to <code>cryo</code>. If you want to specify the temperature, you must specify the label.
+</p>
+<p>
+Labeled residues are annotated with the keyword "spin label attached".
+</p>
+<p>
+Please use command <a href="#rotamers">rotamers</a> with the same arguments for computing the rotamers, unless this was done before in a <a href="menu_epr.html#site_scan">Site scan</a>.
+</p>
+<p>
+<i>Example:</i>
+<p>
+<code>label (A)123 IA-PROXYL ambient</code> % label residue 123 in chain A by iodoacetamido-PROXYL to simulate room temperature experiments
+<p>
+<a name="libcomp">
+<div class="subtitle">libcomp</div>
+<p>
+Systematic comparison of spin label position predictions by two different rotamer libraries, which can be used for comparing alternative libraries for the same label or for comparing different label types.
+<p>
+<i>Usage:</i>
+<p>
+<code>libcomp <i>address</i> <i>library1</i> <i>library2</i><i> &gt;output_file</i></code>
+<p>
+where <code><i>address</i></code> is a mandatory argument and specifies the structure, chain, chain model, or residues for which the libraries are to be compared. Mandatory arguments <i>library1</i> and <i>library2</i> specify the libraries to be compared.
+The libraries must be present on the current Matlab path, usually they should be stored in MMM subdirectory <code>\rotamer_libraries</code>.
+<p>
+A text output file can be specified by the optional argument <code><i>&gt;output_file</i></code>. If this argument is missing, output is directed to the message board and stored in the log file.
+<p>
+Arguments can also be specified in an input file. In this case, usage is:
+<p>
+<code>libcomp <i>&lt;input_file</i> <i>&gt;output_file</i></code>
+</p>
+The input file must contain a line
+<p>
+<code>#LIBCOMP <i>library1</i> <i>library2</i></code>
+<p>
+followed by one or more lines of MMM addresses for residues. It must finish with a line
+<p>
+<code>#END</code>
+<p>
+<a name="libtest">
+<div class="subtitle">libtest</div>
+<p>
+Systematic and automatic test of rotamer computations against a set of experimental mean distances for known structures. 
+No undo is available. It is strongly recommended to use this feature after an MMM restart and to close MMM after using it.
+<p>
+<i>Usage:</i>
+<p>
+<code>libtest <i>test_data_file</i> <i>output_file</i> <i>library</i></code>
+<p>
+where <code><i>test_data_file</i></code> is a mandatory argument and specifies the file with the test data set including extension (see below). 
+The other arguments are optional. <code><i>output_file</i></code> specifies the file name 
+for the result file. It defaults to the name of <code><i>test_data_file</i></code> appended by <code>_prc</code> and the same extension.
+Unless a full pathname is provided, the file is written to the current Matlab directory.
+<code><i>library</i></code> defines the rotamer library file (including extension .mat). This argument defaults to 
+the library specified in <code><i>test_data_file</i></code>. If you want to specify the library as an argument, you must specify the output file name.
+</p>
+<p>
+Statistics of the test are written to a file based on file name <code><i>output_file</i></code> with extension <code>.log</code>.
+</p>
+<p>
+Note that all required PDB files for structures referred to in the test data file must be available on the Matlab path. The structures required 
+for test data provided with MMM are stored in MMM subdirectory tests.
+</p>
+<i>Example:</i>
+</p>
+<p>
+<code>libtest testdata_298K.dat test_xray_298K.dat R1A_298K_xray.mat</code> % this may take half an hour or so
+</p>
+<p>
+Currently provided test data sets are for MTSL only and are named <code>testdata_298K.dat</code>, <code>outliers.dat</code>, and <code>rotamer_test.dat</code>. The format is given in comment lines of these text (ASCII) files. 
+They are found in subdirectory <code>rotamer_libraries</code>. The corresponding PDB files are found in subdirectory <code>tests</code>.
+</p>
+<p>
+Currently available rotamer libraries are of the form <code>R1A_<i>T</i>_<i>type</i>.mat</code>, where <code><i>T</i></code>
+is either <code>175K</code> or <code>298K</code> and <code><i>type</i></code> 
+is <code>090619</code> (original MMM libraries for MTSL), <code>culled</code> (all rotamers with respect to chi1 and chi2
+removed that were never observed in crystal structures), <code>xray</code> (chi1, chi2 probabilities as in the set of all reliable
+x-ray structures), <code>flat</code> (equal probabilities for all rotamers), <code>sezer12</code> (chi1, chi2 probabilities as in 
+the MD computations of D. Sezer, J. H. Freed, B. Roux 2008 <i>J. Phys. Chem. B</i> 122:5755-5767, Table 10), or <code>warsh</code> 
+(chi1, chi2 probabilities as in D. T. Warshaviak, L. Serbulea, K. N. Houk, W. L. Hubbell 2011 <i>J. Phys. Chem. B</i> 115:397-405). 
+For more information, see G. Jeschke 2013 <i>Progr. Nucl. Magn. Reson.</i> submitted.
+</p>
+<a name="lock">
+<div class="subtitle">lock</div>
+<p>
+Locks the secondary structure definitions (this is the default state of MMM). The lock can be released by the command <a href="#unlock">unlock</a>.
+</p>
+<a name="loop">
+<div class="subtitle">loop</div>
+<p>
+Defines a stretch of residues as a loop and assigns a name to this loop. The first argument specifies the structure and chain, the second argument the name, the third and fourth argument the range of residues.
+</p>
+<p>
+This command is mainly intended for initialization scripts (see <a href="scripting.html">Scripting</a>). MMM does not check for consistency of secondary structure definitions and does not update the display after redefinition. By default, secondary structure definitions are locked (see commands <a href="#lock">lock</a> and <a href="#unlock">unlock</a>) and an ERROR message is displayed when the <code>loop</code> command is issued.
+</p>
+<p>
+The hierarchy window is automatically closed, as current display becomes invalid.
+<p>
+<i>Example:</i>
+</p>
+<p>
+<code>unlock</code> % unlocks secondary structure definition, unnecessary in initalization scripts 
+</p>
+<p>
+<code>undefine</code> % deletes previous secondary structure definitions
+</p>
+<p>
+<code>loop (A) L1-2 31 35</code> % in chain A assign residues 10-30 as loop L1-2
+</p>
+<p>
+The command cannot be undone. Use <a href="#undefine">undefine</a> to undefine all loops.
+</p>
+<a name="mass">
+<div class="subtitle">mass</div>
+<p>
+Displays the mass of the addressed object in the <a href="message_board.html">message board</a>. For structures, chains, and chain models water molecules are not counted into the mass. Use option <code>-water</code> to include water.
+</p>
+<p>
+<i>Examples:</i>
+</p>
+<p>
+<code>mass (A)</code> % displays mass of chain A 
+</p>
+<p>
+<code>mass (A) -water</code> % displays mass of chain A, including water molecules. 
+</p>
+<a name="motion">
+<div class="subtitle">motion</div>
+<p>
+For a pair of structures that are related by a structural transition, display a pale green coil model of the first structure and crimson conical arrwos that point to the second structure.
+</p>
+<p>
+<i>Usage:</i>
+</p>
+<P>
+<code>motion <i>adr1</i> <i>adr2</i></code>
+<p>
+where <i>adr1</i> is the address of the moving structure and <i>adr2</i> the address of the target.
+<p>
+Note that the structures are actually superimposed and that this cannot be undone. Note also that the whole structure is superiomposed and moved, even if the addresses are addresses of chains.
+</p>
+<p>
+The conical arrows are associated with the moving structure. To remove them from the display, the moving structure must be hidden. Alternatively, any object can be selected and the <a href="toolbar.html#graphics"><img src="img/toolbar_graphics.png" alt="(cutout of a ball&stick model)"> Graphics mode toolbutton</a> be clicked to access the <a href="graphics_window.html">Graphics window</a>. In this window  the motion arrows can be selected from a popup menu and deactivated by unchecking the corresponding checkbox.
+</p>
+<a name="ortho">
+<div class="subtitle">ortho</div>
+<p>
+Changes the projection mode for the 3D model to orthographic (the default). Can be undone by command <a href="#persp">persp</a>.
+</p>
+<a name="pdbload">
+<div class="subtitle">pdbload</div>
+<p>
+Load structure in PDB format from local disk. The structure is not displayed, but display is initialized if it was not before. The file must be on the current Matlab path, which is automatically the case, if it is stored in an MMM subdirectory (the subdirectory must have existed before starting MMM).
+</p>
+<p>
+<i>Usage:</i>
+</p>
+<P>
+<code>pdbload <i>filename</i></code>
+</p>
+<p>
+We advise to provide a filename <i>with</i> extension. Otherwise MMM tries to find a file with extension <code>.pdb</code> and, if this cannot be found, a file with extension <code>.ent</code>. We also advise against using the "single-chain" files with extensions <i>.pdb1</i> etc. that can be found on the PDB Web server as "Biological Assembly 1" etc. 
+<a name="persp">
+<div class="subtitle">persp</div>
+<p>
+Changes the projection mode for the 3D model to perspective. Can be undone by command <a href="#ortho">ortho</a>.
+</p>
+<a name="plot">
+<div class="subtitle">plot</div>
+<p>
+Plots a line connecting two atoms that are specified by addresses <code>adr1</code> and <code>adr2</code>.
+</p>
+<i>Usage:</i>
+</p>
+<P>
+<code>plot <i>adr1</i> <i>adr2</i> [[<i>width</i>] <i>color</i>] </code>
+</p>
+The linewidth and color arguments are optional. Only SVG color names are accepted for the color argument. Width defaults to 6 (suitable for copying a full-screen figure), and color defaults to darkgreen.
+<p>
+<i>Examples:</i>
+</p>
+<p>
+<code>plot 123.CA 325.CA</code>
+</p>
+<a name="radgyr">
+<div class="subtitle">radgyr</div>
+<p>
+Computes the radius of gyration, which is particularly useful for an ensemble of conformations. 
+<i>Usage:</i>
+</p>
+<P>
+<code>radgyr <i>adr</i> [<i>mode</i>]</code>
+</p>
+where <code><i>adr</i></code> denotes the address of a structure or chain and <code><i>mode</i></code> is <code>all</code> for an all-atom computation or <code>backbone</code> for a backbone-only computations and defaults to <code>all</code>.
+</p>
+<a name="redo">
+<div class="subtitle">redo</div>
+<p>
+Redoes the last undone command. This may or may not work (as in most programs). It should work certainly for simple things like color and transparency changes, it works approximately for moderately complex things as selections and graphics display and it does not work for complex things like secondary structure definitions. 
+</p>
+<a name="refrmsd">
+<div class="subtitle">refrmsd</div>
+<p>
+Computes the r.m.s.d. of conformations with respect to a reference conformation. 
+</p>
+<i>Usage:</i>
+</p>
+<P>
+<code>refrmsd <i>adr</i> <i>refadr</i> [<i>mode</i>]</code>
+</p>
+where <code><i>adr</i></code> denotes the address of a structure or chain (can be an ensemble) and <code><i>refadr</i></code> the address of the reference conformation. The number and type of atoms must agree. Furthermore, <code><i>mode</i></code> is <code>all</code> for an all-atom computation or <code>backbone</code> for a backbone-only computations and defaults to <code>all</code>.
+</p>
+<a name="repack">
+<div class="subtitle">repack</div>
+<p>
+Repacks (or creates) sidechains of native amino acids in a structure. Hetero amino acids will have missing sidechains and even backbone atoms may be lost. Consider applying the <code>replace</code> command before to substitute them by corresponding native amino acids.
+This requires that <a href="third_party.html#SCWRL4">SCWRL4</a> from the Dunbrack lab is installed and on the Matlab path.
+</p>
+<p>
+<i>Usage:</i>
+<p>
+<code>repack <i>address</i></code>
+<p>
+<code>repack <i>address</i> crystal</code>
+<p>
+where <i>address</i> is an <a href="addressing.html">MMM object address</a> of a structure. The current version does nothing if lower-level objects are addressed. The optional argument <code>crystal</code> selects the <code>-#</code> 
+option of SCWRL4, which calculates side-chain cobforamtions within the crystal environment. This can be used to detect packing effects. The option requires that the original PDB file 
+has a CRYST1 record.
+<p>
+<a name="replace">
+<div class="subtitle">replace</div>
+<p>
+Replaces non-standard residues such as selenocysteine or selenomethionine as well as spin-labels by their native amino acid equivalents (cysteine or methionine). 
+Only the first location is kept (leading rotamer in case of spin labels).
+The command will hide replaced residues in the 3D plot (if they were displayed before). The user needs to redisplay them if required.
+</p>
+<p>
+<i>Usage:</i>
+<p>
+<code>replace <i>address</i> <i>hettype</i></code> 
+<p>
+where <i>address</i> is an <a href="addressing.html">MMM object address</a> of a structure. When lower-level objects are addressed, only addressed residues are replaced. The address must correspond to residues in only one structure. 
+The argument <i>hettype</i> specifies which residue type(s) are to be replaced. Residue types are three-character identifiers specified by PDB and the non-standrad identifier <code>IA1</code> for iodoacetamido-PROXYL.
+In a list of residue type, the individual types need to be separated by colons (:). Only a colon in place of <i>hettype</i> leads to replacement of all non-standard residues defined in MMM.
+<p>
+<i>Examples:</i>
+</p>
+<p>
+<code>replace [3K2R] V1A</code> % replaces the two imidazole-type spin labels in T4 lysozyme structure 3K2R by cysteins
+</p>
+<p>
+<code>replace [2X79] MSE:R1A</code> % replaces in structure 2X79 all selenomethionines by methionines and removes all MTS-spin labels attached before (replaced by cysteine)
+</p>
+<code>replace [2X79]20-100 :</code> % replace all non-standard residues known to MMM among residues 20 to 100 of structure 2X79 
+</p>
+<p>
+<a name="report">
+<div class="subtitle">report</div>
+<p>
+Writes information on spin-labels and distance distributions to a report file. If the file exists, the information is appended. Useful mainly in command scripts. 
+</p>
+<p>
+<i>Usage:</i>
+<p>
+<code>report <i>filename</i> <i>information</i> [...]</code> 
+<p>
+where <i>filename</i> is the name of the report file (plain text) that will be written to the <i>current</i> Matlab directory (unless a pathname is provided) and information specifies the type of information to be reported. Additional arguments depend on the type of information requested:
+<p>
+<code>report <i>filename</i> label <i>address</i> <i>extent</i></code>
+where <i>address</i> is an <a href="addressing.html">MMM residue address</a> and <i>extent</i> is an optional argument that is either <code>brief</code> (default) or <code>full</code>. In <code>brief</code> mode, only mean position and r.m.s.d. are reported.
+<p>
+<code>report <i>filename</i> distance <i>address1</i> <i>address2</i> <i>extent</i></code>
+where <i>address1</i> and <i>address2</i> are <a href="addressing.html">MMM residue addresses</a> and <i>extent</i> is an optional argument that is either <code>brief</code> (default) or <code>full</code>. In <code>brief</code> mode, only mean distance and r.m.s.d. are reported, in full mode the whole distribution is written out.
+<p>
+<i>Examples:</i>
+</p>
+<p>
+<code>report LHCII_labels.txt label [2BHW]123</code> % writes mean position and r.m.s.d of the label at residue 123 of structure [2BHW] to the file LHCII_labels.txt. The label must have been computed with <code>rotamers</code>, but not necessarily attached. The labels must have been computed with <code>rotamers</code>, but not necessarily attached.
+</p>
+<a name="rmsd">
+<div class="subtitle">rmsd</div>
+<p>
+Computes the r.m.s.d. of conformations in an ensemble from the "mean" conformation. 
+</p>
+<i>Usage:</i>
+</p>
+<P>
+<code>rmsd <i>adr</i> [<i>mode</i>]</code>
+</p>
+where <code><i>adr</i></code> denotes the address of a structure or chain (must be an ensemble) and <code><i>mode</i></code> is <code>all</code> for an all-atom computation or <code>backbone</code> for a backbone-only computations and defaults to <code>all</code>.
+</p>
+<a name="rotamers">
+<div class="subtitle">rotamers</div>
+<p>
+Compute rotamers for a spin label at a given site (or sites). In many cases you might rather want to use the <a href="menu_epr.html#site_scan">Site scan</a>  items of the <code>EPR</code> menu, which allows for more input and output options. Mainly intended for scripts.
+<p>
+<i>Usage:</i>
+<p>
+<code>rotamers <i>address</i> <i>type</i> <i>temperature</i></code>
+<p>
+where address must be provided and must address a residue or several residues. The other arguments are optional. <code><i>type</i></code> specifies the label and can be <code>MTSL</code> or <code>IA-PROXYL</code> with allowed synonyms MTSSL and R1A for MTSL and IA1 and IAP for IA-PROXYL. This argument defaults to <code>MTSL</code>. <code><i>temperature</i></code> can be <code>cryo</code> (175 K) or <code>ambient</code> (298 K) or any number specifying a temperature in Kelvin. It defaults to <code>ambient</code>. If you want to specify the temperature, you must specify the label.
+</p>
+<p>
+Basic rotamer statistics information (number of significantly populated rotamers, partition function, r.m.s.d. of N-O midpoint coordinates) is stored in the residue annotations with the keyword "rotamers computed". The <a href="menu_epr.html#site_scan">Site scan</a> menu item allows for more complete analysis.
+</p>
+<p>
+The spin labels are only computed, not immediately attached. Please use the command <a href="#label">label</a> with the same arguments to actually attach them.
+</p>
+<i>Example:</i>
+<p>
+<code>rotamers (A)123 IA-PROXYL ambient</code> % label residue 123 in chain A by iodoacetamido-PROXYL to simulate room temperature experiments
+<p>
+<a name="SAS">
+<div class="subtitle">SAS</div>
+<p>
+Creates and displays the solvent accessible surface for a single object, which must be a structure, chain, coordinate set of a chain, or residue. This requires that <a href="third_party.html#MSMS">MSMS</a> by Michel Sanner is installed.
+</p>
+<p>
+<i>Usage:</i>
+<p>
+<code>SAS <i>address</i> <i>tag</i> (<i>radius</i>)</code>
+<p>
+where <i>address</i> is an <a href="addressing.html">MMM object address</a>, <i>tag</i> is the tag by which the surface can be accessed later, and <i>radius</i> is an optional probe radius in units of Å. The probe radius defaults to 1.5 Å, which is Sanner's suggested value for water.
+<p>
+The surface is originally displayed with aquamarine color and 50% transparency.
+<p>
+<i>Usage:</i>
+<p>
+<code>SAS ! native</code> % water accessible surface with tag "native" for the current structure (!)
+<p>
+<code>color $SAS:native cornflowerblue</code> % change color to cornflowerblue
+<p>
+Note that a surface address always begins with <code>$</code>, followed by the surface type (here <code>SAS</code>).
+<a name="scopy">
+<div class="subtitle">scopy</div>
+<p>
+Makes a copy of a structure with a new structure tag. The copied structure becomes the current structure.
+</p>
+<p>
+<i>Usage:</i>
+<p>
+<code>scopy <i>address</i> <i>tag</i></code>
+<p>
+where <i>address</i> is an <a href="addressing.html">MMM object address</a> of a structure and <i>tag</i> is the tag by which the new structure can be accessed later.
+<p>
+<a name="select">
+<div class="subtitle">select</div>
+<p>
+Selects <a href="object_concept.html">objects</a>, such as structures, chains, domains, secondary structure elements, residues, atoms, or atom locations via their systematic <a href="addressing.html">address</a>.
+</p>
+<p>
+<i>Examples:</i>
+</p>
+<p>
+<code>select [2BHW](B)123,145,217</code> % select residues 123, 145, and 217 in chain B of structure 2BHW
+</p>
+<p>
+<code>select "His"</code> % select all histidine residues in the current structure and chain
+</p>
+<p>
+<code>select (A)<H.H3></code> % select the helix with name H3 in chain A of the current structure
+</p>
+<p>
+Selections of already selected objects are ignored, a warning is issued in the <a href="message_board.html">message board</a>. Selections can be taken back by issuing an <a href="#unselect">unselect</a> command to the same objects. Note that undo of a selection may have unintended consequences after a double selection- the previously doubly selected object will also be unselected.
+<p>
+The command
+<p>
+<code>select *</code>
+</p>
+seems to be nothing, since the asterisk <code>*</code> stands for all objects that are currently selected. However, it is useful for displaying the current selection in the message board.
+</p>
+<a name="sheet">
+<div class="subtitle">sheet</div>
+<p>
+Defines a stretch of residues as a strand (part of a sheet) and assigns a name to this strand. The first argument specifies the structure and chain, the second argument the name, the third and fourth argument the range of residues. As an optional argument, the fifth argument specifies a special strand type. Currently, the only special type is TM (transmembrane).
+</p>
+<p>
+This command is mainly intended for initialization scripts (see <a href="scripting.html">Scripting</a>). MMM does not check for consistency of secondary structure definitions and does not update the display after redefinition. By default, secondary structure definitions are locked (see commands <a href="#lock">lock</a> and <a href="#unlock">unlock</a>) and an ERROR message is displayed when the <code>sheet</code> command is issued.
+</p>
+<p>
+The hierarchy window is automatically closed, as current display becomes invalid.
+<p>
+<i>Example:</i>
+</p>
+<p>
+<code>unlock</code> % unlocks secondary structure definition, unnecessary in initalization scripts 
+</p>
+<p>
+<code>undefine</code> % deletes previous secondary structure definitions
+</p>
+<p>
+<code>sheet (A) SI 36 49</code> % in chain A assign residues 36-49 as strand SI
+<p>
+<code>sheet (A) TMS1 58 76 TM</code> % in chain A assign residues 58-76 as a transmembrane strand TMS1
+</p>
+<p>
+The command cannot be undone. Use <a href="#undefine">undefine</a> to undefine all sheets.
+</p>
+<a name="show">
+<div class="subtitle">show</div>
+<p>
+Displays graphics for <a href="object_concept.html">objects</a>, such as chains, residues, atoms, or atom locations. The objects can be selected via their systematic <a href="addressing.html">address</a> or graphics can be shown for all currently selected objects (address <code>*</code>) at once. The second argument can be one of the following graphics modes:
+</p>
+<p>
+Graphics mode <code>wire</code> applies to atoms and locations and displays a wire plot with lines for the bonds and dots for the atoms. 
+</p>
+<p>
+Graphics mode <code>stick</code> applies to atoms and locations and displays a stick plot with cylinders for bonds and spheres with the same radius for atoms. 
+</p>
+<p>
+Graphics mode <code>ball&stick</code> applies to atoms and locations and displays sticks for the bonds and slightly larger spheres for atoms. 
+</p>
+<p>
+Graphics mode <code>space-filling</code> applies to atoms and locations and displays a space-filling model (spheres with the van-der-Waals radius).
+</p>
+<p>
+Graphics mode <code>CaWire</code> applies to chains and residues and displays a wire model of the C<sup>&alpha;</sup> trace. Cofactors are shown in <code>wire</code> mode. For DNA and RNA chains, the wire model connects the midpoints of the C3'-C4' bond of the ribose or desoxyribose. 
+</p>
+<p>
+Graphics mode <code>CaStick</code> applies to chains and residues and displays a stick model of the C<sup>&alpha;</sup> trace. Cofactors are shown in <code>stick</code> mode. For DNA and RNA chains, the stick model connects the midpoints of the C3'-C4' bond of the ribose or desoxyribose.
+</p>
+<p>
+Graphics mode <code>ribbon</code> applies to chains and residues and displays a ribbon model of amino acid residues. Cofactors are not shown. For DNA or RNA, the backbones are shown as ribbons, the connection between each midpoint of the C3'-C4' bond of the ribose/desoxyribose and the atom of the base bound to the sugar is shown as a tube, and the plane of the base as a filled polygon. Nucleotides are color-coded: G is lightgreen, C is lightcoral, T/U is gold, and A is mediumpurple.  
+</p>
+<p>
+Graphics mode <code>coil</code> applies to chains and residues and displays a coil model of the backbone. Individual residues can be selected by clicking in coil mode. Cofactors are not shown. Coil mode also applies to DNA/RNA.
+</p>
+<p>
+Graphics mode <code>string</code> looks similar as <code>coil</code>, but creates a single graphics object per chain. This allows for selecting chains by a single click, but does not allow for selecting residues by clicking into the graphics. Cofactors are not shown. String mode also applies to DNA/RNA.
+</p>
+<p>
+Graphics mode <code>water</code> displays water molecules, which are suppressed in all other graphics modes.
+</p>
+<p>
+The following graphics modes exist only if spin labels are defined and apply to residues:
+</p>
+<p>
+Graphics mode <code>label</code> shows the midpoint of the N-O bonds of all label rotamers as small spheres. Relative sphere volume corresponds to relative label population, the total sphere volume is selected so that both very narrow and very broad rotamer distributions can be well seen. If a single rotamer makes up at least 99.5% of the total population, its sphere radius corresponds to the half of the sum of the van-der-Waals-radii of nitrogen and oxygen plus the N-O bond length (full extension of the N-O group). In all other cases spheres are smaller.
+</p>
+<p>
+Graphics mode <code>label_frame</code> shows the midpoint of the N-O bonds of all label rotamers as spheres and the molecular frame with a red <i>x</i> axis, green <i>y</i> axis, and a blue <i>z</i> axis. This gives an impression on orientational distribution.
+</p>
+<p>
+Graphics mode <code>label_hide</code> hides label graphics without affecting other graphics of this residue.
+</p>
+<p>
+<i>Examples:</i>
+</p>
+<p>
+<code>show (A)123-136 ball&stick</code> % displays residues 123-136 in ball & stick mode
+</p>
+<p>
+<code>show (A) coil</code> % displays a coil model of chain A
+</p>
+<p>
+<code>show (A)"Gly" space-filling</code> % displays all glycine residues of chain A in space-filling mode
+</p>
+<p>
+Graphics are first displayed in a default color scheme, atoms and locations by element color ribbons by the secondary structure color scheme and other graphics by their uniform color. Use command <a href="#color">color</a> to change color afterwards. If there are alternative locations for an atom, transparency is assigned by population. Use command <a href="#transparency">transparency</a> to change transparency.
+</p>
+<a name="symmetry">
+<div class="subtitle">symmetry</div>
+<p>
+Checks whether selected objects define a symmetry or pseudosymmetry axis.
+If so, transforms the structure to a frame where this axis is the z axis
+and where the center of the structure is on this axis.
+</p>
+<p>
+The number of selected objects determines the multiplicity of the axis. All selected objects must belong to the same structure, this structure is transformed. All selected objects must have the same number of atoms (sorry).
+</p>
+<p>
+This command cannot be undone and it hides the transformed structure. To preserve the display properties of the structure, please use the <a href="menu_edit.html#symmetry">Edit/Symmetry</a> menu item, which cares about automatic redisplay. The command version is mainly intended for scripts.
+</p>
+<a name="synonym">
+<div class="subtitle">synonym</div>
+<p>
+Assigns a synonym to a structure or chain name. The first argument is a structure or chain <a href="addressing.html">address</a>, the second argument the synonym for the structure or chain name. 
+</p>
+<p>
+<i>Example:</i>
+</p>
+<p>
+<code>synonym [2BHW] LHCII</code>
+</p>
+<p>
+<code>show [LHCII] coil</code> % displays a coil model of structure 2BHW
+</p>
+<a name="transparency">
+<div class="subtitle">transparency</div>
+<p>
+Assigns a transparency value to <a href="object_concept.html">objects</a>, such as chains, residues, atoms, or atom locations. The objects can be selected via their systematic <a href="addressing.html">address</a> or transparency can be assigned to all currently selected objects (address <code>*</code>) at once. The second argument is the opaqueness between 0 (fully transparent) and 1 (fully opaque). A negative value is interpreted as request to assign transparency according to population of alternate locations (the default mode).
+</p>
+<p>
+<i>Examples:</i>
+</p>
+<p>
+<code>transparency (C)147 0.5</code> % makes residue 147 in chain C semi-transparent
+</p>
+<p>
+<code>transparency (A)"Asn" -1</code> % assigns default transparency (by population of alternate locations) to all asparagine residues in chain (A) 
+</p>
+<a name="undo">
+<div class="subtitle">undo</div>
+<p>
+Undoes the last issued command. This may or may not work (as in most programs). It should work certainly for simple things like color and transparency changes, it works approximately for moderately complex things as selections and graphics display and it does not work for complex things like secondary structure definitions. 
+</p>
+<a name="undefine">
+<div class="subtitle">undefine</div>
+<p>
+This command is mainly intended for initialization scripts (see <a href="scripting.html">Scripting</a>). Undefines secondary structure assignments (helix, strand/sheet, and loop definitions).
+<p>
+Without argument, the command operates on the current chain, as indicated in the title of the main window. If a structure address is given as argument, the command operates on all chains of this structure. If a chain address is given, it operates on this chain.
+<p>
+The <code>undefine</code> command is usually blocked (error is displayed in the <a href="message_board.html">message board</a>), since secondary structure definitions are locked by default. Use the <a href="#lock">unlock</a> command before, if you must do that outside an initialization script, and do not forget to <a href="#lock">lock</a> again. Only the list of helices, strands, and loops is deleted, secondary structure assignment of residues is kept. The hierarchy window is automatically closed, as current display becomes invalid.
+</p>
+<a name="unlock">
+<div class="subtitle">unlock</div>
+<p>
+Unlocks the secondary structure definitions, which are locked by default in MMM. The lock can be imposed again by the command <a href="#lock">lock</a>. Use <code>unlock</code> only if you understand the consequences of modifying secondary structure definitions in the current state of the model. Make a backup copy of the model (<img src="img/toolbar_save.png" alt="(blue diskette symbol)"> save button) before you do that.
+The same function unlocks the protection against using alternative rotamer libraries or alternative parameters in elastic network modeling of structural transitions.
+</p>
+<a name="unselect">
+<div class="subtitle">unselect</div>
+<p>
+Unselects <a href="object_concept.html">objects</a>, such as structures, chains, domains, secondary structure elements, residues, atoms, or atom locations via their systematic <a href="addressing.html">address</a>, if they were previously selected.
+</p>
+<p>
+<i>Example:</i>
+</p>
+<p>
+<code>unselect [2BHW](B)145</code> % unselects residue 145 in chain B of structure 2BHW
+</p>
+<p>
+If the addressed objects were not selected, the command has no effect. No warning is issued.
+</p>
+<a name="view">
+<div class="subtitle">view</div>
+<p>
+Sets a defined viewing direction.
+</p>
+<p>
+If called with one argument, the viewing direction can be <code>x|-x|y|-y|z|-z</code>, whereas <code>+x|+y|+z</code> are accepted for <code>x|y|z</code>. If called with three arguments, the three numbers define a viewing vector. If called with six arguments, the six numbers define a viewing vector and a camera up vector. Note that the current viewing vector (dark blue numbers) and camera up vector (dark green numbers) are displayed in the <code>View</code> panel. This command resets the camera zoom so that all displayed graphics is seen.
+</p>
+<i>Examples:</i>
+</p>
+<p>
+<code>view -z</code> % look at the model from the -z direction
+</p>
+<p>
+<code>view 0.5 0.5 0.707</code> % view at the model from an arbitrary, but well defined direction 
+<p>
+<code>view 0.5 0.5 0.707 0 0 -1</code> % view at the model from an arbitrary, but well defined direction and upside down compared to usual camera up vector 
+</p>
+<a name="wrseq">
+<div class="subtitle">wrseq</div>
+<p>
+Write out the sequence for a selection of residues. The sequence in single-letter code is displayed in a report editor window, so that it can easily be copied for use in other programs or with webservers.
+</p>
+<i>Examples:</i>
+</p>
+<p>
+<code>wrseq [2LZM]72-131</code> % write out the sequence for residues 72-131 of T4 lysozyme (structure must be loaded)
+</p>
+<a name="zoom">
+<div class="subtitle">zoom</div>
+<p>
+Zooms in to selected objects or zooms out to display the whole model.
+</p>
+<i>Examples:</i>
+</p>
+<p>
+<code>zoom in</code> % define the camera view so that the select objects fill the model window
+</p>
+<p>
+<code>zoom out</code> % define the camera view so that all displayed graphics is shown 
+</p>
+<p>
+The <code>zoom in</code> command may produce funny results if the 3D model is shown in the <a href="model_panel.html">model panel</a> (attached state), as graphics is not clipped to the panel.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2017.1, edited 2017/02/24</div>
+</body>
+</html>
+

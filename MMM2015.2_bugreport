@@ -1,0 +1,63 @@
+--- MMM logfile MMM_2016-12-12_15-36-29.log ---
+
+ver> MMM version 2015.1, 3.7.2015
+env> running on Matlab version 8.5.0.197613 (R2015a) on GLNXA64
+env> with 2.81475e+08 MByte maximum array size.
+msg> MMM initalized
+cmd> bckg grey
+msg> Temporary files were last cleaned 06-Jun-2016 18:30:10
+msg> There were no old temporary files to be deleted.
+BUG> follows the output into the Matlab command window:
+{Undefined function handle.
+} 
+Error while evaluating PushTool ClickedCallback
+
+{Undefined function handle.
+} 
+Error while evaluating PushTool ClickedCallback
+
+{Undefined function handle.
+} 
+Error while evaluating Menu Callback
+
+{Undefined function handle.
+} 
+Error while evaluating Menu Callback
+
+{Undefined function handle.
+} 
+Error while evaluating Menu Callback
+
+{Undefined function handle.
+} 
+Error while evaluating Menu Callback
+
+{Undefined function handle.
+} 
+Error while evaluating Menu Callback
+
+{Undefined function handle.
+} 
+Error while evaluating Menu Callback
+
+{Undefined function handle.
+} 
+Error while evaluating Menu Callback
+
+{Undefined function handle.
+} 
+Error while evaluating Menu Callback
+
+{Undefined function handle.
+} 
+Error while evaluating Menu Callback
+
+{Undefined function handle.
+} 
+Error while evaluating Menu Callback
+
+{Undefined function handle.
+} 
+Error while evaluating Menu Callback
+
+BUG>--- end of Matlab command window output ---

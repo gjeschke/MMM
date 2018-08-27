@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Message board</title>
+</head>
+<body>
+
+<div class="pagetitle">Message board</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  <A href="user_interface.html"> User interface </A> <A href="main_window.html"> Main window </A> &uarr;  |  &darr;  </pre>
+
+<div class="subtitle">What is the message board for?</div>
+<p>
+The message board is one central place where MMM informs you about the state of the program, about progress of computations, about query results, such as distances, angles, and dihedral angles, and about warnings and errors. The last 22 lines of message text are displayed. If you select objects, the <a href="addressing.html">addresses</a> of the last 22 selected objects are shown.
+</p>
+<p>
+A permanent record of all messages during a session can be written to a log file.
+</p>
+<div class="subtitle">Message logfile</div>
+<p>
+When the log file checkbox is activated, MMM creates a file stamped with the current date and time and the extension <code>.log</code> in its temporary directory. From now on, until deactivation of the checkbox or leaving MMM, all output to the message board is also written to the log file.
+</p>
+<p>
+Note that MMM checks every 30 days whether there are old files (older than 30 days) in its temporary directory and offers the user to delete them. Hence, you are strongly advised to copy temporary files that you actually want to keep to another directory immediately after an MMM session. This is particularly important if several users share the same installation of MMM.
+</p>
+<div class="subtitle">Clearing the message board</div>
+<p>
+The message board is designed for single-line messages and MMM usually sends only single-line messages to it. However, no programmer is perfect, multi-line messages may occasionally arise and lead to overflow. Click the <code>Clear</code> button to get a clean message board again. This will not affect the log file, if log is activated.
+</p>
+</p><div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/10/09</div>
+</body>
+</html>
+

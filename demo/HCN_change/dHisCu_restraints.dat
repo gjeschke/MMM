@@ -1,0 +1,16 @@
+% Example of elastic network modeling of a conformational change
+% cAMP release from HCN channel
+% Experimental restraints from:
+% M. C. Puljung, H. A. DeBerga, W. N. Zagotta, S. Stoll, PNAS 2014, 111, 9816-
+% 9821, DOI: 10.1073/pnas.1405371111 
+% Crystal structure PDB 3ETQ, chain A needs to be loaded (3etq_A.pdb)
+# BASIS 10
+# ENSEMBLE 1 0.30
+# ODEER IDA IDA 298
+534  536	623  626	2.87	0.1
+534  536	632  635	2.95	0.1
+563  565	623  626	3.24	0.1
+563  565	632  635	2.30	0.11
+569  571	623  626	3.25	0.1
+569  571	632  635	2.08	0.11
+# END

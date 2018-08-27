@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Fit from template</title>
+</head>
+<body>
+
+<div class="pagetitle">Fit from template</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> &bull; <A href="user_interface.html"> User interface </A> &bull; <A href="ENM.html"> Elastic network models </A>  &bull;  <a href="menu_build.html"> Build menu</a> &uarr;  |  &darr;  </pre>
+
+<div class="subtitle">Introduction</div>
+<p>
+This fit procedure can be used to test for consistency between a structural model and (EPR) distance constraints, to refine a model by distance constraints, and to characterize large-scale structural changes of a protein or protein complex, if the structure in one state and distance constraints for another state are known. In addition, the fit procedure can be used for testing how well a pair of known structures is connected by motion along only a few normal modes of an <a href="ENM.html">elastic network model</a>.
+</p>
+<p>
+The C<sup>&alpha;</sup> trace r.m.s.d. between the "true" structure and the fitted model can be as small as 1.5 Å in ideal cases, but typically r.m.s.d. between 2.5 and 4 Å should be expected. A full atomistic model of the final structure is reconstructed, but note that this is based on rigid-body transformation of sidechains from the template structure with respect to the backbone. 
+</p>
+<p>
+We emphasize that the concept of a single "true" structure of a protein or protein complex is largely fiction. Nevertheless <i>some parts</i> of a protein are fixed at atomic resolution. The models obtained with this coarse-grained fit procedure should not be discussed in terms of such atomistic detail. Only speculations are possible on this level. The models can be discussed in terms of large-scale differences between structures or large-scale movements exceeding coordinate changes by about 2 Å.
+</p>
+<a name="constraints">
+<div class="subtitle">Specification of constraints and fit parameters</div>
+<p>
+Fits are controlled by an ASCII text input file that is opened via the <code>Load constraints</code> button. Comment lines or comments in command lines are introduced by the percent character %. Keyword lines start with the hash character #. There must be a space between the hash character and the keyword. Two types of keywords exist, single-line keywords (all parameters are specified on the same line as the keyord) and block keywords (some parameters follow in additional lines, this is used for constraint specification). Blocks end when the next keyword is encountered. The last block must be followed by an <code># END</code> keyword line. Keywords are not case sensitive. Keywords and arguments are separated by spaces.
+</p>
+Currently, the following keywords are defined:
+<ul>
+<li> <code> # PDB</code> (single-line), argument: PDB identifier of template structure</li>
+<li> <code> # basis</code> (single-line), argument: number of slow <a href="ANM.html">ANM</a> modes to be used as a basis
+<li> <code> # DEER</code> (block), arguments: spin label and temperature (in K) for rotamer simulation</li>
+<li> <code> # direct</code> (block), no arguments
+<li> <code> # ensemble</code> (single line), arguments: size of an ensemble of fit structures to be generated, (optional) estimated uncertainty of constraints, (optional) specifier <code>all</code> for using all constraints for each structure (see Remarks below)
+<li> <code> # target</code> (single line), argument: PDB identifier of the target structure, used only for test computations</li>
+<li> <code> # TIF</code> (single line), argument: threshold for active space extension, to be changed only by experts</li>
+<li> <code> # MMAX</code> (single line), argument: iteration cycle where active space extension is complete, to be changed only by experts</li>
+<li> <code> # END</code> (single-line), no arguments
+</ul>
+</p>
+<h4>Remarks</h4>
+<p>
+Future versions may have additional keywords. If you are a programmer and want to implement keywords of your own, please contact us before. The constraint file is processed by function <code>rd_restraints.m</code>. 
+</p>
+<p>
+<code># PDB</code>: Currently this is only used for a check. The current structure in MMM, which can be picked in the <a href="hierarchy_window.html">hierarchy window</a>, is used as the template structure. If the current structure in MMM has a diferent PDB identifier than specified in the constraints file, a message window pops up and the user is aksed whether he/she wants to continue. The template structure is <i>not</i> automatically loaded.
+</p>
+<code># basis</code>: Currently the number is used as the total number of slow modes both in single-chain fits and multi-chain protein complex fits. This behavior may change once we have more experience. Probably, the argument will specify the number of slow modes <i>per chain</i> in the future. In any case, the number may be slightly larger than the number of constraints in exploratory work, but should not be much larger. It is good practice to use slightly <i>more</i> constraints than basis modes if you want to discuss the model in a publication. 
+</p>
+<p>
+<code># DEER</code>: The arguments of this keyword supersede any spin labeling with a different label or at a different temperature that you may already have performed on the template structure (rotamers are automatically recomputed). If rotamer computation (<a href="spin_labeling.html#site_scan">site scan</a>) was already performed for the specified sites (see below) with matching spin label and temperature, rotamer computation is skipped. It is not necessary to compute labels before, in version 2011 rotamer computation is fast. In any case you should not actually attach the labels before fitting.
+</p>
+<p>
+<i>DEER constraint specification</i>: DEER constraints are specified by <a href="addressing.html">MMM addresses</a> of the two residues involved, followed by the mean distance (in nm) and the full width of the distance range (in nm). The width of the distance range is only used for relative weighting of constraints, hence a rough estimate is sufficient. In single-chain structures, the residue number suffices as an address. In multi-chain protein complexes the chain identifier in parentheses must precede the residue number (without intervening space). The structure must not be specified in the residue address. It is good practice to comment each constraint (where does it come from, functional assay, etc.). Constraints from CW EPR are currently specified as DEER constraints.
+</p>
+<p>
+<code># direct</code>: This keyword allows to specify direct constraints between C<sup>&alpha;</sup> atoms of residues, for instance to fix part of the structure during the fit or to use information from an incomplete crystal structure. 
+</p>
+<p>
+<i>direct C<sup>&alpha;</sup>constraint specification</i>: Direct constraints are specified by <a href="addressing.html">MMM addresses</a> of the two residues involved, followed by the distance (in nm) and the full width of a distance range (in nm). The width of the distance range specifies how strongly this distance should be restrained. This can be used to weigh direct constraints with respect to each other or with respect to experimental constraints. In single-chain structures, the residue number suffices as an address. In multi-chain protein complexes the chain identifier in parentheses must precede the residue number (without intervening space). The structure must not be specified in the residue address. It is good practice to comment each direct constraint (reason why it is provided).
+</p>
+<p>
+<code># ensemble</code>: A structural model makes sense only together with some idea about its uncertainty. In template-based fitting uncertainty derives from sparsity of distance constraints, errors in distance constraints, approximative character of coarse-grained <a href="ENM.html">elastic network modeling</a>, and with spin-label constraints, approximations involved in rotamer computations. Although the problem is too complex for mathematically strict error analysis, some estimate of uncertainty can be obtained by generating an ensemble that reflects sparsity of constraints and uncertainty in experimental distances. Note that uncertainty in experimental distances also includes uncertainties in rotamer simulation. An ensemble will not reflect, however, errors in the structure caused by a basis of slow modes that is too small to cover all relevant degrees of freedom of the protein backbone.
+</p>
+<p>
+<i>Alternative ways of generating ensembles</i>: The ensemble can reflect only sparsity of restraints, only uncertainties in experimental distances, or both. In all cases the first, obligatory argument specifies the total number of structures in the ensemble. This is also the number of individual fits that have to be performed. As a single fit may take several hours for large structures, we advise to select this parameter with care and to generate an ensemble only after a single structure considering all constraints and without random distance errors was computed. Unless a third argument <code>all</code> is provided, the ensemble is generated by systematic neglect of individual constraints. Single constraints are omitted in the order of increasing deviation between experimental distance and distance in the template structure. Pairs and triples of constraints are omitted in the order of increasing sum square deviation between experimental distances and distance in the template structure. No more than three constraints can be omitted in any individual structural model. At least two DEER constraints must remain, i.e. ensemble generation in this way is not possible for fitting with only direct constraints. If any of these conditions cannot be fulfilled, the program creates the largest ensemble possible with fulfilling all conditions (this number is then smaller than the requested ensemble size). Typically, one would have at least 10 DEER constraints and would use an ensemble size matching the number of constraints (each constraint is neglected in one structure, no structure has more than one neglected constraint). If a second argument to the <code># ensemble</code> keyword is given, it is interpreted as a uniform uncertainty of all DEER distance constraints in units of nm. The uncertainty is taken as a standard deviation by adding random numbers with Gaussian distribution to all specified mean experimental distances. This is done in addition to neglecting individual constraints (or contraint pairs or triples), unless a third argument to the <code>#ensemble</code> keyword is given. This argument can only be <code>all</code>, any other argument in this place is ignored in the current version. If it is <code>all</code>, then all constraints are used in any structure in the ensemble. The fits are then just started from distance constraints with different added random errors.
+</p>
+<p>
+In test mode, a file <code><i>pdbid</i>_ensemble.log</code> is written in the current directory that lists the actually used constraints for each structure and diagnostic information on the fit. Here <i>pdbid</i> ist the PDB identifier of the target structure, as specified in the constraint file.
+</p>
+<p>
+<code># target</code>: This is used for testing algorithms and for parametrization. For that a model of a target structure is created from a template input structure and a list of distance constraints for the target. In such tests, the target structure must be known and loaded into MMM. The name of the structure, usually the PDB identifier, must be provided as an argument. If this is done, MMM will track the C<sup>&alpha;</sup> r.m.s.d. between current model and the known target structure during fitting. If a single model is requested (and parallel computing was not initialized before), the r.m.s.d. changes are displayed in auxiliary Matlab windows. If an ensemble model is computed and the parallel computing toolbox is available and MMM preferences request more than a single CPU core, the auxiliary figure will not appear. This also happens for a single model, if parallel computing was used before in the same Matlab instance. In that case, fit diagnostics can be visualized after completion of the fit by using the <code>D</code> button on the top left of the <code>Restraint matching</code> plot.
+</p>
+<p>
+<code># TIF</code>: Active space extension was optimized on a set of 18 structure pairs of proteins with between 100 and 1000 residues and different types of large-scale motion. The maximum number of normal modes in active space is specified by a threshold value for the normalized inverse frequency of the normal modes. The default value of 0.075, specified as <code>ENM_param.tif</code> in the subroutine <code>initialize_MMM.m</code> means that the maximum active space includes all modes whose inverse frequency is at least 0.075 time the inverse frequency of the slowest mode (or whose frequency is at most 13 1/3 as large as the one of the slowest mode). By specifying <code># TIF 0.05</code> active space would be more extended, by specififying <code># TIF 0.10</code> it would be less extended. Don't specify this parameter unless you have read and understood the paper on optimization of the algorithm.
+</p>
+<p>
+<code># MMAX</code>: Active space extension was optimized on a set of 18 structure pairs of proteins with between 100 and 1000 residues and different types of large-scale motion. By default the maximum active space extension is attained after 30 iteration steps, as specified in <code>ENM_param.mmax</code> in the subroutine <code>initialize_MMM.m</code>. By specifying <code># MMAX 20</code> active space becomes faster, by specififying <code># MMAX 40</code> it becomes slower. Don't specify this parameter unless you have read and understood the paper on optimization of the algorithm.
+</p>
+<p>
+<code># END</code>: Make it your practice to always conclude a constraint file with the <code># END</code> keyword. The current version may work if you forget this, but we do not guarantee that this will also be the case in future versions of MMM.
+</p>
+<h4>Example constraint file</h4>
+<p>
+<code>
+% Experimental DEER restraints for ATP-EDTA form of MalFGK2 (MalE and maltose present)
+</code><p><code>
+# PDB	2R6G
+</code><p><code>
+# basis 10
+</code><p><code>
+# DEER	MTSL	175
+</code><p><code>
+(F)92	(F)205	4.05	2.12		% Grote et al., 2009, JBC, 284, 17521-68 
+</code><p><code>
+(F)205	(F)252	1.48	0.76		% Grote et al., 2009, JBC, 284, 17521-68 
+</code><p><code>
+(F)205	(F)239	2.38	0.49		% Grote et al., 2009, JBC, 284, 17521-68 
+</code><p><code>
+(F)239	(F)252	1.98	0.48		% Grote et al., 2009, JBC, 284, 17521-68
+</code><p><code>
+...
+</code><p><code>
+# direct
+</code><p><code>
+(F)406	(G)195	3.84	1.00		% coupling helices
+</code><p><code>
+(F)399	(G)190	2.33	1.00		% coupling helices
+</code><p><code>
+(F)421	(G)210	1.81	1.00		% "gate" helices
+</code><p><code>
+# END
+</code>
+<p>
+</p>
+<a name="specify_ENM">
+<div class="subtitle">Specification of the elastic network model force constants</div>
+<p>
+The elastic network model force constants depend on distance between C<sup>&alpha;</sup> atoms. The form of this dependence and a cutoff distance 
+are different for different forms of the elastic network model. The default model of MMM is ed-ENM, which was fitted to 
+reproduce the protein flexibility observed in MD simulations (Orellana <i>et al.</i> 2010 <i>J. Chem. Theor. Comput.</i> 6:2910-2923). 
+Other possible choices are discussed in G. Jeschke 2012 <i>Z. Phys. Chem.</i> 226:1395-1414 
+(<a href="http://www.oldenbourg-link.com/doi/pdf/10.1524/zpch.2012.0289">link</a>). The type of ENM can be selected via the menu item <a href="menu_file.html#preferences">File/Preferences</a> 
+<i>before</i> opening the fit window.
+</p>
+<a name="limitations">
+<div class="subtitle">Limitations</div>
+<p>
+Computation of an <a href="ANM.html">ANM</a>, which is a required step in this fitting procedure, can fail for more than about 2000 residues in the structure due to memory limitations with a typical desktop or laptop computer at the time of writing. Use a computer with larger memory available to Matlab to avoid this problem.
+</p>
+<a name="wireframe">
+<div class="subtitle">C<sup>&alpha;</sup> wireframe model</div>
+<p>
+The left half of the ANM window contains the <code>State transition animation</code> panel for displaying a C<sup>&alpha;</sup> wireframe model for normal mode visualization. On opening of the window, the wireframe is colored according to <a href="commands.html#colorscheme">colorscheme chain</a>, i.e. different chains in a protein complex are distinguished by color. After a <a href="#constraints">constraint file</a> is loaded using the <code>Load constraints</code> button, the wireframe changes to neutral grey color and experimental distance constraints are visualized as color-coded connections between sites. Sites (currently only spin labels) are visualized as blue dots, connected by thin blue tether lines to the C<sup>&alpha;</sup> node of the corresponding residue in the wireframe model. The color code is green for experimental distances that are within the experimental (error) range around the distance in the current model. Directly after loading constraints, before fitting, the current model is the template structure. The color code is yellow for distances outside the error range but within twice this range and red for distances outside twice the range. An overview of <code>Constraint matching</code> information is given in the auxiliary plot in the right half of the window. Both plots can be copied into separate Matlab figures for copying or printing by clicking on the respective <code>C</code> buttons.
+</p>
+<p>
+The wireframe model display is linked to the full 3D model display of MMM. When you rotate the model in the 3D model window, the wireframe will rotate the same way (a copy in a separate Matlab figure window does not move along). The wireframe model is also used for animation of structural changes during the fit. This mode is available via the animation control panel after the fit was performed.
+</p>
+<a name="fitting">
+<div class="subtitle">Fitting</div>
+<p>
+Fitting is initiated by clicking the fit button. This button is enabled only after a <a href="#constraints">constraints 
+file</a> has been loaded. Fit progress is displayed in auxiliary Figure 1 (a normal Matlab figure) in terms of constraint r.m.s.d. in Å. The plot is updated after each iteration. If an ensemble model is computed and the parallel computing toolbox is available and MMM preferences request more than a single CPU core, the auxiliary figure will not appear. This also happens for a single model, if parallel computing was used before in the same Matlab instance. In that case, fit diagnostics can be visualized after completion of the fit by using the <code>D</code> button on the top left of the <code>Restraint matching</code> plot.
+</p>
+<p>
+Note also that the progress window appears only after initialization of the fit, which requires normal mode analysis of and <a href="ANM.html">anisotropic network model</a> and can take minutes to an hour. Each iteration takes the same time, hence you really have to be patient for large structures.
+</p>
+<p>
+Fitting normally stops when the constraint r.m.s.d. falls below 1.9 Å (if label-to-label constraints are present) or 0.2 Å (if only direct C<sup>&alpha;</sup>-C<sup>&alpha;</sup> distance constraints are present). For test and development purposes, fitting can be extended by activating the <code>overfit</code> checkbox at the bottom right of the window. 
+<p>
+If the <code>overfit</code> checkbox is activated, fits will continue until the constraint r.m.s.d. is lower than 0.2 Å (also for label-label constraints) or constraint r.m.s.d. converges (it reduces by less than 1% of the largest reduction in any iteration step, after such saturation, 10 more iteration cycles are performed). Fitting also invariably stops if the maximum number of iteration cycles (100, specified in <code>ENM_param.cycles</code> in subroutine <code>initialize_MMM.m</code>) is reached or if the maximum computation time (12 hours for a single model) is exceeded. If you run into a maximum computation time problem, you can change variable <code>maxtime</code> in routine <code>fit_by_ANM_transition.m</code> in the <code>\private</code> subdirectory of MMM (specified around line 153).
+<p>
+Note that overfitting has no effect on the model structure that is returned. This is always the structure that corresponds to the appropriate constraint r.m.s.d. threshold.
+</p>
+<a name="fit_options">
+<div class="subtitle">Fit options</div>
+<p>
+Except for the overfitting feature, which will not do any damage, only cost time, 
+choice of fit options is restricted to prevent inexperienced users from falling 
+into traps. Hence, the mode of mode recomputation during iterative fitting and 
+the choice of fit algorithm can only be changed if the lock in the main window 
+has been released (click the <img src="img/toolbar_lock.png" alt="(golden padlock)"> tool button) 
+<i>before</i> opening the <code>Fit from template/by Elastic network model</code> window.
+<p>
+A popup menu below the <code>Fit</code> button allows for changing the treatment 
+of modes and application of local constraints (expert mode). The default is mode 
+recomputation in each iteration step and not using local constraints for direct 
+and next neighbor residues (<code>recompute/no local constraints</code>). Mode 
+reorientation (<code>reorient</code>) is faster, but may compromise result quality. 
+Unless you understand the issue, keep with the defaults.
+<p>
+If you wish to work with the original Zheng/Brooks algorithm rather than with 
+thermal steps, you have to use the <code>recompute</code> mode (with local constraints) 
+for the normal modes and you have to use the <a href="#specify_ENM">ENM parametrization</a> by Jeschke that 
+additionally rigidifies local geometry. MMM will make these selections for you, 
+if you deactivate the checkbox <code>thermal</code>.
+</p>
+<p>
+The <code>use force field</code> option requires that <a href="third_party.html#scwrl4">SCWRL4</a> and <a href="third_party.html#tinker">Tinker</a> are on the 
+Matlab path. It has the advantage that in each step a full-atom model is created and locally 
+optimized. However, this does not appear to improve fit quality significantly and 
+it slows down fitting very strongly. Use of this option is currently discouraged. 
+The option is currently incompatible with parallel ensemble computing.
+If you want to use it, change the number of requested CPU cores in <a href="menu_file.html#preferences">File/preferences</a> to 1.
+</p>
+<a name="parallelization">
+<div class="subtitle">Parallel computing support</div>
+<p>
+For ensemble computations, parallel computing is offered if the Parallel Computing toolbox of Matlab is available. You can restrict the number of processor cores used by MMM in the <a href="menu_file.html#preferences">Preferences</a> window, accessible via the <code>File</code> menu, to allow for convenient working with your computer while MMM is performing time-consuming tasks. 
+If you do not have the Parallel Computing toolbox or only a single processor core, the ensemble is computed sequentially.
+</p>
+<a name="parametrization">
+<div class="subtitle">Param.</div>
+<p>
+The <code>Param.</code> button can be used to parametrize active mode extension on tests sets of structure pairs. This is a developer feature.
+</p>
+<a name="save">
+<div class="subtitle">Saving the coarse-grained fit result</div>
+<p>
+After fitting, the final coarse-grained model (C<sup>&alpha;</sup>) coordinates can be saved by clicking on the <code>Save</code> button. This feature is used only by programmers and may be removed or replaced in future versions. Fit results and displacement vectors for each fit step are automatically stored. The fit result is assigned a structure tag <code>tr<i>x</i></code>, where <i>x</i> is the next free structure number (<i>x</i>=2, if only the template structure was loaded and this is the first fit). When the whole model is saved from the <a href="menu_file.html#save_as">file menu</a> of the main window, the fit result is saved with the model. To generate a PDB file of the fit model, use <a href="menu_file.html#save_as_pdb">Save as PDB</a> in the file menu of the main window, after making <code>tr<i>x</i></code> (usually <code>tr2</code>) the current structure in the the <a href="hierarchy_window.html">hierarchy window</a>.  
+</p>
+<a name="animation">
+<div class="subtitle">Animation</div>
+<p>
+The animation shows how the fit proceeded from the template structure to the final structure. For a state transition of the protein, this should be a reasonable approximation of the transition pathway. Best results are obtained when the checkboxes <code>restraints</code> and <code>initial &amp; final</code> are unchecked. Default behavior is that wireframe is animated for 5 transitions forth and back between the template and final structure, seen from the same viewing perspective as the static model in the 3D model window. First the visualization is computed frame by frame, then it is played back by default for five full oscillations. The number of such cycles (oscillations) can be changed. </p>
+<p>
+The oscillation can be superimposed with rotation of the model about the <i>x</i> axis (along viewing direction, <or <i>z</i> axis (vertical axis in screen plane). A full rotation (360&deg;) is superimposed with the number of oscillation cycles requested. Note that computation of animations with superimposed rotation takes much longer, as with rotation frames for all oscillation cycles must be computed, while without rotation only frames for a single oscillation are computed.  
+</p>
+<p>
+You can choose between grey and black background with the <code>black bckg.</code> checkbox. Interactive animation is started by clicking on the <code>Animate</code> button. Note that the animation is not stored. It is recomputed when you click this button repeatedly, even if parameters are unchanged.
+</p>
+<a name="AVI">
+<div class="subtitle">Movie of an animation in AVI format</div>
+<p>
+You can produce and store a movie of an animation in AVI format by clicking the <code>Save AVI</code> button. The animation should be set up before (and preferably tested on screen) as <a href="#animation">described above</a>.
+<p>
+Quality of Matlab-generated AVI movies is rather low. The next version of MMM will allow for saving a trajectory as a PDB file with several models, for visualization in UCSF Chimera, or concatenated PDB files, for visualization in VMD. Both programs can create high quality movies.
+</p>
+
+<a name="close">
+<div class="subtitle">Closing the window</div>
+<p>
+By clicking the <code>Close</code> button below the wireframe model plot the window is closed. On reopening it will not appear in the same state and animation of a previous fit will no longer be possible (in the current version). Instead, the window reopens with the template structure displayed for a new fit.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2011.2, edited 2012/06/26</div>
+</body>
+</html>
+

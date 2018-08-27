@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Overview</title>
+</head>
+<body>
+
+<div class="pagetitle">Overview</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  &uarr;  |  &darr;  &bull; <a href="getting_started.html">Getting started</a> &bull; <A href="model_concept.html">Model concept</A>  &bull; <A href="object_concept.html">Object concept</A>  &bull; <A href="visualization.html">Visualization</A>  &bull; <A href="selection.html">Selection</A>  &bull; <A href="annotation_window.html">Annotation</A>  <p> &bull; <A href="spin_labeling.html">Spin labeling</A>  &bull; <A href="menu_predict.html">Prediction</A>  &bull; <A href="user_interface.html">User interface</A>  &bull; <A href="scripting.html">Scripting</A> &bull; <A href="changes.html">Change history</A> &bull; <A href="third_party.html">Third-party software</A>  &bull;<A
+href="license.html">License</A>
+</pre>
+
+<div class="subtitle">What is MMM?</div>
+<P>
+MMM is an open-source Matlab program for <a href="model_concept.html">multiscale modeling</a> of macromolecular systems, in particular proteins and protein complexes. <a href="model_concept.html#creating">Modeling in MMM</a> is based on experimental restraints, canonical bond lengths, bond angles and conformations of secondary structure elements, as well as structural homology. 
+</p>
+<p>
+Models consist of a hierarchical assembly of <a href="object_concept.html">objects</a> (structure elements) so that different parts of the structure can be represented with different resolution.
+</p>
+<p>
+MMM can also be used to inspect <a href="PDB_info.html">PDB files</a> for more than just the structural information.
+</p>
+<p>
+MMM communicates to you mainly via the <a href="message_board.html">message board</a> of the main window. Even if you work with another window, you should keep an eye on the message board. Occasionally MMM wants to be sure that you notice a warning or error message and will then pop up a message window.
+</p>
+<div class="subtitle">Basic functionality</div>
+<p>
+MMM also provides <a href="visualization.html">protein visualization</a> with (future) emphasis on structural disorder or uncertainty and systematic coarse graining. There is a number of possibilities to <a href="selection.html">select objects</a> for visualization and modeling.
+</p>
+<p>
+Models in MMM can be <a href="annotation_window.html">annotated</a> on the level of structure elements (objects), such as peptide chains, residues, or atoms and <a href=references.html>references</a> with full-text access information can be stored with the model and linked to structure elements. Structures can be <a href="analysis.html">analyzed</a> in terms of the structural context of objects, distances, angles, and dihedral angles.
+</p>
+<div class="subtitle">Special functionality</div>
+<p>
+Experimental data for several techniques, mainly electron paramagnetic resonance (EPR) techniques, can be predicted for a modelled structure. For that, <a href="spin_labeling.html">spin labels</a> can be attached to the protein using a rotamer library approach and favorable attachment sites can be predicted by scanning the whole protein. MMM also provides convenient access to servers for <a href="menu_predict.html">prediction</a> of secondary, tertiary, and quaternary structure, disorder and structural transitions.
+</p>
+<div class="subtitle">Fitting with distance constraints</div>
+<p>
+Conformational transitions can be fitted from spin label (or C<sup>&alpha;</sup>-C<sup>&alpha;</sup>) distance constraints and a PDB structure for the initial state by using an elastic network model. See <a href="fit_from_template.html">Fit from template</a>, which can be accessed from the <code>Build</code> menu.
+</p>
+<div class="subtitle">User interface</div>
+<p>
+The <a href="user_interface.html">user interface</a> of MMM consists of a main control window and optional windows for display of the three-dimensional structure and of the hierarchy of structural objects. Further windows open for specific tasks, such as spin labeling site scans or comparision of predicted with experimental distance distributions. Part of the functionality of MMM is available via a <a href="commands.html">command interface</a> and a <a href="scripting.html">script interpreter</a>.
+</p>
+<div class="subtitle">Help</div>
+<p>
+General help can be accessed via the menu and context-sensitive help for the current window via a help button <img src="img/helpicon.png" alt="(white question mark on green background)">.  
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2011.1, edited 2012/02/08</div>
+</body>
+</html>
+

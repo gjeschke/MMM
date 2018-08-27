@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Graphics mode</title>
+</head>
+<body>
+
+<div class="pagetitle">Graphics mode</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A> <A href="user_interface.html"> User interface </A> &uarr;  |  &darr;  </pre>
+
+<div class="subtitle">What can you do with the graphics mode window?</div>
+<p>
+This window allows to determine the appearance of the currently selected objects. If the selection contains <a href="object_concept.html">objects</a> on different hierarchy levels, individual graphics modes can be specified for these levels. This window also allows to display objects that are hidden by default, such as water molecules or electron spin positions of spin labels (<code>Auxiliary graphics</code>).
+</p>
+<p>
+If you do not want to reassign graphics modes, use the <code>Cancel</code> button. You can assign graphics modes without first selecting objects by using the <a href="commands.html#show">show command</a> in the <a href="command_line.html">command line</a>. The description of this command also explains the <a href="commands.html#show">graphics modes</a>.
+</p>
+<p>
+Specificiation of <code>None</code> as the graphics mode for a hierarchy level hides the selected objects on this level. This can also be achieved by the <a href="commands.html#hide">hide command</a>.
+</p>
+<a name="surfaces">
+<div class="subtitle">Surface display control</div>
+<p>
+If surfaces, e.g. density surfaces or solvent accessible surfaces (SAS) are defined, this window allows to control their display. The <code>Surfaces</code> popup menu then contains all available surfaces in a tag format <i>type</i>:<i>tag</i>, where <i>type</i> defines the type of surface, e.g. <code>density</code> or <code>SAS</code> and <i>tag</i> is the tag given by the user when importing or generating the underlying data (importing a density cube or computing the SAS).
+<p>
+When an item in this popup menu is selected, the state of the <code>active</code> checkbox right from the popup menu indicates the current display status. Activate this checkbox to display or deactivate it to hide the surface. Surfaces are redisplayed (fast) without computation.
+</p>
+<p>
+If no surfaces are defined, the popup menu and checkbox are disabled.
+</p>
+</p><div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/12/01</div>
+</body>
+</html>
+

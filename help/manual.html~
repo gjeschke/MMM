@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Manual</title>
+</head>
+<body>
+
+<div class="pagetitle">MMM Version 2013.2</div>
+
+<p>
+<div class="subtitle">Multiscale modeling of macromolecular systems</div>
+<p>
+<div class="subsubtitle">Yevhen Polyhach and Gunnar Jeschke, with design support by Enrica Bordignon, ETH Zurich; Stefan Stoll, University of Washington</div>
+<p>
+An open-source program for visualization, inspection, and improvement of models of proteins and protein assemblies based on restraints from multiple experimental techniques.
+<p>
+<img src="cover_2013_2.jpg" width="643" height="483" alt="cover picture missing">
+</p>
+<div class="subsubtitle">Front cover</div>
+<p>
+The picture shows ambiguous localization of a spin-labeled lipid in lipoxygenase with only three DEER distance constraints (top left), a label-to-label network based on 15 DEER distance constraints for lipoxygenase (top right), and mock rigid-body docking of two fragments of T4 lysozyme with 14 DEER distance constraints (left) and comparison with the true T4 lysozyme structure (right). Experimental data are from the groups of Gaffney, Freed, and Mchaourab. See <a href="changes.html#2013.1.new">changes in version 2013.2</a> for a short description of these new functions.
+</p>
+<p>
+The corresponding model can be found in the <code>demo</code> directory of MMM.
+</p>
+<div class="subtitle">Preface</div>
+<p>
+This manual is an automatic compilation of MMM help files and is provided for overview. The PDF version shows links in blue color, but these links are not active. Please use the on-line help if you want to browse via the links. Links to other help files were converted into cross references to subsections or subsubsections (e.g., <i>Section 3.2</i> or <i>Section 1.2.12</i>). Subsections and subsubsections correspond to individual help pages. Sections (e.g., 1 General) group help pages. Links to different paragraphs in the same help file do not result in cross references in this manual.
+</p>
+</body>
+</html>
+

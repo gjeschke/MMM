@@ -1,0 +1,12 @@
+% Localization test restraints for SBL1 with respect to lipoxygenase structure 1YGE
+% Restraints from B. J. Gaffney, M.D. Bradshaw, J. Freed, P. Borbat, Biophys. J. 2012, 103, 2134-2144
+# PDB 1YGE % this file needs to be loaded into MMM before selecting localization
+# ENSEMBLE 20 3
+# OUTPUT Gaffney_SBL1
+# LOCATE SBL1 0.5 MTSL 175 nodes
+270	2.30	0.45
+480	4.30	0.45
+569	3.80	0.45
+619     4.70    0.45
+% 782	3.75    0.45
+# END

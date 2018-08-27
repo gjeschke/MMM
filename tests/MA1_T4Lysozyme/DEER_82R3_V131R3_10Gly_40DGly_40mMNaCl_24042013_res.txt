@@ -1,0 +1,30 @@
+>>> DEER analysis of data set: DEER_82R3_V131R3_10Gly_40DGly_40mMNaCl_24042013 <<<
+- Tikhonov regularization with L curve computation -
+
+### Description of data set ###
+Source file:
+E:\projects\rotamers_UFF\validation\82-131lyso_Gunnar_nitroxides\MAP-R3-\DEER_82R3_V131R3_10Gly_40DGly_40mMNaCl_24042013.DTA
+Constant-time DEER. 604 complex data points
+
+### Pre-processing ###
+Time shift: 126 ns
+Cutoff at : 4200 ns
+Phase correction: -11.0°
+Homogeneous 3 dimensional background correction
+Starting at : 584 ns
+r.m.s. error of baseline fit:  0.007293
+Background density:  0.093
+
+### Distance distribution ###
+Number of spins: 2.09
+r.m.s. error of fit:  0.002390
+Range of interest from  1.50 to  8.00 nm
+Mean distance  <r>  3.34 nm
+Std. dev. sigma(r)  0.43 nm
+3rd moment         -0.04 nm
+Regularization parameter: 10
+
+### Extra fit output ###
+Data observations      : 526
+Eff. fitted parameters : 261
+Eff. degrees of freedom: 265

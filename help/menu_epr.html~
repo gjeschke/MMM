@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Menu/EPR</title>
+</head>
+<body>
+
+<div class="pagetitle">Menu/EPR</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  <A href="user_interface.html"> User interface </A> <A href="main_window.html"> Main window </A> <A href="menu.html"> Menu </A> &uarr;  |  </pre>
+
+<div class="subtitle">Site scan</div>
+<h4>selected chains or current chain</h4>
+<p>
+Scans selected chains for spin labeling sites that are favourable for accessibility or distance measurements. See also <a href="spin_labeling.html">spin labeling</a>. Note that a site scan can take hours to complete. The results are stored with the model and a report is stored as an HTML file and opened in a Matlab browser. The structure remains unchanged, i.e., labels are not actually attached.
+</p>
+<h4>selected residues</h4>
+<p>
+Computes rotamers of a spin label for all currently selected residues. See also <a href="spin_labeling.html">spin labeling</a>. Note that a site scan takes 1-2 minutes per selected residue. The results are stored with the model and a report is stored as an HTML file and opened in a Matlab browser. The structure remains unchanged, i.e., labels are not actually attached.
+</p>
+<div class="subtitle">Label</div>
+<p>
+Spin-label selected residues. All rotamers with sufficiently low energy will be attached as alternate locations. Computation of the rotamers takes a minute or several minutes per residue. Label type and experimental conditions are specified in the <a href="spin_labeling.html">labeling window</a>. If rotamers were previously computed in a site scan, labeling takes only seconds rather than minutes.
+</p>
+<div class="subtitle">DEER</div>
+<p>
+Predict distance distributions between labelled sites and DEER data. Predictions can be superimposed with experimental data. For this to make sense at least two residues must have been spin-labelled in the same structure. See <a href="deer_window.html">DEER window</a> for further explanation. 
+</p>
+<a name="accessibility">
+<div class="subtitle">Accessibility</div>
+<p>
+Predicts accessibility measures for water, oxygen, or NiEDDA for a spin-labelled site. Previous computation of spin label rotamers by a <a href="spin_labeling.html#site_scan">spin-labeling site scan</a> is required.
+Unless accessibility is computed for only a single site, <i>labels should not be attached</i>. Otherwise neighboring spin labels may block access to the spin label under consideration, which would be observed in experiments on a singly labelled sample. 
+<a name="water_accessibility">
+<div class="subsubtitle">water</div>
+<p>
+This predicts a deuterium three-pulse ESEEM accessibility parameter, as defined in:
+<p>
+A. Volkov,  C. Dockter, T. Bund, H. Paulsen, G. Jeschke, Biophys. J., 96, 1124-1141 (2009)
+<p>
+Two files are created in the temporary directory <code>MMM\tmp</code>, a detailed report <code>label_accessibility.dat</code> with information on accessibility of individual rotamers of all labels
+and a summary report <code>avg_label_accessibility.dat</code> on average accessibility of each label. The summary report is displayed in the <a href="report_editor.html">report editor</a>.
+The underlying approach will be described in a forthcoming paper.
+</p>
+<a name="oxygen_accessibility">
+<div class="subsubtitle">oxygen</div>
+<p>
+This predicts an oxygen accessibility parameter, with parametrization based on computations for a spin-labeled WALP-23 peptide and experimental data from:
+<p>
+R. D. Nielsen et al. JACS 2005, 127, 6430-6442.
+<p>
+Two files are created in the temporary directory <code>MMM\tmp</code>, a detailed report <code>label_accessibility.dat</code> with information on accessibility of individual rotamers of all labels
+and a summary report <code>avg_label_accessibility.dat</code> on average accessibility of each label. The summary report is displayed in the <a href="report_editor.html">report editor</a>.
+The underlying approach will be described in a forthcoming paper.
+</p>
+<a name="NiEDDA_accessibility">
+<div class="subsubtitle">NiEDDA</div>
+<p>
+This predicts a NiEDDA accessibility parameter, with parametrization based on computations for T4 lysozyme mutants, corresponding to experimental data from:
+<p>
+C. Altenbach et al. Biophys. J. 2005, 89, 2103-2112.
+<p>
+Two files are created in the temporary directory <code>MMM\tmp</code>, a detailed report <code>label_accessibility.dat</code> with information on accessibility of individual rotamers of all labels
+and a summary report <code>avg_label_accessibility.dat</code> on average accessibility of each label. The summary report is displayed in the <a href="report_editor.html">report editor</a>.
+The underlying approach will be described in a forthcoming paper.
+</p>
+<a name="ENDOR">
+<div class="subtitle">P-31 Mims ENDOR</div>
+<p>
+Predicts <sup>31</sup>P Mims ENDOR spectra for a spin label attached to a protein near or within a lipid bilayer or for structures with phosphorous atoms (e.g. protein-DNA and protein-RNA complexes or spin-labeled DNA/RNA.
+See description of the <A href="ENDOR_window.html">ENDOR window</A>.
+</p>
+<p>
+The lipid bilayer model is based on DPPC parameters in:
+<p>
+N. Kucerka et al., Biophys. J. 2008, 95, 2356-2367.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2010, edited 2010/12/16</div>
+</body>
+</html>
+

@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Menu/Analysis</title>
+</head>
+<body>
+
+<div class="pagetitle">Menu/Analysis</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  <A href="user_interface.html"> User interface </A> <A href="main_window.html"> Main window </A> <A href="menu.html"> Menu </A> &uarr;  |  </pre>
+
+<a name="context">
+<div class="subtitle">Context</div>
+<p>
+Explore the context of a selected object (other objects on the same hierarchy level that are in the vicinity). This menu item is only enabled if a single object is selected. The context radius to explore can be input, a default value is suggested that depends on the type of object (chain, residue, atom). The information is displayed in the message board.
+</p>
+<p>
+Note that context information with the default radius is also accessible via the annotation button (white "i" on green background) or the "Annotation" item in the <a href="menu_edit.html">edit menu</a>. 
+</p>
+<a name="distance">
+<div class="subtitle">Distance</div>
+<p>
+Displays the distance between two selected objects in the message board. For objects larger than atoms, the distance between mean coordinates is displayed. The item is only enabled if two objects are selected.
+</p>
+<a name="angle">
+<div class="subtitle">Angle</div>
+<p>
+Displays the angle between three selected objects (at the second object) in the message board. For objects larger than atoms, the angle between mean coordinates is displayed. The item is only enabled if three objects are selected.
+</p>
+<a name="dihedral">
+<div class="subtitle">Dihedral</div>
+<p>
+Displays the dihedral (torsion) angle for four selected objects in the message board. For objects larger than atoms, the dihedral angle between mean coordinates is displayed. The item is only enabled if four objects are selected.
+</p>
+<a name="alignment">
+<div class="subtitle">Sequence alignment</div>
+<p>
+This uses <a href="third_party.html#MUSCLE">MUSCLE</a> AND requires that two chains are selected. For example, load PDB structures 1OMP and 2HQ0 and select chain A of each structure in the <a href="hierarchy_window.html">Hierarchy window</a> or by the command
+</p>
+<p>
+<code>select [1OMP,2HQ0](A)</code>
+</p>
+<p>
+Now use the <code>Analysis/Sequence alignment</code> menu item to see the alignment in a report editor in Clustal format. The result may differ from a ClustalW result, since the algorithm is different. Currently, only pairwise alignment is supported.
+</p>
+<a name="ramachandran">
+<div class="subtitle">Ramachandran plot</div>
+<p>
+Compare backbone dihedrals &phi and &psi with expectations from residue-specific Ramachandran plots (not yet implemented).
+</p>
+<a name="contacts">
+<div class="subtitle">Contacts and clashes</div>
+<p>
+Analyze the model for contacts and clashes. The following subitems exist.
+</p>
+<a name="crystal_scwrl4">
+<div class="subsubtitle">Crystal contacts (SCWRL4)</div>
+<p>
+Based on the assumption that significant crystal contacts tend to change packing preferences of side chains. Two copies of the current structure are created. 
+In the first copy, side chains are repacked with SCWRL4 without considering crystal environment. In the second copy, they are repacked considering this environment (note that SCWRL4 does <ii>not</i> consider cofactors, non-native amino acids and nucleic acids in neighboring unit cells).
+A ribbon model of the first copy is shown and <a href="commands.html#colorscheme">colorscheme</a> <code>difference</code> is applied to visualize residue-by-residue differences between the first and second copy.
+Parts of the structure where sidechain rotamers are unaffected by the crystal environment are blue, residues with sidechain r.m.s.d. larger than 3 Å between rotamers with and without crystal environment are shown red.
+For sidechain r.m.s.d. between 0 and 3 Å, a rainbow color grading with 20 steps is applied. Residues with r.m.s.d. larger than 0.2 Å are reported in the Message board. Use the <code>Show log</code> button in the main window to inspect this list (or save a copy).
+Significant packing effects are those where several nearby residues repack. 
+</p>
+<p>
+This feature requires that <a href="third_party.html#SCWRL4">SCWRL4 from Dunbrack's lab</a> is installed.
+</p>
+<p>
+Do not apply any coordinate transformations (<code>Center</code>, <code>Symmetry</code>, <code>Transform to viewing frame</code>, definition of transmembrane domains or lipid bilayers) before trying to analyze crystal contacts. MMM does not transform the unit cell definition, hence the results would be wrong. To avoid this, unit cell information is removed on coordinate transformations.
+</p>
+<a name="crystal_CryCo">
+<div class="subsubtitle">Crystal contacts (CryCo server)</div>
+<p>
+If the current structure is a native PDB structure (with valid PDB identifier), this calls the CryCo server at Weizmann Institute with this PDB identifier. The homepage of this server is self-explaining and has its own visualization capabilities. CryCo is based on distance analysis. 
+</p>
+<a name="CSU">
+<div class="subsubtitle">Contacts of structural units</div>
+<p>
+If the current structure is a native PDB structure (with valid PDB identifier), this calls the CSU server at Weizmann Institute with this PDB identifier. The homepage of this server is self-explaining and has its own visualization capabilities. 
+</p>
+<p>
+Note that unlike CryCo, CSU can also be used with modified structural models. Save your model as a PDB file, using the <a href="menu_file.html#save_pdb">File/Save PDB as..</a> menu item and upload it on the CSU server.
+</p>
+<a name="accessibility">
+<div class="subtitle">Accessibility</div>
+<p>
+Analyze the current structure for accessibility of residues and cofactors to solvents. This requires that <a href="third_party.html#MSMS">MSMS by Michel Sanner</a> is installed.
+</p>
+<p>
+If any structures, chains, chain models (coordinate set) or residues/cofactors are selected, the analysis is performed for all selected residues/cofactors and all residues/cofactors in selected objects. If nothing is selected, the analysis is performed for the current chain in the current structure. A query dialog window opens that allows to specify the effective radius for the solvent molecule (radius of the probe sphere). The default value is 1.5 Å for water.
+</p>
+<p>
+The solvent accessible surface (SAS) is given as a polyhedron with triangular faces. For each residue or cofactor, the total surface accessibility in Å<sup>2</sup> is computed by summing the area of all triangular faces that are in contact with the residue. If some atoms have alternate locations, only the first location of the atom is considered. For spin-labeled residues in particular, this means that the total surface accessibility of the leading rotamer (the one with the highest population) is computed. To compute spin label accessibilities that refer to the N-O group and the whole rotamer ensemble, use the <a href="menu_epr.html#accessibility">EPR/Accessibility</a> menu item instead.
+</p>
+<p>
+For native amino acid residues, the relative accessibility is also computed as the ratio between the accessible surface and total surface of the amino acid (total surface area values are from D. Whitford, Proteins. Structure and Function, John Wiley & Sons, Chichester (2005), Table 2.2 and refer to the residue X in a G-X-G tripeptide). For non-native amino acids, such as spin-labeled residues, or cofactors the relative accessibility is specified as -1.
+</p>
+<p>
+Results are written to a plain text (ASCII) file <code>accessibility.dat</code> in the temporary directory. This file is automatically opened in the <a href="report_editor.html">report editor</a>. It starts with three comment lines (first character is %) that explain the content. The following lines contain two numerical values, the total accessibility in Å<sup>2</sup> and the relative accessibility, followed by a % character and the residue address in <a href="addressing.html">MMM address format</a>.
+</p>
+<p>
+If you want to store the results for later use, please save them to another directory. The temporary directory is regularly cleaned.
+</p>
+<a name="sites">
+<div class="subtitle">Sites</div>
+<p>
+Inspect, edit or newly define binding sites via the <a href="sites_window.html">sites window</a>.
+</p>
+<a name="fom">
+<div class="subtitle">Model comparison</div>
+<p>
+For a structural transition starting from an initial structure, a figure of merit for two alternative models is computed
+ by comparing the two models and comparing each of them to the initial structure. A figure of merit of 1 indicates perfect agreement,
+ a figure of merit larger of 1/3 reasonable agreement. Please also compare models visually, using the <a href="commands.html#motion">motion command</a>.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2013, edited 2013/01/16</div>
+</body>
+</html>
+

@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <link rel="shortcut icon" href="MMM_logo.png">
+   <link rel="stylesheet" type="text/css" href="helpstyle.css">
+   <title>MMM: Substructure addressing</title>
+</head>
+<body>
+
+<div class="pagetitle">Substructure addressing</div>
+
+<div class="subsubtitle">Hierarchical links</div>
+
+<pre class="links">
+<A href="overview.html"> Overview </A>  &bull; <A href="object_concept.html">Object concept</A> &bull; <A href="addressing.html">Addressing</A> &uarr;  |  &darr;   
+</pre>
+<div class="subtitle">Preface</div>
+<p>
+While <a href="addressing.html">general addressing</a> is fully defined by the chemical structure of a macromolecule or macromolecular complex, addressing of substructures (secondary structure elements and domains) depends on definitions of these substructures. Such definitions are usually subjective. Hence, general addressing is robust: it always returns the same objects in the same structure. In contrast, assignment of substructures may change, i.e., different scientists may have different opinions about which residues belong to a certain helix and even whether this is a continuous helix or a helix-loop-helix domain. Hence, substructure addressing is not robust. 
+</p>
+<p>
+As far as possible analysis and manipulation of a model should thus be performed by general addressing. However, multiscale modeling in general and certain types of coarse graining in particular require definitions of substructures. It is strongly recommended, although not mandatory, to collect all substructure definitions in an <a href="initialization_script.html">initialization script</a> and to renounce interactive reassignments of substructures. To protect the user from inadvertent redefinition of substructures, assignments of secondary structure and domains are locked and the lock needs to be explicitly removed before redefinition.
+</p>
+<div class="subtitle">Secondary structure addressing</div>
+<p>
+Internally MMM treats secondary structure elements as a special type of a domain. A domain is a set of residues. Different from other domains, secondary structure elements are defined by default when reading a PDB file and allow for internal addressing of residues. Address format: 
+<p>
+[<i>structure</i>](<i>chain</i>){<i>coordinate set</i>}<<i>type</i>.<i>tag</i>><i>relative residue number</i>.<i>atom</i>:<i>location</i>  
+</p>
+<p>
+Parts of the address may be missing, as explained for <a href="adressing.html">general addressing</a>.
+<ul>
+<li> <i>type</i>- type of the secondary structure element, <code>H</code> for helix, <code>E</code> for strand (part of a sheet), <code>L</code> for loop
+<li> <i>tag</i>- identifier for the secondary structure element. For default definitions this is a number, any tag can be defined by the user
+</ul>
+<h4>Remarks:</h4>
+<p>
+Currently MMM does not distinguish between different types of helices and strands. However, all types defined in the dictionary of secondary structure of proteins (DSSP, W. Kabsch, C. Sander, <b>1983</b>, <i>Biopolymers</i>, 22: 2577-2637) are reserved.
+</p>
+<p>
+If an atomistic structure exists, there is often an established nomenclature of helices, strands/sheets and loops, given in the paper that explains this structure. Information on this nomenclature and proper assignment of secondary structure is usually missing in the PDB file. It is strongly recommended to implement these established definitions in an <a href="initialization_script.html">initialization script</a> that is read by MMM whenever this PDB structure is loaded.
+</p>
+<p>
+Residue numbers are relative to the first residue in the secondary structure element. Be aware that this may cause problems if the length of a secondary structure element is redefined.
+</p>
+<h4>Examples:</h4>
+<p>
+<code>[2BHW](A)&lt;H.2&gt;3.CA</code>
+</p>
+<p>
+addresses the C<sup><smaller>&alpha<larger></sup> atom of the third residue in the second helix of chain A of structure 2BHW. This works immediately after reading the PDB file.
+</p>
+<p>
+<code>[2BHW](A)&lt;H.B&gt;3.CA</code>
+<p>
+the same as above, but assuming now that a nomenclature of helices was established where the second helix is termed helix B. This works only if an initialization script was read or if helix B was defined by a command.
+</p>
+<a name="defaults">
+<div class="subtitle">Domain addressing</div>
+<p>
+A domain is defined as a set of residues that are functionally related or can move as a whole with respect to other parts of a macromolecule or macromolecular complex. The definition is done by a <a href="commands.html">command</a> or a series of commands in an <a href="initialization_script.html">initialization script</a>. Such commands can also be performed during interactive work with MMM, but this is strongly discouraged.
+</p>
+<p>
+Domains do not have a substructure, i.e., they can only be addressed as a whole.
+<p>
+<h4>Address format:</h4>
+<p>
+[<i>structure</i>]|<i>domain</i>|
+</p>
+where <i>domain</i> is the identifier (tag) of a domain that was defined previously.
+<h4>Example:</h4>
+<p>
+<code>[1ZCD]|translocation|</code>
+</p>
+<p>
+addresses the substrate translocation domain in the structure with PDB identifier 1ZCD.
+</p>
+<div class="subsubtitle">Version</div>
+<div class="comment">version 2009.1, edited 2009/09/26</div>
+</body>
+</html>
+
