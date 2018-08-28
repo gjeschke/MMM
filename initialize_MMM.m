@@ -36,13 +36,6 @@ global Modeller_info
 global LJ
 global uff
 
-matlab_version = version;
-if str2double(matlab_version(1:3)) >= 8.4
-    new_graphics = true;
-else 
-    new_graphics = false;
-end
-
 warning('off','MATLAB:HandleGraphics:ObsoletedProperty:JavaFrame');
 warning('off','MATLAB:hg:uicontrol:SingleLineEditCannotHaveMultiLineText');
 model=[];
@@ -162,22 +155,14 @@ load definitions/colors
 load definitions/LJ_charmm27
 
 graph_settings.scroll_speed=0.02; % speed of zooming with the scroll wheel
-graph_settings.max_full_objects=1000;    % maximum atom graphics objects
-                                         % before MMM suppresses atoms
-                                         % in rotate, zoom, and pan
-graph_settings.max_reduced_objects=2500; % maximum reduced atom graphics 
-                                         % before MMM suppresses reduced
-                                         % atom display in rotate, zoom,
-                                         % and pan
-if new_graphics,
-    graph_settings.max_full_objects=10000;    % maximum atom graphics objects
-                                             % before MMM suppresses atoms
-                                             % in rotate, zoom, and pan
-    graph_settings.max_reduced_objects=25000; % maximum reduced atom graphics 
-                                             % before MMM suppresses reduced
-                                             % atom display in rotate, zoom,
-                                             % and pan
-end;
+graph_settings.max_full_objects=10000;    % maximum atom graphics objects
+                                          % before MMM suppresses atoms
+                                          % in rotate, zoom, and pan
+graph_settings.max_reduced_objects=25000; % maximum reduced atom graphics 
+                                          % before MMM suppresses reduced
+                                          % atom display in rotate, zoom,
+                                          % and pan
+
 graph_settings.az=49; % standard 3D view on loading protein
 graph_settings.el=26;
 graph_settings.colors=colors;

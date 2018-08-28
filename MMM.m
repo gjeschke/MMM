@@ -56,6 +56,11 @@
 %
 % 2010     GJ      Initial release
 
+% Abort if MATLAB version is too old
+if verLessThan('matlab','8.4')
+  error('MMM requires MATLAB version R2014b (8.4) or later.')
+end
+
 h=figure;
 set(h,'NumberTitle','off');
 set(h,'Name','Loading MMM...');

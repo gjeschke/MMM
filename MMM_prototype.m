@@ -68,7 +68,6 @@ global general
 
 initialize_MMM
 
-
 set(handles.MMM,'Name',MMM_info.title);
 set(handles.MMM,'WindowStyle','normal');
 
@@ -137,6 +136,9 @@ hMain.view_memory_camproj=get(hMain.axes_model,'Projection');
 session_start=datestr(now,'yyyy-mm-dd_HH-MM-SS');
 defname=sprintf('MMM_%s.log',session_start);
 pathname=strcat(rootdir,'tmp/');
+if ~isdir(pathname)
+  mkdir(pathname)
+end
 hMain.logfile=strcat(pathname,defname);
 if get(handles.checkbox_log,'Value'),
     fid=fopen(hMain.logfile,'w');
