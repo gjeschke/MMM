@@ -85,9 +85,9 @@ hMain.color='black';
 hMain.store_undo=1;
 hMain.history_num=20;
 hMain.depth_cue=0;
-for k=1:hMain.history_num, hMain.history{k}=''; end;
-for k=1:hMain.history_num, hMain.undo{k}=''; end;
-for k=1:hMain.history_num, hMain.redo{k}=''; end;
+for k=1:hMain.history_num, hMain.history{k}=''; end
+for k=1:hMain.history_num, hMain.undo{k}=''; end
+for k=1:hMain.history_num, hMain.redo{k}=''; end
 hMain.history_poi=1;
 hMain.edit_poi=1;
 hMain.undo_poi=1;
@@ -140,14 +140,14 @@ if ~isdir(pathname)
   mkdir(pathname)
 end
 hMain.logfile=strcat(pathname,defname);
-if get(handles.checkbox_log,'Value'),
+if get(handles.checkbox_log,'Value')
     fid=fopen(hMain.logfile,'w');
     fprintf(fid,'--- MMM logfile %s ---\n\nver> %s, %s\n',defname,MMM_info.title,MMM_info.date);
     [comp,maxsize]=computer;
     fprintf(fid,'env> running on Matlab version %s on %s\nenv> with %g MByte maximum array size.\n',version,comp,maxsize/1e6);
     fclose(fid);
     diary(hMain.logfile);
-end;
+end
 
 add_msg_board('MMM initalized');
 
@@ -159,28 +159,28 @@ set(handles.pushbutton_main_help,'CData',cdata);
 
 tmp_check;
 
-if ~third_party.msms,
+if ~third_party.msms
     set(handles.menu_EPR_access,'Enable','off');
     set(handles.menu_analysis_accessibility,'Enable','off');
     set(handles.menu_build_SAS,'Enable','off');
     set(handles.menu_build_bilayer,'Enable','off');
-end;
+end
 
-if ~third_party.scwrl4,
+if ~third_party.scwrl4
     set(handles.menu_build_repair,'Enable','off');
     set(handles.menu_build_sidechains,'Enable','off');
     set(handles.menu_biochem_mutate,'Enable','off');
     set(handles.menu_analysis_crystal,'Enable','off');
-end;
+end
 
-if ~third_party.dssp,
+if ~third_party.dssp
     set(handles.menu_build_secondary,'Enable','off');
-end;
+end
 
-if ~third_party.modeller,
+if ~third_party.modeller
     set(handles.menu_build_repair_gaps,'Enable','off');
     set(handles.menu_build_fit_Modeller,'Enable','off');
-end;
+end
 
 
 
@@ -222,7 +222,7 @@ switch command
         handles=redo(handles);
     otherwise
         handles=cmd(handles,command_line);
-end;
+end
 set(hObject,'String','');
 guidata(hObject, handles);
 
@@ -266,9 +266,9 @@ switch eventdata.Key
     case 'uparrow'
         command=hMain.history{hMain.edit_poi};
         hMain.edit_poi=hMain.edit_poi-1;
-        if hMain.edit_poi<1,
+        if hMain.edit_poi<1
             hMain.edit_poi=hMain.history_num;
-        end;
+        end
         set(hObject,'String',command);
     case 'downarrow'
         if ~isempty(eventdata.Modifier)
@@ -276,12 +276,12 @@ switch eventdata.Key
         else
             command=hMain.history{hMain.edit_poi};
             hMain.edit_poi=hMain.edit_poi+1;
-            if hMain.edit_poi>hMain.history_num,
+            if hMain.edit_poi>hMain.history_num
                 hMain.edit_poi=1;
-            end;
-        end;
+            end
+        end
         set(hObject,'String',command);
-end;
+end
 
 % --- Executes on button press in button_cam_zoom_out.
 function button_cam_zoom_out_Callback(hObject, eventdata, handles)
@@ -314,7 +314,7 @@ if hMain.detached
     fig=hModel.figure;
 else
     fig=hMain.figure;
-end;
+end
 
 set(handles.uitoggletool_rotate,'State','on');
 set(handles.uitoggletool_zoom,'State','off');
@@ -342,7 +342,7 @@ if hMain.detached
     fig=hModel.figure;
 else
     fig=hMain.figure;
-end;
+end
 
 set(handles.uitoggletool_rotate,'State','off');
 set(handles.uitoggletool_zoom,'State','on');
@@ -472,9 +472,9 @@ set(gcf,'Pointer','watch');
 drawnow;
 snum=model.current_structure;
 [msg,coor]=get_object(snum,'xyz');
-if iscell(coor),
+if iscell(coor)
     coor=coor{1};
-end;
+end
 center=mean(coor,1);
 % center = center - [20,20,20]; % hack for shifting
 transmat=affine('translation',-center);
@@ -505,32 +505,32 @@ drawnow;
 snum=model.current_structure;
 
 [p0,v,msg]=symmetry_axis;
-if ~isempty(p0) && ~isempty(v),
-    if msg.error,
+if ~isempty(p0) && ~isempty(v)
+    if msg.error
         add_msg_board(msg.text);
-    end;
+    end
     v=v/norm(v);
     th=acos(v(3));
-    if norm(v(1:2))>1e-6,
+    if norm(v(1:2))>1e-6
         v=v(1:2)/norm(v(1:2));
     else
         v=[0,0];
-    end;
+    end
     phi=atan2(v(2),v(1));
     transmat1=affine('translation',-p0);
     transmat2=affine('Euler',[-phi,-th,0]);
     transform_structure(snum,{transmat1,transmat2});
     [msg,coor]=get_object(snum,'xyz');
-    if iscell(coor),
+    if iscell(coor)
         coor=coor{1};
-    end;
+    end
     center=mean(coor,1);
     transmat=affine('translation',-center);
     transform_structure(snum,transmat);
     display_model(handles, hObject);
 else
     add_msg_board('Selected objects do not define a symmetry axis or nothing selected.');
-end;
+end
 
 guidata(handles.axes_model,hMain);
 set(gcf,'Pointer','arrow');
@@ -544,30 +544,30 @@ function menu_edit_domain_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 [indices,msg]=resolve_address('*');
-if msg.error>0,
+if msg.error>0
     add_msg_board('Domain definition requires selection of residues');
     add_msg_board(sprintf('ERROR: %s',msg.text));
     return;
-end;
-if isempty(indices),
+end
+if isempty(indices)
     add_msg_board('Domain definition requires selection of residues');
     add_msg_board('ERROR: No object selected.');
     return;
-end;
+end
 [m,n]=size(indices);
 fail=0;
-for k=1:m,
+for k=1:m
     cindices=indices(k,:);
     cindices=cindices(cindices>0);
-    if length(cindices)~=4,
+    if length(cindices)~=4
         fail=1; break;
-    end;
-end;
-if fail,
+    end
+end
+if fail
     add_msg_board('Domain definition requires selection of residues');
     add_msg_board('ERROR: Objects other than residues are selected.');
     return;
-end;
+end
 
 name=inputdlg('Domain name','Domain definition from selected objects');
 
@@ -597,20 +597,20 @@ function menu_file_load_Callback(hObject, eventdata, handles)
 global model
 
 doit=0;
-if ~exist('model','var') || isempty(model),
+if ~exist('model','var') || isempty(model)
     doit=1;
 else
     button = questdlg('Do you want to delete old model?','New model will overwrite existing model','No');
     if strcmpi(button,'Yes')
         doit=1;
-    end;
-end;
+    end
+end
 
-if doit,
+if doit
     open_model(hObject, eventdata, handles);
 else
     add_msg_board('Opening new model cancelled by user');
-end;
+end
 
 add_msg_board('Model loaded.');
 drawnow
@@ -751,15 +751,15 @@ cd(general.pdb_files);
 
 set(gcf,'Pointer','watch');
 
-if isempty(model.current_structure) || (model.current_structure<1),
+if isempty(model.current_structure) || (model.current_structure<1)
     add_msg_board('### ERROR ### No structure available');
     guidata(hObject,handles);
     return;
 else
     idCode=model.info{model.current_structure}.idCode;
-    if isempty(idCode), idCode='AMMM'; end;
+    if isempty(idCode), idCode='AMMM'; end
 %    idCode(1)=char(idCode(1)+16);
-end;
+end
 default_name=sprintf('%s.pdb',idCode);
 
 [filename, pathname] = uiputfile(default_name, 'Save current structure as PDB');
@@ -777,9 +777,9 @@ end
 
 set(gcf,'Pointer','arrow');
 
-if message.error,
+if message.error
     add_msg_board(message.text);
-end;
+end
 
 cd(my_path);
 
@@ -877,7 +877,7 @@ else
     general.scripts=pname;
     cd(currdir);
     handles=run_script(handles,fullfile(pname,fname));
-end;
+end
 cd(currdir);
 guidata(hObject,handles);
 
@@ -981,9 +981,9 @@ global model
 
 snum=model.current_structure;
 models=length(model.structures{snum}(1).residues);
-for modnum=1:models, % repack all models of current structure
+for modnum=1:models % repack all models of current structure
     repack(snum,modnum);
-end;
+end
 
 guidata(hObject,handles);
 
@@ -1306,9 +1306,9 @@ disp(msg);
 [msg,coor6]=get_object(adr6,'coor');
 disp(msg);
 
-if gca~=hMain.axes_model,
+if gca~=hMain.axes_model
     axes(hMain.axes_model);
-end;
+end
 
 c1=coor1;
 c2=coor6;
@@ -1377,16 +1377,16 @@ function menu_display_color_Callback(hObject, eventdata, handles)
 global hMain
 
 color_selection;
-if isempty(hMain.color_selection),
+if isempty(hMain.color_selection)
     add_msg_board('Color selection cancelled by user.');
 else
-    if isfloat(hMain.color_selection),
+    if isfloat(hMain.color_selection)
         command_line=sprintf('color * %6.3f%6.3f%6.3f',hMain.color_selection);
     else
         command_line=sprintf('colorscheme * %s',hMain.color_selection);
-    end;
+    end
     handles=exe(handles,command_line,hObject);
-end;
+end
 
 % --------------------------------------------------------------------
 function menu_display_3D_Callback(hObject, eventdata, handles)
@@ -1402,7 +1402,7 @@ if ~isfield(model,'selections') || ~isfield(model,'selected') || isempty(model.s
     model.selected={};
 else
     graphics_selection;
-end;
+end
 
 
 % --------------------------------------------------------------------
@@ -1496,7 +1496,7 @@ set(handles.edit_command_line,'String','undo');
 set(handles.edit_command_line,'ForegroundColor',[168,168,168]/255);
 set(handles.edit_command_line,'Enable','Off');
 to_undo=hMain.undo_poi-1; % find out which command performs undo
-if to_undo<1, to_undo=hMain.history_num; end;
+if to_undo<1, to_undo=hMain.history_num; end
 command=hMain.undo{to_undo};
 hMain.undo{to_undo}=''; % delete that command from undo list
 if isempty(command)
@@ -1506,17 +1506,17 @@ else
     hMain.undo_poi=to_undo; % go back one step in undo list
     handles=cmd(handles,command);  % undo
     done=hMain.history_poi-1; % find out which command is needed for redo
-    if done<1, done=hMain.history_num; end;
+    if done<1, done=hMain.history_num; end
     command=hMain.history{done};
     hMain.history{done}=''; % this command does no longer belong to history
     hMain.history_poi=hMain.history_poi-1; % set back history ;-)
-    if hMain.history_poi<1, hMain.history_poi=hMain.history_num; end;
+    if hMain.history_poi<1, hMain.history_poi=hMain.history_num; end
     hMain.redo{hMain.redo_poi}=command;
     hMain.redo_poi=hMain.redo_poi+1;
-    if hMain.redo_poi>hMain.history_num,
+    if hMain.redo_poi>hMain.history_num
         hMain.redo_poi=1;
-    end;
-end;
+    end
+end
 
 function handles=redo(handles)
 % Redo of the last undone command
@@ -1526,7 +1526,7 @@ set(handles.edit_command_line,'String','redo');
 set(handles.edit_command_line,'ForegroundColor',[168,168,168]/255);
 set(handles.edit_command_line,'Enable','Off');
 to_redo=hMain.redo_poi-1; % find out which command performs undo
-if to_redo<1, to_redo=hMain.history_num; end;
+if to_redo<1, to_redo=hMain.history_num; end
 command=hMain.redo{to_redo};
 hMain.redo{to_redo}=''; % delete that command from redo list
 if isempty(command)
@@ -1534,7 +1534,7 @@ if isempty(command)
 else
     hMain.redo_poi=to_redo; % go back one step in redo list
     handles=cmd(handles,command);  % redo
-end;
+end
 
 function handles=run_script(handles,fname)
 % Runs a script file by repeated calls to the command interpreter
@@ -1550,17 +1550,17 @@ while 1
     command_line=fgetl(rfile);
     if ~ischar(command_line) || isempty(command_line), break, end
     command_line=strtrim(command_line);
-    if strcmp(command_line(1),'%'),
+    if strcmp(command_line(1),'%')
         comment=command_line;
         command_line='';
     else
         [command_line,comment]=strtok(command_line,'%');
-    end;
-    if ~isempty(comment),
+    end
+    if ~isempty(comment)
         add_msg_board(comment);
-    end;
+    end
     [command,args]=strtok(command_line);
-    if ~isempty(command) && ~strcmp(command,' '), % test for problems at file end
+    if ~isempty(command) && ~strcmp(command,' ') % test for problems at file end
         switch command % test for exceptions that may not be executed from scripts
             case 'undo'
                 add_msg_board('undo cannot be executed from scripts');
@@ -1572,14 +1572,14 @@ while 1
                 set(handles.edit_command_line,'Enable','Off');
                 hMain.store_undo=0;
                 handles=cmd(handles,command_line);
-        end;
-    end;
+        end
+    end
 end
 fclose(rfile);
 
-if isfield(hMain,'camlight'),
+if isfield(hMain,'camlight')
     camlight(hMain.camlight);
-end;
+end
 hMain.store_undo=old_undo;
 
 fclose('all');
@@ -1627,12 +1627,12 @@ if strcmp(zoom_state,'on')
 end
 
 pan_state=get(handles.uitoggletool_pan,'State');
-if strcmp(pan_state,'on'),
+if strcmp(pan_state,'on')
     set(handles.uitoggletool_pan,'State','off');
     view3D(fig,'off');
 end
     
-if hMain.detached,
+if hMain.detached
     set(hModel.context_rotate,'Checked','off');
     set(hModel.context_zoom,'Checked','off');
     set(hModel.context_select,'Checked','on');
@@ -1642,7 +1642,7 @@ else
     set(handles.context_model_zoom,'Checked','off');
     set(handles.context_model_select,'Checked','on');
     set(handles.context_model_pan,'Checked','off');
-end;
+end
 
 guidata(hObject,handles);
 
@@ -1666,7 +1666,7 @@ if hMain.detached
     fig=hModel.figure;
 else
     fig=hMain.figure;
-end;
+end
 % view3D(fig,'off');
 set(handles.uitoggletool_select,'State','on');
 
@@ -1685,13 +1685,13 @@ if hMain.detached
     fig=hModel.figure;
 else
     fig=hMain.figure;
-end;
+end
 
 set(handles.uitoggletool_zoom,'State','off');
 set(handles.uitoggletool_pan,'State','off');
 set(handles.uitoggletool_select,'State','off');
 set(handles.uitoggletool_rotate,'State','on');
-if hMain.detached,
+if hMain.detached
     set(hModel.context_rotate,'Checked','on');
     set(hModel.context_zoom,'Checked','off');
     set(hModel.context_select,'Checked','off');
@@ -1701,7 +1701,7 @@ else
     set(handles.context_model_zoom,'Checked','off');
     set(handles.context_model_select,'Checked','off');
     set(handles.context_model_pan,'Checked','off');
-end;
+end
 
 view3D(fig,'rot');
     
@@ -1727,7 +1727,7 @@ if hMain.detached
     fig=hModel.figure;
 else
     fig=hMain.figure;
-end;
+end
 % view3D(fig,'off');
 set(handles.uitoggletool_select,'State','on');
 
@@ -1746,13 +1746,13 @@ if hMain.detached
     fig=hModel.figure;
 else
     fig=hMain.figure;
-end;
+end
 
 set(handles.uitoggletool_rotate,'State','off');
 set(handles.uitoggletool_pan,'State','off');
 set(handles.uitoggletool_select,'State','off');
 set(handles.uitoggletool_zoom,'State','on');
-if hMain.detached,
+if hMain.detached
     set(hModel.context_rotate,'Checked','off');
     set(hModel.context_zoom,'Checked','on');
     set(hModel.context_select,'Checked','off');
@@ -1762,7 +1762,7 @@ else
     set(handles.context_model_zoom,'Checked','on');
     set(handles.context_model_select,'Checked','off');
     set(handles.context_model_pan,'Checked','off');
-end;
+end
 view3D(fig,'zoom');
     
 guidata(hObject,handles);
@@ -1788,7 +1788,7 @@ if hMain.detached
     fig=hModel.figure;
 else
     fig=hMain.figure;
-end;
+end
 % view3D(fig,'off');
 set(handles.uitoggletool_select,'State','on');
 
@@ -1807,13 +1807,13 @@ if hMain.detached
     fig=hModel.figure;
 else
     fig=hMain.figure;
-end;
+end
 
 set(handles.uitoggletool_rotate,'State','off');
 set(handles.uitoggletool_zoom,'State','off');
 set(handles.uitoggletool_select,'State','off');
 set(handles.uitoggletool_pan,'State','on');
-if hMain.detached,
+if hMain.detached
     set(hModel.context_rotate,'Checked','off');
     set(hModel.context_zoom,'Checked','off');
     set(hModel.context_select,'Checked','off');
@@ -1823,7 +1823,7 @@ else
     set(handles.context_model_zoom,'Checked','off');
     set(handles.context_model_select,'Checked','off');
     set(handles.context_model_pan,'Checked','on');
-end;
+end
 view3D(fig,'pan');
     
 guidata(hObject,handles);
@@ -1842,24 +1842,24 @@ if hMain.detached
     fig=hModel.figure;
 else
     fig=hMain.figure;
-end;
+end
 
 view3D(fig,'off');
 
 rot_state=get(handles.uitoggletool_rotate,'State');
-if strcmp(rot_state,'on'),
+if strcmp(rot_state,'on')
     set(handles.uitoggletool_rotate,'State','off');
-end;
+end
     
 zoom_state=get(handles.uitoggletool_zoom,'State');
-if strcmp(zoom_state,'on'),
+if strcmp(zoom_state,'on')
     set(handles.uitoggletool_zoom,'State','off');
-end;
+end
 
 pan_state=get(handles.uitoggletool_pan,'State');
-if strcmp(pan_state,'on'),
+if strcmp(pan_state,'on')
     set(handles.uitoggletool_pan,'State','off');
-end;
+end
     
 set(handles.context_model_rotate,'Checked','off');
 set(handles.context_model_zoom,'Checked','off');
@@ -1881,7 +1881,7 @@ if hMain.detached
     fig=hModel.figure;
 else
     fig=hMain.figure;
-end;
+end
 
 set(handles.uitoggletool_rotate,'State','off');
 set(handles.uitoggletool_zoom,'State','off');
@@ -1905,16 +1905,16 @@ function context_model_color_Callback(hObject, eventdata, handles)
 global hMain
 
 color_selection;
-if isempty(hMain.color_selection),
+if isempty(hMain.color_selection)
     add_msg_board('Color selection cancelled by user.');
 else
-    if isfloat(hMain.color_selection),
+    if isfloat(hMain.color_selection)
         command_line=sprintf('color * %6.3f%6.3f%6.3f',hMain.color_selection);
     else
         command_line=sprintf('colorscheme * %s',hMain.color_selection);
-    end;
+    end
     handles=exe(handles,command_line,hObject);
-end;
+end
 
 % --------------------------------------------------------------------
 function context_model_trans_Callback(hObject, eventdata, handles)
@@ -1925,12 +1925,12 @@ function context_model_trans_Callback(hObject, eventdata, handles)
 global hMain
 
 transparency_selection;
-if ~isempty(hMain.alpha),
+if ~isempty(hMain.alpha)
     command_line=sprintf('transparency * %4.2f',hMain.alpha);
     handles=exe(handles,command_line,hObject);
 else
     add_msg_board('Transparency selection cancelled by user.');
-end;
+end
 
 % --------------------------------------------------------------------
 function pushtool_color_ClickedCallback(hObject, eventdata, handles)
@@ -1941,16 +1941,16 @@ function pushtool_color_ClickedCallback(hObject, eventdata, handles)
 global hMain
 
 color_selection;
-if isempty(hMain.color_selection),
+if isempty(hMain.color_selection)
     add_msg_board('Color selection cancelled by user.');
 else
-    if isfloat(hMain.color_selection),
+    if isfloat(hMain.color_selection)
         command_line=sprintf('color * %6.3f%6.3f%6.3f',hMain.color_selection);
     else
         command_line=sprintf('colorscheme * %s',hMain.color_selection);
-    end;
+    end
     handles=exe(handles,command_line,hObject);
-end;
+end
 
 % --------------------------------------------------------------------
 function pushtool_trans_ClickedCallback(hObject, eventdata, handles)
@@ -1961,12 +1961,12 @@ function pushtool_trans_ClickedCallback(hObject, eventdata, handles)
 global hMain
 
 transparency_selection;
-if ~isempty(hMain.alpha),
+if ~isempty(hMain.alpha)
     command_line=sprintf('transparency * %4.2f',hMain.alpha);
     handles=exe(handles,command_line,hObject);
 else
     add_msg_board('Transparency selection cancelled by user.');
-end;
+end
 
 
 % --------------------------------------------------------------------
@@ -1999,11 +1999,11 @@ global hMain
 global graph_settings
 global general
 
-if nargin<4,
+if nargin<4
     plot_it = true;
-end;
+end
 
-if hMain.virgin,
+if hMain.virgin
     hMain.virgin=0;
     % initialize display
     axes(handles.axes_model);
@@ -2015,21 +2015,21 @@ if hMain.virgin,
     hold on
     hMain.camlight=camlight;
     guidata(handles.axes_model,hMain);
-end;
+end
 
 my_path=pwd;
 cd(general.pdb_files);
 
-if nargin<3,
+if nargin<3
     [FileName,PathName,FilterIndex] = uigetfile({'*.pdb;*.pdb1;*.ent'},'Select PDB file');
-    if isequal(FileName,0) || isequal(PathName,0),
+    if isequal(FileName,0) || isequal(PathName,0)
         add_msg_board('Loading of PDB file canceled by user.');
         return;
-    end;
+    end
     reset_user_paths(PathName);
     general.pdb_files=PathName;
     cd(PathName);
-end;
+end
 set(handles.MMM,'Pointer','watch');
 set(handles.popupmenu_view,'Value',1);
 drawnow;
@@ -2040,38 +2040,38 @@ model.secondary_selected={};
 model.secondary_indices={};
 
 command=sprintf('attach');
-if hMain.hierarchy_display,
+if hMain.hierarchy_display
     disp_hierarchy=1;
     try
         close(hMain.hierarchy_window);
         close(hMain.hierarchy_window_large);
     catch exception
         return
-    end;
+    end
 else
     disp_hierarchy=0;
-end;
+end
 exe(handles,command,hObject);
 
 fig=hMain.figure;
 
 rot_state=get(handles.uitoggletool_rotate,'State');
-if strcmp(rot_state,'on'),
+if strcmp(rot_state,'on')
     set(handles.uitoggletool_rotate,'State','off');
     view3D(fig,'off');
-end;
+end
     
 zoom_state=get(handles.uitoggletool_zoom,'State');
-if strcmp(zoom_state,'on'),
+if strcmp(zoom_state,'on')
     set(handles.uitoggletool_zoom,'State','off');
     view3D(fig,'off');
-end;
+end
 
 pan_state=get(handles.uitoggletool_pan,'State');
-if strcmp(pan_state,'on'),
+if strcmp(pan_state,'on')
     set(handles.uitoggletool_pan,'State','off');
     view3D(fig,'off');
-end;
+end
     
 set(handles.context_model_rotate,'Checked','off');
 set(handles.context_model_zoom,'Checked','off');
@@ -2080,15 +2080,15 @@ set(handles.context_model_pan,'Checked','off');
 
 set(handles.uitoggletool_select,'State','on');
 
-if ~isempty(hMain.auxiliary),
-    for k=1:length(hMain.auxiliary),
+if ~isempty(hMain.auxiliary)
+    for k=1:length(hMain.auxiliary)
         try
             delete(hMain.auxiliary(k));
         catch my_exception
-        end;
-    end;
+        end
+    end
     hMain.auxiliary=[];
-end;
+end
 
 % initialize display
 axes(handles.axes_model);
@@ -2131,33 +2131,33 @@ if exist(ScriptName,'file')
     if strcmpi(button,'Yes')
         exe(handles,'unlock',hObject);
         handles=run_script(handles,ScriptName);
-    elseif plot_it,
+    elseif plot_it
         command=sprintf('show [%s] ribbon',stag);
         handles=exe(handles,command,hObject);        
-    end;
-elseif plot_it,
+    end
+elseif plot_it
     set(handles.MMM,'Pointer','watch');
     drawnow;
     command=sprintf('show [%s] ribbon',stag);
     handles=exe(handles,command,hObject);
-end;
+end
 exe(handles,'lock',hObject);
-if isfield(hMain,'camlight'),
+if isfield(hMain,'camlight')
     hMain.camlight=camlight(hMain.camlight);
 else
     hMain.camlight=camlight;
-end;
+end
 camlookat(hMain.axes_model);
 guidata(handles.axes_model,hMain);
 
-if disp_hierarchy,
+if disp_hierarchy
 %     if hMain.large,
 %         hierarchy_window_large;
 %     else
 %         hierarchy_window;
 %     end;
     hierarchy_window;
-end;
+end
 
 set(handles.menu_file_save_PDB,'Enable','on');
 
@@ -2185,7 +2185,7 @@ if ~isfield(model,'selections') || ~isfield(model,'selected') || isempty(model.s
     model.selected={};
 else
     graphics_selection;
-end;
+end
 
 
 % --------------------------------------------------------------------
@@ -2197,12 +2197,12 @@ function menu_display_transparency_Callback(hObject, eventdata, handles)
 global hMain
 
 transparency_selection;
-if ~isempty(hMain.alpha),
+if ~isempty(hMain.alpha)
     command_line=sprintf('transparency * %4.2f',hMain.alpha);
     handles=exe(handles,command_line,hObject);
 else
     add_msg_board('Transparency selection cancelled by user.');
-end;
+end
 
 % --- Executes on button press in togglebutton_depth_cueing.
 function togglebutton_depth_cueing_Callback(hObject, eventdata, handles)
@@ -2221,7 +2221,7 @@ else
     hMain.depth_cue=0;
     handles=guidata(hMain.depthcue_control);
     depth_cue_control('pushbutton_cancel_Callback',hMain.depthcue_control,eventdata,handles);
-end;
+end
     
 
 
@@ -2291,11 +2291,11 @@ function uitoggletool_lock_ClickedCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 mystate=get(hObject,'State');
-if strcmpi(mystate,'on'),
+if strcmpi(mystate,'on')
     handles=exe(handles,'lock',hObject);
 else
     handles=exe(handles,'unlock',hObject);
-end;
+end
 guidata(hObject,handles);
 
 
@@ -2329,44 +2329,44 @@ global hMain
 
 [allindices,message]=resolve_address('*'); % get indices of all selected objects
 
-if message.error,
+if message.error
     add_msg_board(message.text);
     guidata(hObject,handles);
     return
-end;
+end
 
 % check whether the user has selected any residues
 poi=0;
-if ~isempty(allindices),
+if ~isempty(allindices)
     [m,n]=size(allindices);
-    for k=1:m,
+    for k=1:m
         cindices=allindices(k,:);
         cindices=cindices(cindices>0);
-        if length(cindices)==4, % user selected residue
+        if length(cindices)==4 % user selected residue
             poi=poi+1;
             residues(poi,:)=cindices;
-        end;
-    end;
-end;
+        end
+    end
+end
 
 residues=residues(1:poi,:);
 
 type = selection_type(residues);
 
-if strcmp(type,'peptide'),
+if strcmp(type,'peptide')
     labeling_conditions;
-elseif strcmp(type,'nucleotide'),
+elseif strcmp(type,'nucleotide')
     hMain.site_scan_pattern = 'ACGTUDR';
     labeling_conditions_nucleotides;
-elseif strcmp(type,'nonstandard'),
+elseif strcmp(type,'nonstandard')
     labeling_conditions_cofactors(residues);
 else
     add_msg_board('ERROR: Either only peptide residues or only nucleotide residues or only cofactors must be selected for site scan.');
     return
-end;
+end
 
 
-if isempty(hMain.library),
+if isempty(hMain.library)
     add_msg_board('Labeling request cancelled by user.');
 else
     load(hMain.library);
@@ -2376,18 +2376,18 @@ else
     set(handles.MMM,'Pointer','watch');
 
     n=length(calc_positions);
-    if n>=1,
-        for k=1:n,
+    if n>=1
+        for k=1:n
             [msg,indices]=get_residue(calc_positions(k).indices,'children');
             set_object(indices,'hide');
             set_residue(calc_positions(k).indices,'label',{calc_positions(k).label,calc_positions(k).rotamers,calc_positions(k).attach_frame,calc_positions(k).exclude});
             text=sprintf('label attached: %s using library %s at a temperature of %4.0f K',calc_positions(k).label,hMain.library,hMain.temperature);
             add_annotation(calc_positions(k).indices,'Spin',text,{'spin label attached'});
-        end;
-    end;
+        end
+    end
 
     set(handles.MMM,'Pointer','arrow');
-end;
+end
 
 guidata(hObject,handles);
 
@@ -2410,13 +2410,13 @@ global model
 my_path=pwd;
 cd(general.pdb_files);
 
-if nargin<4,
+if nargin<4
     force=0;
-end;
+end
 
-if nargin<5,
+if nargin<5
     privacy=2;
-end;
+end
 
 switch privacy
     case 0
@@ -2425,7 +2425,7 @@ switch privacy
         title='Share model in MMM format with group';
     case 2
         title='Save model in MMM format';
-end;
+end
 
 format_spec='MMM';
 
@@ -2439,12 +2439,12 @@ camera.detached=hMain.detached;
 
 defname=sprintf('MMM_%s.mat',datestr(now,'yyyy-mm-dd_HH-MM-SS'));
 
-if force,
+if force
     filename=defname;
     pathname=strcat(rootdir,'/tmp/');
 else
     [filename,pathname] = uiputfile('.mat',title,defname);
-end;
+end
 
 if isequal(filename,0) || isequal(pathname,0)
     add_msg_board('Saving of model canceled by user');
@@ -2460,21 +2460,21 @@ else
             fclose('all');
             still_there=true;
             trials=0;
-            while still_there && trials<=10,
+            while still_there && trials<=10
                 still_there=false;
                 trials=trials+1;
-                if exist(fullfile(pathname,filename),'file'),
+                if exist(fullfile(pathname,filename),'file')
                     still_there=true;
                     delete(fullfile(pathname,filename));
-                end;
-            end;
+                end
+            end
             save(fullfile(pathname,filename),'model','camera','format_spec');
         catch my_exception2
             add_msg_board('ERROR: Saving of model failed. Permission denied.');
             msgbox('Saving of model failed. Permission denied. Please try to save again.','This is a Windows/Matlab bug.','error');
             return
-        end;
-    end;
+        end
+    end
     switch privacy
         case 0
             msg='Model saved with only public annotations.';
@@ -2482,10 +2482,10 @@ else
             msg='Model saved with group annotations but no user annotations.';
         case 2
             msg='Model saved with all annotations.';
-    end;
+    end
 
     add_msg_board(msg);
-end;
+end
 cd(my_path);
 guidata(hObject,handles);
 
@@ -2504,9 +2504,9 @@ function open_model(hObject, eventdata, handles, display)
 global model
 global general
 
-if nargin<4,
+if nargin<4
     display=true;
-end;
+end
 
 set(handles.popupmenu_view,'Value',1);
 
@@ -2522,21 +2522,21 @@ else
     general.pdb_files=pathname;
     cd(pathname);
     load(fullfile(pathname,filename));
-    if ~exist('format_spec','var'),
+    if ~exist('format_spec','var')
         add_msg_board('Selected file is not an MMM model file');
-        return;
-    end;
-    if ~strcmpi(format_spec,'MMM'),
+        return
+    end
+    if ~strcmpi(format_spec,'MMM')
         add_msg_board('Selected file is not an MMM model file');
-        return;
-    end;
+        return
+    end
     add_msg_board(sprintf('Model %s loaded.',filename));
     if ~isfield(model,'graphics_lookup_pointer'), %#ok
-        if isfield(model,'graphics_lookup'),
+        if isfield(model,'graphics_lookup')
             model.graphics_lookup_pointer=sum(ishandle(model.graphics_objects));
-        end;
-    end;
-    if display,
+        end
+    end
+    if display
         set(gcf,'Pointer','watch');
         drawnow;
         auto_search;
@@ -2546,12 +2546,12 @@ else
         add_msg_board('Graphics displayed.');
     else
         add_msg_board('Graphics display and reference autosearch are suppressed.');
-    end;
+    end
     if isfield(model,'current_structure') && model.current_structure>0,
         set(handles.menu_file_save_PDB,'Enable','on');
-    end;
+    end
     guidata(hObject,handles);
-end;
+end
 cd(my_path);
 
 % --------------------------------------------------------------------
@@ -2570,10 +2570,10 @@ function handles=display_model(handles,hObject,camera)
 global hMain
 global model
 
-if ~isfield(model,'current_structure'),
+if ~isfield(model,'current_structure')
     add_msg_board('No structure defined in this model.');
     return
-end;
+end
 
 add_msg_board('Computing graphics for display...');
 drawnow;
@@ -2595,44 +2595,44 @@ if isfield(model.info{snum},'resolution') && ~isempty(model.info{snum}.resolutio
     resstring=sprintf('%4.2f Å',model.info{snum}.resolution);
 else
     resstring='not specified';
-end;
+end
     
 set(hMain.MMM,'Name',sprintf('MMM - [%s](%s) Resolution %s',model.info{snum}.idCode,model.current_chain,resstring));
 set(hMain.menu_file_save_PDB,'Enable','on');
 
 command=sprintf('attach');
-if hMain.hierarchy_display,
+if hMain.hierarchy_display
     disp_hierarchy=1;
     try
         close(hMain.hierarchy_window);
         close(hMain.hierarchy_window_large);
     catch exception
         return
-    end;
+    end
 else
     disp_hierarchy=0;
-end;
+end
 exe(handles,command,hObject);
 
 fig=hMain.figure;
 
 rot_state=get(handles.uitoggletool_rotate,'State');
-if strcmp(rot_state,'on'),
+if strcmp(rot_state,'on')
     set(handles.uitoggletool_rotate,'State','off');
     view3D(fig,'off');
-end;
+end
     
 zoom_state=get(handles.uitoggletool_zoom,'State');
-if strcmp(zoom_state,'on'),
+if strcmp(zoom_state,'on')
     set(handles.uitoggletool_zoom,'State','off');
     view3D(fig,'off');
-end;
+end
 
 pan_state=get(handles.uitoggletool_pan,'State');
-if strcmp(pan_state,'on'),
+if strcmp(pan_state,'on')
     set(handles.uitoggletool_pan,'State','off');
     view3D(fig,'off');
-end;
+end
 
 set(handles.context_model_rotate,'Checked','off');
 set(handles.context_model_zoom,'Checked','off');
@@ -2641,39 +2641,39 @@ set(handles.context_model_pan,'Checked','off');
 
 set(handles.uitoggletool_select,'State','on');
 
-if ~isempty(hMain.auxiliary),
-    for k=1:length(hMain.auxiliary),
+if ~isempty(hMain.auxiliary)
+    for k=1:length(hMain.auxiliary)
         try
             delete(hMain.auxiliary(k));
         catch my_exception
-        end;
-    end;
+        end
+    end
     hMain.auxiliary=[];
-end;
+end
 
 set(handles.MMM,'Pointer','watch');
 drawnow;
 
 plot_model;
 
-if nargin>2,
-    if ~isfield(camera,'view'),
+if nargin>2
+    if ~isfield(camera,'view')
         set(hMain.axes_model,'cameraposition', camera.pos );
         set(hMain.axes_model,'cameratarget',camera.targ   );
         set(hMain.axes_model,'dataaspectratio', camera.dar );
         set(hMain.axes_model,'cameraupvector', camera.up );
     else
-        if camera.detached,
+        if camera.detached
             exe(handles,'detach',hObject);
-        end;
+        end
         set(hMain.axes_model,'DataAspectRatio',camera.dar);
         set(hMain.axes_model,'CameraUpVector',camera.up);
         set(hMain.axes_model,'CameraPosition',camera.pos);
         set(hMain.axes_model,'CameraTarget',camera.targ);
         set(hMain.axes_model,'CameraViewAngle',camera.view);
         set(hMain.axes_model,'Projection',camera.proj);
-    end;
-end;
+    end
+end
 
 lighting gouraud 
 material shiny
@@ -2702,19 +2702,19 @@ guidata(handles.axes_frame,handles);
 
 exe(handles,'lock',hObject);
 hMain.camlight=camlight(hMain.camlight);
-if ~exist('camera','var') || ~isfield(camera,'view'),
+if ~exist('camera','var') || ~isfield(camera,'view')
     camlookat(hMain.axes_model);
-end;
+end
 guidata(handles.axes_model,hMain);
 
-if disp_hierarchy,
+if disp_hierarchy
 %     if hMain.large,
 %         hierarchy_window_large;
 %     else
 %         hierarchy_window;
 %     end;
     hierarchy_window;
-end;
+end
 
 hMain.graph_update=0;
 
@@ -2795,11 +2795,11 @@ function menu_edit_findkey_Callback(hObject, eventdata, handles)
 
 global model
 
-if isfield(model,'keys'),
+if isfield(model,'keys')
     find_by_key;
 else
     add_msg_board('### ERROR ### No keywords defined yet.');
-end;
+end
 
 % --------------------------------------------------------------------
 function menu_help_Callback(hObject, eventdata, handles)
@@ -2923,10 +2923,10 @@ global hMain
 global hModel
 global general
 
-for k=1:length(general.timers),
+for k=1:length(general.timers)
     stop(general.timers{k});
     delete(general.timers{k});
-end;
+end
 
 shh = get(0,'ShowHiddenHandles');
 set(0,'ShowHiddenHandles','on');
@@ -2934,44 +2934,44 @@ delete(findobj(get(0,'Children'),'flat','Tag','StatusBar'));
 set(0,'ShowHiddenHandles',shh);
 
 try
-    if hMain.detached,
+    if hMain.detached
         set(handles.axes_model,'Position',hMain.oldpos);
         set(handles.axes_model,'Parent',hMain.panel_model);
         set(handles.panel_model,'Title','Model');
         view3D(hModel.figure,'off');
         close(hModel.figure);
-    end;
-    if hMain.hierarchy_display,
+    end
+    if hMain.hierarchy_display
         close(hMain.hierarchy_window);
         close(hMain.hierarchy_window_large);
-    end;
+    end
 catch ME
-end;
-if exist('model','var') && ~isempty(model),
+end
+if exist('model','var') && ~isempty(model)
     button = questdlg('Do you want to save model?','Closing MMM may cause loss of information','Yes');
-    if strcmpi(button,'Cancel'),
+    if strcmpi(button,'Cancel')
         return
-    end;
+    end
     if strcmpi(button,'Yes')
         save_model(hObject, eventdata, handles);
-    end;
-end;
-if ~isempty(hMain.auxiliary),
-    for k=1:length(hMain.auxiliary),
+    end
+end
+if ~isempty(hMain.auxiliary)
+    for k=1:length(hMain.auxiliary)
         try
             delete(hMain.auxiliary(k));
         catch my_exception
-        end;
-    end;
+        end
+    end
     hMain.auxiliary=[];
-end;
+end
 
 % delete all MMM timers
 out1 = timerfindall('Tag', 'MMM');
-for k=1:length(out1),
+for k=1:length(out1)
     stop(out1(k));
     delete(out1(k));
-end;
+end
 delete(hObject);
 
 
@@ -2998,7 +2998,7 @@ function checkbox_log_Callback(hObject, eventdata, handles)
 global rootdir
 global hMain
 
-if get(hObject,'Value'),
+if get(hObject,'Value')
     defname=sprintf('MMM_%s.log',datestr(now,'yyyy-mm-dd_HH-MM-SS'));
     pathname=strcat(rootdir,'/tmp/');
     outname=strcat(pathname,defname);
@@ -3012,7 +3012,7 @@ else
     fprintf(fid,'%s\n',msg);
     fclose(fid);
     add_msg_board(msg);
-end;
+end
 
 
 % --------------------------------------------------------------------
@@ -3024,14 +3024,14 @@ function menu_edit_magic_fit_Callback(hObject, eventdata, handles)
 global model
 global hMain
 
-if length(model.structures)<2,
+if length(model.structures)<2
     add_msg_board('ERROR: Magic fit requires at least two structures.');
 else
     magic_fit;
-    if hMain.graph_update,
+    if hMain.graph_update
        display_model(handles, hObject);
-    end;
-end;
+    end
+end
 
 
 % --------------------------------------------------------------------
@@ -3063,25 +3063,25 @@ indices=resolve_address('*');
 [m,n]=size(indices);
 sindices=zeros(m,2);
 poi=0;
-for k=1:m,
+for k=1:m
     cindices=indices(k,:);
     cindices=cindices(cindices>0);
-    if length(cindices)==2,
+    if length(cindices)==2
         poi=poi+1;
         seqs{poi}=model.structures{cindices(1,1)}(cindices(1,2)).sequence;
         sindices(poi,:)=cindices;
-    end;
-end;
+    end
+end
 sindices=sindices(1:poi,:);
 
-if poi<2,
+if poi<2
     add_msg_board('ERROR: At least two peptide sequences required for alignment.');
     return
-end;
+end
 
 message=align_sequences(seqs,sindices);
 
-if message.error,   
+if message.error 
     seq1=seqs{1};
     seq2=seqs{2};
     add_msg_board('Warning: Multiple alignment by MUSCLE failed.');
@@ -3094,18 +3094,18 @@ if message.error,
     n1=max([length(seq1),length(seq2)]);
     nonmatch1=zeros(n1,1);
     nonmatch2=zeros(n1,1);
-    for k=1:n,
-        if seq1(k)~=seq2(k),
+    for k=1:n
+        if seq1(k)~=seq2(k)
             nonmatch1(k)=1;
-        end;
-    end;
-    if diff<0, k0=1+abs(diff); else k0=1; end;
-    for k=k0:k0+n-1,
-        if seq1(k+diff)~=seq2(k),
+        end
+    end
+    if diff<0, k0=1+abs(diff); else k0=1; end
+    for k=k0:k0+n-1
+        if seq1(k+diff)~=seq2(k)
             nonmatch2(k)=1;
-        end;
-    end;
-    if sum(nonmatch1)<=sum(nonmatch2),
+        end
+    end
+    if sum(nonmatch1)<=sum(nonmatch2)
         nonmatch=nonmatch1;
         k0=1;
         dk=0;
@@ -3113,56 +3113,56 @@ if message.error,
         nonmatch=nonmatch2;
         k0=1+abs(diff);
         dk=diff;
-    end;
+    end
     ka=0;
     ke=0;
-    if diff<0, ka=diff; end;
-    if diff>0, ke=diff; end; 
+    if diff<0, ka=diff; end
+    if diff>0, ke=diff; end
     diff0=diff;
-    if ke>ka,
-        for diff=ka:ke,
+    if ke>ka
+        for diff=ka:ke
             nonmatchx=zeros(n1,1);
-            if diff<0, k0=1+abs(diff); else k0=1; end;
-            for k=k0:k0+n-1,
-                if seq1(k+diff)~=seq2(k),
+            if diff<0, k0=1+abs(diff); else k0=1; end
+            for k=k0:k0+n-1
+                if seq1(k+diff)~=seq2(k)
                     nonmatchx(k)=1;
-                end;
-            end;
-            if sum(nonmatchx)<sum(nonmatch),
+                end
+            end
+            if sum(nonmatchx)<sum(nonmatch)
                 nonmatch=nonmatchx;
                 dk=diff;
-            end;
-        end;
-    end;
+            end
+        end
+    end
 
     add_msg_board('--- Sequence comparison for two very similar sequences ---');
     add_msg_board('(no gaps allowed, maximum shift is difference in sequence length)');
-    if diff0<0,
+    if diff0<0
         add_msg_board(sprintf('Sequence %s is by %i residues',adr1,abs(diff0)));
         add_msg_board(sprintf('shorter than sequence %s.',adr2));
-    end;
-    if diff0==0,
+    end
+    if diff0==0
         add_msg_board(sprintf('Sequences %s and %s have the same length.',adr1,adr2));
-    end;
-    if diff0>0,
+    end
+    if diff0>0
         add_msg_board(sprintf('Sequence %s is by %i residues',adr1,abs(diff0)));
         add_msg_board(sprintf('longer than sequence %s.',adr2));
-    end;
-    if dk==0,
+    end
+    if dk==0
         add_msg_board('Best match for alignment at N terminus.');
-    elseif dk==diff,
+    elseif dk==diff
         add_msg_board('Better match for alignment at C terminus.');
     else
         add_msg_board(sprintf('Best match for shift by %i residues.',dk));    
-    end;
-    if sum(nonmatch),
+    end
+    if sum(nonmatch)
         add_msg_board(sprintf('Sequences differ in %i residues.',sum(nonmatch)));
     elseif dk==0
         add_msg_board(sprintf('Sequences are identical.'));
     else
         add_msg_board(sprintf('Overlapping subsequences are identical.'));
-    end;
-    if sum(nonmatch)>20,
+    end
+    if sum(nonmatch)>20
         add_msg_board('Sequences to dissimilar for detailed analysis.');
         add_msg_board('Please install MUSCLE or use other more sophisticated alignment tools, e.g. Clustal');
     else
@@ -3170,27 +3170,27 @@ if message.error,
         msg='';
         fail=0;
         k=0;
-        while ~fail,
+        while ~fail
             k=k+1;
             if k>length(differ)
                 fail=1;
                 add_msg_board(msg);
             else
                 com=sprintf('%i:%s/%s',differ(k),seq1(differ(k)+dk),seq2(differ(k)));
-                if length(msg)+length(com)<60,
-                    if isempty(msg),
+                if length(msg)+length(com)<60
+                    if isempty(msg)
                         msg=com;
                     else
                         msg=sprintf('%s %s',msg,com);
-                    end;
+                    end
                 else
                     add_msg_board(msg);
                     msg=com;
-                end;
-            end;
-        end;
-    end;
-end;
+                end
+            end
+        end
+    end
+end
 guidata(hObject,handles);    
 
 
@@ -3224,13 +3224,13 @@ true_privacy=0;
 % clear up annotations
 poi=0;
 mm=length(annotations0);
-for k=1:mm,
+for k=1:mm
     privacies=annotations0(k).info.privacy;
     store=0;
     clear newanno
     npoi=0;
-    for kk=1:length(privacies),
-        if privacies(kk)<=privacy,
+    for kk=1:length(privacies)
+        if privacies(kk)<=privacy
             store=1;
             npoi=npoi+1;
             newanno.indices=annotations0(k).indices;
@@ -3239,87 +3239,87 @@ for k=1:mm,
             newanno.info.references=annotations0(k).info.references;
             newanno.info.text{npoi}=annotations0(k).info.text{kk};
         else
-            if privacies(kk)>true_privacy,
+            if privacies(kk)>true_privacy
                 true_privacy=privacies(kk);
-            end;
-        end;
-    end;
-    if store,
+            end
+        end
+    end
+    if store
         poi=poi+1;
         annotations(poi)=newanno;
-    end;
-end;
+    end
+end
 
 
 references(1)=model.references(1);
 keys=[];
 keymap=zeros(1,length(model.keys));
 refmap=zeros(1,length(model.references));
-if poi<mm, % there were private annotations, hence references keys, and keywords have to be cleared
-    for k=1:poi,
+if poi<mm % there were private annotations, hence references keys, and keywords have to be cleared
+    for k=1:poi
         ckeys=annotations(k).info.keywords;
-        for kk=1:length(ckeys), % mark all keywords that are still used
+        for kk=1:length(ckeys) % mark all keywords that are still used
             keymap(ckeys(kk))=1;
-        end;
+        end
         crefs=annotations(k).info.references;
-        for kk=1:length(crefs), % mark all references that are still used
+        for kk=1:length(crefs) % mark all references that are still used
             refmap(crefs(kk))=1;
-        end;
-    end;
+        end
+    end
     % make new reference list and key list and translation tables
     keytrans=zeros(1,length(model.keys));
     npoi=0;
-    for k=1:length(keymap),
-        if keymap(k),
+    for k=1:length(keymap)
+        if keymap(k)
             npoi=npoi+1;
             keys(npoi).indices=[];
             keytrans(k)=npoi;
-        end;
-    end;
+        end
+    end
     reftrans=zeros(1,length(model.keys));
     npoi=0;
-    for k=1:length(refmap),
-        if refmap(k),
+    for k=1:length(refmap)
+        if refmap(k)
             npoi=npoi+1;
             references(npoi)=references0(k);
             reftrans(k)=npoi;
-        end;
-    end;
+        end
+    end
     % translate key and reference numbers in annotations
-    for k=1:length(annotations),
+    for k=1:length(annotations)
         reffy=[];
-        for kk=1:length(annotations(k).info.references),
-            if reftrans(annotations(k).info.references(kk))>0,
+        for kk=1:length(annotations(k).info.references)
+            if reftrans(annotations(k).info.references(kk))>0
                 reffy=[reffy reftrans(annotations(k).info.references(kk))];
-            end;
-        end;
+            end
+        end
         annotations(k).info.references=reffy; % all nonexisting references deleted
         keyfy=[];
-        for kk=1:length(annotations(k).info.keywords),
-            if keytrans(annotations(k).info.keywords(kk))>0,
+        for kk=1:length(annotations(k).info.keywords)
+            if keytrans(annotations(k).info.keywords(kk))>0
                 keyfy=[keyfy keytrans(annotations(k).info.keywords(kk))];
-            end;
-        end;
+            end
+        end
         annotations(k).info.keywords=keyfy; % all nonexisting keywords deleted
         % register keys
-        for kk=1:length(annotations(k).info.keywords),
+        for kk=1:length(annotations(k).info.keywords)
             ind=annotations(k).info.keywords(kk);
             keys(ind).indices=[keys(ind).indices; annotations(k).indices];
-        end;
-    end;
+        end
+    end
     % make the new keyword string
     keywords=':';
-    for k=1:length(keytrans),
-        if keytrans(k)>0,
+    for k=1:length(keytrans)
+        if keytrans(k)>0
             cref=id2tag(k,keywords0);
             keywords=sprintf('%s%s:',keywords,cref);
-        end;
-    end;
+        end
+    end
 else
     keywords=keywords0;
     keys=keys0;
     references=references0;
-end;
+end
 
 model.annotations=annotations;
 model.references=references;
@@ -3333,7 +3333,7 @@ switch true_privacy
         msg='Model has group annotations but no user annotations.';
     case 2
         msg='Model has both group and user annotations.';
-end;
+end
 
 add_msg_board(msg);
 save_model(hObject, eventdata, handles, 0, privacy);
@@ -3371,116 +3371,116 @@ chain_models=zeros(1,3);
 [allindices,message]=resolve_address('*'); % get indices of all selected objects
 
 poi=0;
-if ~isempty(allindices),
+if ~isempty(allindices)
     [m,n]=size(allindices);
-    for k=1:m,
+    for k=1:m
         cindices=allindices(k,:);
         cindices=cindices(cindices>0);
-        if length(cindices)==3, % user selected chain model
+        if length(cindices)==3 % user selected chain model
             poi=poi+1;
             chain_models(poi,:)=cindices;
-        elseif length(cindices)==2, % user selected chain
+        elseif length(cindices)==2 % user selected chain
             models=length(model.structures{cindices(1)}(cindices(2)).residues);
             cmodel=1;
-            if models>1, % ask, which chain model
+            if models>1 % ask, which chain model
                 adr=mk_address(cindices);
                 answer = inputdlg(sprintf('Several models exist for chain %s',adr),'Select coordinate set',1,{'1'});
                 if ~isempty(answer)
                     cmodel=round(str2num(answer{1}));
-                    if isempty(cmodel), % replace wrong replies with default value
+                    if isempty(cmodel) % replace wrong replies with default value
                         cmodel=1;
                     elseif isnan(cmodel) || cmodel<1 || cmodel>models
                         cmodel=1;
-                    end;
+                    end
                     poi=poi+1;
                     chain_models(poi,1:2)=cindices;
                     chain_models(poi,3)=cmodel;
-                end;
+                end
             else
                 poi=poi+1;
                 chain_models(poi,1:2)=cindices;
                 chain_models(poi,3)=1;
-            end;
-        end;
-    end;
-end;
+            end
+        end
+    end
+end
 
 chain_models=chain_models(1:poi,:);
 
-if isempty(chain_models),
+if isempty(chain_models)
     cindices=zeros(1,2);
     cindices(1)=model.current_structure;
     ctags=model.chain_tags{cindices(1)};
     cindices(2)=tag2id(model.current_chain,ctags);
     models=length(model.structures{cindices(1)}(cindices(2)).residues);
     cmodel=1;
-    if models>1, % ask, which chain model
+    if models>1 % ask, which chain model
         adr=mk_address(cindices);
         answer = inputdlg(sprintf('Several models exist for chain %s',adr),'Select coordinate set',1,{'1'});
         if ~isempty(answer)
             cmodel=round(str2num(answer{1}));
-            if isempty(cmodel), % replace wrong replies with default value
+            if isempty(cmodel) % replace wrong replies with default value
                 cmodel=1;
             elseif isnan(cmodel) || cmodel<1 || cmodel>models
                 cmodel=1;
-            end;
+            end
             poi=1;
             chain_models(1,1:2)=cindices;
             chain_models(1,3)=cmodel;
-        end;
+        end
     else
         poi=1;
         chain_models(1,1:2)=cindices;
         chain_models(1,3)=1;
-    end;
-end;
+    end
+end
 
 chain_models=chain_models(1:poi,:);
 
 type = selection_type(chain_models);
 
-if isempty(chain_models),
+if isempty(chain_models)
     msgbox('At least one chain model must be selected.','No chain model selected for site scan','warn');
 else
     hMain.site_scan_residue=0;
-    if strcmp(type,'peptide'),
+    if strcmp(type,'peptide')
         site_scan;
-    elseif strcmp(type,'nucleotide'),
+    elseif strcmp(type,'nucleotide')
         site_scan_nucleotides;
     else
         add_msg_board('ERROR: Either only peptide chains or only nucleotide chains must be selected for site scan.');
         hMain.site_scan = 0;
-    end;
-    if ~hMain.site_scan,
+    end
+    if ~hMain.site_scan
         add_msg_board('Site scan cancelled by user.');
     else
         labeling_site_scan(chain_models);
-    end;
-end;
+    end
+end
 
 % add the reference, if it does not yet exist
 sitescan_ref=true;
 id=tag2id('Polyhach:2010_site_scan',third_party.tags,[],'|');
-if ~isempty(id),
-    if isfield(model,'auto_references'),
-        if ~isempty(find(id==model.auto_references, 1)),
+if ~isempty(id)
+    if isfield(model,'auto_references')
+        if ~isempty(find(id==model.auto_references, 1))
             sitescan_ref=false;
-        end;
+        end
     else
         model.auto_references=[];
-    end;
-    if sitescan_ref,
-        if ~isfield(model,'references'),
+    end
+    if sitescan_ref
+        if ~isfield(model,'references')
             model.references(1)=third_party.references(id);
         elseif isempty(model.references)
             model=rmfield(model,'references');
             model.references(1)=third_party.references(id);
         else
             model.references(end+1)=third_party.references(id);
-        end;
+        end
         model.auto_references(end+1)=id;
-    end;
-end;
+    end
+end
 
 
 guidata(hObject,handles);
@@ -3499,46 +3499,46 @@ residues=zeros(10000,4);
 [allindices,message]=resolve_address('*'); % get indices of all selected objects
 
 poi=0;
-if ~isempty(allindices),
+if ~isempty(allindices)
     [m,n]=size(allindices);
-    for k=1:m,
+    for k=1:m
         cindices=allindices(k,:);
         cindices=cindices(cindices>0);
-        if length(cindices)==4, % user selected residue
+        if length(cindices)==4 % user selected residue
             poi=poi+1;
             residues(poi,:)=cindices;
-        end;
-    end;
-end;
+        end
+    end
+end
 
 residues=residues(1:poi,:);
 
 type = selection_type(residues);
 
-if isempty(residues),
+if isempty(residues)
     msgbox('At least one residue must be selected.','No residue selected for site scan','warn');
     add_msg_board('Site scan cancelled since no residues are selected.');
 else
     hMain.site_scan_residue=1;
-    if strcmp(type,'peptide'),
+    if strcmp(type,'peptide')
         site_scan;
-    elseif strcmp(type,'nucleotide'),
+    elseif strcmp(type,'nucleotide')
         site_scan_nucleotides;
-    elseif strcmp(type,'nonstandard'),
+    elseif strcmp(type,'nonstandard')
         site_scan_cofactors;
     else
         add_msg_board('ERROR: Either only peptide residues or only nucleotide residues or only cofactors must be selected for site scan.');
         hMain.site_scan = 0;
-    end;
-    if ~hMain.site_scan,
+    end
+    if ~hMain.site_scan
         add_msg_board('Site scan cancelled.');
     elseif hMain.no_rot_pop
         transform_rotamers(residues);
     else
         labeling_site_scan(residues);
-    end;
+    end
     hMain.site_scan_residue=0;
-end;
+end
 
 guidata(hObject,handles);
 
@@ -3561,11 +3561,11 @@ function uipushtool_references_ClickedCallback(hObject, eventdata, handles)
 global model
 global hMain
 
-if isfield(model,'references'),
+if isfield(model,'references')
     hMain.current_reference=length(model.references);
 else
     hMain.current_reference=0;
-end;
+end
 
 reference_window;
 
@@ -3579,11 +3579,11 @@ function menu_edit_references_Callback(hObject, eventdata, handles)
 global model
 global hMain
 
-if isfield(model,'references'),
+if isfield(model,'references')
     hMain.current_reference=length(model.references);
 else
     hMain.current_reference=0;
-end;
+end
 
 reference_window;
 
@@ -3599,16 +3599,16 @@ global hMain
 
 doit=0;
 
-if ~exist('model','var') || isempty(model),
+if ~exist('model','var') || isempty(model)
     doit=1;
 else
     button = questdlg('Do you want to delete old model?','New model will overwrite existing model','No');
     if strcmpi(button,'Yes')
         doit=1;
-    end;
-end;
+    end
+end
 
-if doit,
+if doit
     model=[]; 
 
     command=sprintf('attach');
@@ -3627,7 +3627,7 @@ if doit,
     hMain.virgin=0;
 
     add_and_plot_pdb(hObject,handles);
-end;
+end
 
 
 % --------------------------------------------------------------------
@@ -3641,16 +3641,16 @@ global hMain
 
 doit=0;
 
-if ~exist('model','var') || isempty(model),
+if ~exist('model','var') || isempty(model)
     doit=1;
 else
     button = questdlg('Do you want to delete old model?','New model will overwrite existing model','No');
     if strcmpi(button,'Yes')
         doit=1;
-    end;
-end;
+    end
+end
 
-if doit,
+if doit
     model=[]; 
 
     command=sprintf('attach');
@@ -3669,18 +3669,18 @@ if doit,
     hMain.virgin=0;
     answer = inputdlg('Please provide PDB identifier (four characters)','Direct PDB download');
     PDBID=strtrim(char(answer));
-    if length(PDBID)~=4,
+    if length(PDBID)~=4
         add_msg_board('ERROR: PDB identifier must have four characters');
         return
-    end;
+    end
     set(gcf,'Pointer','watch');
     drawnow;
     fname=get_pdb_file(PDBID);
     set(gcf,'Pointer','arrow');
-    if ~isempty(fname),
+    if ~isempty(fname)
         add_and_plot_pdb(hObject,handles,fname);
-    end;
-end;
+    end
+end
 
 % --------------------------------------------------------------------
 function menu_file_add_PDB_local_Callback(hObject, eventdata, handles)
@@ -3698,17 +3698,17 @@ function menu_file_add_PDB_direct_Callback(hObject, eventdata, handles)
 
 answer = inputdlg('Please provide PDB identifier (four characters)','Direct PDB download');
 PDBID=strtrim(char(answer));
-if length(PDBID)~=4,
+if length(PDBID)~=4
     add_msg_board('ERROR: PDB identifier must have four characters');
     return
-end;
+end
 set(gcf,'Pointer','watch');
 drawnow;
 fname=get_pdb_file(PDBID);
 set(gcf,'Pointer','arrow');
-if ~isempty(fname),
+if ~isempty(fname)
     add_and_plot_pdb(hObject,handles,fname);
-end;
+end
 
 
 % --------------------------------------------------------------------
@@ -3720,10 +3720,10 @@ function menu_build_bilayer_Callback(hObject, eventdata, handles)
 global hMain
 
 build_bilayer;
-if hMain.graph_update,
+if hMain.graph_update
     display_model(handles,hObject);
     set_view([1,0,0]);
-end;
+end
 
 % --------------------------------------------------------------------
 function menu_build_SAS_Callback(hObject, eventdata, handles)
@@ -3742,45 +3742,45 @@ global third_party
 entry=strcat(help_files,'third_party.html#MSMS');
 
 dospath=which('msms.exe');
-if isempty(dospath),
+if isempty(dospath)
     add_msg_board('ERROR: MSMS could not be found on the Matlab path.');
     add_msg_board('Please check whether MSMS is installed and the path set.');
     add_msg_board('(see also help browser)');
     webcall(entry,'-helpbrowser');
     return
-end;
+end
 
 indices=resolve_address('*');
 indices=indices(indices>0);
 [m,n]=size(indices);
-if m==1,
-    if n<=4,
-        if n<2,
+if m==1
+    if n<=4
+        if n<2
             adr=[mk_address(indices(1)) '(:){1}'];
             add_msg_board('Considering first coordinate set of each chain');
-        elseif n<3,
+        elseif n<3
             adr=[mk_address(indices(1:2)) '{1}'];
             add_msg_board('Considering first coordinate set of the chain');
         else
             adr=mk_address(indices);
-        end;
+        end
         indices=resolve_address(adr);
     else
         add_msg_board('Selection addresses an atom or location');
         add_msg_board('Computing surface for current structure');
         adr=[mk_address(model.current_structure) '(:){1}'];
         indices=resolve_address(adr);
-    end;
+    end
 else
     add_msg_board('Selection does not address a single object');
     add_msg_board('Computing surface for current structure');
     adr=[mk_address(model.current_structure) '(:){1}'];
     indices=resolve_address(adr);
-end;
+end
 [msg,coor]=get_object(indices,'xyz');
-if iscell(coor),
+if iscell(coor)
     coor=cat(1,coor{:});
-end;
+end
 
 % A piece of code that may be useful for coarse-grained visualization
 % [k,v]=convhulln(coor);
@@ -3791,63 +3791,63 @@ end;
 
 
 [msg,elements]=get_object(indices,'elements');
-if iscell(elements),
+if iscell(elements)
     elements=cat(1,elements{:});
-end;
+end
 vdW=zeros(size(elements));
-for k=1:length(elements),
-    if elements(k)>0 && elements(k)<length(chemistry.pse),
+for k=1:length(elements)
+    if elements(k)>0 && elements(k)<length(chemistry.pse)
         vdW(k)=chemistry.pse(elements(k)).vdW;
-    end;
-end;
+    end
+end
 
 density=round(5000/length(elements));
-if density>3, density=3; end;
-if density<1, density=1; end;
+if density>3, density=3; end
+if density<1, density=1; end
 dstring=sprintf(' -density %i',density);
 
-if isfield(model,'SAS'),
+if isfield(model,'SAS')
     poi=length(model.SAS)+1;
 else
     poi=1;
-end;
+end
 
 answer = inputdlg('Please provide a tag for this surface',sprintf('Solvent accessible surface for %s',adr),1,{sprintf('SAS_%i',poi)});
 stag=strtrim(char(answer));
 found=0;
-if poi>1,
-    for k=1:poi-1,
-        if strcmp(stag,model.SAS(k).tag),
+if poi>1
+    for k=1:poi-1
+        if strcmp(stag,model.SAS(k).tag)
             found=1;
-        end;
-    end;
-end;
-if found,
+        end
+    end
+end
+if found
     add_msg_board('ERROR: Surface tag already existed.');
     add_msg_board('Please provide a new (unique) tag.');
     return
-end;
-if isempty(answer),
+end
+if isempty(answer)
     add_msg_board('Surface computation canceled (no tag).');
     return
-end;
+end
 
 set(hMain.MMM,'Pointer','watch');
 drawnow;
 outfile=[general.tmp_files stag '.xyzr'];
 fid=fopen(outfile,'w');
-if fid==-1,
+if fid==-1
     add_msg_board('ERROR: Coordinate file could not be opened for writing.');
     return
-end;
-for k=1:length(vdW),
-    if vdW(k)>0,
+end
+for k=1:length(vdW)
+    if vdW(k)>0
         fprintf(fid,'%12.3f%12.3f%12.3f%6.2f',coor(k,1),coor(k,2),coor(k,3),vdW(k));
-        if k<length(vdW),
+        if k<length(vdW)
             fprintf(fid,'\n');
-        end;
-    end;
-end;
+        end
+    end
+end
 fclose(fid);
 
 [pathstr, name, ext] = fileparts(outfile);
@@ -3858,40 +3858,40 @@ msmsfile=[general.tmp_files stag];
 msmsfile=fullfile(pathstr,[name ext]);
 cmd=[dospath ' -if ' outfile ' -of ' msmsfile dstring];
 [s, w] = dos(cmd);
-if s~=0,
+if s~=0
     add_msg_board('ERROR: MSMS did not run successfully.');
     set(hMain.MMM,'Pointer','arrow');
     return
 else
     comments=textscan(w,'%s','Delimiter','\n');
     lines=comments{1};
-    for k=1:length(lines),
+    for k=1:length(lines)
         msg=char(lines(k));
         add_msg_board(msg);
-    end;
-end;
+    end
+end
 
 % add the reference, if it does not yet exist
 msms_ref=true;
 id=tag2id('Sanner:1996_msms',third_party.tags,[],'|');
-if isfield(model,'auto_references'),
-    if ~isempty(find(id==model.auto_references, 1)),
+if isfield(model,'auto_references')
+    if ~isempty(find(id==model.auto_references, 1))
         msms_ref=false;
-    end;
+    end
 else
     model.auto_references=[];
-end;
-if msms_ref,
-    if ~isfield(model,'references'),
+end
+if msms_ref
+    if ~isfield(model,'references')
         model.references(1)=third_party.references(id);
     elseif isempty(model.references)
         model=rmfield(model,'references');
         model.references(1)=third_party.references(id);
     else
         model.references(end+1)=third_party.references(id);
-    end;
+    end
     model.auto_references(end+1)=id;
-end;
+end
 
 axes(handles.axes_model);
 
@@ -3907,14 +3907,14 @@ dg.level=info.probe_r;
 dg.transparency=graph_settings.SAS_transparency;
 dg.active=true;
 
-if isfield(model,'surfaces') && ~isempty(model.surfaces),
+if isfield(model,'surfaces') && ~isempty(model.surfaces)
     model.surfaces(end+1)=dg;
 else
-    if isfield(model,'surfaces'),
+    if isfield(model,'surfaces')
         model=rmfield(model,'surfaces');
-    end;
+    end
     model.surfaces(1)=dg;
-end;
+end
 
 if ~isfield(model,'SAS')
     model.SAS(1).tri=tri;
@@ -3933,7 +3933,7 @@ else
     model.SAS(poi).info=info;
     model.SAS(poi).tag=stag;
     model.SAS(poi).snum=indices(1);
-end;
+end
 
 set(hMain.MMM,'Pointer','arrow');
 
@@ -3969,16 +3969,16 @@ assign_TM;
 p0=hMain.origin;
 v=hMain.z_axis;
 
-if ~isempty(p0) && ~isempty(v),
+if ~isempty(p0) && ~isempty(v)
     set(gcf,'Pointer','watch');
     drawnow;
     v=v/norm(v);
     th=acos(v(3));
-    if norm(v(1:2))>1e-6,
+    if norm(v(1:2))>1e-6
         v=v(1:2)/norm(v(1:2));
     else
         v=[0,0];
-    end;
+    end
     phi=atan2(v(2),v(1));
     transmat1=affine('translation',-p0);
     transmat2=affine('Euler',[-phi,-th,0]);
@@ -3988,7 +3988,7 @@ if ~isempty(p0) && ~isempty(v),
     drawnow;
 else
     add_msg_board('No membrane normal defined. No coordinate transform.');
-end;
+end
 
 guidata(hObject,handles);
 
@@ -4018,50 +4018,50 @@ global hMain
 
 set(gcf,'Pointer','watch');
 
-if ~isfield(hMain,'atom_graphics') ||  ~ishandle(hMain.atom_graphics),
+if ~isfield(hMain,'atom_graphics') ||  ~ishandle(hMain.atom_graphics)
     switch_it=false;
 else
     switch_it=true;
-end;
+end
 if ~isfield(hMain,'atom_graphics_reduced') ||  ~ishandle(hMain.atom_graphics_reduced),
     switch_it=false;
-end;
+end
 state=get(hObject,'Value');
-if state,
-    if switch_it,
+if state
+    if switch_it
         add_msg_board('Display update may take a while...');
         try
             set(hMain.atom_graphics_reduced,'Visible','off');
             set(hMain.atom_graphics,'Visible','on');
         catch myException
-        end;
-    end;
+        end
+    end
     hMain.atom_graphics_mode=1;
     set(hObject,'String','Atom graphics on','ForegroundColor',[0,0.6,0]);
 else
-    if hMain.atom_graphics_mode==1,
-        if switch_it,
+    if hMain.atom_graphics_mode==1
+        if switch_it
             add_msg_board('Display update may take a while...');
             try
                 set(hMain.atom_graphics,'Visible','off');
                 set(hMain.atom_graphics_reduced,'Visible','on');
             catch myException
-            end;
-        end;
+            end
+        end
         hMain.atom_graphics_mode=2;
         set(hObject,'String','Atom graphics low','ForegroundColor',[0.75,0.6,0]); % 250-250-210
         set(hObject,'Value',1);
     else
-        if switch_it,
+        if switch_it
             try
                 set(hMain.atom_graphics_reduced,'Visible','off');
             catch myException
-            end;
-        end;
+            end
+        end
         hMain.atom_graphics_mode=0;
         set(hObject,'String','Atom graphics off','ForegroundColor','r');
-    end;
-end;
+    end
+end
 set(gcf,'Pointer','arrow');
 guidata(hObject,handles);
 
@@ -4075,16 +4075,16 @@ function uipushtool_copy_ClickedCallback(hObject, eventdata, handles)
 global hModel
 global hMain
 
-if hMain.atom_graphics_auto,
+if hMain.atom_graphics_auto
     switch_it=true;
     adjust_atom_graphics(false);
 else
     switch_it=false;
-end;
+end
 print(hModel.figure,'-dbitmap');
-if switch_it,
+if switch_it
     adjust_atom_graphics(true);
-end;
+end
 
 guidata(hObject,handles);
 
@@ -4193,16 +4193,16 @@ global model
 global hMain
 
 doit=0;
-if ~exist('model','var') || isempty(model),
+if ~exist('model','var') || isempty(model)
     doit=1;
 else
     button = questdlg('Do you want to delete old model?','New model will overwrite existing model','No');
     if strcmpi(button,'Yes')
         doit=1;
-    end;
-end;
+    end
+end
 
-if doit,
+if doit
     open_model(hObject, eventdata, handles, false);
     axes(handles.axes_model);
     cla reset;
@@ -4215,7 +4215,7 @@ if doit,
     guidata(handles.axes_model,handles);
 else
     add_msg_board('Opening of new model cancelled by user');
-end;
+end
 
 add_msg_board('Model loaded with display suppressed.');
 drawnow
@@ -4367,23 +4367,23 @@ function menu_sidechains_selected_Callback(hObject, eventdata, handles)
 
 global model
 
-for k=1:model.selections,
+for k=1:model.selections
     cindices=model.selected{k};
-    if length(cindices)==2, % selected chain, repack all models
+    if length(cindices)==2 % selected chain, repack all models
         snum=cindices(1);
         cnum=cindices(2);
         sets=length(model.structures{snum}(cnum).residues);
-        for mnum=1:sets,
+        for mnum=1:sets
             repacked_copy(snum,'',modnum,cnum);
-        end;
-    end;
-    if length(cindices)==3, % selected chain model, repack this one
+        end
+    end
+    if length(cindices)==3 % selected chain model, repack this one
         snum=cindices(1);
         cnum=cindices(2);
         modnum=cindices(3);
         repacked_copy(snum,'',modnum,cnum);
-    end;
-end;
+    end
+end
 
 guidata(hObject,handles);
 
@@ -4399,28 +4399,28 @@ global model
 snum=model.current_structure;
 stag=id2tag(snum,model.structure_tags);
 idCode=model.info{snum}.idCode;
-if isempty(idCode), idCode='AMMM'; end;
+if isempty(idCode), idCode='AMMM'; end
 idCode(1)=char(idCode(1)+16);
 
 answer = inputdlg(sprintf('Please provide tag for copy of structure %s',stag),'New structure tag required',1,{idCode});
-if ~isempty(answer),
+if ~isempty(answer)
     idCode=answer{1};
-end;
+end
 [snum1,message]=copy_structure(snum,idCode);
-if message.error==0,
+if message.error==0
     model.current_structure=snum1;
     if isfield(model.info{snum1},'resolution') && ~isempty(model.info{snum1}.resolution),
         resstring=sprintf('%4.2f Å',model.info{snum1}.resolution);
     else
         resstring='not specified';
-    end;
+    end
     stag=id2tag(snum1,model.structure_tags);
     ctag=model.current_chain;
     set(handles.MMM,'Name',sprintf('MMM - [%s](%s) Resolution %s',stag,ctag,resstring));
 else
     add_msg_board('ERROR: Copying of structure failed.');
     add_msg_board(message.text);
-end;
+end
 
 guidata(hObject,handles);
 
@@ -4438,23 +4438,23 @@ snum=model.current_structure;
 
 nonstandard_replacement;
 
-if ~isempty(replacements),
-    if strcmpi(replacements(1),'S'),
+if ~isempty(replacements)
+    if strcmpi(replacements(1),'S')
         selected=true;
     else
         selected=false;
-    end;
+    end
     replacements=replacements(2:end);
     [repnum,msg]=replace(snum,replacements,selected);
-    if ~msg.error,
+    if ~msg.error
         add_msg_board(sprintf('%i residues were replaced.',repnum));
     else
         add_msg_board('ERROR in residue replacement.');
         add_msg_board(msg.text);
-    end;
+    end
 else
     add_msg_board('Warning: No replacement of non-standard residues');
-end;
+end
 
 guidata(hObject,handles);
 
@@ -4503,11 +4503,11 @@ function menu_analysis_crystal_Callback(hObject, eventdata, handles)
 global model
 
 snum=model.current_structure;
-if ~isfield(model.info{snum},'cryst'),
+if ~isfield(model.info{snum},'cryst')
     add_msg_board('ERROR: Unit cell information does not exist or was destroyed by a coodinate transformation.');
     guidata(hObject,handles);
     return
-end;
+end
 pdbid=id2tag(snum,model.structure_tags);
 command=sprintf('hide [%s]',pdbid);
 exe(handles,command,hObject);
@@ -4598,9 +4598,9 @@ global model
 snum=model.current_structure;
 % cnum=tag2id(model.current_chain,model.chain_tags{snum});
 chains=length(model.structures{snum});
-for cnum=1:chains,
+for cnum=1:chains
     fill_gaps([snum,cnum]);
-end;
+end
 
 
 % --------------------------------------------------------------------
@@ -4628,18 +4628,18 @@ cd(general.pdb_files);
 
 set(gcf,'Pointer','watch');
 
-if model.current_structure<1,
+if model.current_structure<1
     add_msg_board('### ERROR ### No structure available');
     guidata(hObject,handles);
     return;
 else
     idCode=model.info{model.current_structure}.idCode;
-    if isempty(idCode), idCode='AMMM'; end;
+    if isempty(idCode), idCode='AMMM'; end
 %     idCode(1)=char(idCode(1)+16);
 %     if double(idCode(1))>90,
 %         idCode(1)=90;
 %     end;
-end;
+end
 default_name=sprintf('%s.pdb',idCode);
 
 [filename, pathname] = uiputfile(default_name, 'Save current structure as PDB');
@@ -4657,9 +4657,9 @@ end
 
 set(gcf,'Pointer','arrow');
 
-if message.error,
+if message.error
     add_msg_board(message.text);
-end;
+end
 
 cd(my_path);
 guidata(hObject,handles);
@@ -4690,7 +4690,7 @@ if ~isempty(answer)
 else
     add_msg_board('ERROR: No number of last model provided.');
     return
-end;
+end
 
 add_msg_board(sprintf('Now loading %i PDB structures. Please be patient.',modn-mod1+1));
 set(gcf,'Pointer','watch');
@@ -4699,13 +4699,13 @@ drawnow;
 set(gcf,'Pointer','arrow');
 drawnow;
 
-if message.error,
+if message.error
     add_msg_board(message.text);
 else
     add_msg_board(sprintf('Modeller ensemble with %i models was added as structure %i with ID %s',models,snum,stag));
-end;
+end
 
-if hMain.virgin,
+if hMain.virgin
     hMain.virgin=0;
     % initialize display
     axes(handles.axes_model);
@@ -4717,41 +4717,41 @@ if hMain.virgin,
     hold on
     hMain.camlight=camlight;
     guidata(handles.axes_model,hMain);
-end;
+end
 
 command=sprintf('attach');
-if hMain.hierarchy_display,
+if hMain.hierarchy_display
     disp_hierarchy=1;
     try
         close(hMain.hierarchy_window);
         close(hMain.hierarchy_window_large);        
     catch exception
         return
-    end;
+    end
 else
     disp_hierarchy=0;
-end;
+end
 exe(handles,command,hObject);
 
 fig=hMain.figure;
 
 rot_state=get(handles.uitoggletool_rotate,'State');
-if strcmp(rot_state,'on'),
+if strcmp(rot_state,'on')
     set(handles.uitoggletool_rotate,'State','off');
     view3D(fig,'off');
-end;
+end
     
 zoom_state=get(handles.uitoggletool_zoom,'State');
-if strcmp(zoom_state,'on'),
+if strcmp(zoom_state,'on')
     set(handles.uitoggletool_zoom,'State','off');
     view3D(fig,'off');
-end;
+end
 
 pan_state=get(handles.uitoggletool_pan,'State');
-if strcmp(pan_state,'on'),
+if strcmp(pan_state,'on')
     set(handles.uitoggletool_pan,'State','off');
     view3D(fig,'off');
-end;
+end
     
 set(handles.context_model_rotate,'Checked','off');
 set(handles.context_model_zoom,'Checked','off');
@@ -4760,15 +4760,15 @@ set(handles.context_model_pan,'Checked','off');
 
 set(handles.uitoggletool_select,'State','on');
 
-if ~isempty(hMain.auxiliary),
-    for k=1:length(hMain.auxiliary),
+if ~isempty(hMain.auxiliary)
+    for k=1:length(hMain.auxiliary)
         try
             delete(hMain.auxiliary(k));
         catch my_exception
-        end;
-    end;
+        end
+    end
     hMain.auxiliary=[];
-end;
+end
 
 % initialize display
 axes(handles.axes_model);
@@ -4801,22 +4801,22 @@ guidata(handles.axes_frame,handles);
 command_line=sprintf('show [%s] coil',stag);
 handles=exe(handles,command_line,hObject);
 
-if isfield(hMain,'camlight'),
+if isfield(hMain,'camlight')
     hMain.camlight=camlight(hMain.camlight);
 else
     hMain.camlight=camlight;
-end;
+end
 camlookat(hMain.axes_model);
 guidata(handles.axes_model,hMain);
 
-if disp_hierarchy,
+if disp_hierarchy
 %     if hMain.large,
 %         hierarchy_window_large;
 %     else
 %         hierarchy_window;
 %     end;
     hierarchy_window;
-end;
+end
 
 drawnow;
 
@@ -4897,17 +4897,17 @@ else
         otherwise
             add_msg_board('Warning: Unknown sequence format. Assuming FASTA.');
             alignment=get_multiple_fasta(fullfile(pname,fname));
-    end;
-    if ~isempty(sequence),
+    end
+    if ~isempty(sequence)
         add_msg_board(sequence);
-    elseif exist('alignment','var'),
+    elseif exist('alignment','var')
         msg=wr_multiple_pir('output_test.ali',alignment);
         disp(msg.error);
         disp(msg.text);
     else
         add_msg_board('ERROR: Sequence file is invalid. No sequence found.');
-    end;
-end;
+    end
+end
 
 cd(my_path);
 
@@ -4965,15 +4965,15 @@ cd(general.pdb_files);
 
 set(gcf,'Pointer','watch');
 
-if isempty(model.current_structure) || (model.current_structure<1),
+if isempty(model.current_structure) || (model.current_structure<1)
     add_msg_board('### ERROR ### No structure available');
     guidata(hObject,handles);
     return;
 else
     idCode=model.info{model.current_structure}.idCode;
-    if isempty(idCode), idCode='AMMM'; end;
+    if isempty(idCode), idCode='AMMM'; end
 %    idCode(1)=char(idCode(1)+16);
-end;
+end
 default_name=sprintf('%s.pdb',idCode);
 
 [filename, pathname] = uiputfile(default_name, 'Save current structure as PDB with paradigmatic rotamers');
@@ -4991,9 +4991,9 @@ end
 
 set(gcf,'Pointer','arrow');
 
-if message.error,
+if message.error
     add_msg_board(message.text);
-end;
+end
 
 cd(my_path);
 
@@ -5062,20 +5062,20 @@ function menu_analysis_CS_DEER_Callback(hObject, eventdata, handles)
 global model
 
 doit=0;
-if ~exist('model','var') || isempty(model),
+if ~exist('model','var') || isempty(model)
     doit=1;
 else
     button = questdlg('Do you want to delete old model?','Function overwrites existing model','No');
     if strcmpi(button,'Yes')
         doit=1;
-    end;
-end;
+    end
+end
 
-if doit,
+if doit
     analyze_CS_DEER(hObject, eventdata, handles);
 else
     add_msg_board('Selection from conformational space by DEER constraints cancelled by user');
-end;
+end
 
 add_msg_board('Model selected from conformational space.');
 drawnow
