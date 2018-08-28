@@ -421,12 +421,13 @@ switch handles.progress
                         fprintf(report_fid,'Successful modelling (structure %i) with %i models and %5.1f s/model\n\n',diagnostics.snum,diagnostics.success,diagnostics.time_per_model);
                     else
                         fprintf(1,'RNA modelling failed for section %i in RBA %i\n',sec,km);
-                        fprintf(report_fid,'Modelling failed. Remaining sections in this RBA (if any) are skipped.\n\n');
+                        fprintf(report_fid,'Modelling of RNA for RBA %i failed. Remaining RNA sections (if any) are skipped.\n\n',km);
                         full_connect = false;
                         break
                     end
                 end
                 if full_connect
+                    fprintf(report_fid,'Modelling of RNA for RBA %i succeeded.\n\n',km);
                     nindices = [handles.diagnostics.snum,num_ch+1,km];
                     chain_tag = handles.restraints.RNA.chain_id;
                     poia = strfind(chain_tag,'(');
@@ -2566,4 +2567,4 @@ if isfield(restraints.RNA,'DEER')
     
     handles.distributions = distributions;
 end
-fclose(fid_report);
+
