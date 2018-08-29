@@ -1,36 +1,23 @@
-% Evaluate Cubic Cardinal spline at N+1 values for given four points and tension.
-% Uniform parameterization is used.
+% Cardinal spline interpolation
+%
+% Inputs:
+%   P   four grid points [P1; P2; P3; P4], array size 4x3
+%   c   tensor parameter, c=0 corresponds to Catmull-Rom spline
+%   N   number of interpolated points minus one
+%
+% Outputs:
+%   M   interpolated points from P2 to P3, array size (N+1)x3
 
-% fourpoints is a 4xm array of coordinates of the four points, for 3D m=3.
-% T is tension.
-% N is number of intervals (spline is evaluted at N+1 values).
-% slightly modified version for easier callup, G. Jeschke, 2009
+function M = cardinal_spline(P,c,N)
 
+s = (1-c)./2;
 
-function [MatNbyNPlusOne]=cardinal_spline(fourpoints,T,N)
+% Construct cardinal spline basis matrix
+MC = [-s     2-s   s-2    s;
+      2*s   s-3   3-2*s  -s;
+      -s     0     s      0;
+      0      1     0      0];
 
-[m0,m]=size(fourpoints);
-
-MatNbyNPlusOne=zeros(N+1,m);
-
-% u vareis b/w 0 and 1.
-% at u=0 cardinal spline reduces to P1.
-% at u=1 cardinal spline reduces to P2.
-
-u=0;
-MatNbyNPlusOne(1,:)=evalcrdnd(fourpoints(1,:),fourpoints(2,:),fourpoints(3,:),fourpoints(4,:),T,u); % MatNbyNPlusOne(:,1)=length(P0)
-du=1/N;
-for k=1:N
-    u=k*du;
-      MatNbyNPlusOne(k+1,:)=evalcrdnd(fourpoints(1,:),fourpoints(2,:),fourpoints(3,:),fourpoints(4,:),T,u);
-end
-
-
-% % This program or any other program(s) supplied with it does not provide any
-% % warranty direct or implied. This program is free to use/share for
-% % non-commerical purpose only. 
-% % contact: M A Khan
-% % http://www.geocities.com/mak2000sw/
-% % Email: khan_goodluck@yahoo.com 
-
-
+u = linspace(0,1,N+1).';
+U = [u.^3 u.^2 u ones(size(u))];
+M = U*MC*P;

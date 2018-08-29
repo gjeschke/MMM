@@ -28,25 +28,26 @@ normal=[];
 
 Tension=0; % assume cardinal splines with zero tension
 
-if nargin<4,
+if nargin<4
     sheetflag=0;
-end;
+end
 
 [m,n]=size(Ca_coor);
 
-if m<2,
+if m<2
     return;
-end;
+end
 
 guide_length=(m-1)*spr+1;
 backbone=zeros(guide_length,3);
 backbone0=[Ca_coor(1,:); Ca_coor; Ca_coor(m,:)];
 
-if nargin>2,
+if nargin>2
     rung0=zeros(m,n);
     dirsign=1;
 
-    for k=1:m-1,
+    % run over all Calpha atoms
+    for k=1:m-1
         a=Ca_coor(k+1,:)-Ca_coor(k,:);
         a=a/norm(a);
         b=O_coor(k,:)-Ca_coor(k,:);
@@ -55,62 +56,62 @@ if nargin>2,
         d=cross_rowvec(c,a);
         d=d/norm(d); % y axis in peptide plane
         % if sheetflag, dirsign=dirsign*-1; end; % flip side, if necessary
-        if k>1,
+        if k>1
             dirsign=dirsign*sum(d.*d0);
-        end;
+        end
         rung0(k,:)=dirsign*d;
         d0=d;
-    end;
+    end
     rung0(m,:)=dirsign*d;
     normal=backbone;
     rung=backbone;
     rung0=[rung0(1,:); rung0; rung0(m,:)];    
-end;
+end
 
-
-for k=1:m-1,
+% Calculate backbone spline interpolant
+for k=1:m-1
     basnum=(k-1)*spr;
-       backbone(basnum+1:basnum+spr+1,:)=cardinal_spline(backbone0(k:k+3,:),Tension,spr);
-       backbone(basnum+1:basnum+spr+1,:)=cardinal_spline(backbone0(k:k+3,:),Tension,spr);
-    if nargin>2,
+    backbone(basnum+1:basnum+spr+1,:)=cardinal_spline(backbone0(k:k+3,:),Tension,spr);
+    if nargin>2
        rung(basnum+1:basnum+spr+1,:)=cardinal_spline(rung0(k:k+3,:),Tension,spr);    
-    end;
-end;
-if nargin>2,
+    end
+end
+
+if nargin>2
     normal=zeros(size(rung));
-    for k=1:guide_length-1,
+    for k=1:guide_length-1
         e=backbone(k+1,:)-backbone(k,:);
         f=rung(k,:);
         g=cross_rowvec(e,f);
         normal(k,:)=g/norm(g);
         rung(k,:)=f/norm(f);
-    end;
+    end
     normal(guide_length,:)=normal(guide_length-1,:);
     rung(guide_length,:)=rung(guide_length,:)/norm(rung(guide_length,:));
-end;
+end
 
-if sheetflag,
+if sheetflag
     backbone=smooth_backbone(backbone,spr);
-end;
+end
 
 function backbone=smooth_backbone(backbone,spr)
 % Polynomial fitting (and smoothing) of the backbone curve
 
 [m,n]=size(backbone);
 mb=floor(m/spr);
-if m<20; return; end;
+if m<20; return; end
 x=1:m;
 xb=linspace(1,m,mb);
 xb=xb';
 x=x';
-for k=1:3,
+for k=1:3
     y=backbone(:,k);
     xd=[1,m,1,m];
     d=[y(1),y(m),y(2)-y(1),y(m)-y(m-1)];
     js=[0,0,1,1];
     pp=spfit(x,y,xb,3,xd,d,js);
     smoothed=ppval(pp,xb);
-    if ~sum(isnan(smoothed)), 
+    if ~sum(isnan(smoothed))
         backbone(:,k)=interp1(xb,smoothed,x,'spline');
-    end;
-end;
+    end
+end
