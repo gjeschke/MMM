@@ -1241,7 +1241,8 @@ else
             add_msg_board('Computing higher-order correlations');
             set(handles.DEER,'Pointer','watch');
             drawnow;
-            ffdisplay=multi_formfactor(handles,handles.labels,tsim,handles.exp_depth);
+            addresses=get(handles.listbox_label,'String');
+            ffdisplay=multi_formfactor(handles,addresses,tsim,handles.exp_depth);
             handles.ff_multi=ffdisplay;
             if ~isempty(ffdisplay),
                 handles.ff=ffdisplay;
@@ -1712,7 +1713,8 @@ set(handles.text_bckg_k,'String',sprintf('%5.3f',handles.bckg_k));
 
 function [deer,rmsd,handles]=fit_DEER_multi(handles,rax,distr,texp,vexp)
 
-ff=multi_formfactor(handles,handles.labels,handles.Pake_t,handles.exp_depth);
+addresses=get(handles.listbox_label,'String');
+ff=multi_formfactor(handles,addresses,handles.Pake_t,handles.exp_depth);
 handles.ff_multi=ff;
 handles.tdip=texp;
 if isempty(ff),
@@ -1848,7 +1850,8 @@ set(handles.text_bckg_k,'String',sprintf('%5.3f',handles.bckg_k));
 
 function [deer,rmsd,handles]=fit_formfactor_multi(handles,rax,distr,texp,vexp)
 
-deer=multi_formfactor(handles,handles.labels,texp,handles.exp_depth);
+addresses=get(handles.listbox_label,'String');
+deer=multi_formfactor(handles,addresses,texp,handles.exp_depth);
 handles.ff_multi=deer;
 deer=deer';
 if isempty(deer),
@@ -2227,20 +2230,20 @@ end;
 
 function handles=range_update(handles)
 
-if isfield(handles,'left_crsr'),
+if isfield(handles,'left_crsr') && ~ishandle(handles.left_crsr)
     set(handles.left_crsr,'XData',[handles.range(1) handles.range(1)]);
 else
     axes(handles.axes_distribution);
     handles.left_crsr=plot([handles.range(1) handles.range(1)],[min(handles.dsim),max(handles.dsim)],'b','LineWidth',0.5);
-end;
+end
 set(handles.edit_lower,'String',sprintf('%4.2f',handles.range(1)));
 
-if isfield(handles,'right_crsr'),
+if isfield(handles,'right_crsr') && ~ishandle(handles.right_crsr)
     set(handles.right_crsr,'XData',[handles.range(2) handles.range(2)]);
 else
     axes(handles.axes_distribution);
     handles.right_crsr=plot([handles.range(2) handles.range(2)],[min(handles.dsim),max(handles.dsim)],'m','LineWidth',0.5);
-end;
+end
 set(handles.edit_upper,'String',sprintf('%4.2f',handles.range(2)));
 
 
