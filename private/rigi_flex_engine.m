@@ -31,6 +31,9 @@ if isfield(restraints,'solution_mode') && ~isempty(restraints.solution_mode)
     switch lower(restraints.solution_mode)
         case 'single'
             add_msg_board('Warning: RigiFlex performs only the trials specified in the solution file');
+        case 'all'
+            add_msg_board('Warning: RigiFlex performs only the trials specified in the solution file (several combinations possible)');
+            skip_mode = false;
         case 'randomized'
             add_msg_board('Warning: RigiFlex only tests random stemloop combinations for specified RBA trials');
             solutions = solutions(:,1:2);
@@ -349,7 +352,7 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
     scombi = zeros(options.granularity,length(stemlibs));
     all_s_combi = cell(1,options.granularity);
    
-    xlink_distances = cell(1,options.granularity);
+    xlink_distances = cell(1,options.granularity); 
     tmats = cell(options.granularity,1);
     % the parallel code section is separate for Monte Carlo and exhaustive
     % Rigi, since model rejection is handled differently
@@ -359,10 +362,13 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
     parfor kt = 1:options.granularity % ### parfor
         if solutions_given
             [msoln,nsoln] = size(solutions);
+            ksoln = zeros(1,msoln);
+            psoln = 0;
             skip = true;
             for kbp = 1:msoln
                 if parblocks == solutions(kbp,1) && kt == solutions(kbp,2)
-                    ksoln = kbp;
+                    psoln = psoln + 1;
+                    ksoln(psoln) = kbp;
                     skip = false;
                 end
             end
@@ -370,19 +376,22 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                 merr_vec(kt) = 1; % skipped trials are reported as metrization errors
                 continue
             end
-            fprintf(1,'Trial %i.%i: Model will be tested.',parblocks,kt);
+            ksoln = ksoln(1:psoln);
+            fprintf(1,'Trial %i.%i: Model will be tested.\n',parblocks,kt);
             if nsoln > 2
-                fprintf(1,'(combination ');
-                for kx = 3:nsoln
-                    fprintf(1,'%i',solutions(ksoln,kx));
-                    if kx < nsoln
-                        fprintf(1,', ');
-                    else
-                        fprintf(1,')');
+                for kksoln = 1:psoln
+                    fprintf(1,'combination: ');
+                    for kx = 3:nsoln
+                        fprintf(1,'%i',solutions(kksoln,kx));
+                        if kx < nsoln
+                            fprintf(1,', ');
+                        else
+                            fprintf(1,'.\n');
+                        end
                     end
                 end
+                fprintf(1,'\n');
             end
-            fprintf(1,'\n');
         end
         m0 = 0;
         fulfill = true;
@@ -769,7 +778,13 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                             refineable = zeros(1,m0);
                             for kcombi = kcvec
                                 if solutions_given && nsoln > 2
-                                    if sum(abs(combinations(kcombi,1:nsoln-2) - solutions(ksoln,3:nsoln))) > 0
+                                    valid = false;
+                                    for kksoln = 1: length(ksoln)
+                                        if sum(abs(combinations(kcombi,1:nsoln-2) - solutions(ksoln(kksoln),3:nsoln))) == 0
+                                            valid = true;
+                                        end
+                                    end
+                                    if ~valid
                                         continue
                                     end
                                 end
@@ -873,7 +888,7 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                                 end
                                 % fprintf(1,'R%i.%i: combination (%i, %i, %i) was successfully refined\n',parblocks,kt,scombi(kt,:));
                             end
-                            if csuccess > 1 && ~isempty(combinations)
+                            if csuccess > 1 && ~isempty(combinations) && skip_mode
                                 fprintf(2,'R%i.%i: %i combinations were successfully refined, but only (%i, %i, %i) is kept\n',parblocks,kt,csuccess,scombi(kt,:));
                             end
                             tmats{kt} = atransmat;
@@ -937,212 +952,220 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
         worst_res = max(res_vec);
     end
     for k = bask+1:bask+options.granularity
-        fulfill = true;
         if fail_vec(k-bask) == 0
+            if isempty(all_s_combi{k-bask})
+                all_combi = scombi(k-bask,:);
+            else
+                all_combi = all_s_combi{k-bask};
+            end
             atransmat = tmats{k-bask};
             for kr = 1:length(rb)
                 baspoi4 = 4*(kr-1);
                 transmats{kr} = atransmat(baspoi4+1:baspoi4+4,:);
             end
-            success = success + 1;
-            probabilities(success) = model_prob(k-bask)^(1/(naux+ncore));
-            tmstd = [];
-            % replace binding motifs by stemloops from library if stemmloop
-            % libraries are tested
-            for klib = 1:length(stemlibs)
-                for kr = 1:length(restraints.rb)
-                    for kcc = 1:length(restraints.rb(kr).chains)
-                        if stemlibs{klib}.cind(2) == restraints.rb(kr).chains(kcc)
-                            chain_coor{kr,kcc} = stemlibs{klib}.chains{scombi(k-bask,klib)}.xyz{1};
-                            if success == 1
-                                fields = fieldnames(model.structures{snum}(restraints.rb(kr).chains(kcc)));
-                                for kfield = 1:length(fields)
-                                    if isfield(stemlibs{klib}.chains{scombi(k-bask,klib)},fields{kfield})
-                                        model.structures{snum}(restraints.rb(kr).chains(kcc)).(fields{kfield}) = stemlibs{klib}.chains{scombi(k-bask,klib)}.(fields{kfield});
+            [ncombi,~] = size(all_combi);
+            for kcombi = 1:ncombi
+                success = success + 1;
+                ccombi = all_combi(kcombi,:);
+                probabilities(success) = model_prob(k-bask)^(1/(naux+ncore));
+                tmstd = [];
+                % replace binding motifs by stemloops from library if stemmloop
+                % libraries are tested
+                for klib = 1:length(stemlibs)
+                    for kr = 1:length(restraints.rb)
+                        for kcc = 1:length(restraints.rb(kr).chains)
+                            if stemlibs{klib}.cind(2) == restraints.rb(kr).chains(kcc)
+                                chain_coor{kr,kcc} = stemlibs{klib}.chains{ccombi(klib)}.xyz{1};
+                                if success == 1
+                                    fields = fieldnames(model.structures{snum}(restraints.rb(kr).chains(kcc)));
+                                    for kfield = 1:length(fields)
+                                        if isfield(stemlibs{klib}.chains{ccombi(klib)},fields{kfield})
+                                            model.structures{snum}(restraints.rb(kr).chains(kcc)).(fields{kfield}) = stemlibs{klib}.chains{ccombi(klib)}.(fields{kfield});
+                                        end
                                     end
                                 end
                             end
                         end
                     end
                 end
-            end
-            t_chain_coor = chain_coor;
-            for kr = 1:length(restraints.rb)
-                for kc = 1:length(restraints.rb(kr).chains)
-                    t_chain_coor{kr,kc} = affine_coor_set(chain_coor{kr,kc},transmats{kr});
-                    if isfield(restraints,'superimpose') && restraints.rb(kr).chains(kc) == restraints.superimpose
-                        [~,~,tmstd] = rmsd_superimpose(chain_coor{kr,kc},t_chain_coor{kr,kc});
-                    end
-                end
-            end
-            for kr = 1:length(restraints.rb)
-                for kc = 1:length(restraints.rb(kr).chains)
-                    if ~isempty(tmstd)
-                        t_chain_coor{kr,kc} = affine_coor_set(t_chain_coor{kr,kc},tmstd);
-                    end
-                    model.structures{snum}(restraints.rb(kr).chains(kc)).xyz{success} = t_chain_coor{kr,kc};
-                    if success > 1
-                        model.structures{snum}(restraints.rb(kr).chains(kc)).atoms{success} = ...
-                            model.structures{snum}(restraints.rb(kr).chains(kc)).atoms{1};
-                        model.structures{snum}(restraints.rb(kr).chains(kc)).residues{success} = ...
-                            model.structures{snum}(restraints.rb(kr).chains(kc)).residues{1};
-                        model.structures{snum}(restraints.rb(kr).chains(kc)).Bfactor{success} = ...
-                            model.structures{snum}(restraints.rb(kr).chains(kc)).Bfactor{1};
-                        model.structures{snum}(restraints.rb(kr).chains(kc)).Btensor{success} = ...
-                            model.structures{snum}(restraints.rb(kr).chains(kc)).Btensor{1};
-                    end
-                end
-            end
-            % now it should be compared to SANS or SAXS restraints,
-            % if any
-            if solutions_given
-                if isempty(scombi)
-                    fprintf(1,'Trial %i.%i is compared with SAS fits\n',parblocks,k-bask); 
-                else
-                    fprintf(1,'Trial %i.%i: Combination (%i,%i,%i) is compared with SAS fits\n',parblocks,k-bask,scombi(k-bask,:)); 
-                end
-            end
-            SANS_chi = 0;
-            fulfill = true; 
-            if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
-                to_be_deleted = '';
-                sans_vec = -ones(2,1);
-                for ks = 1:length(restraints.SANS)
-                    model = rmfield(model,'selected');
-                    ksel = 0;
-                    for kc = 1:length(restraints.SANS(ks).chains)
-                        if restraints.SANS(ks).chains(kc) > 0
-                            ksel = ksel + 1;
-                            model.selected{ksel} = [snum restraints.SANS(ks).chains(kc) success];
+                t_chain_coor = chain_coor;
+                for kr = 1:length(restraints.rb)
+                    for kc = 1:length(restraints.rb(kr).chains)
+                        t_chain_coor{kr,kc} = affine_coor_set(chain_coor{kr,kc},transmats{kr});
+                        if isfield(restraints,'superimpose') && restraints.rb(kr).chains(kc) == restraints.superimpose
+                            [~,~,tmstd] = rmsd_superimpose(chain_coor{kr,kc},t_chain_coor{kr,kc});
                         end
                     end
-                    pdbfile = sprintf('t%i_%i',k,ks);
-                    to_be_deleted = sprintf('t%i_*.*',k);
-                    wr_pdb_selected(pdbfile,'SANS');
-                    [chi2,~,~,result,fit] = fit_SANS_by_cryson(restraints.SANS(ks).data,pdbfile,restraints.SANS(ks).illres);
-                    if isempty(chi2) || isnan(chi2)
-                        SANS_chi = 1e6;
+                end
+                for kr = 1:length(restraints.rb)
+                    for kc = 1:length(restraints.rb(kr).chains)
+                        if ~isempty(tmstd)
+                            t_chain_coor{kr,kc} = affine_coor_set(t_chain_coor{kr,kc},tmstd);
+                        end
+                        model.structures{snum}(restraints.rb(kr).chains(kc)).xyz{success} = t_chain_coor{kr,kc};
+                        if success > 1
+                            model.structures{snum}(restraints.rb(kr).chains(kc)).atoms{success} = ...
+                                model.structures{snum}(restraints.rb(kr).chains(kc)).atoms{1};
+                            model.structures{snum}(restraints.rb(kr).chains(kc)).residues{success} = ...
+                                model.structures{snum}(restraints.rb(kr).chains(kc)).residues{1};
+                            model.structures{snum}(restraints.rb(kr).chains(kc)).Bfactor{success} = ...
+                                model.structures{snum}(restraints.rb(kr).chains(kc)).Bfactor{1};
+                            model.structures{snum}(restraints.rb(kr).chains(kc)).Btensor{success} = ...
+                                model.structures{snum}(restraints.rb(kr).chains(kc)).Btensor{1};
+                        end
+                    end
+                end
+                % now it should be compared to SANS or SAXS restraints,
+                % if any
+                if solutions_given
+                    if isempty(ccombi)
+                        fprintf(1,'Trial %i.%i is compared with SAS fits\n',parblocks,k-bask);
+                    else
+                        fprintf(1,'Trial %i.%i: Combination (%i,%i,%i) is compared with SAS fits\n',parblocks,k-bask,ccombi(:));
+                    end
+                end
+                SANS_chi = 0;
+                fulfill = true;
+                if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
+                    to_be_deleted = '';
+                    sans_vec = -ones(2,1);
+                    for ks = 1:length(restraints.SANS)
+                        model = rmfield(model,'selected');
+                        ksel = 0;
+                        for kc = 1:length(restraints.SANS(ks).chains)
+                            if restraints.SANS(ks).chains(kc) > 0
+                                ksel = ksel + 1;
+                                model.selected{ksel} = [snum restraints.SANS(ks).chains(kc) success];
+                            end
+                        end
+                        pdbfile = sprintf('t%i_%i',k,ks);
+                        to_be_deleted = sprintf('t%i_*.*',k);
+                        wr_pdb_selected(pdbfile,'SANS');
+                        [chi2,~,~,result,fit] = fit_SANS_by_cryson(restraints.SANS(ks).data,pdbfile,restraints.SANS(ks).illres);
+                        if isempty(chi2) || isnan(chi2)
+                            SANS_chi = 1e6;
+                            if interactive
+                                fprintf(2,'Warning: SANS fitting failed in trial %i:\n',k);
+                                fprintf(2,'%s',result);
+                                success = success - 1;
+                                fulfill = false;
+                            end
+                        else
+                            SANS_curves{ks,success} = fit;
+                            sans_vec(ks) = chi2;
+                            SANS_chi = SANS_chi + chi2;
+                        end
+                    end
+                    if min(sans_vec) > 0
+                        sans_poi = sans_poi + 1;
+                        chi_SANS(:,sans_poi) = sans_vec;
+                        xlink_fulfill(:,sans_poi) = xlink_distances{k-bask};
+                    end
+                    chi2 = SANS_chi/length(restraints.SANS);
+                    if chi2 > SANS_threshold
                         if interactive
-                            fprintf(2,'Warning: SANS fitting failed in trial %i:\n',k);
-                            fprintf(2,'%s',result);
-                            success = success - 1;
-                            fulfill = false;
+                            fprintf(1,'SANS chi^2 of %4.2f exceeded threshold of %4.2f in trial %i.\n',chi2,SANS_threshold,k);
+                        end
+                        success = success - 1;
+                        sans_fail = sans_fail + 1;
+                        fulfill = false;
+                        if strcmp(delete_SANS,'all') || strcmp(delete_SANS,'poor')
+                            delete(strcat(to_be_deleted,'*.*'));
                         end
                     else
-                        SANS_curves{ks,success} = fit;
-                        sans_vec(ks) = chi2;
-                        SANS_chi = SANS_chi + chi2;
+                        if strcmp(delete_SANS,'all') && ~isempty(to_be_deleted)
+                            delete(strcat(to_be_deleted,'*.*'));
+                        end
+                        final_chi2_SANS(success) = chi2;
+                        if interactive && options.display_SANS_fit
+                            % update multi plot axes
+                            axes(handles.axes_multi_plot);
+                            cla;
+                            hold on;
+                            for ks = 1:length(restraints.SANS)
+                                fit = SANS_curves{ks,success};
+                                plot(fit(:,1),fit(:,2));
+                                plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
+                            end
+                            title(sprintf('SANS fit for model %i (chi^2 = %4.2f, p = %4.2f)',success,final_chi2_SANS(success),probabilities(success)));
+                            drawnow
+                        end
                     end
-                end
-                if min(sans_vec) > 0
+                else
                     sans_poi = sans_poi + 1;
-                    chi_SANS(:,sans_poi) = sans_vec;
                     xlink_fulfill(:,sans_poi) = xlink_distances{k-bask};
                 end
-                chi2 = SANS_chi/length(restraints.SANS);
-                if chi2 > SANS_threshold
-                    if interactive
-                        fprintf(1,'SANS chi^2 of %4.2f exceeded threshold of %4.2f in trial %i.\n',chi2,SANS_threshold,k);
-                    end
-                    success = success - 1;
-                    sans_fail = sans_fail + 1;
-                    fulfill = false;
-                    if strcmp(delete_SANS,'all') || strcmp(delete_SANS,'poor')
-                        delete(strcat(to_be_deleted,'*.*'));
-                    end
-                else
-                    if strcmp(delete_SANS,'all') && ~isempty(to_be_deleted)
-                        delete(strcat(to_be_deleted,'*.*'));
-                    end
-                    final_chi2_SANS(success) = chi2;
-                    if interactive && options.display_SANS_fit
-                        % update multi plot axes
-                        axes(handles.axes_multi_plot);
-                        cla;
-                        hold on;
-                        for ks = 1:length(restraints.SANS)
-                            fit = SANS_curves{ks,success};
-                            plot(fit(:,1),fit(:,2));
-                            plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
+                SAXS_chi = 0;
+                if isfield(restraints,'SAXS') && fulfill
+                    to_be_deleted = '';
+                    for ks = 1:length(restraints.SAXS)
+                        model = rmfield(model,'selected');
+                        ksel = 0;
+                        for kc = 1:length(restraints.SAXS(ks).chains)
+                            if restraints.SAXS(ks).chains(kc) > 0
+                                ksel = ksel + 1;
+                                model.selected{ksel} = [snum restraints.SAXS(ks).chains(kc) success];
+                            end
                         end
-                        title(sprintf('SANS fit for model %i (chi^2 = %4.2f, p = %4.2f)',success,final_chi2_SANS(success),probabilities(success)));
-                        drawnow
-                    end
-                end
-            else
-                sans_poi = sans_poi + 1;
-                xlink_fulfill(:,sans_poi) = xlink_distances{k-bask};
-            end
-            SAXS_chi = 0;
-            if isfield(restraints,'SAXS') && fulfill
-                to_be_deleted = '';
-                for ks = 1:length(restraints.SAXS)
-                    model = rmfield(model,'selected');
-                    ksel = 0;
-                    for kc = 1:length(restraints.SAXS(ks).chains)
-                        if restraints.SAXS(ks).chains(kc) > 0
-                            ksel = ksel + 1;
-                            model.selected{ksel} = [snum restraints.SAXS(ks).chains(kc) success];
+                        pdbfile = sprintf('tx%i_%i',k,ks);
+                        to_be_deleted = sprintf('tx%i_*.*',k);
+                        wr_pdb_selected(pdbfile,'SAXS');
+                        [chi2,~,~,result,fit] = fit_SAXS_by_crysol(restraints.SAXS(ks).data,pdbfile,restraints.SAXS(ks).sm);
+                        if isnan(chi2)
+                            chi2 = 1e6;
+                        end
+                        if isempty(chi2)
+                            if interactive
+                                fprintf(2,'Warning: SAXS fitting failed in trial %i:\n',k);
+                                fprintf(2,'%s',result);
+                            end
+                            delete(strcat(pdbfile,'*.*'));
+                            success = success - 1;
+                            fulfill = false;
+                            saxs_fail = saxs_fail + 1;
+                        else
+                            chi_SAXS(ks,success) = chi2;
+                            SAXS_curves{ks,success} = fit;
+                            SAXS_chi = SAXS_chi + chi2;
                         end
                     end
-                    pdbfile = sprintf('tx%i_%i',k,ks);
-                    to_be_deleted = sprintf('tx%i_*.*',k);
-                    wr_pdb_selected(pdbfile,'SAXS');
-                    [chi2,~,~,result,fit] = fit_SAXS_by_crysol(restraints.SAXS(ks).data,pdbfile,restraints.SAXS(ks).sm);
-                    if isnan(chi2)
-                        chi2 = 1e6;
-                    end
-                    if isempty(chi2)
-                        if interactive
-                            fprintf(2,'Warning: SAXS fitting failed in trial %i:\n',k);
-                            fprintf(2,'%s',result);
-                        end
-                        delete(strcat(pdbfile,'*.*'));
+                    chi2 = SAXS_chi/length(restraints.SAXS);
+                    if chi2 > SAXS_threshold
                         success = success - 1;
-                        fulfill = false;
                         saxs_fail = saxs_fail + 1;
-                    else
-                        chi_SAXS(ks,success) = chi2;
-                        SAXS_curves{ks,success} = fit;
-                        SAXS_chi = SAXS_chi + chi2;
-                    end
-                end
-                chi2 = SAXS_chi/length(restraints.SAXS);
-                if chi2 > SAXS_threshold
-                    success = success - 1;
-                    saxs_fail = saxs_fail + 1;
-                    fulfill = false;
-                    if strcmp(delete_SAXS,'all') || strcmp(delete_SAXS,'poor')
-                        delete(strcat(to_be_deleted,'*.*'));
-                    end
-                elseif ~isempty(chi2)
-                    final_chi2_SAXS(success) = chi2;
-                    if interactive && options.display_SAXS_fit
-                        % update multi plot axes
-                        axes(handles.axes_multi_plot);
-                        cla;
-                        hold on;
-                        for ks = 1:length(restraints.SAXS)
-                            fit = SAXS_curves{ks,success};
-                            plot(fit(:,1),fit(:,2));
-                            plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
+                        fulfill = false;
+                        if strcmp(delete_SAXS,'all') || strcmp(delete_SAXS,'poor')
+                            delete(strcat(to_be_deleted,'*.*'));
                         end
-                        title(sprintf('SAXS fit for model %i (chi^2 = %4.2f, p = %4.2f)',success,final_chi2_SAXS(success),probabilities(success)));
-                        drawnow
-                    end
-                    if strcmp(delete_SAXS,'all') && ~isempty(to_be_deleted)
-                        delete(strcat(to_be_deleted,'*.*'));
+                    elseif ~isempty(chi2)
+                        final_chi2_SAXS(success) = chi2;
+                        if interactive && options.display_SAXS_fit
+                            % update multi plot axes
+                            axes(handles.axes_multi_plot);
+                            cla;
+                            hold on;
+                            for ks = 1:length(restraints.SAXS)
+                                fit = SAXS_curves{ks,success};
+                                plot(fit(:,1),fit(:,2));
+                                plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
+                            end
+                            title(sprintf('SAXS fit for model %i (chi^2 = %4.2f, p = %4.2f)',success,final_chi2_SAXS(success),probabilities(success)));
+                            drawnow
+                        end
+                        if strcmp(delete_SAXS,'all') && ~isempty(to_be_deleted)
+                            delete(strcat(to_be_deleted,'*.*'));
+                        end
                     end
                 end
-            end
-            if fulfill
-                fid = fopen(solutionname,'at');
-                if ~isempty(scombi)
-                    fprintf(fid,'%8i%6i%6i%6i%6i\n',parblocks,k-bask,scombi(k-bask,:)); 
-                else
-                    fprintf(fid,'%8i%6i\n',parblocks,k-bask); 
+                if fulfill
+                    fid = fopen(solutionname,'at');
+                    if ~isempty(ccombi)
+                        fprintf(fid,'%8i%6i%6i%6i%6i\n',parblocks,k-bask,ccombi(:));
+                    else
+                        fprintf(fid,'%8i%6i\n',parblocks,k-bask);
+                    end
+                    fclose(fid);
                 end
-                fclose(fid);
             end
             if ~skip_mode
                 fid = fopen(combinationname,'at');
