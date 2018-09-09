@@ -36,13 +36,13 @@ for k = 1:length(restrain),
     secvec(k) = restrain(k).secondary;
 end;
 
-if ~isempty(restraints.Na_indices),
+if ~isempty(restraints.Na_indices)
     Nanchor_res = restraints.Na_indices(4);
 else
     Nanchor_res = [];
 end;
 
-if ~isempty(restraints.Ca_indices),
+if ~isempty(restraints.Ca_indices)
     Canchor_res = restraints.Ca_indices(4);
 else
     Canchor_res = [];
@@ -80,7 +80,7 @@ set(handles.text_SANS_fail,'String','n.a.');
 set(handles.text_SAXS_fail,'String','n.a.');
 
 sequence = restraints.sequence;
-if isempty(restraints.Na_indices) && ~isempty(restraints.Ca_indices), % reverse model
+if isempty(restraints.Na_indices) && ~isempty(restraints.Ca_indices) % reverse model
     reverse = true;
     template_indices = restraints.Ca_indices(1:3);
     sequence = [sequence restraints.Cseq(1)];
@@ -88,7 +88,7 @@ elseif ~isempty(restraints.Na_indices) % loop anchored at N terminus
     reverse = false;
     template_indices = restraints.Na_indices(1:3);
     sequence = [restraints.Nseq(2) sequence];
-    if ~isempty(restraints.anchorC), % closed loop
+    if ~isempty(restraints.anchorC) % closed loop
         sequence = [sequence restraints.Cseq];
         closed_loop = true;
     end;
@@ -103,7 +103,7 @@ res1 = restraints.start;
 resend = restraints.end;
 terminus = resend;
 N_terminus = res1;
-if reverse,
+if reverse
     terminus = res1;
 end;
 
@@ -115,7 +115,7 @@ if interactive
     add_msg_board(sprintf('Cumulative probability threshold for %i restraints is %6.4f.',options.n_restraints,min_prob));
 end;
 
-if ~free_standing,
+if ~free_standing
     [msg,all_chain_coor] = get_object(options.template,'xyz');
     prot_coor = zeros(maxatoms,3);
     poi = 0;
@@ -126,7 +126,7 @@ if ~free_standing,
         poi = poi+m;
     end;
     prot_coor = prot_coor(1:poi,:);
-    if msg.error,
+    if msg.error
         if interactive
             add_msg_board('ERROR: Coordinates of template structure could not be retrieved.');
             add_msg_board(msg);
@@ -149,11 +149,11 @@ descriptors = cell(options.n_restraints);
 monitor_distr = cell(options.n_monitor);
 monitor_descr = cell(options.n_monitor);
 rax = get_distribution;
-for k = 1:options.n_restraints,
+for k = 1:options.n_restraints
     distributions{k} = zeros(1,length(rax));
     restraint_distr{k} = zeros(1,length(rax));
 end;
-for k = 1:options.n_monitor,
+for k = 1:options.n_monitor
     monitor_distr{k} = zeros(1,length(rax));
 end;
 
@@ -177,7 +177,7 @@ p_anchorNp = restraints.anchorNp;
 n_restraints = options.n_restraints;
 
 rescodes = zeros(1,length(sequence));
-for k = 1:length(sequence),
+for k = 1:length(sequence)
     rescodes(k) = strfind(residue_defs.single_letter_code,sequence(k));
 end;
 
@@ -188,9 +188,9 @@ Rama_res.allowed_P = Ramachandran.allowed_P;
 Rama_res.allowed_G = Ramachandran.allowed_G;
 Rama_res.allowed_gen = Ramachandran.allowed_gen;
 
-while kMC <= ntrials,
-    parfor kp = 1:parnum,
-        if reverse,
+while kMC <= ntrials
+    parfor kp = 1:parnum % ### parfor
+        if reverse
             [coor,errcode,restrain1,cumprob,kres] = mk_loop_model_reverse(sequence, p_anchorC, p_anchorCn, prot_coor, restrain, Rama_res, rescodes, min_prob,n_restraints);
         else
             [coor,errcode,restrain1,cumprob,kres] = mk_loop_model(sequence, p_anchorN, p_anchorC, p_anchorNp, p_anchorCn, prot_coor, restrain, Rama_res, rescodes, min_prob, n_restraints);
@@ -202,7 +202,7 @@ while kMC <= ntrials,
         p_cumprob(kp) = cumprob;
         p_kres(kp) = kres;
     end;
-    for kp = 1:parnum,
+    for kp = 1:parnum
         kMC = kMC + 1;
         coor = p_coor{kp};
         errcode = p_errcode(kp);
@@ -211,29 +211,29 @@ while kMC <= ntrials,
         kres = p_kres(kp);
         res_stat(kres) = res_stat(kres)+1;
         runtime = toc;
-        if errcode == -1,
+        if errcode == -1
             Ram_fixed = Ram_fixed + 1;
             errcode = 0;
         end;
-        if errcode == -4,
+        if errcode == -4
             Ram_fixed = Ram_fixed + 1;
             Ram_fix_clash = Ram_fix_clash + 1;
             errcode = 4;
         end;
-        if options.n_restraints == 0,
+        if options.n_restraints == 0
             p_model = 1;
         else
             p_model = erf(sqrt(-log(cumprob)/options.n_restraints));
         end;
         err_count(errcode+1) = err_count(errcode+1) + 1;
 
-        if ~errcode,
+        if ~errcode
             tpm = runtime/err_count(1);
             set(handles.text_time_per_model,'String',sprintf('%8.1f',tpm));
             success = success + 1;
-            if success == 1,
+            if success == 1
                 bb0 = coor;
-            elseif  isempty(restraints.anchorN) && isempty(restraints.anchorC),
+            elseif  isempty(restraints.anchorN) && isempty(restraints.anchorC)
                 [rms,coor] = rmsd_superimpose(bb0,coor);
                 if interactive
                     add_msg_board(sprintf('Model superimposes onto first model with rmsd of %4.1f Å',rms));
@@ -244,19 +244,19 @@ while kMC <= ntrials,
     
             [pclash,iclash] = check_decorated_loop(pmodel,prot_coor,res1,resend,min_approach,directory);
 
-            if pclash,
+            if pclash
                 err_count(10) = err_count(10) + 1;
                 success = success - 1;
-            elseif iclash,
+            elseif iclash
                 err_count(11) = err_count(11) + 1;
                 success = success - 1; 
             else
                 all_p_model(success) = p_model;
-                if success == 1,
+                if success == 1
                     [~,snum] = add_pdb(pmodel);
                     template_indices = [snum 1 1];
                     model_indices = template_indices;
-                    for modnum = 2:max_models,
+                    for modnum = 2:max_models
                         copy_structure(template_indices(1),'+mod',[],modnum,template_indices(1));
                     end;
                 else
@@ -268,28 +268,28 @@ while kMC <= ntrials,
                 [distributions,restraint_distr,descriptors,monitor_distr,monitor_descr] = mk_report_distributions(fid_report,model_indices,restrain1,options.monitor,p_model,distributions,restraint_distr,descriptors,monitor_distr,monitor_descr,res1);
             end
         end;
-        if mod(kMC,disp_update) == 0,
+        if mod(kMC,disp_update) == 0
             ftr = (1 - kMC/ntrials)*max_seconds;
             fti = max_seconds - runtime;
             fmo = runtime*(max_models-success)/success;
             time_left = min([fti fmo ftr]);
             hours = floor(time_left/3600);
             minutes = round((time_left-3600*floor(time_left/3600))/60);
-            if minutes == 60,
+            if minutes == 60
                 hours = hours + 1;
                 minutes = 0;
             end;
             time_left = sprintf('%i h %i min estimated run time to completion',hours,minutes); 
             success_distr = (1-success/kMC)*res_stat/sum(res_stat);
-            if reverse,
+            if reverse
                 success_distr = fliplr(success_distr);
             end;
             normalize = 1- cumsum(success_distr);
             normalize(normalize==0)=1;
-            for ks = 2:length(success_distr),
+            for ks = 2:length(success_distr)
                 success_distr(ks) = success_distr(ks)/normalize(ks-1);
             end;
-            if reverse,
+            if reverse
                 success_distr = fliplr(success_distr);
             end;
             if interactive

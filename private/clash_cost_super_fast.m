@@ -1,5 +1,5 @@
 function cost = clash_cost_super_fast(ar,kpa,br,kpb,a,b,ct,ft,tol)
-% cost = clash_cost_super_fast(ar,kpa,br,kpb,heavy_coor,clash_threshold,tol)
+% cost = clash_cost_super_fast(ar,kpa,br,kpb,a,b,ct,ft,tol)
 %
 % Computes the clash cost of two convex hulls defined as their overlap
 % volume, points are identified that are common two both hulls, allowing
