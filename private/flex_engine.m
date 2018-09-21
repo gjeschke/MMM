@@ -21,6 +21,7 @@ parnum = 100; % parallelization
 min_approach = options.min_approach;
 
 diagnostics.success = 0;
+diagnostics.runtime = 0;
 
 % if handles of the GUI figure are supplied, the engine will update the MMM
 % GUI during the computation, else this is considered as a run on a remote
@@ -361,6 +362,7 @@ if ~exist('model_indices','var')
 end;
 delete_empty_models(model_indices(1),success);
 diagnostics.success = success;
+diagnostics.runtime = runtime;
 diagnostics.time_per_model = runtime/success;
 
 diagnostics.distributions = distributions;

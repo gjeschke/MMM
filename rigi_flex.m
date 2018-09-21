@@ -507,8 +507,10 @@ switch handles.progress
                 flex_diagnostics = flex_engine(restraints,restrain,options,handles);
                 if flex_diagnostics.success == 0
                     add_msg_board(sprintf('Warning: No models found for flexible domain %i in rigid-body arrangement %i',kp,km));
+                    fprintf(fidr,'Modelling of flexible domain %i in rigid-body arrangement %i failed after %i s\n',kp,km,flex_diagnostics.runtime); 
                     if kp < length(handles.restraints.pflex)
                         add_msg_board('Skipping remaining flexible sections in this rigid-body arrangement');
+                        fprintf(fidr,'Skipping remaining flexible sections in this rigid-body arrangement\n');
                         options.max_trials = -1;
                     end
                 end

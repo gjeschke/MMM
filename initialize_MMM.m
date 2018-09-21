@@ -419,14 +419,14 @@ rotamer_libraries(20).files=':DZD_298K_UFF_216:';
 rotamer_libraries(20).type='peptide';
 rotamer_libraries(20).exclude=':H2:OXT:HXT:H:';
 
-rotamer_libraries(21).label='GDI';
+rotamer_libraries(21).label='IAG';
 rotamer_libraries(21).tc='GDI';
 rotamer_libraries(21).T= 298;
 rotamer_libraries(21).files=':GDI_298K_UFF_f09_2461:';
 rotamer_libraries(21).type='peptide';
 rotamer_libraries(21).exclude=':H2:OXT:HXT:H:';
 
-rotamer_libraries(22).label='GDM';
+rotamer_libraries(22).label='MAG';
 rotamer_libraries(22).tc='GDM';
 rotamer_libraries(22).T= 298;
 rotamer_libraries(22).files=':GDM_298K_UFF_f09_1367:';
