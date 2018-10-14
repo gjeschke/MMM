@@ -18466,3 +18466,9 @@
  Batch: C:\atsas\bin\crysol.exe tx158149_1.pdb SASDAT6.dat -cst -sm 3.00
  Data file name ......................................... : SASDAT6.dat
  Model: tx158149_1.pdb        Rg:  22.14  Run: 00  Chi^2:    4.01
+
+ Created by CRYSOL v. 28 on   11-Oct-2018   12:45:41
+
+ Batch: C:\atsas\bin\crysol.exe SAXS_test.pdb SASDAT6.dat -cst -sm 34.91
+ Data file name ......................................... : SASDAT6.dat
+ Model: SAXS_test.pdb         Rg:   7.32  Run: 00  Chi^2:   62.42

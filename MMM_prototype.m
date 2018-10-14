@@ -5329,79 +5329,9 @@ global model
 
 snum0 = model.current_structure;
 
-rba_vec = [1,2,4];
-
-for rba = rba_vec
-    if rba == 1
-        initflag = true;
-    else
-        initflag = false;
-    end
-    sections = zeros(1,3);
-    for sec = 1:3
-        [~,snum]=add_pdb(sprintf('RNA_rba%i_sec%i',rba,sec));
-        sections(sec) = snum;
-    end
-
-    nindices = [snum0,8,rba];
-    indices = ones(7,3);
-    indices(1,1)= snum0; 
-    indices(1,2)= 7; 
-    indices(1,3)= rba;
-    indices(2,1) = sections(1);
-    indices(3,1)= snum0; 
-    indices(3,2)= 5; 
-    indices(3,3) = rba;
-    indices(4,1) = sections(2);
-    indices(5,1)= snum0; 
-    indices(5,2)= 4; 
-    indices(5,3) = rba;
-    indices(6,1) = sections(3);
-    indices(7,1)= snum0; 
-    indices(7,2)= 6; 
-    indices(7,3)= rba;
-
-    chain_tag = 'R';
-
-    stitch_chain(indices,nindices,chain_tag,initflag);
-end
-
-model = rmfield(model,'selected');
-poi = 0;
-for rba = rba_vec
-    model.selected{poi+1} = [snum0 1 rba];
-    model.selected{poi+2} = [snum0 2 rba];
-    model.selected{poi+3} = [snum0 3 rba];
-    model.selected{poi+4} = [snum0 8 rba];
-    poi = poi + 4;
-end
-
-wr_pdb_selected('stitch_test','RNAR');
-
-return
-
-threshold = 2.5;
-
-load SLF_20180320
-
-model.structures{1}(1) = library.chains{5};
-for k = 1:length(library.chains)
-    model.structures{1}(1).xyz{k} = library.chains{k}.xyz{1};
-    model.structures{1}(1).Bfactor{k} = library.chains{k}.Bfactor{1};
-    model.structures{1}(1).Btensor{k} = library.chains{k}.Btensor{1};
-    model.structures{1}(1).atoms{k} = library.chains{k}.atoms{1};
-    model.structures{1}(1).residues{k} = library.chains{k}.residues{1};
-end
-
-[library,list] = cull_RNA_library(library,threshold);
-
-save SLF_20180522 library list
-
-return
-
-modus = 'stemloop';
+% modus = 'stemloop';
 modus = 'tinker';
-modus = 'RNAlink';
+% modus = 'RNAlink';
 SL = 'SLD';
 georg_construct = false;
 NMR_sec = false;
@@ -5513,12 +5443,36 @@ switch modus
     case 'tinker'
 
         
-        options.active = true;
+        options.inactive = true;
+        options.active = false;
         options.solvation = 'still';
         options.tolerance = 0.1;
         options.forcefield = 'amber99';
         
-        [msg,snum,energy] = optimize_by_tinker('SLD_fit_36_tinker',[],[],options);
+        molecule{1} = [1 1];
+        molecule{2} = [1 2];
+        selected = cell(1,1000);
+        spoi = 0;
+        for k = 58:154
+            spoi = spoi + 1;
+            selected{spoi} = [1,1,1,k-57];
+        end
+        for k = 182:283
+            spoi = spoi + 1;
+            selected{spoi} = [1,1,1,k-57];
+        end
+        for k = 337:430
+            spoi = spoi + 1;
+            selected{spoi} = [1,1,1,k-57];
+        end
+        for k = 454:531
+            spoi = spoi + 1;
+            selected{spoi} = [1,1,1,k-57];
+        end
+        selected = selected(1:spoi);
+        
+        
+        [msg,snum,energy] = optimize_by_tinker('ensemble_model_11',molecule,selected,options);
         add_msg_board(sprintf('Msg %i: %s. Structure %i generated. Energy is %5.3f kJ/mol.\n',msg.error,msg.text,snum,energy/1000));
     case 'RNAlink'
         RNA_environ = true;

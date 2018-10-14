@@ -132,24 +132,24 @@ for ka = 1:arrangements
             if min_dist(kc) > clash_threshold
                 if isfield(model, 'selected')
                     model = rmfield(model,'selected');
-                end;
+                end
                 ksel = 0;
                 SANS_chi = 0;
                 SANS_scores(kc) = 0;
                 for ks = 1:length(restraints.SANS)
                     % ### needs to be fixed for RNA-connected model ###
-%                     for kch = 1:length(restraints.SANS(ks).chains)
-%                         ksel = ksel + 1;
-%                         if restraints.SANS(ks).chains(kch) > 0 % chain in the rigid-body arrangement
-%                             model.selected{ksel} = [model.current_structure restraints.SANS(ks).chains(kch) ka];
-%                         else % flexible segment
-%                             bas = 2*(abs(restraints.SANS(ks).chains(kch))-1);
-%                             secstruct = all_combi(kc,bas+1);
-%                             secmod = all_combi(kc,bas+2);
-%                             model.selected{ksel} = [secstruct 1 secmod]; % the model that specifies this segment has only one chain
-%                         end
-%                     end
-                    model.selected{1} = [all_combi(kc,1) 1 all_combi(kc,2)];
+                    for kch = 1:length(restraints.SANS(ks).chains)
+                        ksel = ksel + 1;
+                        if restraints.SANS(ks).chains(kch) > 0 % chain in the rigid-body arrangement
+                            model.selected{ksel} = [model.current_structure restraints.SANS(ks).chains(kch) ka];
+                        else % flexible segment
+                            bas = 2*(abs(restraints.SANS(ks).chains(kch))-1);
+                            secstruct = all_combi(kc,bas+1);
+                            secmod = all_combi(kc,bas+2);
+                            model.selected{ksel} = [secstruct 1 secmod]; % the model that specifies this segment has only one chain
+                        end
+                    end
+                    % model.selected{1} = [all_combi(kc,1) 1 all_combi(kc,2)];
                     pdbfile = sprintf('c%i_%i',ka,kc);
                     to_be_deleted = sprintf('c%i_*.*',ka);
                     wr_pdb_selected(pdbfile,'SANS');
@@ -381,23 +381,28 @@ info.alternate = false;
 
 pctag = 'A';
 
+snum_rigid = model.current_structure;
+adr_rigid = mk_address(snum_rigid);
+included = zeros(1,length(model.structures{snum_rigid}));
+
 rna_binding_motifs = ':';
 for kRNA = 1:length(restraints.RNA)
     for kbind = 1:length(restraints.RNA(kRNA).bind)
         ctag = restraints.RNA(kRNA).bind(kbind).anchora;
+        [cind,msg] = resolve_address(sprintf('%s%s',adr_rigid,ctag));
+        if ~isempty(cind) && ~msg.error
+            included(cind(2)) = 1;
+        end
         pa = strfind(ctag,'(');
         pe = strfind(ctag,')');
         rna_binding_motifs = sprintf('%s%s:',rna_binding_motifs,ctag(pa+1:pe-1));
     end
 end
-snum_rigid = model.current_structure;
-adr_rigid = mk_address(snum_rigid);
 for km = 1:nummod
     ka = all_combi(score_indices(km),1);
     clear indices
     found = true;
     cch = 0;
-    included = zeros(1,length(model.structures{snum_rigid}));
     while found
         cch = cch+1;
         ctag = id2tag(cch,restraints.peptide_tags{1});
