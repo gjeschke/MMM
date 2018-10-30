@@ -19,7 +19,7 @@ end
 set(hMain.MMM,'Pointer','watch');
 drawnow
 
-commands=':atompair:attach:beacons:bckg:bilabel:blscan:camup:color:colorscheme:compact:copy:delete:detach:dihedrals:distance:domain:download:dssp:echo:helix:help:hide:inertiaframe:label:libcomp:libtest:lock:loop:mass:motion:mushroom:ortho:pdbload:persp:plot:radgyr:redo:refrmsd:repack:replace:report:rmsd:rotamers:SAS:scopy:select:sheet:show:statistics:symmetry:synonym:transparency:undo:undefine:unlock:unselect:view:wrseq:zoom:';
+commands=':atompair:attach:beacons:bckg:bilabel:blscan:camup:color:colorscheme:compact:copy:delete:detach:dihedrals:distance:domain:download:dssp:echo:helix:help:hide:inertiaframe:label:libcomp:libtest:lock:loop:mass:motion:mushroom:ortho:pdbload:persp:plot:radgyr:redo:refrmsd:remodel:repack:replace:report:rmsd:rotamers:SAS:scopy:select:sheet:show:statistics:symmetry:synonym:transparency:undo:undefine:unlock:unselect:view:wrseq:zoom:';
 
 [cmd,args]=strtok(command_line); % separate command and arguments
 
@@ -133,6 +133,8 @@ switch cmd,
         handles=ensemble_rg(handles,args);
     case 'refrmsd'
         handles=ensemble_reference_rmsd(handles,args);
+    case 'remodel'
+        handles=remodel_section(handles,args);
     case 'repack'
         handles=repack_structure(handles,args);
     case 'report'
@@ -1086,7 +1088,7 @@ global model
 
 if isempty(args) || isempty(strtrim(args)),
     add_msg_board('Usage: replace adr restype');
-    add_msg_board('where adr is the adress of the structure restype is the PDB code or pseudocode of non-native residues to be replaced by their native equivalents.');
+    add_msg_board('where adr is the adress of the structure, restype is the PDB code or pseudocode of non-native residues to be replaced by their native equivalents.');
     return
 end;
 
@@ -4240,4 +4242,41 @@ surf(x,y,z);
 
 if ~isempty(rindices2)
     label2 = rotamer_populations(rindices2,rot_lib);
-end;
+end
+
+function handles = remodel_section(handles,args)
+
+if isempty(args) || isempty(strtrim(args)) 
+    add_msg_board('Usage: remodel adr1i adr1f adr2i adr2f');
+    add_msg_board('where adr1i is the address of the initial residue of the target');
+    add_msg_board('where adr1f is the address of the final residue of the target');
+    add_msg_board('where adr2i is the address of the initial residue of the template');
+    add_msg_board('where adr2f is the address of the final residue of the template');
+    return
+end
+
+command=sprintf('remodel %s',strtrim(args));
+[handles,veto]=cmd_history(handles,command);
+if veto
+    add_msg_board('remodel command cancelled by user');
+    return
+end
+
+myargs=textscan(args,'%s');
+
+if length(myargs{1}) < 4
+    add_msg_board('Usage: remodel adr1i adr1f adr2i adr2f');
+    add_msg_board('where adr1i is the address of the initial residue of the target');
+    add_msg_board('where adr1f is the address of the final residue of the target');
+    add_msg_board('where adr2i is the address of the initial residue of the template');
+    add_msg_board('where adr2f is the address of the final residue of the template');
+    return
+end
+
+adr1i = char(myargs{1}(1));
+adr1f = char(myargs{1}(2));
+adr2i = char(myargs{1}(3));
+adr2f = char(myargs{1}(4));
+
+replace_section(adr1i,adr1f,adr2i,adr2f);
+

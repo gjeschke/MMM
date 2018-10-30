@@ -79,13 +79,15 @@ model.selected = selected;
 
 sel_atoms = sorted_selection;
 
-% check whether there are multiple locations of an atom, which would poison
-% Tinker
-multloc = sum(abs(sel_atoms(:,6)-1));
-if multloc
-    msg.error = 2;
-    msg.text = 'Selection contains multiple locations of an atom.';
-    return
+if ~isempty(sel_atoms)
+    % check whether there are multiple locations of an atom, which would poison
+    % Tinker
+    multloc = sum(abs(sel_atoms(:,6)-1));
+    if multloc
+        msg.error = 2;
+        msg.text = 'Selection contains multiple locations of an atom.';
+        return
+    end
 end
 
 model.selected = molecule;
@@ -207,6 +209,49 @@ for k = 1:np
     end
     if ~isempty(poi)
         Tink2PDB(poi) = k;
+    end
+end
+
+if isfield(options,'restraints')
+    options.restrain_d = zeros(length(options.restraints),5);
+    for kr = 1:length(options.restraints)
+        ccoor = options.restraints(kr).CA1;
+        comp = repmat(ccoor,nt,1);
+        match = sum(abs(tcoor-comp),2);
+        poi1 = find(match < 1e-3);
+        ccoor = options.restraints(kr).CA2;
+        comp = repmat(ccoor,nt,1);
+        match = sum(abs(tcoor-comp),2);
+        poi2 = find(match < 1e-3);
+        if length(poi1) > 1 % shouldn't happen, but better safe than sorry
+            msg.error = 5;
+            msg.text = 'Several lines in Tinker xyz file match the same CA1 atom of a restraint.';
+            cd(my_dir);
+            return
+        end
+        if length(poi2) > 1 % shouldn't happen, but better safe than sorry
+            msg.error = 5;
+            msg.text = 'Several lines in Tinker xyz file match the same CA2 atom of a restraint.';
+            cd(my_dir);
+            return
+        end
+        if isempty(poi1) % shouldn't happen, but better safe than sorry
+            msg.error = 6;
+            msg.text = 'CA1 atom of a restraint not found.';
+            cd(my_dir);
+            return
+        end
+        if isempty(poi2) % shouldn't happen, but better safe than sorry
+            msg.error = 6;
+            msg.text = 'CA2 atom of a restraint not found.';
+            cd(my_dir);
+            return
+        end
+        options.restrain_d(kr,1) = poi1;
+        options.restrain_d(kr,2) = poi2;
+        options.restrain_d(kr,3) = 25;
+        options.restrain_d(kr,4) = options.restraints(kr).rCA - options.restraints(kr).sigrCA;
+        options.restrain_d(kr,5) = options.restraints(kr).rCA + options.restraints(kr).sigrCA;
     end
 end
 

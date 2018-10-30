@@ -22,7 +22,7 @@ function varargout = MMM_prototype(varargin)
 
 % Edit the above text to modify the response to help MMM_prototype
 
-% Last Modified by GUIDE v2.5 31-May-2018 08:07:12
+% Last Modified by GUIDE v2.5 26-Oct-2018 17:51:17
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -5472,7 +5472,7 @@ switch modus
         selected = selected(1:spoi);
         
         
-        [msg,snum,energy] = optimize_by_tinker('ensemble_model_11',molecule,selected,options);
+        [msg,snum,energy] = optimize_by_tinker('ensemble_model_y7',molecule,selected,options);
         add_msg_board(sprintf('Msg %i: %s. Structure %i generated. Energy is %5.3f kJ/mol.\n',msg.error,msg.text,snum,energy/1000));
     case 'RNAlink'
         RNA_environ = true;
@@ -5948,3 +5948,97 @@ if compile
 end
 
 consolidate_stemloop_libraries(defs,links,sites);
+
+
+% --------------------------------------------------------------------
+function menu_build_tinker_refine_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_build_tinker_refine (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+global model
+global general
+
+
+my_path=pwd;
+cd(general.restraint_files);
+
+[fname,pname]=uigetfile('*.dat','Load restraints from file');
+if isequal(fname,0) || isequal(pname,0)
+    add_msg_board('Restraint loading cancelled by user');
+    return
+else
+    reset_user_paths(pname);
+    general.restraint_files=pname;
+    [~,name] = fileparts(fname);
+    handles.save_path = pname;
+    handles.save_name = name;
+    
+    hfig=gcf;
+    set(hfig,'Pointer','watch');
+    [restraints,failed] = rd_restraints_tinker(fullfile(pname,fname));
+end
+
+if failed
+    add_msg_board(sprintf('Restraint file %s could not be interpreted.',fname));
+    return
+end
+
+fid = fopen(fullfile(pname,sprintf('%s.echo',fname)),'wt');
+if fid == -1
+    add_msg_board('Restraint echo file could not be written.');
+else
+    if restraints.randomize
+        fprintf(fid,'site1    site2   r0 (Å)  sigr0 (Å)  rr (Å) sigrr (Å)  r (Å)  sigr (Å)\n');
+    else
+        fprintf(fid,'site1    site2   r0 (Å)  sigr0 (Å)  r (Å)  sigr (Å)\n');
+    end
+    for k = 1:length(restraints.DEER)
+        if restraints.randomize
+            fprintf(fid,'%8s%8s%7.1f%10.1f%7.1f%10.1f%7.1f%10.1f\n',restraints.DEER(k).adr1,...
+                restraints.DEER(k).adr2,restraints.DEER(k).r0,restraints.DEER(k).sigr0,...
+                restraints.DEER(k).r_rand,restraints.DEER(k).sigr_rand,...
+                restraints.DEER(k).r,restraints.DEER(k).sigr);
+        else
+            fprintf(fid,'%8s%8s%7.1f%10.1f%7.1f%10.1f\n',restraints.DEER(k).adr1,...
+                restraints.DEER(k).adr2,restraints.DEER(k).r0,restraints.DEER(k).sigr0,...
+                restraints.DEER(k).r,restraints.DEER(k).sigr);
+        end
+    end
+    fclose(fid);
+end
+
+cd(my_path);
+
+options.inactive = true;
+options.active = false;
+options.solvation = 'still';
+options.tolerance = 0.1;
+options.forcefield = 'amber99';
+options.restraints = restraints.DEER;
+
+molecule{1} = [1 1];
+molecule{2} = [1 2];
+selected = cell(1,1000);
+spoi = 0;
+if ~isempty(restraints.inactive(1).initial)
+    for ic = 1:length(restraints.inactive)
+        deterr = sum(abs(restraints.inactive(ic).initial(1:3)-restraints.inactive(ic).final(1:3)));
+        if deterr
+            add_msg_board('Inconsistent chain models in Tinker inactive definition');
+            return
+        end
+        for k = restraints.inactive(ic).initial(4):restraints.inactive(ic).final(4)
+            spoi = spoi + 1;
+            selected{spoi} = [restraints.inactive(ic).initial(1:3),k];
+        end
+    end
+    selected = selected(1:spoi);
+else
+    options.inactive = false;
+end
+
+
+[msg,snum,energy] = optimize_by_tinker('ensemble_model_x',molecule,selected,options);
+set(hfig,'Pointer','arrow');
+add_msg_board(sprintf('Msg %i: %s. Structure %i generated. Energy is %5.3f kJ/mol.\n',msg.error,msg.text,snum,energy/1000));

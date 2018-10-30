@@ -62,6 +62,8 @@ switch property
         [message,argout]=xyz_heavy_residue(indices);
     case 'xyz_base'
         [message,argout]=xyz_base(indices);
+    case 'xyz_backbone'
+        [message,argout]=xyz_backbone(indices);
     case 'name'
         [message,argout]=name_residue(indices);
     otherwise
@@ -340,6 +342,43 @@ for k = 1:na
     end
     xyz(k,:) = axyz;
 end
+
+function [message,xyz]=xyz_backbone(indices)
+% returns xyz coordinates of heavy atoms of a nucleobase in the same
+% sequence as in the PDB template connections file
+%
+% indices  index vector, length at least 4
+
+global model
+
+message.error=0;
+message.text='';
+
+xyz = [];
+
+type = model.structures{indices(1)}(indices(2)).residues{indices(3)}.info(indices(4)).type;
+
+if type ~= 2 % not a nucleotide
+    atoms = {'N' 'CA' 'C' 'O'};
+else % nucleotide
+    atoms = {'P' 'O5''' 'C5''' 'C4''' 'C3'''};
+end
+
+na = length(atoms);
+xyz = zeros(na,3);
+
+radr = mk_address(indices);
+
+for k = 1:na
+    adr = [radr '.' atoms{k}];
+    [msg,axyz] = get_object(adr,'coor');
+    if msg.error
+        xyz = [];
+        return
+    end
+    xyz(k,:) = axyz;
+end
+
 
 function [message,Bfactors]=Bfactor_residue(indices)
 % returns xyz coordinates for a residue
