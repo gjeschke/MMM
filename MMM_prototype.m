@@ -5984,30 +5984,6 @@ if failed
     return
 end
 
-fid = fopen(fullfile(pname,sprintf('%s.echo',fname)),'wt');
-if fid == -1
-    add_msg_board('Restraint echo file could not be written.');
-else
-    if restraints.randomize
-        fprintf(fid,'site1    site2   r0 (Å)  sigr0 (Å)  rr (Å) sigrr (Å)  r (Å)  sigr (Å)\n');
-    else
-        fprintf(fid,'site1    site2   r0 (Å)  sigr0 (Å)  r (Å)  sigr (Å)\n');
-    end
-    for k = 1:length(restraints.DEER)
-        if restraints.randomize
-            fprintf(fid,'%8s%8s%7.1f%10.1f%7.1f%10.1f%7.1f%10.1f\n',restraints.DEER(k).adr1,...
-                restraints.DEER(k).adr2,restraints.DEER(k).r0,restraints.DEER(k).sigr0,...
-                restraints.DEER(k).r_rand,restraints.DEER(k).sigr_rand,...
-                restraints.DEER(k).r,restraints.DEER(k).sigr);
-        else
-            fprintf(fid,'%8s%8s%7.1f%10.1f%7.1f%10.1f\n',restraints.DEER(k).adr1,...
-                restraints.DEER(k).adr2,restraints.DEER(k).r0,restraints.DEER(k).sigr0,...
-                restraints.DEER(k).r,restraints.DEER(k).sigr);
-        end
-    end
-    fclose(fid);
-end
-
 cd(my_path);
 
 options.inactive = true;
@@ -6050,11 +6026,36 @@ else
     options.fname = fname;
 end
 
+fid = fopen(sprintf('%s.restraints',fname),'wt');
+if fid == -1
+    add_msg_board('Restraint echo file could not be written.');
+else
+    if restraints.randomize
+        fprintf(fid,'site1    site2   r0 (Å)  sigr0 (Å)  rr (Å) sigrr (Å)  r (Å)  sigr (Å)\n');
+    else
+        fprintf(fid,'site1    site2   r0 (Å)  sigr0 (Å)  r (Å)  sigr (Å)\n');
+    end
+    for k = 1:length(restraints.DEER)
+        if restraints.randomize
+            fprintf(fid,'%8s%8s%7.1f%10.1f%7.1f%10.1f%7.1f%10.1f\n',restraints.DEER(k).adr1,...
+                restraints.DEER(k).adr2,restraints.DEER(k).r0,restraints.DEER(k).sigr0,...
+                restraints.DEER(k).r_rand,restraints.DEER(k).sigr_rand,...
+                restraints.DEER(k).r,restraints.DEER(k).sigr);
+        else
+            fprintf(fid,'%8s%8s%7.1f%10.1f%7.1f%10.1f\n',restraints.DEER(k).adr1,...
+                restraints.DEER(k).adr2,restraints.DEER(k).r0,restraints.DEER(k).sigr0,...
+                restraints.DEER(k).r,restraints.DEER(k).sigr);
+        end
+    end
+    fclose(fid);
+end
+
+
 [msg,snum,energy] = optimize_by_tinker(name,molecule,selected,options);
 chains = length(model.structures{snum});
 model.selected = cell(1,chains);
 for kc = 1:chains
-    model.selected = [snum,kc];
+    model.selected{kc} = [snum,kc];
 end
 
 message = wr_pdb_selected(fname,'TINK');

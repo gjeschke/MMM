@@ -249,7 +249,7 @@ if isfield(options,'restraints')
         end
         options.restrain_d(kr,1) = poi1;
         options.restrain_d(kr,2) = poi2;
-        options.restrain_d(kr,3) = 25;
+        options.restrain_d(kr,3) = 25/options.restraints(kr).sigr;
         options.restrain_d(kr,4) = options.restraints(kr).rCA - options.restraints(kr).sigrCA;
         options.restrain_d(kr,5) = options.restraints(kr).rCA + options.restraints(kr).sigrCA;
     end
