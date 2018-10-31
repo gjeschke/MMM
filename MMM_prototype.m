@@ -6038,7 +6038,52 @@ else
     options.inactive = false;
 end
 
+[filename, pathname] = uiputfile(['TINK' '.pdb'], 'Save final model as PDB');
+if isequal(filename,0) || isequal(pathname,0)
+    add_msg_board('Tinker optimization cancelled by user');
+    return
+else
+    reset_user_paths(pathname);
+    general.pdb_files=pathname;
+    fname = fullfile(pathname, filename);
+    [~,name,~] = fileparts(fname);
+    options.fname = fname;
+end
 
-[msg,snum,energy] = optimize_by_tinker('ensemble_model_x',molecule,selected,options);
+[msg,snum,energy] = optimize_by_tinker(name,molecule,selected,options);
+chains = length(model.structures{snum});
+model.selected = cell(1,chains);
+for kc = 1:chains
+    model.selected = [snum,kc];
+end
+
+message = wr_pdb_selected(fname,'TINK');
+
+if message.error
+    add_msg_board(strcat('ERROR (wr_pdb_selected): ',message.text));
+    return
+end
+
+model.current_structure = snum;
+
+for k = 1:length(restraints.DEER)
+    [rax,distr] = mk_distance_distribution(restraints.DEER(k).adr1,restraints.DEER(k).adr2,restraints.DEER(k).label);
+    figure(k); clf;
+    title(sprintf('%s-%s distance distribution',restraints.DEER(k).adr1,restraints.DEER(k).adr2));
+    plot(rax,distr,'k');
+    hold on
+    argr = (restraints.DEER(k).r-rax)/(sqrt(2)*restraints.DEER(k).sigr);
+    distr_sim = exp(-argr^2);
+    distr_sim = distr_sim/sum(distr_sim);
+    plot(rax,distr_sim,'Color',[0.75,0,0]);
+    if restraints.randomize
+        argr = (restraints.DEER(k).r_rand-rax)/(sqrt(2)*restraints.DEER(k).sigr_rand);
+        distr_sim = exp(-argr^2);
+        distr_sim = distr_sim/sum(distr_sim);
+        plot(rax,distr_sim,'Color',[0,0,0.75]);
+    end
+end
+
+
 set(hfig,'Pointer','arrow');
 add_msg_board(sprintf('Msg %i: %s. Structure %i generated. Energy is %5.3f kJ/mol.\n',msg.error,msg.text,snum,energy/1000));
