@@ -5986,15 +5986,59 @@ end
 
 cd(my_path);
 
+distance_restraints = restraints.DEER;
+snum0 = model.current_structure;
+
+% preoptimize rigid-body arrangement
+if ~isempty(restraints.rigid(1).indices)
+    [snum0,distance_restraints] = optimize_RBA(distance_restraints,restraints.rigid,restraints.randomize);
+end
+
+sadr = mk_address(snum0);
+for k = 1:length(distance_restraints)
+    adr1 = sprintf('%s%s.CA',sadr,distance_restraints(k).adr1);
+    [indices,message]=resolve_address(adr1);
+    if message.error
+        add_msg_board(sprintf('ERROR: Calpha atom of residue %s does not exist. Aborting.',adr1));
+        return
+    end
+    [message,coor1]=get_atom(indices,'coor');
+    if message.error || isempty(coor1)
+        add_msg_board(sprintf('ERROR: Coordinates of Calpha atom of residue %s could not be retrieved. Aborting.',adr1));
+        return
+    end
+    distance_restraints(k).CA1 = coor1;
+    adr2 = sprintf('%s%s.CA',sadr,distance_restraints(k).adr2);
+    [indices,message]=resolve_address(adr2);
+    if message.error
+        add_msg_board(sprintf('ERROR: Calpha atom of residue %s does not exist. Aborting.',adr2));
+        return
+    end
+    [message,coor2]=get_atom(indices,'coor');
+    if message.error || isempty(coor2)
+        add_msg_board(sprintf('ERROR: Coordinates of Calpha atom of residue %s could not be retrieved. Aborting.',adr2));
+        return
+    end
+    distance_restraints(k).CA2 = coor2;
+    distance_restraints(k).rCA0 = norm(coor1-coor2);
+    corr = distance_restraints(k).rCA0 - distance_restraints(k).r0;
+    distance_restraints(k).rCA = distance_restraints(k).r + corr;
+    if distance_restraints(k).sigr > distance_restraints(k).sigr0
+        distance_restraints(k).sigrCA = sqrt(distance_restraints(k).sigr^2 - distance_restraints(k).sigr0^2);
+    else
+        distance_restraints(k).sigrCA = 0.1;
+    end
+end
+
 options.inactive = true;
 options.active = false;
 options.solvation = 'still';
 options.tolerance = 0.1;
 options.forcefield = 'amber99';
-options.restraints = restraints.DEER;
+options.restraints = distance_restraints;
 
-molecule{1} = [1 1];
-molecule{2} = [1 2];
+molecule{1} = [snum0 1];
+molecule{2} = [snum0 2];
 selected = cell(1,1000);
 spoi = 0;
 if ~isempty(restraints.inactive(1).initial)
@@ -6006,7 +6050,7 @@ if ~isempty(restraints.inactive(1).initial)
         end
         for k = restraints.inactive(ic).initial(4):restraints.inactive(ic).final(4)
             spoi = spoi + 1;
-            selected{spoi} = [restraints.inactive(ic).initial(1:3),k];
+            selected{spoi} = [snum0 restraints.inactive(ic).initial(2:3),k];
         end
     end
     selected = selected(1:spoi);
@@ -6069,17 +6113,25 @@ model.current_structure = snum;
 
 for k = 1:length(restraints.DEER)
     [rax,distr] = mk_distance_distribution(restraints.DEER(k).adr1,restraints.DEER(k).adr2,restraints.DEER(k).label);
+    if isempty(rax)
+        figure(k); clf;
+        title(sprintf('%s: %s-%s. Labeling failure',name,restraints.DEER(k).adr1,restraints.DEER(k).adr2));
+        continue
+    end
+    rax = 10*rax;
     figure(k); clf;
-    title(sprintf('%s-%s distance distribution',restraints.DEER(k).adr1,restraints.DEER(k).adr2));
+    title(sprintf('%s: %s-%s',name,restraints.DEER(k).adr1,restraints.DEER(k).adr2));
     plot(rax,distr,'k');
+    xlabel('r [Å]');
+    ylabel('P(r)');
     hold on
     argr = (restraints.DEER(k).r-rax)/(sqrt(2)*restraints.DEER(k).sigr);
-    distr_sim = exp(-argr^2);
+    distr_sim = exp(-argr.^2);
     distr_sim = distr_sim/sum(distr_sim);
     plot(rax,distr_sim,'Color',[0.75,0,0]);
     if restraints.randomize
         argr = (restraints.DEER(k).r_rand-rax)/(sqrt(2)*restraints.DEER(k).sigr_rand);
-        distr_sim = exp(-argr^2);
+        distr_sim = exp(-argr.^2);
         distr_sim = distr_sim/sum(distr_sim);
         plot(rax,distr_sim,'Color',[0,0,0.75]);
     end

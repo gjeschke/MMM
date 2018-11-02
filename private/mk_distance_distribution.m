@@ -6,6 +6,8 @@ function [rax,distr] = mk_distance_distribution(adr1,adr2,label)
 %
 % G. Jeschke, 31.10.2018
 
+global rotamer_libraries
+
 rax = [];
 distr = [];
 
@@ -41,7 +43,12 @@ end
 load(rot_lib_name);
 label1 = rotamer_populations(rindices1,rot_lib);
 label2 = rotamer_populations(rindices2,rot_lib);
-[rax,distr]=get_distribution(label1(1).NOpos,label2(1).NOpos,0.1);
-distr = distr/sum(distr);
+if ~isempty(label1) && ~isempty(label2)
+    [rax,distr]=get_distribution(label1(1).NOpos,label2(1).NOpos,0.1);
+    distr = distr/sum(distr);
+else
+    rax = [];
+    distr = [];
+end
 
 

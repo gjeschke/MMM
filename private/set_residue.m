@@ -20,9 +20,9 @@ argout={};
 message.error=0;
 message.text='';
 
-if nargin<3,
+if nargin<3
     argin{1}='';
-end;
+end
 
 switch property
     case 'annotations'
@@ -1102,9 +1102,9 @@ function message=transform_residue(indices,matrices)
 
 [message,newindices]=get_residue(indices,'children');
 [m,n]=size(newindices);
-for k=1:m,
+for k=1:m
     message=set_atom(newindices(k,:),'transform',matrices);
-end;
+end
 
 function message=transparency_residue(indices,alpha)
 % Sets transparency of residue graphics

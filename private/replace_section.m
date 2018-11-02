@@ -25,6 +25,7 @@ if msg.error
     add_msg_board(sprintf('ERROR: Unknown target initial residue %s in section replacement (%s). Aborting.',res1i,msg.text));
     return
 end
+    
 if length(indr1i) ~= 4
     add_msg_board(sprintf('ERROR: Target initial residue addresa %s does not specify a residue in section replacement. Aborting.',res1i));
     return

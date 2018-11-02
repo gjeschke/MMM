@@ -13,6 +13,9 @@ function [restraints,failed] = rd_restraints_tinker(fname)
 % TINKER    tinker command and parameter, current options:
 %           minimize thr   % thr is the rms gradient convergence threshold
 %           optimize thr   % thr is the rms gradient convergence threshold
+% RIGID     block key, each line specifies residue ranges that belong to
+%           the same rigid body, rigid-body arrangment is handled by MMM
+%           before Tinker minimization
 % INACTIVE  block key, residue ranges that are inactive during minimization
 %           useful for defining rigid bodies
 %           each subsequent line defines a continous segment of inactive
@@ -26,8 +29,6 @@ function [restraints,failed] = rd_restraints_tinker(fname)
 % UNITS         can be NM (nanometers, default) or A (Angstroem)
 %
 % G. Jeschke, 24.10.2018
-
-global model
 
 failed = true;
 
@@ -49,6 +50,9 @@ restraints.DEER(1).rCA0 = [];
 restraints.DEER(1).rCA = [];
 restraints.DEER(1).sigrCA = [];
 
+restraints.rigid(1).adr = cell(0,0);
+restraints.rigid(1).indices = cell(0,0);
+
 restraints.randomize = 0;
 
 restraints.PDB = '';
@@ -58,6 +62,7 @@ restraints.inactive(1).final = [];
 
 DEER_poi=0;
 inactive_poi=0;
+rigid_poi = 0;
 
 label_adr = ':';
 label_types = ':';
@@ -109,6 +114,8 @@ while 1
                     end
                case 'INACTIVE'
                     mode=2;
+                case 'RIGID'
+                    mode=3;
                case 'END'
                     mode=-1;
                 otherwise
@@ -160,7 +167,7 @@ while 1
                     adr2 = sprintf('%s.CA',char(args(2)));
                     [indices,message]=resolve_address(adr2);
                     if message.error
-                        add_msg_board(sprintf('ERROR: Calpha atom of residue %s does not exist. Aborting.',adr1));
+                        add_msg_board(sprintf('ERROR: Calpha atom of residue %s does not exist. Aborting.',adr2));
                         fclose(fid);
                         return
                     end
@@ -197,11 +204,23 @@ while 1
                         return
                     end
                     restraints.inactive(inactive_poi).final = indices;   
+                case 3 % RIGID
+                    rigid_poi = rigid_poi + 1;
+                    for k = 1:length(args)
+                        restraints.rigid(rigid_poi).adr{k} = char(args(k));
+                        [indices,message]=resolve_address(char(args(k)));
+                        [~,n] = size(indices);
+                        if message.error || n ~= 4
+                            add_msg_board(sprintf('ERROR: Residue range %s does not exist. Aborting.',char(args(k))));
+                            fclose(fid);
+                            return
+                        end
+                        restraints.rigid(rigid_poi).indices{k} = indices;
+                    end
             end
         end
     end
 end
-
     
 fclose(fid);
 

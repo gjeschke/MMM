@@ -174,7 +174,7 @@ for k = 1:ns
     end
     comp = repmat(ccoor,nt,1);
     match = sum(abs(tcoor-comp),2);
-    poi = find(match < 1e-3);
+    poi = find(match < 5e-3);
     if length(poi) > 1 % shouldn't happen, but better safe than sorry
         msg.error = 4;
         msg.text = 'Several lines in Tinker xyz file match the same selected atom.';
@@ -218,11 +218,11 @@ if isfield(options,'restraints')
         ccoor = options.restraints(kr).CA1;
         comp = repmat(ccoor,nt,1);
         match = sum(abs(tcoor-comp),2);
-        poi1 = find(match < 1e-3);
+        poi1 = find(match < 5e-3);
         ccoor = options.restraints(kr).CA2;
         comp = repmat(ccoor,nt,1);
         match = sum(abs(tcoor-comp),2);
-        poi2 = find(match < 1e-3);
+        poi2 = find(match < 5e-3);
         if length(poi1) > 1 % shouldn't happen, but better safe than sorry
             msg.error = 5;
             msg.text = 'Several lines in Tinker xyz file match the same CA1 atom of a restraint.';
