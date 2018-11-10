@@ -32,7 +32,7 @@ if exist('handles','var')
     interactive = true;
 else
     interactive = false;
-end;
+end
 
 % all_flex_models = all_flex_models(:,1:2);
 
@@ -202,7 +202,7 @@ for ka = 1:arrangements
             if min_dist(kc) > clash_threshold
                 if isfield(model, 'selected')
                     model = rmfield(model,'selected');
-                end;
+                end
                 ksel = 0;
                 SAXS_chi = 0;
                 SAXS_scores(kc) = 0;
@@ -227,14 +227,14 @@ for ka = 1:arrangements
                         if interactive
                             fprintf(2,'Warning: SAXS fitting failed for combination %i:\n',kc);
                             fprintf(2,'%s',result);
-                        end;
+                        end
                         fprintf(fidr,'SAXS fitting of curve %i failed in arrangement %i for combination %i.\n',ks,ka,kc);
                     else
                         SAXS_curves{ks} = fit;
                         SAXS_chi = SAXS_chi + chi2;
                     end
                     delete(to_be_deleted);
-                end;
+                end
                 chi2 = SAXS_chi/length(restraints.SAXS);
                 SAXS_scores(kc) = SAXS_scores(kc)+chi2;
                 if chi2 < 1e5
@@ -248,23 +248,23 @@ for ka = 1:arrangements
                             fit = SAXS_curves{ks};
                             plot(fit(:,1),fit(:,2));
                             plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
-                        end;
+                        end
                         title(sprintf('SAXS fit for arrangement %i combi %i (chi^2 = %4.2f)',ka,kc,chi2));
                         drawnow
                     end
                 end
             end
-        end;
+        end
         all_SAXS{ka} = SAXS_curves;
         scores = scores + SAXS_scores;
-    end;
+    end
     full_scores{ka} = scores;
     full_combi{ka} = all_combi;
     runtime = toc;
     if runtime > maxtime
         break
     end
-end;
+end
 
 if ~exist('full_scores','var')
     diagnostics.success = 0;
@@ -306,7 +306,7 @@ listed_models = 5*restraints.ensemble;
 valid_models = length(find(sorted_scores < 1e5));
 if listed_models > valid_models
     listed_models = valid_models;
-end;
+end
 fprintf(fidr,'\n--- List of the %i best scoring models ---\n\n',listed_models);
 for km = 1:listed_models
     fprintf(fidr,'Arrangement %i with flexible section models ',all_combi(score_indices(km),1));
@@ -314,14 +314,14 @@ for km = 1:listed_models
         fprintf(fidr,'%i',all_combi(score_indices(km),2*(ks-1)+3));
         if ks < sections
             fprintf(fidr,', ');
-        end;
+        end
     end
     fprintf(fidr,' has a score of %5.2f\n',sorted_scores(km));
-end;
+end
 
 if valid_models < restraints.ensemble
     fprintf(fidr,'\n### Warning! Only %i valid models while an ensemble size of %i models was requested. ###\n',listed_models,restraints.ensemble);
-end;
+end
 
 % Save models
 
@@ -336,12 +336,12 @@ for km = 1:nummod
         if isfield(model, 'selected')
             model = rmfield(model,'selected');
             ksel = 0;
-        end;
+        end
         ka = all_combi(score_indices(km),1);
         for kch = 1:length(model.structures{model.current_structure}) % select chain models of the rigid-body arrangement
             ksel = ksel + 1;
             model.selected{ksel} = [model.current_structure kch ka];
-        end;
+        end
         for ks = 1:sections
             ksel = ksel + 1;
             bas = 2*(ks-1)+1;
@@ -350,8 +350,8 @@ for km = 1:nummod
             model.selected{ksel} = [secstruct 1 secmod]; % the model that specifies this segment has only one chain
         end
         wr_pdb_selected(pdbfile,['M' mk_modnum(km)],sorted_scores(km),true);
-    end;
-end;
+    end
+end
 
 info.idCode = 'PTBX';
 info.class = 'MMM model';

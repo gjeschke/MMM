@@ -16,11 +16,11 @@ function [message,argout]=get_residue(indices,property,varargin)
 % G. Jeschke, 2009-2018
 
 argout=[];
-if nargin>=3,
+if nargin>=3
     argin=varargin{1};
 else
     argin='';
-end;
+end
 
 message.error=0;
 message.text='';

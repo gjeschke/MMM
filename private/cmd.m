@@ -19,7 +19,7 @@ end
 set(hMain.MMM,'Pointer','watch');
 drawnow
 
-commands=':atompair:attach:beacons:bckg:bilabel:blscan:camup:color:colorscheme:compact:copy:delete:detach:dihedrals:distance:domain:download:dssp:echo:helix:help:hide:inertiaframe:label:libcomp:libtest:lock:loop:mass:motion:mushroom:ortho:pdbload:persp:plot:radgyr:redo:refrmsd:remodel:repack:replace:report:rmsd:rotamers:SAS:scopy:select:sheet:show:statistics:symmetry:synonym:transparency:undo:undefine:unlock:unselect:view:wrseq:zoom:';
+commands=':atompair:attach:beacons:bckg:bilabel:blscan:camup:color:colorscheme:compact:copy:delete:detach:dihedrals:distance:domain:download:dssp:echo:helix:help:hide:inertiaframe:label:libcomp:libtest:lock:loop:mass:motion:mushroom:new:ortho:pdbload:persp:plot:radgyr:redo:refrmsd:remodel:repack:replace:report:rmsd:rotamers:SAS:scopy:select:sheet:show:statistics:symmetry:synonym:transparency:undo:undefine:unlock:unselect:view:wrseq:zoom:';
 
 [cmd,args]=strtok(command_line); % separate command and arguments
 
@@ -121,6 +121,8 @@ switch cmd,
         handles=motion(handles,args);
     case 'mushroom' 
         handles=mushroom(handles,args);
+    case 'new' 
+        handles=new_model(handles,args);
     case {'orthographic','ortho'}
         handles=orthographic(handles);
     case 'pdbload'
@@ -1823,6 +1825,68 @@ end;
 
 camlookat(hMain.axes_model);
 lighting gouraud
+
+function handles = new_model(handles,args)
+
+global model
+global hMain
+global MMM_info
+
+old_undo = hMain.store_undo;
+if ~isempty(args)
+    myargs=textscan(args,'%s');
+    if ~isempty(myargs{1}) && strcmp(char(myargs{1}),'!')
+        hMain.store_undo = false;
+    end
+end
+
+command=sprintf('new %s',strtrim(args));
+[handles,veto] = cmd_history(handles,command);
+hMain.store_undo = old_undo;
+
+if veto
+    add_msg_board('Command "new" cancelled by user.');
+    return
+end
+
+if hMain.detached
+    set(handles.axes_model,'Position',hMain.oldpos);
+    set(handles.axes_model,'Parent',hMain.panel_model);
+    set(handles.panel_model,'Title','Model');
+    view3D(hModel.figure,'off');
+    close(hModel.figure);
+    rot_state=get(handles.uitoggletool_rotate,'State');
+    if strcmp(rot_state,'on')
+        view3D(hMain.figure,'rot');
+    end
+    zoom_state=get(handles.uitoggletool_zoom,'State');
+    if strcmp(zoom_state,'on')
+        view3D(hMain.figure,'zoom');
+    end
+    pan_state=get(handles.uitoggletool_pan,'State');
+    if strcmp(pan_state,'on')
+        view3D(hMain.figure,'pan');
+    end
+    hMain.detached=0;
+end
+
+
+% initialize display
+axes(handles.axes_model);
+cla reset;
+axis equal
+axis off
+set(gca,'Clipping','off');
+set(gcf,'Renderer','opengl');
+hold on
+hMain.camlight=camlight;
+guidata(handles.axes_model,hMain);
+hMain.virgin=0;
+
+handles.MMM.Name = MMM_info.title;
+
+clear global model
+model = [];
 
 function handles=mk_synonym(handles,args)
 

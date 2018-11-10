@@ -198,7 +198,7 @@ transmats = cell(1,rb);
 
 for kr = 1:rb
     baspoi6 = 6*(kr-1);
-    trans = v(baspoi6+1:baspoi6+3); % reconvert to Angstroem
+    trans = v(baspoi6+1:baspoi6+3); 
     euler = v(baspoi6+4:baspoi6+6);
     transmats{kr} = transrot2affine(trans,euler);
 end

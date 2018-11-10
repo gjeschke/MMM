@@ -3605,6 +3605,7 @@ else
     button = questdlg('Do you want to delete old model?','New model will overwrite existing model','No');
     if strcmpi(button,'Yes')
         doit=1;
+        clear global model
     end
 end
 
@@ -5327,504 +5328,552 @@ function menu_jobs_test_Callback(hObject, eventdata, handles)
 
 global model
 
-snum0 = model.current_structure;
+interactive = true;
+unprocessed = true;
+make_ensemble = false;
 
-% modus = 'stemloop';
-modus = 'tinker';
-% modus = 'RNAlink';
-SL = 'SLD';
-georg_construct = false;
-NMR_sec = false;
 
-switch modus
-    case 'stemloop'
-    
-        motif = zeros(3,4);
-        
-        switch SL
-            case 'SLD'
-                [indices,msg] = resolve_address('(G)19');
-                if msg.error
-                    fprintf(1,'Sorry. Wrong structure loaded.\n');
-                    return
-                end
-                motif(1,:) = indices;
-                [indices,msg] = resolve_address('(G)20');
-                if msg.error
-                    fprintf(1,'Sorry. Wrong structure loaded.\n');
-                    return
-                end
-                motif(2,:) = indices;
-                [indices,msg] = resolve_address('(G)21');
-                if msg.error
-                    fprintf(1,'Sorry. Wrong structure loaded.\n');
-                    return
-                end
-                motif(3,:) = indices;
-                nts = [15,16,17];
-                if georg_construct
-                    nts = [19,20,21];
-                end
-            case 'SLE'
-                [indices,msg] = resolve_address('(B)327');
-                if msg.error
-                    fprintf(1,'Sorry. Wrong structure loaded.\n');
-                    return
-                end
-                motif(1,:) = indices;
-                [indices,msg] = resolve_address('(B)328');
-                if msg.error
-                    fprintf(1,'Sorry. Wrong structure loaded.\n');
-                    return
-                end
-                motif(2,:) = indices;
-                [indices,msg] = resolve_address('(B)329');
-                if msg.error
-                    fprintf(1,'Sorry. Wrong structure loaded.\n');
-                    return
-                end
-                motif(3,:) = indices;
-                nts = [7,8,9];
-                if NMR_sec
-                    nts = [6,7,8];
-                end
-            case 'SLF'
-                [indices,msg] = resolve_address('(D)358');
-                if msg.error
-                    fprintf(1,'Sorry. Wrong structure loaded.\n');
-                    return
-                end
-                motif(1,:) = indices;
-                [indices,msg] = resolve_address('(D)359');
-                if msg.error
-                    fprintf(1,'Sorry. Wrong structure loaded.\n');
-                    return
-                end
-                motif(2,:) = indices;
-                [indices,msg] = resolve_address('(D)360');
-                if msg.error
-                    fprintf(1,'Sorry. Wrong structure loaded.\n');
-                    return
-                end
-                motif(3,:) = indices;
-                nts = [12,13,14];
+if make_ensemble
+    fid=fopen('ensemble_list.dat');
+    if fid==-1
+        add_msg_board('ERROR: Restraint file does not exist');
+        return;
+    end
+    flist = cell(1,40);
+    nf = 0;
+    while 1
+        tline = fgetl(fid);
+        if ~ischar(tline) 
+            break, 
         end
-        
-        num_models = length(model.structures{indices(1)}(indices(2)).xyz);
-        
-        for k = 1:num_models
-            [msg,xyz1] = get_object(sprintf('[PTB1](A,C,E){%i}',k),'xyz_heavy');
-            if msg.error
-                fprintf(1,'Sorry. Coordinates of protein in model %i could not be retrieved.\n',k);
-                return
-            end
-            m = 0;
-            for kk = 1:length(xyz1)
-                [mc,~] = size(xyz1{kk});
-                m = m + mc;
-            end
-            xyz = zeros(m,3);
-            m = 0;
-            for kk = 1:length(xyz1)
-                [mc,~] = size(xyz1{kk});
-                xyz(m+1:m+mc,:) = xyz1{kk};
-                m = m + mc;
-            end
-            rrmcoor{k} = xyz;
+        if ~isempty(tline)
+            nf = nf + 1;
+            flist{nf} = tline;
         end
-        %
-        % nts = [4,5,6]; % SLD ministem
-        % nts = [15,16,17]; % for SLD stem starting at nt A288 (nt A4 of construct)
-        % % nts = [7,8,9]; % for SLE stem starting at nt G321 (nt G38 of construct)
-        % % nts = [12,13,14]; % for SLF stem starting at nt G347 (nt G64 of construct)
-        % nts = [19,20,21]; for SLD Georg's construct
-        
-        fit_RNA_to_binding_motif(motif,nts,num_models,[],rrmcoor);
-    case 'tinker'
-
-        
-        options.inactive = true;
-        options.active = false;
-        options.solvation = 'still';
-        options.tolerance = 0.1;
-        options.forcefield = 'amber99';
-        
-        molecule{1} = [1 1];
-        molecule{2} = [1 2];
-        selected = cell(1,1000);
-        spoi = 0;
-        for k = 58:154
-            spoi = spoi + 1;
-            selected{spoi} = [1,1,1,k-57];
-        end
-        for k = 182:283
-            spoi = spoi + 1;
-            selected{spoi} = [1,1,1,k-57];
-        end
-        for k = 337:430
-            spoi = spoi + 1;
-            selected{spoi} = [1,1,1,k-57];
-        end
-        for k = 454:531
-            spoi = spoi + 1;
-            selected{spoi} = [1,1,1,k-57];
-        end
-        selected = selected(1:spoi);
-        
-        
-        [msg,snum,energy] = optimize_by_tinker('ensemble_model_y7',molecule,selected,options);
-        add_msg_board(sprintf('Msg %i: %s. Structure %i generated. Energy is %5.3f kJ/mol.\n',msg.error,msg.text,snum,energy/1000));
-    case 'RNAlink'
-        RNA_environ = true;
-        
-        test_loop = false;
-        test_segment = true;
-        
-        fname = 'PTBP1_restraints_180411.dat';
-        % fname = 'PTBP1_restraints_20180110_sec2.dat';
-        [restraints,failed] = rd_restraints_rigiflex(fname);
-        if failed
-            add_msg_board('rd_restraints_rigiflex failed');
-        end
-        
-        % % Test of RNA loop maker from nt 21 (anchor) to 44 (anchor) in EMCV-IRES
-        %
-        % subsegment = [22,43];
-        % nt_offset = restraints.RNA.nta-1;
-        % % sequence includes initial and final anchor nt
-        % seq = restraints.RNA.sequence(subsegment(1)-nt_offset-1:subsegment(2)-nt_offset+1);
-        
-        % Test of RNA loop maker from nt 46 (anchor) to 59 (anchor) in EMCV-IRES
-        
-        % subsegment = [319,321]; % subsegment = [36,38];
-        subsegment = [336,341];
-        % subsegment = [345,347];
-        nt_offset = restraints.RNA.nta-1;
-        % sequence includes initial and final anchor nt
-        seq = restraints.RNA.sequence(subsegment(1)-nt_offset-1:subsegment(2)-nt_offset+1);
-        
-        load nuclib_5
-        
-        stag = 'PTB1';
-        indices = resolve_address(sprintf('[%s]%s',stag,restraints.RNA.bind(1).anchore));
-        anchori = get_anchor_pseudo_torsion(indices,true);
-        % anchori = anchori(1:3,:);
-        [acodes,transmat] = get_RNA_initial_anchor(fragments,anchori,upper(seq(1)));
-        anchori = anchori(1:3,:);
-        
-        indices = resolve_address(sprintf('[%s]%s',stag,restraints.RNA.bind(2).anchora));
-        anchore = get_anchor_pseudo_torsion(indices,true);
-        anchor = anchore(2:4,:);
-        anchorfi = [anchore(1:3,:); anchore(6,:)];
-        
-        
-        indices = resolve_address(sprintf('[%s]%s',stag,restraints.RNA.bind(2).anchore));
-        anchorfe = get_anchor_pseudo_torsion(indices);
-        anchorfe = anchorfe(2:4,:);
-        
-        ecodes = get_anchor_fragments(anchor,'back',shortfrag);
-        options.attempts = 100;
-        options.maxtime = 13;
-        options.anchor_acc = 0.4;
-        
-        LoN_vec = 6.0:0.25:7.0;
-        error_statistics = zeros(length(LoN_vec),2+length(seq));
-        trials = zeros(1,length(LoN_vec));
-        
-        % Make protein environment coordinates
-        maxatoms = 50000;
-        prot_coor = zeros(maxatoms,3);
-        poi = 0;
-        [~,all_chain_coor] = get_object('[PTB1](A,C,E)','xyz');
-        chains = 'ACE';
-        for kc = 1:length(all_chain_coor)
-            xyz = all_chain_coor{kc};
-            [m,~] = size(xyz);
-            prot_coor(poi+1:poi+m,:) = xyz;
-            fprintf(1,'Chain %c contributes atoms %i-%i to environment\n',chains(kc),poi+1,poi+m);
-            poi = poi+m;
-        end
-        if RNA_environ
-            [~,all_nt_coor] = get_object('[PTB1](G)288-318','xyz');
-            for kc = 1:length(all_nt_coor)
-                xyz = all_nt_coor{kc};
-                [m,~] = size(xyz);
-                prot_coor(poi+1:poi+m,:) = xyz;
-                fprintf(1,'SLD nt %i contributes atoms %i-%i to environment\n',kc+287,poi+1,poi+m);
-                poi = poi+m;
-            end
-            [~,all_nt_coor] = get_object('[PTB1](B)322-335','xyz');
-            for kc = 1:length(all_nt_coor)
-                xyz = all_nt_coor{kc};
-                [m,~] = size(xyz);
-                prot_coor(poi+1:poi+m,:) = xyz;
-                fprintf(1,'SLE nt %i contributes atoms %i-%i to environment\n',kc+321,poi+1,poi+m);
-                poi = poi+m;
-            end
-            [~,all_nt_coor] = get_object('[PTB1](F)342-344','xyz');
-            for kc = 1:length(all_nt_coor)
-                xyz = all_nt_coor{kc};
-                [m,~] = size(xyz);
-                prot_coor(poi+1:poi+m,:) = xyz;
-                fprintf(1,'LinkEF nt %i contributes atoms %i-%i to environment\n',kc+341,poi+1,poi+m);
-                poi = poi+m;
-            end
-            [~,all_nt_coor] = get_object('[PTB1](D)348-370','xyz');
-            for kc = 1:length(all_nt_coor)
-                xyz = all_nt_coor{kc};
-                [m,~] = size(xyz);
-                prot_coor(poi+1:poi+m,:) = xyz;
-                fprintf(1,'SLF nt %i contributes atoms %i-%i to environment\n',kc+347,poi+1,poi+m);
-                poi = poi+m;
-            end
-        end
-        environ = prot_coor(1:poi,:);
-        
-        if test_loop
-            anchor = [];
-            ecodes = [];
-            [ecoor,atomtags,seq] = mk_RNA_loop(seq,fragments,...
-                shortfrag,non_clash_table,anchor,acodes,transmat,ecodes,options,nt_offset,environ);
-            
-            if ~isempty(ecoor)
-                fname = 'test_RNA_1';
-                fname = wr_pdb_RNA(fname,ecoor,atomtags,seq);
-                fprintf(1,'Test RNA written to %s\n',fname);
-            end
-            
+    end
+    fclose(fid);
+    flist = flist(1:nf);
+    % Make ensemble PDB file
+    [msg,snum0] = add_pdb(flist{1});
+    if msg.error
+        add_msg_board(sprintf('ERROR: First FDP file %s could not be read (%s).',flist{1},msg.text));
+        return
+    end
+    for kf = 2:nf
+        copy_structure(snum0,'+mod',[],kf,snum0); % make a copy of the first model
+        [msg,snumc] = add_pdb(flist{kf});
+        if msg.error
+            add_msg_board(sprintf('ERROR: PDP file #%i (%s) could not be read (%s).',kf,flist{kf},msg.text));
             return
         end
-        
-        if test_segment
-            msg = mk_rigiflex_rna(restraints,[1,1],1,environ);
-            add_msg_board(sprintf('mk_rigiflex_rna: %s',msg.text));
+        for kc = 1:2
+            model.structures{snum0}(kc).atoms{kf} = model.structures{snumc}(kc).atoms{1};
+            model.structures{snum0}(kc).residues{kf} =model.structures{snumc}(kc).residues{1};
+            model.structures{snum0}(kc).xyz{kf} = model.structures{snumc}(kc).xyz{1};
+            model.structures{snum0}(kc).Bfactor{kf} =  model.structures{snumc}(kc).Bfactor{1};
+            model.structures{snum0}(kc).Btensor{kf} = model.structures{snumc}(kc).Btensor{1};
         end
+    end
+    model.selected = cell(1,1);
+    model.selected{1} = snum0;
+    message = wr_pdb_selected('PTBP1_EMCV_IRES_ensemble','PTB1');
+    
+    if message.error
+        add_msg_board(strcat('ERROR (wr_pdb_selected): ',message.text));
+    else
+        add_msg_board('Structure file PTBP1_EMCV_IRES_ensemble.pdb written');
+    end
+    
+    % make DEER distance distributions
+    
+    rname = sprintf('%s_diagnosis_data.mat',flist{1});
+    
+    s = load(rname,'restraints');
+    
+    core = length(s.restraints.DEER);
+    rax = s.restraints.DEER(1).rax;
+    flex = 0;
+    
+    for kl = 1:length(s.restraints.pflex)
+        flex = flex + length(s.restraints.pflex(kl).DEER);
+    end
+    
+    all_distr = zeros(core+flex,length(rax));
+    
+    for k = 1:length(s.restraints.DEER)
+        distr = s.restraints.DEER(k).distr;
+        if ~isempty(distr)
+            figure(k); clf; hold on;
+            argr = (s.restraints.DEER(k).r-rax)/(sqrt(2)*s.restraints.DEER(k).sigr);
+            distr_sim = exp(-argr.^2);
+            distr_sim = distr_sim/sum(distr_sim);
+            plot(rax,distr_sim,'Color',[0.75,0,0]);
+            title(sprintf('%s-%s',s.restraints.DEER(k).adr1,s.restraints.DEER(k).adr2));
+            plot(rax,distr/nf,'Color',[0.2,0.2,1]);
+            all_distr(k,:) = all_distr(k,:) + distr/nf;
+        end
+    end
+    
+    pflex = core;
+    for kl = 1:length(s.restraints.pflex)
+        for k = 1:length(s.restraints.pflex(kl).DEER)
+            pflex = pflex + 1;
+            distr = s.restraints.pflex(kl).DEER(k).distr;
+            if ~isempty(distr)
+                figure(pflex); clf; hold on;
+                title(sprintf('%s-%s',s.restraints.pflex(kl).DEER(k).adr1,s.restraints.pflex(kl).DEER(k).adr2));
+                argr = (s.restraints.pflex(kl).DEER(k).r-rax)/(sqrt(2)*s.restraints.pflex(kl).DEER(k).sigr);
+                distr_sim = exp(-argr.^2);
+                distr_sim = distr_sim/sum(distr_sim);
+                plot(rax,distr_sim,'Color',[0.75,0,0]);
+                plot(rax,distr/nf,'Color',[0.2,0.2,1]);
+                all_distr(pflex,:) = all_distr(pflex,:) + distr/nf;
+            end
+        end
+    end
+    
+    for kf = 2:nf
+        rname = sprintf('%s_diagnosis_data.mat',flist{kf});
         
-
-end
-return
-
-% options.restrain_d = [2 3 100 1.0 3.7; 11 12 87 1.4 2.6];
-% options.restrain_t = [14,15,16,17,0.5,55,65;16,17,18,19,1.5,117,121];
-% options.restrain_a = [15,16,17,10,103,106;16,17,18,8,118,122];
-% msg = wr_tinker_key('testmol',options,[1,4,5,6,7,8,10,13,20:27]);
-
-RNA_environ = true;
-
-test_loop = false;
-test_stem_init = false;
-test_stem_final = false;
-test_nt_insert = false;
-test_nt_initial = false;
-test_nt_target = false;
-test_segment = true;
-test_double_stem = false;
-
-fname = 'PTBP1_restraints_CIGM_180112.dat';
-% fname = 'PTBP1_restraints_20180110_sec2.dat';
-[restraints,failed] = rd_restraints_rigiflex(fname);
-if failed
-    add_msg_board('rd_restraints_rigiflex failed');
-end
-
-% % Test of RNA loop maker from nt 21 (anchor) to 44 (anchor) in EMCV-IRES
-% 
-% subsegment = [22,43];
-% nt_offset = restraints.RNA.nta-1;
-% % sequence includes initial and final anchor nt
-% seq = restraints.RNA.sequence(subsegment(1)-nt_offset-1:subsegment(2)-nt_offset+1);
-
-% Test of RNA loop maker from nt 46 (anchor) to 59 (anchor) in EMCV-IRES
-
-subsegment = [323,334]; %[22,43];
-% subsegment = [47,58];
-% subsegment = [62,74];
-nt_offset = restraints.RNA.nta-1;
-% sequence includes initial and final anchor nt
-seq = restraints.RNA.sequence(subsegment(1)-nt_offset-1:subsegment(2)-nt_offset+1);
-
-load nuclib_5
-
-stag = 'PTB1';
-indices = resolve_address(sprintf('[%s]%s',stag,restraints.RNA.bind(1).anchore));
-anchori = get_anchor_pseudo_torsion(indices,true);
-% anchori = anchori(1:3,:);
-[acodes,transmat] = get_RNA_initial_anchor(fragments,anchori,upper(seq(1)));
-anchori = anchori(1:3,:);
-
-indices = resolve_address(sprintf('[%s]%s',stag,restraints.RNA.bind(2).anchora));
-anchore = get_anchor_pseudo_torsion(indices,true);
-anchor = anchore(2:4,:);
-anchorfi = [anchore(1:3,:); anchore(6,:)];
-
-
-indices = resolve_address(sprintf('[%s]%s',stag,restraints.RNA.bind(2).anchore));
-anchorfe = get_anchor_pseudo_torsion(indices);
-anchorfe = anchorfe(2:4,:);
-
-ecodes = get_anchor_fragments(anchor,'back',shortfrag);
-options.attempts = 100;
-options.maxtime = 13;
-options.anchor_acc = 0.4;
-
-LoN_vec = 6.0:0.25:7.0;
-error_statistics = zeros(length(LoN_vec),2+length(seq));
-trials = zeros(1,length(LoN_vec));
-
-% Make protein environment coordinates
-maxatoms = 50000;
-prot_coor = zeros(maxatoms,3);
-poi = 0;
-[msg,all_chain_coor] = get_object('[PTB1](A,C,E)','xyz');
-chains = 'ACE';
-for kc = 1:length(all_chain_coor)
-    xyz = all_chain_coor{kc};
-    [m,~] = size(xyz);
-    prot_coor(poi+1:poi+m,:) = xyz;
-    fprintf(1,'Chain %c contributes atoms %i-%i to environment\n',chains(kc),poi+1,poi+m);
-    poi = poi+m;
-end
-if RNA_environ
-    [msg,all_nt_coor] = get_object('[PTB1](B)328-329','xyz');
-    for kc = 1:length(all_nt_coor)
-        xyz = all_nt_coor{kc};
-        [m,~] = size(xyz);
-        prot_coor(poi+1:poi+m,:) = xyz;
-        fprintf(1,'Chain B nt %i contributes atoms %i-%i to environment\n',kc+327,poi+1,poi+m);
-        poi = poi+m;
+        s = load(rname,'restraints');
+        
+        for k = 1:length(s.restraints.DEER)
+            distr = s.restraints.DEER(k).distr;
+            if ~isempty(distr)
+                figure(k); hold on;
+                title(sprintf('%s-%s',s.restraints.DEER(k).adr1,s.restraints.DEER(k).adr2));
+                plot(rax,distr/nf,'Color',[0.2,0.2,1]);
+                all_distr(k,:) = all_distr(k,:) + distr/nf;
+            end
+        end      
+        pflex = core;
+        for kl = 1:length(s.restraints.pflex)
+            for k = 1:length(s.restraints.pflex(kl).DEER)
+                pflex = pflex + 1;
+                distr = s.restraints.pflex(kl).DEER(k).distr;
+                if ~isempty(distr)
+                    figure(pflex); hold on;
+                    title(sprintf('%s-%s',s.restraints.pflex(kl).DEER(k).adr1,s.restraints.pflex(kl).DEER(k).adr2));
+                    plot(rax,distr/nf,'Color',[0.2,0.2,1]);
+                    all_distr(pflex,:) = all_distr(pflex,:) + distr/nf;
+                end
+            end
+        end       
     end
-    [msg,all_nt_coor] = get_object('[PTB1](G)535-537','xyz');
-    for kc = 1:length(all_nt_coor)
-        xyz = all_nt_coor{kc};
-        [m,~] = size(xyz);
-        prot_coor(poi+1:poi+m,:) = xyz;
-        fprintf(1,'Chain G nt %i contributes atoms %i-%i to environment\n',kc+534,poi+1,poi+m);
-        poi = poi+m;
+    
+    for k = 1:core+flex
+        figure(k); hold on;
+        plot(rax,all_distr(k,:),'k');
     end
-    [msg,all_nt_coor] = get_object('[PTB1](F)550-552','xyz');
-    for kc = 1:length(all_nt_coor)
-        xyz = all_nt_coor{kc};
-        [m,~] = size(xyz);
-        prot_coor(poi+1:poi+m,:) = xyz;
-        fprintf(1,'Chain F nt %i contributes atoms %i-%i to environment\n',kc+549,poi+1,poi+m);
-        poi = poi+m;
-    end
-    [msg,all_nt_coor] = get_object('[PTB1](D)358-360','xyz');
-    for kc = 1:length(all_nt_coor)
-        xyz = all_nt_coor{kc};
-        [m,~] = size(xyz);
-        prot_coor(poi+1:poi+m,:) = xyz;
-        fprintf(1,'Chain D nt %i contributes atoms %i-%i to environment\n',kc+357,poi+1,poi+m);
-        poi = poi+m;
-    end
-end
-environ = prot_coor(1:poi,:);
-
-if test_loop
- anchor = [];
- ecodes = [];
-    [ecoor,atomtags,seq] = mk_RNA_loop(seq,fragments,...
-        shortfrag,non_clash_table,anchor,acodes,transmat,ecodes,options,nt_offset,environ);
-
-    if ~isempty(ecoor)
-        fname = 'test_RNA_1';
-        fname = wr_pdb_RNA(fname,ecoor,atomtags,seq);
-        fprintf(1,'Test RNA written to %s\n',fname);
-    end
-
-    return
-end
-
-if test_stem_init
-
-    load SLD_mini_stem_lib
-
-    counter = [1,1];
-    anchore = []; 
-    ecodes = [];
-    environ = [];
-    options.scramble = scramble_RNA_stems(stems);
-    ntoffset = restraints.RNA.bind(1).nte;
-
-    [ecoor,atomtags,code,counter,err] = attach_RNA_stem(fragments,...
-        stem_def,stems,counter,anchori,anchore,ecodes,environ,options,ntoffset);
     
     return
 end
 
-if test_stem_final
-    stag = 'PTB1';
-    indices = resolve_address(sprintf('[%s]%s',stag,restraints.RNA.bind(1).anchore));
-    anchori = get_anchor_pseudo_torsion(indices);
-    anchori = anchori(1:3,:);
-    [acodes,transmat] = get_RNA_initial_anchor(fragments,anchori,upper(seq(1)));
+snum0 = model.current_structure;
 
-    indices = resolve_address(sprintf('[%s]%s',stag,restraints.RNA.bind(2).anchora));
-    anchore = get_anchor_pseudo_torsion(indices);
-    anchor = anchore(2:4,:);
+[restraints,failed] = rd_restraints_rigiflex('PTBP1_restraints_181105.dat',unprocessed);
 
-    ecodes = get_anchor_fragments(anchor,'back',shortfrag);
-
-    load SLE_stem_lib
-
-    counter = [1,1];
-    anchori = []; 
-    % environ = [];
-    options.scramble = scramble_RNA_stems(stems);
-    ntoffset = restraints.RNA.bind(1).nte;
-
-    [ecoor,atomtags,code,counter,err] = attach_RNA_stem(fragments,...
-        stem_def,stems,counter,anchori,anchor,ecodes,environ,options,ntoffset);
-
+if failed
+    add_msg_board('Restraint file could not be read.');
+    return
 end
 
-if test_nt_insert
-    ntoffset = restraints.RNA.bind(2).nta;
-    counter = [];
-    base = 'U';
-    environ = [];
-    [ecoor,atomtags,counter,code,err] = get_link_nt(fragments,anchorfi,anchorfe,base,ntoffset,environ,counter);
+[filename, pathname] = uiputfile(['PTB1' '.pdb'], 'Save final model as PDB');
+if isequal(filename,0) || isequal(pathname,0)
+    add_msg_board('Quality check cancelled by user');
+    return
+else
+    reset_user_paths(pathname);
+    general.pdb_files=pathname;
+    fname = fullfile(pathname, filename);
+    [~,name,~] = fileparts(fname);
+    options.fname = fname;
 end
 
-if test_nt_initial
-    ntoffset = restraints.RNA.bind(2).nta;
-    counter = [1,1];
-    base = 'U';
-    anchorfe = [];
-    environ = [];
-    err = 0;
-    while err == 0
-        [ecoor,atomtags,counter,code,err] = get_link_nt(fragments,...
-            anchorfi,anchorfe,base,ntoffset,environ,counter);
-        fprintf(1,'Current counter: (%i,%i)\n',counter);
+fid = fopen(sprintf('%s_diagnosis.dat',name),'wt');
+if fid == -1
+    add_msg_board('Quality report file could not be written.');
+    return
+end
+
+oname = sprintf('%s_diagnosis_data.mat',name); 
+
+model.current_structure = snum0;
+
+% sadr = mk_address(snum0);
+
+hfig=gcf;
+set(hfig,'Pointer','watch');
+
+fprintf(fid,'DEER restraints for model %s\n\n',name);
+fprintf(fid,'>>> core and RNA\n\n');
+for k = 1:length(restraints.DEER)
+    cpoi = strfind(restraints.DEER(k).adr1,'(');
+    switch restraints.DEER(k).adr1(cpoi+1)
+        case {'A','C','E'}
+            restraints.DEER(k).adr1(cpoi+1) = 'A';
+        otherwise
+            restraints.DEER(k).adr1(cpoi+1) = 'B';
+    end
+    cpoi = strfind(restraints.DEER(k).adr2,'(');
+    switch restraints.DEER(k).adr2(cpoi+1)
+        case {'A','C','E'}
+            restraints.DEER(k).adr2(cpoi+1) = 'A';
+        otherwise
+            restraints.DEER(k).adr2(cpoi+1) = 'B';
+    end
+    [rax,distr] = mk_distance_distribution(restraints.DEER(k).adr1,restraints.DEER(k).adr2,restraints.DEER(k).label);
+    restraints.DEER(k).rax = rax;
+    restraints.DEER(k).distr = distr;
+    if isempty(rax)
+        figure(k); clf;
+        title(sprintf('%s: %s-%s. Labeling failure',name,restraints.DEER(k).adr1,restraints.DEER(k).adr2));
+        fprintf(fid,'%s-%s. Labeling failure\n',restraints.DEER(k).adr1,restraints.DEER(k).adr2);
+        continue
+    end
+    rax = 10*rax;
+    restraints.DEER(k).rax = rax;
+    restraints.DEER(k).r_model = sum(restraints.DEER(k).distr.*rax);
+    restraints.DEER(k).sigr_model = sqrt(sum(restraints.DEER(k).distr.*(rax-restraints.DEER(k).r_model).^2));
+    fprintf(fid,'%s-%s requested: %4.1f (%4.1f) Å found: %4.1f (%4.1f) Å; ',...
+        restraints.DEER(k).adr1,restraints.DEER(k).adr2,...
+        restraints.DEER(k).r,restraints.DEER(k).sigr,...
+        restraints.DEER(k).r_model,restraints.DEER(k).sigr_model);
+    figure(k); clf;
+    title(sprintf('%s: %s-%s',name,restraints.DEER(k).adr1,restraints.DEER(k).adr2));
+    hold on
+    plot(rax,distr,'k');
+    xlabel('r [Å]');
+    ylabel('P(r)');
+    hold on
+    argr = (restraints.DEER(k).r-rax)/(sqrt(2)*restraints.DEER(k).sigr);
+    distr_sim = exp(-argr.^2);
+    distr_sim = distr_sim/sum(distr_sim);
+    restraints.DEER(k).overlap = sum(sqrt(distr_sim.*distr));
+    fprintf(fid,'Overlap: %5.3f\n',restraints.DEER(k).overlap);
+    plot(rax,distr_sim,'Color',[0.75,0,0]);
+end
+
+core = length(restraints.DEER);
+
+fprintf(fid,'\n>>> flexible peptide linkers\n\n');
+for kl = 1:length(restraints.pflex)
+    for k = 1:length(restraints.pflex(kl).DEER)
+        cpoi = strfind(restraints.pflex(kl).DEER(k).adr1,'(');
+        switch restraints.pflex(kl).DEER(k).adr1(cpoi+1)
+            case {'A','C','E'}
+                restraints.pflex(kl).DEER(k).adr1(cpoi+1) = 'A';
+            otherwise
+                restraints.pflex(kl).DEER(k).adr1(cpoi+1) = 'B';
+        end
+        cpoi = strfind(restraints.pflex(kl).DEER(k).adr2,'(');
+        switch restraints.pflex(kl).DEER(k).adr2(cpoi+1)
+            case {'A','C','E'}
+                restraints.pflex(kl).DEER(k).adr2(cpoi+1) = 'A';
+            otherwise
+                restraints.pflex(kl).DEER(k).adr2(cpoi+1) = 'B';
+        end
+        label = [restraints.pflex(kl).DEER(k).label1 '|' restraints.pflex(kl).DEER(k).label2];
+        [rax,distr] = mk_distance_distribution(restraints.pflex(kl).DEER(k).adr1,restraints.pflex(kl).DEER(k).adr2,label);
+        restraints.pflex(kl).DEER(k).rax = rax;
+        restraints.pflex(kl).DEER(k).distr = distr;
+        if isempty(rax)
+            figure(core+k); clf;
+            title(sprintf('%s: %s-%s. Labeling failure',name,restraints.pflex(kl).DEER(k).adr1,restraints.pflex(kl).DEER(k).adr2));
+            fprintf(fid,'%s-%s. Labeling failure\n',restraints.pflex(kl).DEER(k).adr1,restraints.pflex(kl).DEER(k).adr2);
+            continue
+        end
+        rax = 10*rax;
+        restraints.pflex(kl).DEER(k).rax = rax;
+        restraints.pflex(kl).DEER(k).r_model = sum(restraints.pflex(kl).DEER(k).distr.*rax);
+        restraints.pflex(kl).DEER(k).sigr_model = sqrt(sum(restraints.pflex(kl).DEER(k).distr.*(rax-restraints.pflex(kl).DEER(k).r_model).^2));
+        fprintf(fid,'%s-%s requested: %4.1f (%4.1f) Å found: %4.1f (%4.1f) Å; ',...
+            restraints.pflex(kl).DEER(k).adr1,restraints.pflex(kl).DEER(k).adr2,...
+            restraints.pflex(kl).DEER(k).r,restraints.pflex(kl).DEER(k).sigr,...
+            restraints.pflex(kl).DEER(k).r_model,restraints.pflex(kl).DEER(k).sigr_model);
+        figure(core+k); clf;
+        title(sprintf('%s: %s-%s',name,restraints.pflex(kl).DEER(k).adr1,restraints.pflex(kl).DEER(k).adr2));
+        hold on
+        plot(rax,distr,'k');
+        xlabel('r [Å]');
+        ylabel('P(r)');
+        hold on
+        argr = (restraints.pflex(kl).DEER(k).r-rax)/(sqrt(2)*restraints.pflex(kl).DEER(k).sigr);
+        distr_sim = exp(-argr.^2);
+        distr_sim = distr_sim/sum(distr_sim);
+        restraints.pflex(kl).DEER(k).overlap = sum(sqrt(distr_sim.*distr));
+        fprintf(fid,'Overlap: %5.3f\n',restraints.pflex(kl).DEER(k).overlap);
+        plot(rax,distr_sim,'Color',[0.75,0,0]);
     end
 end
 
-if test_nt_target
-    ntoffset = restraints.RNA.bind(2).nta;
-    counter = [1,1];
-    base = 'U';
-    anchorfi = [];
-    environ = [];
-    err = 0;
-    while err == 0
-        [ecoor,atomtags,counter,code,err] = get_link_nt(fragments,...
-            anchorfi,anchorfe,base,ntoffset,environ,counter);
-        fprintf(1,'Current counter: (%i,%i)\n',counter);
+% Now test for SANS restraints
+
+SANS_chi = 0;
+if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
+    add_msg_board('Fitting SANS restraints');
+    fprintf(fid,'\nSANS restraints\n\n');
+    to_be_deleted = '';
+    for ks = 1:length(restraints.SANS)
+        model = rmfield(model,'selected');
+        model.selected{1} = [snum0 1];
+        pdbfile = sprintf('t_%i',ks);
+        to_be_deleted = 't*.*';
+        wr_pdb_selected(pdbfile,'SANS');
+        [chi2,~,~,result,fit] = fit_SANS_by_cryson(restraints.SANS(ks).data,pdbfile,restraints.SANS(ks).illres);
+        if isempty(chi2) || isnan(chi2)
+            SANS_chi = 1e6;
+            if interactive
+                fprintf(2,'Warning: SANS fitting failed\n');
+                fprintf(fid,'Warning: SANS fitting of curve %i failed\n',ks);
+                fprintf(2,'%s',result);
+            end
+        else
+            restraints.SANS(ks).fit = fit;
+            restraints.SANS(ks).chi2 = chi2;
+            fprintf(fid,'SANS curve %i fitted with chi^2 of %6.3f\n',ks,chi2);
+            SANS_chi = SANS_chi + chi2;
+        end
+    end
+    chi2 = SANS_chi/length(restraints.SANS);
+    fprintf(fid,'Mean SANS curve chi^2: %6.3f\n',chi2);
+    delete(to_be_deleted);
+    figure(101); clf
+    hold on;
+    for ks = 1:length(restraints.SANS)
+        fit = restraints.SANS(ks).fit;
+        plot(fit(:,1),fit(:,2));
+        plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
+    end
+    title(sprintf('SANS fit for model (chi^2 = %4.2f)',chi2));
+end
+
+SAXS_chi = 0;
+if isfield(restraints,'SAXS') && ~isempty(restraints.SANS)
+    add_msg_board('Fitting SAXS restraints');
+    fprintf(fid,'\nSAXS restraints\n\n');
+    to_be_deleted = '';
+    for ks = 1:length(restraints.SAXS)
+        model = rmfield(model,'selected');
+        model.selected{1} = [snum0 1];
+        model.selected{2} = [snum0 2];
+        pdbfile = sprintf('t_%i',ks);
+        to_be_deleted = 't*.*';
+        wr_pdb_selected(pdbfile,'SAXS');
+        SAXS_curve = load_SAXS_curve(restraints.SAXS(ks).data);
+        sm = max(SAXS_curve(:,1));
+        [chi2,~,~,result,fit] = fit_SAXS_by_crysol(restraints.SAXS(ks).data,pdbfile,sm);
+        if isempty(chi2) || isnan(chi2)
+            SAXS_chi = 1e6;
+            if interactive
+                fprintf(2,'Warning: SAXS fitting failed\n');
+                fprintf(fid,'Warning: SAXS fitting of curve %i failed\n',ks);
+                fprintf(2,'%s',result);
+            end
+        else
+            restraints.SAXS(ks).fit = fit;
+            restraints.SAXS(ks).chi2 = chi2;
+            fprintf(fid,'SAXS curve %i fitted with chi^2 of %6.3f\n',ks,chi2);
+            SAXS_chi = SAXS_chi + chi2;
+        end
+    end
+    chi2 = SAXS_chi/length(restraints.SAXS);
+    fprintf(fid,'Mean SAXS curve chi^2: %6.3f\n',chi2);
+    delete(to_be_deleted);
+    figure(102); clf;
+    hold on;
+    for ks = 1:length(restraints.SAXS)
+        fit = restraints.SAXS(ks).fit;
+        plot(fit(:,1),fit(:,2));
+        plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
+    end
+    title(sprintf('SAXS fit for model (chi^2 = %4.2f)',chi2));
+end
+
+% test for superposition of RRMs
+fprintf(fid,'\nTesting for RRM superposition with NMR models\n\n');
+
+adr1 = '[PTB7](A)58-154';
+adr2 = '(A)58-154';
+
+[rmsd,~,msg] = backbone_overlap_peptide(adr1,adr2);
+if msg.error
+    fprintf(2,'Sections %s and %s could not be superimposed (%s)\n',adr1,adr2,msg.text);
+    fprintf(fid,'Sections %s and %s could not be superimposed (%s)\n',adr1,adr2,msg.text);
+else
+    fprintf(fid,'%s overlaps with %s rmsd %5.2f Å\n',adr2,adr1,rmsd);
+end
+
+adr1 = '[PTB7](C)182-283';
+adr2 = '(A)182-283';
+
+[rmsd,~,msg] = backbone_overlap_peptide(adr1,adr2);
+if msg.error
+    fprintf(2,'Sections %s and %s could not be superimposed (%s)\n',adr1,adr2,msg.text);
+    fprintf(fid,'Sections %s and %s could not be superimposed (%s)\n',adr1,adr2,msg.text);
+else
+    fprintf(fid,'%s overlaps with %s rmsd %5.2f Å\n',adr2,adr1,rmsd);
+end
+
+adr1 = '[PTB7](E)337-430';
+adr2 = '(A)337-430';
+
+[rmsd,~,msg] = backbone_overlap_peptide(adr1,adr2);
+if msg.error
+    fprintf(2,'Sections %s and %s could not be superimposed (%s)\n',adr1,adr2,msg.text);
+    fprintf(fid,'Sections %s and %s could not be superimposed (%s)\n',adr1,adr2,msg.text);
+else
+    fprintf(fid,'%s overlaps with %s rmsd %5.2f Å\n',adr2,adr1,rmsd);
+end
+
+adr1 = '[PTB7](E)454-531';
+adr2 = '(A)454-531';
+
+[rmsd,~,msg] = backbone_overlap_peptide(adr1,adr2);
+if msg.error
+    fprintf(2,'Sections %s and %s could not be superimposed (%s)\n',adr1,adr2,msg.text);
+    fprintf(fid,'Sections %s and %s could not be superimposed (%s)\n',adr1,adr2,msg.text);
+else
+    fprintf(fid,'%s overlaps with %s rmsd %5.2f Å\n',adr2,adr1,rmsd);
+end
+
+fprintf(fid,'\nTesting for RNA binding motif superposition\n\n');
+
+adr1 = '[PTB7](B)327-329';
+adr2 = '(B)327-329';
+
+[rmsd,~,msg] = overlap_nucleic_acid(adr1,adr2);
+if msg.error
+    fprintf(2,'Sections %s and %s could not be superimposed (%s)\n',adr1,adr2,msg.text);
+    fprintf(fid,'Sections %s and %s could not be superimposed (%s)\n',adr1,adr2,msg.text);
+else
+    fprintf(fid,'%s overlaps with %s rmsd %5.2f Å\n',adr2,adr1,rmsd);
+end
+
+adr1 = '[PTB7](D)358-360';
+adr2 = '(B)358-360';
+
+[rmsd,~,msg] = overlap_nucleic_acid(adr1,adr2);
+if msg.error
+    fprintf(2,'Sections %s and %s could not be superimposed (%s)\n',adr1,adr2,msg.text);
+    fprintf(fid,'Sections %s and %s could not be superimposed (%s)\n',adr1,adr2,msg.text);
+else
+    fprintf(fid,'%s overlaps with %s rmsd %5.2f Å\n',adr2,adr1,rmsd);
+end
+
+adr1 = '[PTB7](F)342-344';
+adr2 = '(B)342-344';
+
+[rmsd,~,msg] = overlap_nucleic_acid(adr1,adr2);
+if msg.error
+    fprintf(2,'Sections %s and %s could not be superimposed (%s)\n',adr1,adr2,msg.text);
+    fprintf(fid,'Sections %s and %s could not be superimposed (%s)\n',adr1,adr2,msg.text);
+else
+    fprintf(fid,'%s overlaps with %s rmsd %5.2f Å\n',adr2,adr1,rmsd);
+end
+
+adr1 = '[PTB7](G)302-304';
+adr2 = '(B)302-304';
+
+[rmsd,~,msg] = overlap_nucleic_acid(adr1,adr2);
+if msg.error
+    fprintf(2,'Sections %s and %s could not be superimposed (%s)\n',adr1,adr2,msg.text);
+    fprintf(fid,'Sections %s and %s could not be superimposed (%s)\n',adr1,adr2,msg.text);
+else
+    fprintf(fid,'%s overlaps with %s rmsd %5.2f Å\n',adr2,adr1,rmsd);
+end
+
+[KK_pairs,KE_pairs] = find_crosslinkable_pairs([snum0 1]);
+
+[nKK,~] = size(KK_pairs);
+[nKE,~] = size(KE_pairs);
+
+fprintf(fid,'\nAnalysis of crosslink restraints\n\n');
+
+for k = 1:length(restraints.xlinks)
+    adr1 = restraints.xlinks(k).adr1;
+    adr2 = restraints.xlinks(k).adr2;
+    cpoi = strfind(adr1,'(');
+    switch adr1(cpoi+1)
+        case {'A','C','E'}
+            adr1(cpoi+1) = 'A';
+        otherwise
+            adr1(cpoi+1) = 'B';
+    end
+    switch adr2(cpoi+1)
+        case {'A','C','E'}
+            adr2(cpoi+1) = 'A';
+        otherwise
+            adr2(cpoi+1) = 'B';
+    end
+    ind1 = resolve_address(adr1);
+    ind2 = resolve_address(adr2);
+    for k1 = 1:nKK
+        det1 = sum(abs(ind1 - KK_pairs(k1,1:4))) + sum(abs(ind2 - KK_pairs(k1,5:8)));
+        det2 = sum(abs(ind2 - KK_pairs(k1,1:4))) + sum(abs(ind1 - KK_pairs(k1,5:8)));
+        if det1 == 0 || det2 == 0
+            fprintf(fid,'KK crosslink %s-%s has CA-CA distance %4.1f Å\n',adr1,adr2,KK_pairs(k1,9));
+        end
+    end
+    for k1 = 1:nKE
+        det1 = sum(abs(ind1 - KE_pairs(k1,1:4))) + sum(abs(ind2 - KE_pairs(k1,5:8)));
+        det2 = sum(abs(ind2 - KE_pairs(k1,1:4))) + sum(abs(ind1 - KE_pairs(k1,5:8)));
+        if det1 == 0 || det2 == 0
+            fprintf(fid,'KE crosslink %s-%s has CA-CA distance %4.1f Å\n',adr1,adr2,KE_pairs(k1,9));
+        end
     end
 end
 
-if test_segment   
-    msg = mk_rigiflex_rna(restraints,[1,1],1,environ);
-    add_msg_board(sprintf('mk_rigiflex_rna: %s',msg.text));
+fprintf(fid,'\nList of potentially crosslinkable pairs (<= 20 Å CA-CA distance)\n\n');
+
+for k1 = 1:nKK
+    adr1 = mk_address(KK_pairs(k1,1:4));
+    adr2 = mk_address(KK_pairs(k1,5:8));
+    if KK_pairs(k1,9) <= 20
+        fprintf(fid,'Potential KK crosslink %s-%s has CA-CA distance %4.1f Å\n',adr1,adr2,KK_pairs(k1,9));
+    end
 end
 
-if test_double_stem   
-    msg = double_attach_rna_stem(restraints,[1,1],1,2,environ,10);
-    add_msg_board(sprintf('double_attach_rna_stem: %s',msg.text));
+for k1 = 1:nKE
+    adr1 = mk_address(KE_pairs(k1,1:4));
+    adr2 = mk_address(KE_pairs(k1,5:8));
+    if KE_pairs(k1,9) <= 20
+        fprintf(fid,'Potential KE crosslink %s-%s has CA-CA distance %4.1f Å\n',adr1,adr2,KE_pairs(k1,9));
+    end
 end
-add_msg_board('Sojus to Baikonur: Test completed.');
 
+fclose(fid);
+
+save(oname,'restraints');
+
+% Transform to superposition frame and store
+
+adr2 = restraints.superimpose;
+adr1 = '[PTB7](E)454-531';
+[rmsd,transmat,msg] = backbone_overlap_peptide(adr1,adr2);
+if msg.error
+    add_msg_board(sprintf('ERROR: Superposition of model onto template failed (%s)',msg.text));
+    set(hfig,'Pointer','arrow');
+    return
+else
+    add_msg_board(sprintf('Superposition rmsd is %5.2f Ã',rmsd));
+end
+
+transform_structure(snum0,transmat);
+
+model.selected = cell(1,2);
+model.selected{1} = [snum0 1];
+model.selected{2} = [snum0 2];
+
+message = wr_pdb_selected(fname,'PTB1');
+
+if message.error
+    add_msg_board(strcat('ERROR (wr_pdb_selected): ',message.text));
+else
+    add_msg_board(sprintf('Structure file %s written',fname));
+end
+
+set(hfig,'Pointer','arrow');
 
 % --------------------------------------------------------------------
 function menu_EPR_dHis_Callback(hObject, eventdata, handles)
@@ -6121,6 +6170,7 @@ for k = 1:length(restraints.DEER)
     rax = 10*rax;
     figure(k); clf;
     title(sprintf('%s: %s-%s',name,restraints.DEER(k).adr1,restraints.DEER(k).adr2));
+    hold on
     plot(rax,distr,'k');
     xlabel('r [Å]');
     ylabel('P(r)');
@@ -6140,3 +6190,28 @@ end
 
 set(hfig,'Pointer','arrow');
 add_msg_board(sprintf('Msg %i: %s. Structure %i generated. Energy is %5.3f kJ/mol.\n',msg.error,msg.text,snum,energy/1000));
+
+function curve = load_SAXS_curve(fname)
+
+fid = fopen(fname);
+if fid==-1
+    curve = [];
+    add_msg_board('Warning. Loading of SAXS curve failed');
+    return;
+end
+nl=0;
+curve = zeros(10000,4);
+while 1
+    tline = fgetl(fid);
+    if ~ischar(tline), break, end
+    %         fprintf(1,'%s\n',tline); % echo for debugging
+    if nl > 0 % skip first line
+        dataset = str2num(tline);
+        ncol = length(dataset);
+        curve(nl,1:ncol) = dataset;
+    end
+    nl = nl + 1;
+end
+curve = curve(1:nl-1,:);
+curve(:,1) = 10*curve(:,1);
+fclose(fid);

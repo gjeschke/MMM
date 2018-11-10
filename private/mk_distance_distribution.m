@@ -24,10 +24,19 @@ if m2 ~= 1 || n2 ~=4
     return
 end
 
+poi = strfind(label,'|');
+if isempty(poi)
+    label1tag = label;
+    label2tag = label;
+else
+    label1tag = label(1:poi-1);
+    label2tag = label(poi+1:end);
+end
+
 rot_lib_name = '';
 
 for k = 1:length(rotamer_libraries)
-    if strcmpi(label,rotamer_libraries(k).tc) || strcmpi(label,rotamer_libraries(k).label)
+    if strcmpi(label1tag,rotamer_libraries(k).tc) || strcmpi(label1tag,rotamer_libraries(k).label)
         id = 0;
         for kk = 1:length(rotamer_libraries(k).T)
             if rotamer_libraries(k).T(kk) == 298
@@ -42,10 +51,28 @@ end
 
 load(rot_lib_name);
 label1 = rotamer_populations(rindices1,rot_lib);
+
+rot_lib_name = '';
+
+for k = 1:length(rotamer_libraries)
+    if strcmpi(label2tag,rotamer_libraries(k).tc) || strcmpi(label2tag,rotamer_libraries(k).label)
+        id = 0;
+        for kk = 1:length(rotamer_libraries(k).T)
+            if rotamer_libraries(k).T(kk) == 298
+                id = kk;
+            end
+        end
+        if id >0
+            rot_lib_name = id2tag(id,rotamer_libraries(k).files);
+        end
+    end
+end
+
+load(rot_lib_name);
 label2 = rotamer_populations(rindices2,rot_lib);
+
 if ~isempty(label1) && ~isempty(label2)
     [rax,distr]=get_distribution(label1(1).NOpos,label2(1).NOpos,0.1);
-    distr = distr/sum(distr);
 else
     rax = [];
     distr = [];

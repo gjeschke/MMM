@@ -61,6 +61,13 @@ global MMM_icon
 global PDBwiki_icon
 global model
 
+if isempty(model)
+    add_msg_board('ERROR: No model specified');
+    % Update handles structure
+    guidata(hObject, handles);
+    return
+end
+
 handles.snum = model.current_structure;
 handles.page = 1;
 

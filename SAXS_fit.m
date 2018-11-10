@@ -76,7 +76,7 @@ handles.copy = false;
 if ~isfield(model,'selected') || isempty(model.selected)
     model.selected{1} = model.current_structure;
     handles.no_selection = true;
-end;
+end
 
 hMain.auxiliary=[hMain.auxiliary hObject];
 
@@ -136,7 +136,7 @@ else
     handles.sm = max(handles.SAXS_curve(:,1));
     handles.edit_max_s.String = sprintf('%5.3f',handles.sm);
     handles.SAXS_fit = [];
-end;
+end
 cd(my_path);
 update_plot(handles);
 
@@ -151,7 +151,7 @@ function pushbutton_fit_Callback(hObject, eventdata, handles)
 if isempty(handles.SAXS_curve)
     add_msg_board('Warning. No SAXS curve loaded yet');
     return
-end;
+end
 
 pdbfile = sprintf('SAXS_test');
 to_be_deleted = sprintf('SAXS_test*.*');

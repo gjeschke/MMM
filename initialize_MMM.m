@@ -49,9 +49,9 @@ gowhere=which('MMM.m');
 addpath(genpath(gowhere(1:end-6)));
 
 % information on current release
-MMM_info.title='MMM version 2018.1';
+MMM_info.title='MMM version 2018.2';
 MMM_info.authors='G. Jeschke, Ye. Polyhach, S. Stoll';
-MMM_info.date='20.07.2018';
+MMM_info.date='10.11.2018';
 MMM_info.institution='ETH Zürich, D-CHAB & Univ. Washington, Dept. Chem.';
 MMM_info.contact{1}='gjeschke@ethz.ch';
 MMM_info.contact{2}='yevhen.polyhach@phys.chem.ethz.ch';

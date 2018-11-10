@@ -73,11 +73,11 @@ if isempty(residues)
     newindices=indices;
 else
     newindices=zeros(length(residues),4);
-    for k=1:length(residues),
+    for k=1:length(residues)
         newindices(k,1:3)=indices;
         newindices(k,4)=k;
-    end;
-end;
+    end
+end
 
 function [message,newindices]=descendants_chain_model(indices)
 % returns descendants indices for a chain model

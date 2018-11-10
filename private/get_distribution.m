@@ -25,48 +25,49 @@ distr = [];
 if nargin<3 || isempty(sig)
     sig=0.001; % no significant broadening
     threshold=0;
-end;
+end
 if nargin<4 || isempty(threshold)
     threshold=0;
-end;
+end
 if nargin<5 || isempty(normalize)
     normalize=true;
-end;
+end
 
 
 %warning off MATLAB:warning:FrequencyOutputObsolete;
 
 ra=-5;
-if nargin<6 || isempty(re),
+if nargin<6 || isempty(re)
     re=20;
     nr=501;
 else
     re=re-ra;
     nr=round(20*(re-ra))+1;
-end;
+end
 
-if nargin<7 || isempty(options),
+if nargin<7 || isempty(options)
     options.trajectory=[0,0];
-end;
+end
 
 rax=linspace(ra,re,nr);
 
-if nargin<2,
+if nargin<2
     rax=rax(101:end-100);
     return;
-end;
+end
 
 vari=rax/sig;
 vari=exp(-vari.^2); % broadening function
 
 distr=zeros(size(rax));
 
-[n_rot_1,m]=size(NOpos1);   % returns number of rotamers at position 1
-[n_rot_2,m]=size(NOpos2);   % -//- at position 2
+[n_rot_1,~]=size(NOpos1);   % returns number of rotamers at position 1
+[n_rot_2,~]=size(NOpos2);   % -//- at position 2
 
+missing = 0;
 % keyboard
 if prod(options.trajectory)
-    for k=1:n_rot_1,
+    for k=1:n_rot_1
         NO1=NOpos1(k,1:3); % NO center for k-th frame in the pos. 1
         pop1=NOpos1(k,4); % weight for k-th frame in the pos. 1    end;
         NO2=NOpos2(k,1:3); % NO center for k-th frame in the pos. 2
@@ -74,14 +75,15 @@ if prod(options.trajectory)
         NO12=((sum((NO1-NO2).^2))^(1/2))/10; % NOpos1-NOpos2 distance (dipolar distance for k-kk pair) in nm!
         if NO12>=1
             poi=1+round(nr*(NO12-ra)/(re-ra));
-            %distr(poi)=distr(poi)+1;
-            if poi<=nr && poi>=1,
-            %keyboard
+            if poi<=nr && poi>=1
                 distr(poi)=distr(poi)+pop1*pop2;
-            end;
-%                     disp([poi,distr(poi),NO12]);
+            else
+                missing = missing + pop1*pop2;
+            end
+        else
+            missing = missing + pop1*pop2;
         end
-    end;
+    end
 else
     for k=1:n_rot_1
         if NOpos1(k,4)>=threshold
@@ -98,12 +100,13 @@ else
                     NO12=((sum((NO1-NO2).^2))^(1/2))/10; % NOpos1-NOpos2 distance (dipolar distance for k-kk pair) in nm!
                     if NO12>=1
                         poi=1+round(nr*(NO12-ra)/(re-ra));
-                        %distr(poi)=distr(poi)+1;
-                        if poi<=nr && poi>=1,
-                        %keyboard
+                        if poi<=nr && poi>=1
                             distr(poi)=distr(poi)+pop1*pop2;
+                        else
+                            missing = missing + pop1*pop2;
                         end
-    %                     disp([poi,distr(poi),NO12]);
+                    else
+                        missing = missing + pop1*pop2;
                     end
                 end
             end
@@ -122,7 +125,8 @@ distr=distr(201:end);
 
 if normalize
     if sum(distr)>1e-12*length(distr)
-        distr=distr/sum(distr);
+        in_histogram = sum(distr)/(missing + sum(distr));
+        distr = in_histogram*distr/sum(distr);
     else
         distr=1e-12*ones(size(distr));
     end

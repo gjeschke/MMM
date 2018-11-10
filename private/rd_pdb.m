@@ -226,7 +226,7 @@ seqtype=0;
     global queries
     global general
 
-    if isempty(strfind(fname,'.')), fname=strcat(fname,'.pdb'); end;
+    if isempty(strfind(fname,'.')), fname=strcat(fname,'.pdb'); end
 
     if nargin>1
         rem_out=fopen(remarks,'wt');

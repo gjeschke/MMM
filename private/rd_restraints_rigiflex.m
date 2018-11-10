@@ -1,4 +1,4 @@
-function [restraints,failed] = rd_restraints_rigiflex(fname)
+function [restraints,failed] = rd_restraints_rigiflex(fname,unprocessed)
 % function [restraints,failed] = rd_restraints_rigiflex(fname)
 %
 % reads mixed experimental restraints for a RigiFlex model from an ASCII file
@@ -7,6 +7,9 @@ function [restraints,failed] = rd_restraints_rigiflex(fname)
 %
 % the restraints are pre-processed with respect to the current structure in
 % MMM, which must conform to the rigid body definitions
+%
+% flag unprocessed suppresses spin labelling and other processing, defaults
+% to false
 %
 % currently implemented types are:
 %
@@ -50,16 +53,20 @@ function [restraints,failed] = rd_restraints_rigiflex(fname)
 
 global model
 
+if ~exist('unprocessed','var') || isempty(unprocessed)
+    unprocessed = false;
+end
+
 lpr_nt = 7; % maximum length per RNA nucleotide
 lpr_aa = 3.8; % maximum length per amino acid residue
 
 failed = true;
 
 fid=fopen(fname);
-if fid==-1,
+if fid==-1
     add_msg_board('ERROR: Restraint file does not exist');
     return;
-end;
+end
 
 clear restraints
 restraints.ensemble = [];
@@ -368,7 +375,8 @@ while 1
                     mode=0;
                     indices = resolve_address(char(args(3)));
                     if length(indices) ~= 2
-                        add_msg_board(sprintf('Warning: Superposition key has a wrong chain address %s in line %i. Ignored.',char(args(3)),nl));
+                        add_msg_board(sprintf('Warning: Superposition key has a wrong chain address %s in line %i. Stored as address.',char(args(3)),nl));
+                        restraints.superimpose = char(args(3));
                     else
                         restraints.superimpose = indices(2);
                     end
@@ -435,43 +443,49 @@ while 1
                     restraints.DEER(DEER_poi).label = label;
                     restraints.DEER(DEER_poi).adr1 = char(args(1));
                     restraints.DEER(DEER_poi).adr2 = char(args(2));
-                    [ecoor,indices,label_adr,label_types,label_coor,label_indices] = get_label_coor(char(args(1)),label,label_adr,label_types,label_coor,label_indices,stemlibs,restraints.rb);
-                    if isempty(ecoor)
-                        add_msg_board(sprintf('ERROR: Residue %s could not be labeled. Aborting.',char(args(1))));
-                        fclose(fid);
-                        return
+                    if ~unprocessed
+                        [ecoor,indices,label_adr,label_types,label_coor,label_indices] = get_label_coor(char(args(1)),label,label_adr,label_types,label_coor,label_indices,stemlibs,restraints.rb);
+                        if isempty(ecoor)
+                            add_msg_board(sprintf('ERROR: Residue %s could not be labeled. Aborting.',char(args(1))));
+                            fclose(fid);
+                            return
+                        end
+                        restraints.DEER(DEER_poi).ecoor1 = ecoor;
+                        restraints.DEER(DEER_poi).indices1 = indices;
+                        [ecoor,indices,label_adr,label_types,label_coor,label_indices] = get_label_coor(char(args(2)),label,label_adr,label_types,label_coor,label_indices,stemlibs,restraints.rb);
+                        if isempty(ecoor)
+                            add_msg_board(sprintf('ERROR: Residue %s could not be labeled. Aborting.',char(args(2))));
+                            fclose(fid);
+                            return
+                        end
+                        restraints.DEER(DEER_poi).ecoor2 = ecoor;
+                        restraints.DEER(DEER_poi).indices2 = indices;
                     end
-                    restraints.DEER(DEER_poi).ecoor1 = ecoor;
-                    restraints.DEER(DEER_poi).indices1 = indices;
-                    [ecoor,indices,label_adr,label_types,label_coor,label_indices] = get_label_coor(char(args(2)),label,label_adr,label_types,label_coor,label_indices,stemlibs,restraints.rb);
-                    if isempty(ecoor)
-                        add_msg_board(sprintf('ERROR: Residue %s could not be labeled. Aborting.',char(args(2))));
-                        fclose(fid);
-                        return
-                    end
-                    restraints.DEER(DEER_poi).ecoor2 = ecoor;
-                    restraints.DEER(DEER_poi).indices2 = indices;
                 case 10 % ODEER
-                    [ecoor,indices,label_adr,label_types,label_coor,label_indices] = get_label_coor(char(args(1)),label1,label_adr,label_types,label_coor,label_indices,stemlibs,restraints.rb);
-                    if isempty(ecoor)
-                        add_msg_board(sprintf('ERROR: Residue %s could not be labeled. Aborting.',char(args(1))));
-                        fclose(fid);
-                        return
-                    end
                     DEER_poi = DEER_poi + 1;
+                    if ~unprocessed
+                        [ecoor,indices,label_adr,label_types,label_coor,label_indices] = get_label_coor(char(args(1)),label1,label_adr,label_types,label_coor,label_indices,stemlibs,restraints.rb);
+                        if isempty(ecoor)
+                            add_msg_board(sprintf('ERROR: Residue %s could not be labeled. Aborting.',char(args(1))));
+                            fclose(fid);
+                            return
+                        end
+                        restraints.DEER(DEER_poi).ecoor1 = ecoor;
+                        restraints.DEER(DEER_poi).indices1 = indices;
+                    end
                     restraints.DEER(DEER_poi).r = 10*scale_units*str2double(char(args(3)));
                     restraints.DEER(DEER_poi).sigr = 10*scale_units*str2double(char(args(4)));
                     restraints.DEER(DEER_poi).label = [label1 '|' label2];
-                    restraints.DEER(DEER_poi).ecoor1 = ecoor;
-                    restraints.DEER(DEER_poi).indices1 = indices;
-                    [ecoor,indices,label_adr,label_types,label_coor,label_indices] = get_label_coor(char(args(2)),label2,label_adr,label_types,label_coor,label_indices,stemlibs,restraints.rb);
-                    if isempty(ecoor)
-                        add_msg_board(sprintf('ERROR: Residue %s could not be labeled. Aborting.',char(args(2))));
-                        fclose(fid);
-                        return
+                    if ~unprocessed
+                        [ecoor,indices,label_adr,label_types,label_coor,label_indices] = get_label_coor(char(args(2)),label2,label_adr,label_types,label_coor,label_indices,stemlibs,restraints.rb);
+                        if isempty(ecoor)
+                            add_msg_board(sprintf('ERROR: Residue %s could not be labeled. Aborting.',char(args(2))));
+                            fclose(fid);
+                            return
+                        end
+                        restraints.DEER(DEER_poi).ecoor2 = ecoor;
+                        restraints.DEER(DEER_poi).indices2 = indices;
                     end
-                    restraints.DEER(DEER_poi).ecoor2 = ecoor;
-                    restraints.DEER(DEER_poi).indices2 = indices;
                     restraints.DEER(DEER_poi).adr1 = char(args(1));
                     restraints.DEER(DEER_poi).adr2 = char(args(2));
                 case 2
@@ -482,21 +496,23 @@ while 1
                         add_msg_board(sprintf('Warning: Label %s is unknown in line %i. Reverting to MTSL.',char(args(3)),nl));
                         label = 'R1A';
                     end
-                    [ecoor,indices,label_adr,label_types,label_coor,label_indices] = get_label_coor(adr,label,label_adr,label_types,label_coor,label_indices,[],restraints.rb);
-                    if isempty(ecoor)
-                        add_msg_board(sprintf('ERROR: Residue %s could not be labeled. Aborting.',char(args(2))));
-                        fclose(fid);
-                        return
-                    end
-                    if min(abs(indices(2)-restraints.rb(rb_poi).chains)) ~= 0
-                        add_msg_board(sprintf('ERROR: Reference point %s is not in a chain of this rigid body in line %i. Aborting.',adr,nl));
-                        fclose(fid);
-                        return
-                    end
                     ref_poi = ref_poi + 1;
+                    if ~unprocessed
+                        [ecoor,indices,label_adr,label_types,label_coor,label_indices] = get_label_coor(adr,label,label_adr,label_types,label_coor,label_indices,[],restraints.rb);
+                        if isempty(ecoor)
+                            add_msg_board(sprintf('ERROR: Residue %s could not be labeled. Aborting.',char(args(2))));
+                            fclose(fid);
+                            return
+                        end
+                        if min(abs(indices(2)-restraints.rb(rb_poi).chains)) ~= 0
+                            add_msg_board(sprintf('ERROR: Reference point %s is not in a chain of this rigid body in line %i. Aborting.',adr,nl));
+                            fclose(fid);
+                            return
+                        end
+                        restraints.rb(rb_poi).ref(ref_poi,:) = ecoor;
+                        restraints.rb(rb_poi).indices(ref_poi,:) = indices;
+                    end
                     restraints.rb(rb_poi).label{ref_poi} = label;
-                    restraints.rb(rb_poi).ref(ref_poi,:) = ecoor;
-                    restraints.rb(rb_poi).indices(ref_poi,:) = indices;
                     restraints.rb(rb_poi).points = ref_poi;
                 case 3
                     adr1 = char(args(1));
@@ -663,6 +679,8 @@ while 1
                         return
                     end
                     xlink_poi = xlink_poi + 1;
+                    restraints.xlinks(xlink_poi).adr1 = adr1;
+                    restraints.xlinks(xlink_poi).adr2 = adr2;
                     restraints.xlinks(xlink_poi).coor1 = coor1;
                     restraints.xlinks(xlink_poi).coor2 = coor2;
                     restraints.xlinks(xlink_poi).maxr = 30;
@@ -901,6 +919,11 @@ end
 fclose(fid);
 
 restraints.stemlibs = stemlibs;
+
+if unprocessed
+    failed = false;
+    return
+end
 
 % Assemble the points defined in each rigid body and make separated
 % restraint lists

@@ -32,7 +32,7 @@ if isempty(model) || ~isfield(model,'structures') || isempty(model.structures),
     model.annotations=[];
 else
     snum=length(model.structures)+1;
-end;
+end
 
 if ischar(fname)
     [model.structures{snum},info]=rd_pdb(fname,strcat(general.tmp_files,'remarks.txt'));
@@ -40,9 +40,9 @@ else
     model.structures{snum} = fname;
     info = idCode;
     idCode = info.idCode;
-end;
+end
 if isempty(info) || isempty(model.structures{snum}) % PDB read was not successful
-    if isfield(info,'no_file');
+    if isfield(info,'no_file')
         message.error=1;
         message.text='PDB file does not exist.';
         return
@@ -50,8 +50,8 @@ if isempty(info) || isempty(model.structures{snum}) % PDB read was not successfu
         message.error=2;
         message.text='PDB file corrupted.';
         return
-    end;      
-end;
+    end    
+end
 set(hMain.menu_file_save_PDB,'Enable','on');
 % redistribute information
 model.chain_tags{snum}=info.chain_tags;
