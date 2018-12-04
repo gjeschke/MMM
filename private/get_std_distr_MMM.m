@@ -12,12 +12,15 @@ function distr=get_std_distr_MMM(r0,p0,r)
 
 dr=r(2)-r(1);
 rmit=min(r0);
-if rmit<min(r), rmit=min(r); end;
+if rmit<min(r), rmit=min(r); end
 rmat=max(r0);
-if rmat>max(r), rmat=max(r); end;
+if rmat>max(r), rmat=max(r); end
 
 rmip=round(rmit/dr);
 rmap=round(rmat/dr);
+if isempty(rmip*dr)
+    disp('Aber Hallo!');
+end
 rax=linspace(rmip*dr,rmap*dr,rmap-rmip+1);
 distr0=interp1(r0,p0,rax,'pchip',0);
 distr=0*r;

@@ -8,14 +8,14 @@ function rms = rms_stretched_MMM(v,texp,vexp,ff,mod_depth)
 
 %	Copyright (c) 2009 by Gunnar Jeschke
 
-if v(1)<0, rms=1.0e6; return; end;
-if v(2)<0, rms=1.0e6; return; end;
-if length(v)>2,
-    if v(3)<0, rms=1.0e6; return; end; 
-    if v(1)>1, rms=1.0e6; return; end;
-end;
+if v(1)<0, rms=1.0e6; return; end
+if v(2)<0, rms=1.0e6; return; end
+if length(v)>2
+    if v(3)<0, rms=1.0e6; return; end 
+    if v(1)>1, rms=1.0e6; return; end
+end
 
-if nargin>4,
+if nargin>4
     bckg=decay_stretched_MMM(v,texp);
 else
     bckg=decay_stretched_MMM(v(2:3),texp);

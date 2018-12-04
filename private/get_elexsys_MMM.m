@@ -12,9 +12,9 @@
 % modified Mar 2002 for Bruker Elexsys / Linux files by DH and GJ
 % and Jan 2004 for 1D and 2D pulse EPR spectra that may be complex by GJ 
 
-if ~exist('stop_VB','var'),
+if ~exist('stop_VB','var')
     stop_VB = 100;
-end;
+end
 
     x=[];
     y=[];
@@ -22,14 +22,16 @@ end;
     VB=[];
     N=1;
     M=1;
-    if exist('onCleanup','class')==8, % this is done only for Matlab version 
-                                      % 2008a and later, where onCleanup exists
-        c = onCleanup(@myCleanup);
-    end;
+%     if exist('onCleanup','class')==8 % this is done only for Matlab version 
+%                                       % 2008a and later, where onCleanup exists
+%         c = onCleanup(@myCleanup);
+%     end
 
     %keyboard
     fid1 = fopen( [ file '.DTA'], 'r','ieee-be.l64') ;% spc
-    if(fid1 == -1) return; end
+    if(fid1 == -1) 
+        return 
+    end
     [Z,N]= fread(fid1,inf,'float64');
     fclose(fid1);
     fid2 = fopen( [ file '.DSC'], 'r');% par
@@ -76,16 +78,16 @@ end;
         Z=permute(Z,[2,1]);
     %     disp(size(Z));
     
-        function myCleanup
-            
-            if ~isempty(fid1==fopen('all')),
-                fclose(fid1);
-            end;
-
-            if ~isempty(fid2==fopen('all')),
-                fclose(fid2);
-            end;
-        end
+%         function myCleanup
+%             
+%             if ~isempty(fid1==fopen('all'))
+%                 fclose(fid1);
+%             end
+% 
+%             if ~isempty(fid2==fopen('all'))
+%                 fclose(fid2);
+%             end
+%         end
 
 end
     

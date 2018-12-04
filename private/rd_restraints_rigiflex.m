@@ -113,7 +113,7 @@ restraints.xlinks = [];
 restraints.RNA = [];
 restraints.max_time = [];
 restraints.solutions = '';
-restraints.solution_mode = 'single';
+restraints.solution_mode = '';
 
 DEER_poi=0;
 rb_poi=0;
@@ -165,6 +165,8 @@ while 1
                     restraints.solutions = char(args(3));
                     if length(args) > 3
                         restraints.solution_mode = char(args(4));
+                    else
+                        restraints.solution_mode = 'single';
                     end
                 case 'STEMLIB'
                     slpoi = slpoi + 1;
@@ -443,6 +445,9 @@ while 1
                     restraints.DEER(DEER_poi).label = label;
                     restraints.DEER(DEER_poi).adr1 = char(args(1));
                     restraints.DEER(DEER_poi).adr2 = char(args(2));
+                    if length(args) > 4
+                        restraints.DEER(DEER_poi).file = char(args(5));
+                    end
                     if ~unprocessed
                         [ecoor,indices,label_adr,label_types,label_coor,label_indices] = get_label_coor(char(args(1)),label,label_adr,label_types,label_coor,label_indices,stemlibs,restraints.rb);
                         if isempty(ecoor)
@@ -476,6 +481,9 @@ while 1
                     restraints.DEER(DEER_poi).r = 10*scale_units*str2double(char(args(3)));
                     restraints.DEER(DEER_poi).sigr = 10*scale_units*str2double(char(args(4)));
                     restraints.DEER(DEER_poi).label = [label1 '|' label2];
+                    if length(args) > 4
+                        restraints.DEER(DEER_poi).file = char(args(5));
+                    end
                     if ~unprocessed
                         [ecoor,indices,label_adr,label_types,label_coor,label_indices] = get_label_coor(char(args(2)),label2,label_adr,label_types,label_coor,label_indices,stemlibs,restraints.rb);
                         if isempty(ecoor)
@@ -748,6 +756,9 @@ while 1
                                 restraints.pflex(pflex_poi).DEER(pflex_DEER_poi).adr2 = char(args(2));
                                 restraints.pflex(pflex_poi).DEER(pflex_DEER_poi).r = 10*scale_units*str2double(char(args(3)));
                                 restraints.pflex(pflex_poi).DEER(pflex_DEER_poi).sigr = 10*scale_units*str2double(char(args(4)));
+                                if length(args) > 4
+                                    restraints.pflex(pflex_poi).DEER(pflex_DEER_poi).file = char(args(5));
+                                end
                             case 2 % OLIGOMER
                                 pflex_oligomer_poi = pflex_oligomer_poi + 1;
                                 restraints.pflex(pflex_poi).oligomer(pflex_oligomer_poi).label = oligo_label;

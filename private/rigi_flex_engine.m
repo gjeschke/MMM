@@ -13,6 +13,7 @@ function diagnostics = rigi_flex_engine(restraints,options,handles)
 global model
 
 solutions_given = false;
+solutions = [];
 
 if isfield(restraints,'solutions') && ~isempty(restraints.solutions)
     solutions_given = true;
@@ -1324,7 +1325,9 @@ if success > 0
         for kc = 1:length(restraints.rb(kr).chains)
             [~,ctag] = mk_address_parts([snum,restraints.rb(kr).chains(kc)]);
             fprintf(fid,'show [%s](%s){:} ribbon\n',PDBid,ctag);
-            fprintf(fid,'color [%s](%s){:} %s\n',PDBid,ctag,restraints.color{restraints.rb(kr).chains(kc)});
+            if isfield(restraints,'color')
+                fprintf(fid,'color [%s](%s){:} %s\n',PDBid,ctag,restraints.color{restraints.rb(kr).chains(kc)});
+            end
         end
     end
 %     prob = 1./(final_chi2_SANS.^2+final_chi2_SAXS.^2);

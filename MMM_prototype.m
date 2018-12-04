@@ -854,7 +854,7 @@ handles=undo_last(handles);
 guidata(hObject,handles);
 
 % --------------------------------------------------------------------
-function menu_edit_redo_Callback(hObject, eventdata, handles)
+function menu_edit_redo_Callback(hObject, ~, handles)
 % hObject    handle to menu_edit_redo (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -5328,15 +5328,168 @@ function menu_jobs_test_Callback(hObject, eventdata, handles)
 
 global model
 
+forgive = 0.8;
+clash_threshold = 1.5*forgive;
+
 interactive = true;
 unprocessed = true;
-make_ensemble = false;
+make_ensemble = true;
 
+max_link_length = [27,42,27]; % LinkEF-F should be 24, replaced by 27 Å to find solutions
+link_nt = [4,7,4];
+thr_length_per_nt = 6.5;
+max_length_per_nt = 6;
+
+libs = cell(1,3);
+% load the stemloop libraries
+load SLD_20181203
+% load SLD_20180816c
+libs{1} = library;
+load SLE_20181203
+% load SLE_20180816c
+libs{2} = library;
+load SLF_20181203
+% load SLF_20180816c
+libs{3} = library;
+
+snum = resolve_address('[PTB1]');
+nmod = length(model.structures{snum}(1).residues);
+template = cell(1,3);
+target = cell(1,3);
+[~,xyz_A] = get_object('[PTB7](A){1}','xyz_heavy');
+template{1} = xyz_A;
+[~,xyz_C] = get_object('[PTB7](C){1}','xyz_heavy');
+template{2} = xyz_C;
+[~,xyz_E] = get_object('[PTB7](E){1}','xyz_heavy');
+template{3} = xyz_E;
+chains = 'ACE';
+sls = 'DEF';
+trafo = cell(nmod,3);
+% repname = fullfile('PTB1_20181124_SL_report.txt');
+repname = fullfile('PTB1_20181128s_SL_report.txt');
+report = fopen(repname,'wt');
+for kl = 1:3
+    figure(kl); clf;
+    hold on;
+    plot([1,nmod],[max_link_length(kl),max_link_length(kl)],'k');
+end
+tic,
+sl_to_rrm = [3 1 2];
+solutions = zeros(10000,4);
+valid_rbas = zeros(1,nmod);
+spoi = 0;
+for k = 1:nmod % 1:nmod loop over all models
+    % determine the transformations
+    for kc = 1:3
+        adr = sprintf('[PTB1](%c){%i}',chains(kc),k);
+        [~,xyz_new] = get_object(adr,'xyz_heavy');
+        target{kc} = xyz_new;
+        [~,~,transmat] = rmsd_superimpose(xyz_new,template{kc});
+        trafo{k,kc} = transmat;
+    end
+    % find non-clashing RNA stemloops
+    valid_decoys = zeros(3,100);
+    vpoi = zeros(1,3);
+    for ksl = 1:3
+        library = libs{ksl};
+        for kdecoy = 1:length(library.chains)
+            xyz_sl = library.chains{kdecoy}.xyz{1};
+            transmat = trafo{k,sl_to_rrm(ksl)};
+            xyz_sl = affine_trafo_coor(xyz_sl,transmat);
+            full_cost = 0;
+            all_costs = zeros(1,3);
+            for kc = 1:3
+                xyz_rrm = target{kc};
+                cost = clash_cost(xyz_rrm,xyz_sl,clash_threshold);
+                all_costs(kc) = cost;
+                if kc ~= sl_to_rrm(ksl) % exclude clashes with the own RRM
+                    full_cost = full_cost + cost;
+                end
+            end
+            if full_cost < 5*eps
+                vpoi(ksl) = vpoi(ksl) + 1;
+                valid_decoys(ksl,vpoi(ksl)) = kdecoy;
+                % fprintf(report,'Model %i, stemloop %c(%i) has clash cost %6.2f (%6.2f, %6.2f, %6.2f)\n',k,sls(ksl),kdecoy,full_cost,all_costs);
+            end
+        end
+    end
+    fprintf(report,'Model %i, %i SL%c models, %i SL%c models, and %i SL%c models are non-clashing.\n',k,vpoi(1),sls(1),vpoi(2),sls(2),vpoi(3),sls(3));
+    % check link restraints
+    transmat1 = trafo{k,sl_to_rrm(1)};
+    transmat2 = trafo{k,sl_to_rrm(2)};
+    transmat3 = trafo{k,sl_to_rrm(3)};
+    library = libs{1};
+    anchor_12 = library.linksites(1).coor;
+    anchor_12 = affine_trafo_coor(anchor_12,transmat1);
+    library = libs{2};
+    anchor_21 = library.linksites(1).coor;
+    anchor_21 = affine_trafo_coor(anchor_21,transmat2);
+    anchor_23 = library.linksites(2).coor;
+    anchor_23 = affine_trafo_coor(anchor_23,transmat2);
+    library = libs{3};
+    anchor_43 = library.linksites(1).coor;
+    anchor_43 = affine_trafo_coor(anchor_43,transmat3);
+    [~,a32c] = get_object(sprintf('[PTB1](F){%i}342.C5''',k),'coor');
+    [~,a34c] = get_object(sprintf('[PTB1](F){%i}344.C5''',k),'coor');
+%     fprintf(report,'Anchor 32: %4.1f, %4.1f, %4.1f Å\n',a32c);
+%     fprintf(report,'Anchor 34: %4.1f, %4.1f, %4.1f Å\n',a34c);
+    % loop over all non-clashing decoys
+    for k1 = 1:vpoi(1)
+        a12c = anchor_12(valid_decoys(1,k1),:);
+%         fprintf(report,'Anchor 12(%i): %4.1f, %4.1f, %4.1f Å\n',valid_decoys(1,k1),a12c);
+        for k2 = 1:vpoi(2)
+            a21c = anchor_21(valid_decoys(2,k2),:);
+            r12 = norm(a12c-a21c);
+            figure(1);
+            plot(k,r12,'r.');
+            a23c = anchor_23(valid_decoys(2,k2),:);
+            r23 = norm(a23c-a32c);
+%             if k1 == 1
+%                 fprintf(report,'Anchor 21(%i): %4.1f, %4.1f, %4.1f Å\n',valid_decoys(2,k2),a21c);
+%                 fprintf(report,'Anchor 23(%i): %4.1f, %4.1f, %4.1f Å\n',valid_decoys(2,k2),a23c);
+%             end
+            if k1 == 1
+                figure(2);
+                plot(k,r23,'g.');
+            end
+            for k3 = 1:vpoi(3)
+                a43c = anchor_43(valid_decoys(3,k3),:);
+                r34 = norm(a34c-a43c);
+                if k1 == 1 && k2 == 1
+                    figure(3);
+                    plot(k,r34,'b.');
+                end
+%                 if k1 == 1 && k2 == 1
+%                     fprintf(report,'Anchor 43(%i): %4.1f, %4.1f, %4.1f Å\n',valid_decoys(3,k3),a43c);
+%                 end
+                if r12 <= max_link_length(1) && r23 <= max_link_length(2) && r34 <= max_link_length(3)
+                    fprintf(report,'M(%i)SL(%i,%i,%i): %5.1f, %5.1f, %5.1f Å\n',k,...
+                        valid_decoys(1,k1),valid_decoys(2,k2),valid_decoys(3,k3),...
+                        r12,r23,r34);
+                    spoi = spoi + 1;
+                    solutions(spoi,1) = k;
+                    solutions(spoi,2) = valid_decoys(1,k1);
+                    solutions(spoi,3) = valid_decoys(2,k2);
+                    solutions(spoi,4) = valid_decoys(3,k3);
+                    valid_rbas(k) = 1;
+                end
+            end
+        end
+    end
+    drawnow
+end
+toc
+solutions = solutions(1:spoi,:);
+save PTB1_20181124_trafo trafo solutions
+fprintf(report,'\n%i solutions were found in %i valid RBAs.\n',spoi,sum(valid_rbas));
+fclose(report);
+fprintf('%i solutions were found in %i valid RBAs.\n',spoi,sum(valid_rbas));
+return
 
 if make_ensemble
     fid=fopen('ensemble_list.dat');
     if fid==-1
-        add_msg_board('ERROR: Restraint file does not exist');
+        add_msg_board('ERROR: Ensemble file list does not exist');
         return;
     end
     flist = cell(1,40);
@@ -5523,6 +5676,28 @@ for k = 1:length(restraints.DEER)
             restraints.DEER(k).adr2(cpoi+1) = 'B';
     end
     [rax,distr] = mk_distance_distribution(restraints.DEER(k).adr1,restraints.DEER(k).adr2,restraints.DEER(k).label);
+    if isfield(restraints.DEER(k),'file') && ~isempty(restraints.DEER(k).file) && ~isempty(rax)
+        fit_options.depth = [0.005,0.65];
+        fit_options.dim = 3;
+        fit_options.kdec = [];
+        fit_options.cutoff = 0.9;
+        [texp,vexp,deer,bckg,param] = fit_DEER_primary(rax,distr,strcat('deer\',restraints.DEER(k).file),fit_options);
+        figure(1000+k); clf;
+        plot(texp,vexp,'k');
+        hold on;
+        plot(fit_options.cutoff*[max(texp),max(texp)],[min(vexp),max(vexp)],'b');
+        plot(texp,deer,'Color',[0.75,0,0]);
+        plot(texp,bckg,'Color',[0,0.6,0]);
+        if restraints.DEER(k).r ~=0 &&  restraints.DEER(k).sigr ~=0
+            ftype = 'fit';
+        else
+            ftype = 'control';
+        end
+        title(sprintf('%s (%s): %s-%s. rmsd: %6.4f',name,ftype,restraints.DEER(k).adr1,restraints.DEER(k).adr2,param.rmsd));
+        fprintf(fid,'%s-%s rmsd: %6.4f, mod. depth: %6.3f, kdec: %6.4f\n',...
+            restraints.DEER(k).adr1,restraints.DEER(k).adr2,...
+            param.rmsd,param.depth,param.kdec);
+    end
     restraints.DEER(k).rax = rax;
     restraints.DEER(k).distr = distr;
     if isempty(rax)
@@ -5542,7 +5717,7 @@ for k = 1:length(restraints.DEER)
     figure(k); clf;
     title(sprintf('%s: %s-%s',name,restraints.DEER(k).adr1,restraints.DEER(k).adr2));
     hold on
-    plot(rax,distr,'k');
+    plot(rax,distr,'Color',[0.7,0,0]);
     xlabel('r [Å]');
     ylabel('P(r)');
     hold on
@@ -5551,7 +5726,20 @@ for k = 1:length(restraints.DEER)
     distr_sim = distr_sim/sum(distr_sim);
     restraints.DEER(k).overlap = sum(sqrt(distr_sim.*distr));
     fprintf(fid,'Overlap: %5.3f\n',restraints.DEER(k).overlap);
-    plot(rax,distr_sim,'Color',[0.75,0,0]);
+    plot(rax,distr_sim,'Color',[0,0.6,0]);
+    if isfield(restraints.DEER(k),'file') && ~isempty(restraints.DEER(k).file)
+        dfname = strcat(restraints.DEER(k).file,'_distr.dat');
+        dfname = strcat('deer_analysis\',dfname);
+        Pdata = load(dfname);
+        rexp = Pdata(:,1).';
+        distr_exp = Pdata(:,2).';
+        [~,rpoi] = min(abs(rexp-10));
+        rexp = rexp(1:rpoi)*10;
+        distr_exp = distr_exp(1:rpoi);
+        distr_exp = interp1(rexp,distr_exp,rax,'pchip',0);
+        distr_exp = distr_exp/sum(distr_exp);
+        plot(rax,distr_exp,'k');
+    end
 end
 
 core = length(restraints.DEER);
@@ -5575,6 +5763,28 @@ for kl = 1:length(restraints.pflex)
         end
         label = [restraints.pflex(kl).DEER(k).label1 '|' restraints.pflex(kl).DEER(k).label2];
         [rax,distr] = mk_distance_distribution(restraints.pflex(kl).DEER(k).adr1,restraints.pflex(kl).DEER(k).adr2,label);
+        if isfield(restraints.pflex(kl).DEER(k),'file') && ~isempty(restraints.pflex(kl).DEER(k).file) && ~isempty(rax)
+            fit_options.depth = [0.005,0.65];
+            fit_options.dim = 3;
+            fit_options.kdec = [];
+            fit_options.cutoff = 0.9;
+            [texp,vexp,deer,bckg,param] = fit_DEER_primary(rax,distr,strcat('deer\',restraints.pflex(kl).DEER(k).file),fit_options);
+            figure(1000+core+k); clf;
+            plot(texp,vexp,'k');
+            hold on;
+            plot(fit_options.cutoff*[max(texp),max(texp)],[min(vexp),max(vexp)],'b');
+            plot(texp,deer,'Color',[0.75,0,0]);
+            plot(texp,bckg,'Color',[0,0.6,0]);
+            if restraints.DEER(k).r ~=0 &&  restraints.DEER(k).sigr ~=0
+                ftype = 'fit';
+            else
+                ftype = 'control';
+            end
+            title(sprintf('%s (%s): %s-%s. rmsd: %6.4f',name,ftype,restraints.pflex(kl).DEER(k).adr1,restraints.pflex(kl).DEER(k).adr2,param.rmsd));
+            fprintf(fid,'%s-%s rmsd: %6.4f, mod. depth: %6.3f, kdec: %6.4f\n',...
+                restraints.pflex(kl).DEER(k).adr1,restraints.pflex(kl).DEER(k).adr2,...
+                param.rmsd,param.depth,param.kdec);
+        end
         restraints.pflex(kl).DEER(k).rax = rax;
         restraints.pflex(kl).DEER(k).distr = distr;
         if isempty(rax)
@@ -5594,7 +5804,7 @@ for kl = 1:length(restraints.pflex)
         figure(core+k); clf;
         title(sprintf('%s: %s-%s',name,restraints.pflex(kl).DEER(k).adr1,restraints.pflex(kl).DEER(k).adr2));
         hold on
-        plot(rax,distr,'k');
+        plot(rax,distr,'Color',[0.7,0,0]);
         xlabel('r [Å]');
         ylabel('P(r)');
         hold on
@@ -5603,7 +5813,20 @@ for kl = 1:length(restraints.pflex)
         distr_sim = distr_sim/sum(distr_sim);
         restraints.pflex(kl).DEER(k).overlap = sum(sqrt(distr_sim.*distr));
         fprintf(fid,'Overlap: %5.3f\n',restraints.pflex(kl).DEER(k).overlap);
-        plot(rax,distr_sim,'Color',[0.75,0,0]);
+        plot(rax,distr_sim,'Color',[0,0.6,0]);
+        if isfield(restraints.pflex(kl).DEER(k),'file') && ~isempty(restraints.pflex(kl).DEER(k).file)
+            dfname = strcat(restraints.pflex(kl).DEER(k).file,'_distr.dat');
+            dfname = strcat('deer_analysis\',dfname);
+            Pdata = load(dfname);
+            rexp = Pdata(:,1).';
+            distr_exp = Pdata(:,2).';
+            [~,rpoi] = min(abs(rexp-10));
+            rexp = rexp(1:rpoi)*10;
+            distr_exp = distr_exp(1:rpoi);
+            distr_exp = interp1(rexp,distr_exp,rax,'pchip',0);
+            distr_exp = distr_exp/sum(distr_exp);
+            plot(rax,distr_exp,'k');
+        end
     end
 end
 
@@ -5892,54 +6115,6 @@ return
 bilabel_site_scan([1 1 1],'IDA');
 
 
-function menu_EPR_consolidate_stemloop_library_Callback(hObject, eventdata, handles)
-
-compile = false;
-
-options.active = true;
-options.solvation = 'still';
-options.tolerance = 0.1;
-options.forcefield = 'amber99';
-
-[defs,links,sites] = rd_definition_stemloop_library('stemloop_definition_20180320.dat');
-
-if compile
-    stag = mk_address_parts(model.current_structure);
-    for k = 1:length(defs) % loop over individual stem-loops
-        conformation = 0;
-        options.RRM_indices = resolve_address(sprintf('[%s]%s',stag,defs(k).protein));
-        [msg,xyz] = get_object(sprintf('[%s]%s',stag,defs(k).protein),'xyz_heavy');
-        if msg.error
-            fprintf(1,'Sorry. Wrong structure loaded.\n');
-            return
-        end
-        rrmcoor = xyz;
-        binders = defs(k).binding(1,1):defs(k).binding(1,2);
-        motif = zeros(length(binders),4);
-        poi = 0;
-        for kk = defs(k).binding(1,1):defs(k).binding(1,2) % loop over binding peptide
-            [indices,msg] = resolve_address(sprintf('[%s]%s%i',stag,defs(k).motif,defs(k).offset(1)+kk));
-            if msg.error
-                fprintf(1,'Sorry. Wrong structure loaded.\n');
-                return
-            end
-            poi = poi + 1;
-            motif(poi,:) = indices;
-        end
-        mkdir(defs(k).name);
-        for krun = 1:length(defs(k).directory) % loop over decoy runs
-            offset = defs(k).offset(krun);
-            nts = defs(k).binding(krun,1):defs(k).binding(krun,2);
-            used = defs(k).used(krun,:) - defs(k).defined(krun,1) + 1;
-            if defs(k).optimize(krun)
-                options.optimize = true;
-            else
-                options.optimize = false;
-            end
-            conformation = fit_RNA_to_binding_motif(defs(k).directory{krun},motif,nts,rrmcoor,used,offset,defs(k).name,defs(k).motif,conformation,options);
-        end
-    end
-end
 
 % --------------------------------------------------------------------
 function menu_utilities_consolidate_stemloop_libraries_Callback(hObject, eventdata, handles)
@@ -5956,7 +6131,7 @@ options.solvation = 'still';
 options.tolerance = 0.1;
 options.forcefield = 'amber99';
 
-[defs,links,sites] = rd_definition_stemloop_library('stemloop_definition_20180602.dat');
+[defs,links,sites] = rd_definition_stemloop_library('stemloop_definition_20181203.dat');
 
 if compile
     stag = mk_address_parts(model.current_structure);

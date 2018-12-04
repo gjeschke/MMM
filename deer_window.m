@@ -705,18 +705,18 @@ global model
 col1=[0,1,0];
 col2=[0,0,1];
 
-if handles.copy_distr,
+if handles.copy_distr
     figure(1); clf;
     set(gca,'FontSize',16);
 else
     axes(handles.axes_distribution);
     cla;
-    if isfield(handles,'left_crsr'),
+    if isfield(handles,'left_crsr')
         handles=rmfield(handles,'left_crsr');
-    end;
-    if isfield(handles,'right_crsr'),
+    end
+    if isfield(handles,'right_crsr')
         handles=rmfield(handles,'right_crsr');
-    end;
+    end
 end
 hold on;
 
@@ -744,17 +744,17 @@ numlab=length(handles.labels);
 % end;
 
 do_ensemble = get(handles.checkbox_ensemble,'Value');
-if numlab > 2 && do_ensemble,
+if numlab > 2 && do_ensemble
     add_msg_board('Warning: Ensemble computation not implemented for multi-spin effects.');
     do_ensemble = false;
     set(handles.checkbox_ensemble,'Value',0);
     set(handles.checkbox_coupled_ensemble,'Enable','off');
-end;
+end
 
 rmin0=1e6;
 rmax0=0;
 % Display distance distributions
-if numlab>1,
+if numlab>1
     poi=0;
     pairs=numlab*(numlab-1)/2; % number of spin pairs
     for k=1:numlab-1
@@ -792,70 +792,70 @@ if numlab>1,
                     if isempty(CA1) % for nucleotides
                         [~,CA1]=get_object(sprintf('%s.C1''',adr1),'coor');
                     end
-                end;
+                end
             case {'bilabel'}
                 addresses = handles.site_list(currlabel).adr;
                 dadr1 = addresses;
                 seppoi = strfind(addresses,'|');
                 adr1 = addresses(1:seppoi-1);
                 adr2 = addresses(seppoi+1:end);
-                if do_ensemble,
+                if do_ensemble
                     ind1 = resolve_address(adr1);
                     ne1 = length(model.structures{ind1(1)}(ind1(2)).xyz);
                     ind1e = ind1;
                     CA1a = [0,0,0];
                     found = false;
-                    for ke = 1:ne1,
+                    for ke = 1:ne1
                         ind1e(3) = ke;
                         adr1e = mk_address(ind1e);
                         [~,CA01]=get_object(sprintf('%s.CA',adr1e),'coor');
-                        if isempty(CA01), % for nucleotides
+                        if isempty(CA01) % for nucleotides
                             [~,CA01]=get_object(sprintf('%s.C1''',adr1e),'coor');
-                        end;
-                        if ~isempty(CA01),
+                        end
+                        if ~isempty(CA01)
                             CA1a = CA1a + CA01;
                             found = true;
-                        end;
-                    end;
-                    if found,
+                        end
+                    end
+                    if found
                         CA1a = CA1a/ne1;
                     else
                         CA1a = [];
-                    end;
+                    end
                     ind2 = resolve_address(adr2);
                     ne2 = length(model.structures{ind2(1)}(ind2(2)).xyz);
                     ind2e = ind2;
                     CA1b = [0,0,0];
                     found = false;
-                    for ke = 1:ne2,
+                    for ke = 1:ne2
                         ind2e(3) = ke;
                         adr2e = mk_address(ind2e);
                         [~,CA01]=get_object(sprintf('%s.CA',adr2e),'coor');
-                        if isempty(CA01), % for nucleotides
+                        if isempty(CA01) % for nucleotides
                             [~,CA01]=get_object(sprintf('%s.C1''',adr2e),'coor');
-                        end;
-                        if ~isempty(CA01),
+                        end
+                        if ~isempty(CA01)
                             CA1b = CA1b + CA01;
                             found = true;
-                        end;
-                    end;
-                    if found,
+                        end
+                    end
+                    if found
                         CA1b = CA1b/ne2;
                     else
                         CA1b = [];
-                    end;
+                    end
                     CA1 = (CA1a+CA1b)/2;
                 else
                     [~,CA1a]=get_object(sprintf('%s.CA',adr1),'coor');
-                    if isempty(CA1a), % for nucleotides
+                    if isempty(CA1a) % for nucleotides
                         [~,CA1a]=get_object(sprintf('%s.C1''',adr1),'coor');
-                    end;
+                    end
                     [~,CA1b]=get_object(sprintf('%s.CA',adr2),'coor');
-                    if isempty(CA1b), % for nucleotides
+                    if isempty(CA1b) % for nucleotides
                         [~,CA1b]=get_object(sprintf('%s.C1''',adr2),'coor');
-                    end;
+                    end
                     CA1 = (CA1a+CA1b)/2;
-                end;
+                end
         end
         for kk=k+1:numlab
             poi=poi+1;
@@ -907,123 +907,123 @@ if numlab>1,
                     seppoi = strfind(addresses,'|');
                     adr1 = addresses(1:seppoi-1);
                     adr2 = addresses(seppoi+1:end);
-                    if do_ensemble,
+                    if do_ensemble
                         ind1 = resolve_address(adr1);
                         ne1 = length(model.structures{ind1(1)}(ind1(2)).xyz);
                         ind1e = ind1;
                         CA2a = [0,0,0];
                         found = false;
-                        for ke = 1:ne1,
+                        for ke = 1:ne1
                             ind1e(3) = ke;
                             adr1e = mk_address(ind1e);
                             [~,CA02]=get_object(sprintf('%s.CA',adr1e),'coor');
-                            if isempty(CA02), % for nucleotides
+                            if isempty(CA02) % for nucleotides
                                 [~,CA02]=get_object(sprintf('%s.C1''',adr1e),'coor');
-                            end;
-                            if ~isempty(CA02),
+                            end
+                            if ~isempty(CA02)
                                 CA2a = CA2a + CA02;
                                 found = true;
-                            end;
-                        end;
-                        if found,
+                            end
+                        end
+                        if found
                             CA2a = CA2a/ne1;
                         else
                             CA2a = [];
-                        end;
+                        end
                         ind2 = resolve_address(adr2);
                         ne2 = length(model.structures{ind2(1)}(ind2(2)).xyz);
                         ind2e = ind2;
                         CA2b = [0,0,0];
                         found = false;
-                        for ke = 1:ne2,
+                        for ke = 1:ne2
                             ind2e(3) = ke;
                             adr2e = mk_address(ind2e);
                             [~,CA02]=get_object(sprintf('%s.CA',adr2e),'coor');
-                            if isempty(CA02), % for nucleotides
+                            if isempty(CA02) % for nucleotides
                                 [~,CA02]=get_object(sprintf('%s.C1''',adr2e),'coor');
-                            end;
-                            if ~isempty(CA02),
+                            end
+                            if ~isempty(CA02)
                                 CA2b = CA2b + CA02;
                                 found = true;
-                            end;
-                        end;
-                        if found,
+                            end
+                        end
+                        if found
                             CA2b = CA2b/ne2;
                         else
                             CA2b = [];
-                        end;
+                        end
                         CA2 = (CA2a+CA2b)/2;
                     else
                         [~,CA2a]=get_object(sprintf('%s.CA',adr1),'coor');
-                        if isempty(CA2a), % for nucleotides
+                        if isempty(CA2a) % for nucleotides
                             [~,CA2a]=get_object(sprintf('%s.C1''',adr1),'coor');
-                        end;
+                        end
                         [~,CA2b]=get_object(sprintf('%s.CA',adr2),'coor');
-                        if isempty(CA2b), % for nucleotides
+                        if isempty(CA2b) % for nucleotides
                             [~,CA2b]=get_object(sprintf('%s.C1''',adr2),'coor');
-                        end;
+                        end
                         CA2 = (CA2a+CA2b)/2;
-                    end;
+                    end
             end
-            if ~isempty(CA1) && ~isempty(CA2),
+            if ~isempty(CA1) && ~isempty(CA2)
                 r0=norm(CA1-CA2)/10; % C-alpha/C-alpha distance in nm
-                if r0-0.1<rmin0, rmin0=r0-0.1; end;
-                if r0+0.1>rmax0, rmax0=r0+0.1; end;
+                if r0-0.1<rmin0, rmin0=r0-0.1; end
+                if r0+0.1>rmax0, rmax0=r0+0.1; end
             else
                 r0=[];
-            end;
+            end
             adr1 = dadr1;
             adr2 = dadr2;
             handles.pairs{poi}=[adr1 '-' adr2];
             set(handles.DEER,'Pointer','watch');
-            if do_ensemble,
+            if do_ensemble
                [rax,act_distr] = pair_distribution(handles,adr1,adr2);
                act_distr = zeros(size(act_distr));
                coupled = get(handles.checkbox_coupled_ensemble,'Value');
-               if coupled, % use same coordinate set numbers for both labels
-                   for ke = 1:ne1,
+               if coupled % use same coordinate set numbers for both labels
+                   for ke = 1:ne1
                        [~,act_distr0]=pair_distribution(handles,adr1,adr2,ke,ke);
                        if ~isempty(act_distr0)
                         act_distr = act_distr + act_distr0;
                        end
-                   end;
+                   end
                    act_distr = act_distr/ne1;
                else % combine labels from all pairs of coordinate set numbers
                    ind1e = ind1;
-                   for ke = 1:ne1,
-                       for ke2 = 1:ne2,
+                   for ke = 1:ne1
+                       for ke2 = 1:ne2
                            [~,act_distr0]=pair_distribution(handles,adr1,adr2,ke,ke2);
                            if ~isempty(act_distr0)
                             act_distr = act_distr + act_distr0;
                            end
-                       end;
-                   end;
+                       end
+                   end
                    act_distr = act_distr/(ne1*ne2);
-               end;
+               end
             else
                 [rax,act_distr]=pair_distribution(handles,adr1,adr2);
-            end;
+            end
             set(handles.DEER,'Pointer','arrow');
             h=plot(rax,act_distr,'Color',col);
             set(h,'ButtonDownFcn',{@pair_ButtonDownFcn,poi});
-            if isempty(r0),
+            if isempty(r0)
                 ndis=act_distr/sum(act_distr);
                 r0=sum(rax.*ndis);
-            end;
+            end
             handles.pair_plots{poi}=h;
             handles.pair_distributions{poi}=act_distr;
             handles.pair_r0{poi}=r0;
             h=plot([r0,r0],[0,max(act_distr)],':','Color',col);
             handles.pair_Ca_plots{poi}=h;
-            if poi==1,
+            if poi==1
                 full_distr=act_distr;
                 rmin=min(rax);
                 rmax=max(rax);
             else
                 full_distr=full_distr+act_distr;
-            end;
-        end;
-    end;
+            end
+        end
+    end
     handles.rsim=rax;
     handles.dsim=full_distr;
     ndistr=full_distr/sum(full_distr);
@@ -1046,42 +1046,42 @@ if numlab>1,
     rmax=rmax+bsl;
     dmax=1.1*max(full_distr);
     plot(rax,full_distr,'r','LineWidth',1);
-    if ~isempty(handles.tweak_distr) && ~isempty(handles.tweak_rax),
+    if ~isempty(handles.tweak_distr) && ~isempty(handles.tweak_rax)
         plot(handles.tweak_rax,handles.tweak_distr,'r:','LineWidth',2);
         dmax=1.1*max([max(full_distr) max(handles.tweak_distr)]);
-    end;
+    end
     dmin=-0.09*dmax;
     simdistr=1;
-    if ~handles.expanded,
-        if rmin> handles.range(1),
+    if ~handles.expanded
+        if rmin> handles.range(1)
             handles.range(1)=rmin;
-        end;
-        if rmax< handles.range(2),
+        end
+        if rmax< handles.range(2)
             handles.range(2)=rmax;
-        end;
-    end;
+        end
+    end
     handles=range_update(handles);
-    if handles.expanded,
+    if handles.expanded
         axis([handles.range(1),handles.range(2),dmin,dmax]);
     else
         axis([rmin,rmax,dmin,dmax]);
-    end;
-    if isfield(handles,'MtsslWizard_rax') && isfield(handles,'MtsslWizard_distr'),
+    end
+    if isfield(handles,'MtsslWizard_rax') && isfield(handles,'MtsslWizard_distr')
         sc=max(full_distr)/max(handles.MtsslWizard_distr);
         plot(handles.MtsslWizard_rax,sc*handles.MtsslWizard_distr,':','Color',[0 0.75 0.25],'LineWidth',1.5);
-    end;
-    if isfield(handles,'PRONOX_rax') && isfield(handles,'PRONOX_distr'),
+    end
+    if isfield(handles,'PRONOX_rax') && isfield(handles,'PRONOX_distr')
         sc=max(full_distr)/max(handles.PRONOX_distr);
         plot(handles.PRONOX_rax,sc*handles.PRONOX_distr,':','Color',[0.25 0.0 0.75],'LineWidth',1.5);
-    end;
-end;
+    end
+end
 
 ff_flag=get(handles.checkbox_form_factor,'Value');
 
 flexible = get(handles.checkbox_flexible,'Value');
 moved = false;
 
-if handles.copy_DEER,
+if handles.copy_DEER
     figure(2); clf;
     set(gca,'FontSize',16);
     hold on;
@@ -1089,14 +1089,14 @@ else
     axes(handles.axes_DEER);
     cla;
     hold on;
-end;
+end
 
-if ~isempty(handles.texp) && ~isempty(handles.vexp),
+if ~isempty(handles.texp) && ~isempty(handles.vexp)
     vsim_M=[];
     vsim_P=[];
     vsim_F=[];
     dr = [];
-    if ff_flag,
+    if ff_flag
         set(handles.edit_zero_time,'String',sprintf('%5i',0));
         plot(handles.tdip,handles.cluster,'k');
         full=max(handles.cluster)-min(handles.cluster);
@@ -1106,18 +1106,18 @@ if ~isempty(handles.texp) && ~isempty(handles.vexp),
         plot(handles.texp,handles.vexp,'k');
         full=max(handles.vexp)-min(handles.vexp);
         axis([min(handles.texp),max(handles.texp),min(handles.vexp)-0.1*full,max(handles.vexp)+0.1*full]);
-    end;
+    end
     hold on;
-    if simdistr,
-        if ff_flag,
-            if pairs==1,
+    if simdistr
+        if ff_flag
+            if pairs==1
                 [vsim,rmsmin,handles]=fit_formfactor(handles,rax,full_distr,handles.tdip,handles.cluster);
-                if isfield(handles,'MtsslWizard_rax') && isfield(handles,'MtsslWizard_distr'),
+                if isfield(handles,'MtsslWizard_rax') && isfield(handles,'MtsslWizard_distr')
                     [vsim_M,rmsmin_M]=fit_formfactor(handles,handles.MtsslWizard_rax,handles.MtsslWizard_distr,handles.tdip,handles.cluster);
-                end;
+                end
                 if isfield(handles,'PRONOX_rax') && isfield(handles,'PRONOX_distr'),
                     [vsim_P,rmsmin_P]=fit_formfactor(handles,handles.PRONOX_rax,handles.PRONOX_distr,handles.tdip,handles.cluster);
-                end;
+                end
                 vsim_F = [];
                 if flexible
                     set(handles.DEER,'Pointer','watch');
@@ -1126,21 +1126,21 @@ if ~isempty(handles.texp) && ~isempty(handles.vexp),
                     set(handles.DEER,'Pointer','arrow');
                     set(handles.edit_flex_move,'String',sprintf('%4.2f',dr/10));
                     set(handles.edit_flex_move,'ForegroundColor',handles.fit_color);
-                elseif handles.flex_move ~=0,
+                elseif handles.flex_move ~=0
                     moved = true;
                     [vsim_D,rmsmin_D,rax_D,distr_D]=fit_formfactor_shifted(handles,handles.tdip,handles.cluster);
-                end;
+                end
             else
-                if flexible,
+                if flexible
                     add_msg_board('Warning: Flexible fit is defined only for site pairs.');
                     set(handles.checkbox_flexible,'Value',0);
-                end;
+                end
                 [vsim,rmsmin,handles]=fit_formfactor_multi(handles,rax,full_distr,handles.tdip,handles.cluster);
                 handles.ff_multi=vsim;
                 vsim_M=[];
                 vsim_F = [];
                 vsim_P=[];
-            end;
+            end
             handles.tsim=handles.tdip;
             handles.vsim=vsim;
             handles.vsim_M=vsim_M;
@@ -1151,14 +1151,14 @@ if ~isempty(handles.texp) && ~isempty(handles.vexp),
             [mimi,poi]=min(abs(handles.texp));
             texp=handles.texp(poi:end);
             vexp=handles.vexp(poi:end);
-            if pairs==1,
+            if pairs==1
                 [vsim,rmsmin,handles]=fit_DEER(handles,rax,full_distr,texp,vexp);
-                if isfield(handles,'MtsslWizard_rax') && isfield(handles,'MtsslWizard_distr'),
+                if isfield(handles,'MtsslWizard_rax') && isfield(handles,'MtsslWizard_distr')
                     [vsim_M,rmsmin_M]=fit_DEER(handles,handles.MtsslWizard_rax,handles.MtsslWizard_distr,texp,vexp);
-                end;
-                if isfield(handles,'PRONOX_rax') && isfield(handles,'PRONOX_distr'),
+                end
+                if isfield(handles,'PRONOX_rax') && isfield(handles,'PRONOX_distr')
                     [vsim_P,rmsmin_P]=fit_DEER(handles,handles.PRONOX_rax,handles.PRONOX_distr,texp,vexp);
-                end;
+                end
                 if flexible
                     set(handles.DEER,'Pointer','watch');
                     drawnow
@@ -1166,17 +1166,17 @@ if ~isempty(handles.texp) && ~isempty(handles.vexp),
                     set(handles.DEER,'Pointer','arrow');
                     set(handles.edit_flex_move,'String',sprintf('%4.2f',dr/10));
                     set(handles.edit_flex_move,'ForegroundColor',handles.fit_color);
-                elseif handles.flex_move ~=0,
+                elseif handles.flex_move ~=0
                     moved = true;
                     [vsim_D,rmsmin_D,rax_D,distr_D]=fit_DEER_shifted(handles,texp,vexp);
-                end;
+                end
             else
                 [vsim,rmsmin,handles]=fit_DEER_multi(handles,rax,full_distr,texp,vexp);
-                if flexible,
+                if flexible
                     add_msg_board('Warning: Flexible fit is defined only for site pairs.');
                     set(handles.checkbox_flexible,'Value',0);
-                end;
-            end;
+                end
+            end
             handles.tsim=texp;
             handles.vsim=vsim;
             handles.vsim_M=vsim_M;
@@ -1185,43 +1185,43 @@ if ~isempty(handles.texp) && ~isempty(handles.vexp),
             handles.dr = dr;
             handles.vexp_fit=vexp;
             handles.texp_fit=texp;
-        end;
+        end
         handles.rmsd=rmsmin;
-        if handles.copy_DEER,
+        if handles.copy_DEER
             figure(2);
-        end;
+        end
         plot(handles.tsim,handles.vsim,'r');
-        if ~isempty(handles.vsim_M),
+        if ~isempty(handles.vsim_M)
             plot(handles.tsim,handles.vsim_M,':','Color',[0 0.75 0.25],'LineWidth',1.5);
-        end;
-        if ~isempty(handles.vsim_P),
+        end
+        if ~isempty(handles.vsim_P)
             plot(handles.tsim,handles.vsim_P,':','Color',[0.25 0.0 0.75],'LineWidth',1.5);
-        end;
-        if flexible,
+        end
+        if flexible
             plot(handles.tsim,vsim_F,'Color',handles.fit_color);
             set(handles.text_rmsd_flex,'String',sprintf('%8.5f',rmsmin_F));
             set(handles.text_rmsd_flex,'ForegroundColor',handles.fit_color);
 %            fprintf(1,'shift: %4.1f Å, r.m.s.d.: %8.5f, r.m.s.d. flex: %8.5f\n',dr,rmsmin,rmsmin_F);
-        elseif moved,
+        elseif moved
             plot(handles.tsim,vsim_D,'Color',handles.flex_color);
             set(handles.text_rmsd_flex,'String',sprintf('%8.5f',rmsmin_D));
             set(handles.text_rmsd_flex,'ForegroundColor',handles.flex_color);
         else
             set(handles.text_rmsd_flex,'String','n.a.');
             set(handles.text_rmsd_flex,'ForegroundColor',[0,0,0]);
-        end;
+        end
         set(handles.text_rmsd,'String',sprintf('%8.5f',rmsmin));
     else
         set(handles.text_rmsd,'String','n.a.');
-    end;
+    end
 else
-    if simdistr,
-        if tmax_opt>8, tmax_opt=8; end;
+    if simdistr
+        if tmax_opt>8, tmax_opt=8; end
         n=round(tmax_opt/0.008);
         tmax_opt=n*0.008;
         tsim=linspace(0,tmax_opt,n+1);
         handles.tsim=tsim';
-        if pairs==1,
+        if pairs==1
             pcf=get_std_distr_MMM(rax,full_distr,handles.Pake_r);
             ff=get_formfactor_MMM(pcf,handles.Pake_kernel,handles.Pake_t);
             ff=ff*handles.mod_depth+ones(size(ff))*(1-handles.mod_depth);
@@ -1230,7 +1230,7 @@ else
             pcf=get_std_distr_MMM(rax,full_distr,handles.Pake_r);
             ff0=get_formfactor_MMM(pcf,handles.Pake_kernel,handles.Pake_t);
             ff0=ff0*handles.mod_depth+ones(size(ff0))*(1-handles.mod_depth);
-            if tmax_opt>8, tmax_opt=8; end;
+            if tmax_opt>8, tmax_opt=8; end
             n=round(tmax_opt/0.008);
             tmax_opt=n*0.008;
             tsim=linspace(0,tmax_opt,n+1);
@@ -1244,46 +1244,46 @@ else
             addresses=get(handles.listbox_label,'String');
             ffdisplay=multi_formfactor(handles,addresses,tsim,handles.exp_depth);
             handles.ff_multi=ffdisplay;
-            if ~isempty(ffdisplay),
+            if ~isempty(ffdisplay)
                 handles.ff=ffdisplay;
-            end;
+            end
             set(handles.DEER,'Pointer','arrow');
-        end;
+        end
         handles.vsim=ffdisplay;
         handles.ff=ffdisplay';
         % handles.tdip=handles.tsim;
-        if handles.copy_DEER,
+        if handles.copy_DEER
             figure(2);
-        end;
-        if ~isempty(handles.vsim),
+        end
+        if ~isempty(handles.vsim)
             plot(handles.tsim,handles.vsim,'r');
-        end;
-    end;
-end;
+        end
+    end
+end
 
-if handles.copy_distr,
+if handles.copy_distr
     figure(1);
 else
     axes(handles.axes_distribution);
-end;
+end
 
-if flexible && simdistr && ~isempty(handles.texp) && ~isempty(handles.vexp),
+if flexible && simdistr && ~isempty(handles.texp) && ~isempty(handles.vexp)
     plot(rax_F,distr_F,'Color',handles.fit_color);
-end;
+end
 
-if moved && simdistr && ~isempty(handles.texp) && ~isempty(handles.vexp),
+if moved && simdistr && ~isempty(handles.texp) && ~isempty(handles.vexp)
     plot(rax_D,distr_D,'Color',handles.flex_color);
-end;
+end
 
-if ~isempty(handles.rexp) && ~isempty(handles.dexp),
+if ~isempty(handles.rexp) && ~isempty(handles.dexp)
     dexp=handles.dexp;
-    if simdistr,
+    if simdistr
         dexp0=interp1(handles.rexp,dexp,rax,'pchip',0);
         sc0=sum(full_distr.*dexp0)/sum(dexp0.*dexp0);
         sc=max(full_distr)/max(dexp);
-        if ~isempty(handles.tweak_distr),
+        if ~isempty(handles.tweak_distr)
             sc=max(handles.tweak_distr)/max(dexp);
-        end;
+        end
         dexp=sc*dexp;
         handles.dexp_fit=sc0*dexp0;
     else
@@ -1291,20 +1291,20 @@ if ~isempty(handles.rexp) && ~isempty(handles.dexp),
         rmax=0;
         dmin=0;
         dmax=0;
-    end;
+    end
     plot(handles.rexp,dexp,'k','LineWidth',1);
     full=max(handles.dexp)-min(handles.dexp);
     rmin=min([rmin min(handles.rexp)]);
     rmax=max([rmax max(handles.rexp)]);
     dmin=min([dmin min(dexp)-0.1*full]);
     dmax=max([dmax max(dexp)+0.1*full]);
-    if handles.expanded,
+    if handles.expanded
         axis([handles.range(1),handles.range(2),dmin,dmax]);
     else
         axis([rmin,rmax,dmin,dmax]);
-    end;
+    end
     hold on;
-end;
+end
     
 handles.copy_distr=0;
 handles.copy_DEER=0;
