@@ -5335,7 +5335,7 @@ interactive = true;
 unprocessed = true;
 make_ensemble = true;
 
-max_link_length = [27,42,27]; % LinkEF-F should be 24, replaced by 27 Å to find solutions
+max_link_length = [26,42,26]; % LinkEF-F should be 24, replaced by 27 Å to find solutions
 link_nt = [4,7,4];
 thr_length_per_nt = 6.5;
 max_length_per_nt = 6;

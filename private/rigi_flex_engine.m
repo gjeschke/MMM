@@ -12,6 +12,12 @@ function diagnostics = rigi_flex_engine(restraints,options,handles)
 
 global model
 
+restraints.stemlibs = {};
+restraints.stemloop_rlinks.rba = [];
+restraints.stemloop_rlinks.coor1 = [];
+restraints.stemloop_rlinks.coor2 = [];
+restraints.stemloop_rlinks.lib = [];
+
 solutions_given = false;
 solutions = [];
 
@@ -116,21 +122,6 @@ add_msg_board(sprintf('Result is stored in structure %i with identifier %s\n',sn
 % bodies
 
 
-% ### Stemlib reduction for testing ###
-% sl_pattern = [1,4,3];
-% for ksl = 1:length(restraints.stemlibs)
-%     temp_chains = restraints.stemlibs{ksl}.chains;
-%     restraints.stemlibs{ksl}.chains = temp_chains(sl_pattern(ksl));
-%     for kl = 1:length(restraints.stemlibs{ksl}.linksites)
-%         restraints.stemlibs{ksl}.linksites(kl).coor = restraints.stemlibs{ksl}.linksites(kl).coor(sl_pattern(ksl),:);
-%     end
-%     for kl = 1:length(restraints.stemlibs{ksl}.labelsites)
-%         restraints.stemlibs{ksl}.labelsites(kl).rmsd = restraints.stemlibs{ksl}.labelsites(kl).rmsd(sl_pattern(ksl));
-%         restraints.stemlibs{ksl}.labelsites(kl).coor = restraints.stemlibs{ksl}.labelsites(kl).coor(sl_pattern(ksl),:);
-%     end
-% end
-
-% ### End of stemlib reduction ###
 
 % first find out whether there are stemloop libraries involved
 % if so, the corresponding binding motifs must be excluded from the clash

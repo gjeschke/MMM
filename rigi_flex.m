@@ -294,6 +294,8 @@ switch handles.progress
         handles.text_time_left.String = 'Started.';
         handles.text_time_left.ForegroundColor = [0,0,180]/256;
         drawnow
+        snum0 = model.current_structure;
+        handles.template_snum = snum0;
         diagnostics = rigi_flex_engine(handles.restraints,options,handles);
         handles.diagnostics = diagnostics;
         fprintf(1,'Maximum runtime         : %4.1f h\n',options.max_time);
@@ -343,9 +345,11 @@ switch handles.progress
         guidata(hObject,handles);
         
     case 1 % RNA Flex
+        stag = mk_address_parts(handles.diagnostics.snum);
         [pathstr,basname] = fileparts(handles.options.fname);
         report_name = fullfile(pathstr,strcat(basname,'_RNA_link_report.txt'));
-        report_fid = fopen(report_name,'wt');
+        [solutions,trafo,stemlibs] = fit_stemloop_combinations(handles.restraints,handles.template_snum,handles.diagnostics.snum,report_name);
+        report_fid = fopen(report_name,'at');
         % handles.diagnostics.snum = 2; % ### only for debugging
         handles = set_progress_interface(handles);
         handles.pushbutton_run.String = 'RNA links';
@@ -359,89 +363,121 @@ switch handles.progress
         if isfield(handles.restraints,'RNA') && isfield(handles.restraints.RNA,'bind')
             num_ch = length(model.structures{handles.diagnostics.snum});
             initflag = true;
-            stag = mk_address_parts(handles.diagnostics.snum);
-            env_sel = zeros(num_ch,2);
-            for kb = 1:length(handles.restraints.RNA.bind)
-                adra = sprintf('[%s]%s',stag,handles.restraints.RNA.bind(kb).anchora);
-                inda = resolve_address(adra);
-                adre = sprintf('[%s]%s',stag,handles.restraints.RNA.bind(kb).anchora);
-                inde = resolve_address(adre);
-                env_sel(inda(2),1) = inda(4);
-                env_sel(inda(2),2) = inde(4);
+            chain_indices = zeros(1,length(handles.restraints.stemlibs));
+            for ksl = 1:length(handles.restraints.stemlibs)
+                ind = resolve_address(sprintf('[%s]%s',stag,handles.restraints.stemlibs{ksl}.chaintag));
+                chain_indices(ksl) = ind(2);
             end
             success_vec = zeros(1,handles.diagnostics.success);
             for km = 1:handles.diagnostics.success % loop over rigid-body models
-                handles.text_success.String = sprintf('%i',km);
-                rba = [handles.diagnostics.snum,km];
-                model.current_structure = handles.diagnostics.snum;
-                [secdefs,RNA,ensemble,msg] = process_rna_domain_restraints(handles.restraints,rba);
-                parts = length(handles.restraints.RNA_tags) + length(secdefs);
-                pindices = ones(parts,3);
-                for sec = 0:length(secdefs)
-                    indpart = resolve_address(sprintf('%s%s',stag,handles.restraints.RNA_tags{sec+1}));
-                    pindices(2*sec+1,1:2) = indpart;
-                    pindices(2*sec+1,3) = km;
-                end
-                % Make environment coordinates
-                maxatoms = 50000;
-                environ = zeros(maxatoms,3);
-                poi = 0;
-                for kc = 1:num_ch
-                    cmind = [handles.diagnostics.snum,kc,km];
-                    if env_sel(kc,1) == 0
-                        [~,xyz] = get_chain_model(cmind,'xyz_heavy');
-                        [m,~] = size(xyz);
-                        environ(poi+1:poi+m,:) = xyz;
-                        poi = poi+m;
-                        [stag,ctag,mnum] = mk_address_parts(cmind);
-                        for kr = env_sel(kc,1)+1:env_sel(kc,2)-1
-                            [~,xyz] = get_residue([cmind,kr],'xyz_heavy');
+                csoln = solutions(solutions(:,1)==km,:);
+                stretch = csoln(:,5);
+                [stretch,strpoi] = sort(stretch);
+                csoln = csoln(strpoi,:);
+                success = false;
+                kcombi = 0;
+                snum = handles.diagnostics.snum;
+                while ~success && kcombi < length(stretch)
+                    kcombi = kcombi + 1;
+                    ccombi = csoln(kcombi,2:4);
+                    % replace binding motifs by stemloops from library if stemmloop
+                    % libraries are tested
+                    for klib = 1:length(stemlibs)
+                        chain_coor = stemlibs{klib}.chains{ccombi(klib)}.xyz{1};
+                        chain_coor = affine_coor_set(chain_coor,trafo{km,klib});
+                        if km == 1
+                            fields = fieldnames(model.structures{snum}(chain_indices(klib)));
+                            for kfield = 1:length(fields)
+                                if isfield(stemlibs{klib}.chains{ccombi(klib)},fields{kfield})
+                                    model.structures{snum}(chain_indices(klib)).(fields{kfield}) = stemlibs{klib}.chains{ccombi(klib)}.(fields{kfield});
+                                end
+                            end
+                            model.structures{snum}(chain_indices(klib)).xyz{km} = chain_coor;
+                        end
+                    end
+                    env_sel = zeros(num_ch,2);
+                    for kb = 1:length(handles.restraints.RNA.bind)
+                        adra = sprintf('[%s]%s',stag,handles.restraints.RNA.bind(kb).anchora);
+                        inda = resolve_address(adra);
+                        adre = sprintf('[%s]%s',stag,handles.restraints.RNA.bind(kb).anchora);
+                        inde = resolve_address(adre);
+                        env_sel(inda(2),1) = inda(4);
+                        env_sel(inda(2),2) = inde(4);
+                    end
+
+                    handles.text_success.String = sprintf('%i',km);
+                    rba = [handles.diagnostics.snum,km];
+                    model.current_structure = handles.diagnostics.snum;
+                    [secdefs,RNA,ensemble,msg] = process_rna_domain_restraints(handles.restraints,rba);
+                    parts = length(handles.restraints.RNA_tags) + length(secdefs);
+                    pindices = ones(parts,3);
+                    for sec = 0:length(secdefs)
+                        indpart = resolve_address(sprintf('%s%s',stag,handles.restraints.RNA_tags{sec+1}));
+                        pindices(2*sec+1,1:2) = indpart;
+                        pindices(2*sec+1,3) = km;
+                    end
+                    % Make environment coordinates
+                    maxatoms = 50000;
+                    environ = zeros(maxatoms,3);
+                    poi = 0;
+                    for kc = 1:num_ch
+                        cmind = [handles.diagnostics.snum,kc,km];
+                        if env_sel(kc,1) == 0
+                            [~,xyz] = get_chain_model(cmind,'xyz_heavy');
                             [m,~] = size(xyz);
                             environ(poi+1:poi+m,:) = xyz;
                             poi = poi+m;
+                            [stag,ctag,mnum] = mk_address_parts(cmind);
+                            for kr = env_sel(kc,1)+1:env_sel(kc,2)-1
+                                [~,xyz] = get_residue([cmind,kr],'xyz_heavy');
+                                [m,~] = size(xyz);
+                                environ(poi+1:poi+m,:) = xyz;
+                                poi = poi+m;
+                            end
                         end
                     end
-                end
-                environ = environ(1:poi,:);
-                ensemble = 1; % for this application of rna_flex_engine, ensemble must be 1
-                maxtime = handles.restraints.RNA.maxtime;
-                full_connect = true;
-                for sec = 1:length(secdefs)
-                    handles.text_dmg_fail.String = sprintf('%i',sec);
-                    handles.text_auxiliary_fail.String = sprintf('%5.2f',0);
-                    handles.text_core_fail.String = sprintf('%5.2f',0);
-                    drawnow
-                    diagnostics = rna_flex_engine(handles,secdefs(sec),RNA,environ,ensemble,maxtime,[km,sec]);
-                    fprintf(report_fid,'Rigid body arrangement %i, section %i\n',km,sec);
-                    if ~isempty(diagnostics.snum)
-                        fprintf(1,'RNA model stored in structure %i\n',diagnostics.snum);
-                        RNA_linkers(km,sec) = diagnostics.snum;
-                        RNA_linker_time(km,sec) = diagnostics.time_per_model;
-                        pindices(2*sec,1) = diagnostics.snum;
-                        fprintf(report_fid,'Successful modelling (structure %i) with %i models and %5.1f s/model\n\n',diagnostics.snum,diagnostics.success,diagnostics.time_per_model);
-                    else
-                        fprintf(1,'RNA modelling failed for section %i in RBA %i\n',sec,km);
-                        fprintf(report_fid,'Modelling of RNA for RBA %i failed. Remaining RNA sections (if any) are skipped.\n\n',km);
-                        full_connect = false;
-                        break
+                    environ = environ(1:poi,:);
+                    ensemble = 1; % for this application of rna_flex_engine, ensemble must be 1
+                    maxtime = handles.restraints.RNA.maxtime;
+                    full_connect = true;
+                    for sec = 1:length(secdefs)
+                        handles.text_dmg_fail.String = sprintf('%i',sec);
+                        handles.text_auxiliary_fail.String = sprintf('%5.2f',0);
+                        handles.text_core_fail.String = sprintf('%5.2f',0);
+                        drawnow
+                        diagnostics = rna_flex_engine(handles,secdefs(sec),RNA,environ,ensemble,maxtime,[km,sec]);
+                        fprintf(report_fid,'Rigid body arrangement %i, section %i\n',km,sec);
+                        if ~isempty(diagnostics.snum)
+                            fprintf(1,'RNA model stored in structure %i\n',diagnostics.snum);
+                            RNA_linkers(km,sec) = diagnostics.snum;
+                            RNA_linker_time(km,sec) = diagnostics.time_per_model;
+                            pindices(2*sec,1) = diagnostics.snum;
+                            fprintf(report_fid,'Successful modelling (structure %i) with %i models and %5.1f s/model\n\n',diagnostics.snum,diagnostics.success,diagnostics.time_per_model);
+                        else
+                            fprintf(1,'RNA modelling failed for section %i in RBA %i\n',sec,km);
+                            fprintf(report_fid,'Modelling of RNA for RBA %i failed. Remaining RNA sections (if any) are skipped.\n\n',km);
+                            full_connect = false;
+                            break
+                        end
                     end
-                end
-                if full_connect
-                    fprintf(report_fid,'Modelling of RNA for RBA %i succeeded.\n\n',km);
-                    nindices = [handles.diagnostics.snum,num_ch+1,km];
-                    chain_tag = handles.restraints.RNA.chain_id;
-                    poia = strfind(chain_tag,'(');
-                    if isempty(poia)
-                        poia = 0;
+                    if full_connect
+                        fprintf(report_fid,'Modelling of RNA for RBA %i succeeded.\n\n',km);
+                        nindices = [handles.diagnostics.snum,num_ch+1,km];
+                        chain_tag = handles.restraints.RNA.chain_id;
+                        poia = strfind(chain_tag,'(');
+                        if isempty(poia)
+                            poia = 0;
+                        end
+                        poie = strfind(chain_tag,')');
+                        if isempty(poie)
+                            poie = length(chain_tag)+1;
+                        end
+                        chain_tag = chain_tag(poia+1:poie-1);
+                        stitch_chain(pindices,nindices,chain_tag,initflag);
+                        initflag = false;
+                        success_vec(km) = 1;
+                        success = true;
                     end
-                    poie = strfind(chain_tag,')');
-                    if isempty(poie)
-                        poie = length(chain_tag)+1;
-                    end
-                    chain_tag = chain_tag(poia+1:poie-1);
-                    stitch_chain(pindices,nindices,chain_tag,initflag);
-                    initflag = false;
-                    success_vec(km) = 1;
                 end
             end
         end

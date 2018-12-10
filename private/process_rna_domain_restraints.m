@@ -207,7 +207,7 @@ if ~isfield(restraints,'sequence')
     restrain=[];
     msg.error = 11;
     return;
-end;
+end
 
 for k = 1:length(restraints.sequence)
     restrain(k).stem = 0;
@@ -270,7 +270,7 @@ if adr(1) == 'R'
     resstr = adr(2:end);
 else
     resstr = adr;
-end;
+end
 res = str2double(resstr) + nta - 1;
 if isnan(res),
     res = [];
