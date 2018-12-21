@@ -65,6 +65,9 @@ for k = 1:length(fragments)
 end
 codes = 1:length(fragments);
 acodes = codes(rmsd_vec < anchor_acc); % consider only fragments that fit initial anchor coordinates with RMSD < anchor_acc
+if isnan(min(rmsd_vec)) || isempty(acodes)
+    fprintf(1,'Minimal anchor rmsd: %5.2f Å\n',min(rmsd_vec));
+end
 na = length(acodes);
 if na < 5
     fprintf(2,'Warning: Only %i fragments fit initial anchor coordinates with requested accuracy of %4.1f Å\n',na,anchor_acc);

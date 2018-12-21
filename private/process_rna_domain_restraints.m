@@ -426,6 +426,9 @@ for k = 1:length(RNA.bind)
         ntnum = ntadr(poi+1:end);
         indices = resolve_address(sprintf('[%s]%s{%i}%s',stag,chain,rba(2),ntnum));
         anchor = get_anchor_pseudo_torsion(indices,true);
+        if isnan(min(min(anchor)))
+            disp('Aber hallo!');
+        end
     end
 end
 

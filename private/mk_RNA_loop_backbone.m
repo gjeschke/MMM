@@ -138,7 +138,7 @@ if ~exist('options','var') || ~isfield(options,'anchor_acc')
 end
 
 if ~exist('options','var') || ~isfield(options,'fit_tol')
-    options.fit_tol = 0.2; % tolerance per nucleotide for convergence radius of target P atom
+    options.fit_tol = 0.5; % (was 0.2) tolerance per nucleotide for convergence radius of target P atom
 end
 
 if ~isfield(options,'maxtime')
@@ -155,7 +155,7 @@ if isfield(options,'anchor0')
 else
     len = length(seq);
 end
-fit_thresh = options.fit_tol*len;
+fit_thresh = options.fit_tol*(len+2);
 if fit_thresh < 1
     fit_thresh = 1;
 end
@@ -183,6 +183,7 @@ if ~isempty(anchor)
         det = rP5p - length(seq)*options.LoN; % P atom must within contour length to the target
         if det > fit_thresh
             err = -1;
+            statistics.errors(3) = 1;
             return
         end
     end
@@ -200,6 +201,7 @@ statistics.min_convg = 1e6;
 statistics.amin_rmsd = 1e6;
 statistics.amin_rot = 1e6;
 statistics.amin_shift = 1e6;
+min_approaches = 1e6*ones(1,length(seq)-1);
 while err ~= 0 && runtime < 3600*options.maxtime && trials < maxtrials
 
     nl = length(shortfrag);
@@ -240,7 +242,8 @@ while err ~= 0 && runtime < 3600*options.maxtime && trials < maxtrials
         rP5p = norm(Pinitial-Ptarget); % distance to the target P atom
         det = rP5p - length(seq)*options.LoN; % P atom must within contour length to the target
         % if the target cannot be reached, return empty coordinates
-        if det > fit_thresh
+        if det > fit_thresh  
+            fprintf(1,'Approach %4.1f(%4.1f)\n',det,fit_thresh);
             err = -1;
             code = [];
             coor = [];
@@ -282,6 +285,9 @@ while err ~= 0 && runtime < 3600*options.maxtime && trials < maxtrials
                 det = 0;
             end
             count = count + 1;
+        end
+        if det - fit_thresh < min_approaches(k)
+            min_approaches(k) = det - fit_thresh;
         end
         % if the target was not reached, return empty coordinates
         if det > fit_thresh
@@ -457,6 +463,11 @@ while err ~= 0 && runtime < 3600*options.maxtime && trials < maxtrials
     trials = trials+1;
     error_statistics(4+err) = error_statistics(4+err) + 1;
 end
+
+for k = 2:length(seq)-1
+    fprintf(1,'ma(%i): %4.1f Å ',k,min_approaches(k));
+end
+fprintf(1,'\n');
 
 statistics.runtime = runtime/3600;
 statistics.trials = trials;

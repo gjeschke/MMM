@@ -377,15 +377,16 @@ switch handles.progress
                 success = false;
                 kcombi = 0;
                 snum = handles.diagnostics.snum;
-                while ~success && kcombi < length(stretch)
+                initialize_model = true;
+                while ~isempty(stretch) && ~success && kcombi < length(stretch)
                     kcombi = kcombi + 1;
                     ccombi = csoln(kcombi,2:4);
-                    % replace binding motifs by stemloops from library if stemmloop
+                    % replace binding motifs by stemloops from library if stemloop
                     % libraries are tested
                     for klib = 1:length(stemlibs)
                         chain_coor = stemlibs{klib}.chains{ccombi(klib)}.xyz{1};
                         chain_coor = affine_coor_set(chain_coor,trafo{km,klib});
-                        if km == 1
+                        if initialize_model
                             fields = fieldnames(model.structures{snum}(chain_indices(klib)));
                             for kfield = 1:length(fields)
                                 if isfield(stemlibs{klib}.chains{ccombi(klib)},fields{kfield})
@@ -393,8 +394,12 @@ switch handles.progress
                                 end
                             end
                             model.structures{snum}(chain_indices(klib)).xyz{km} = chain_coor;
+                            model.structures{snum}(chain_indices(klib)).residues{km} = stemlibs{klib}.chains{ccombi(klib)}.residues{1};
+                            model.structures{snum}(chain_indices(klib)).Bfactor{km} = stemlibs{klib}.chains{ccombi(klib)}.Bfactor{1};
+                            model.structures{snum}(chain_indices(klib)).Btensor{km} = stemlibs{klib}.chains{ccombi(klib)}.Btensor{1};
                         end
                     end
+                    initialize_model = false;
                     env_sel = zeros(num_ch,2);
                     for kb = 1:length(handles.restraints.RNA.bind)
                         adra = sprintf('[%s]%s',stag,handles.restraints.RNA.bind(kb).anchora);

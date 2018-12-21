@@ -154,9 +154,15 @@ while modnum < ensemble && runtime < 3600*maxtime && ~failure
             elseif isfield(options,'anchor0')
                 options = rmfield(options,'anchor0');
             end
-            fprintf(1,'Insert loop nt %i-%i (Trial %i)\n',secdef.nts,seg_trial);
-            [cecoor,catomtags,seq,~,correction,err] = mk_RNA_loop(seq,fragments,...
-                shortfrag,non_clash_table,anchore,acodes,transmat,ecodes,options,secdef.ntoffset,[environ; ecoor(1:coorpoi,2:4)]);
+            if ~isempty(acodes)
+                fprintf(1,'Insert loop nt %i-%i (Trial %i)\n',secdef.nts,seg_trial);
+                [cecoor,catomtags,seq,~,correction,err] = mk_RNA_loop(seq,fragments,...
+                    shortfrag,non_clash_table,anchore,acodes,transmat,ecodes,options,secdef.ntoffset,[environ; ecoor(1:coorpoi,2:4)]);
+            else
+                cecoor = [];
+                failure = true;
+                err = -1;
+            end
             if err == -3
                 failure = true; % too large distance per nucleotide
             end

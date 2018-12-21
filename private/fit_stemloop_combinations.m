@@ -101,6 +101,9 @@ for k = 1:nmod % 1:nmod loop over all models
     r12max = link_nt(1)*thr_length_per_nt;
     r23max = link_nt(2)*thr_length_per_nt;
     r34max = link_nt(3)*thr_length_per_nt;
+    min_stretch = 1e6;
+    best_r = [1000,1000,1000];
+    best_combi = [0,0,0];
     % loop over all non-clashing decoys
     for k1 = 1:vpoi(1)
         a12c = anchor_12(valid_decoys(1,k1),:);
@@ -130,6 +133,24 @@ for k = 1:nmod % 1:nmod loop over all models
 %                 if k1 == 1 && k2 == 1
 %                     fprintf(report,'Anchor 43(%i): %4.1f, %4.1f, %4.1f Å\n',valid_decoys(3,k3),a43c);
 %                 end
+                stretch = 0;
+                lnt12 = r12/link_nt(1);
+                if lnt12 > max_length_per_nt
+                    stretch = stretch + (lnt12-max_length_per_nt)^2;
+                end
+                lnt23 = r23/link_nt(2);
+                if lnt23 > max_length_per_nt
+                    stretch = stretch + (lnt23-max_length_per_nt)^2;
+                end
+                lnt34 = r34/link_nt(3);
+                if lnt34 > max_length_per_nt
+                    stretch = stretch + (lnt34-max_length_per_nt)^2;
+                end
+                if stretch < min_stretch
+                    min_stretch = stretch;
+                    best_r = [r12,r23,r34];
+                    best_combi = [valid_decoys(1,k1),valid_decoys(2,k2),valid_decoys(3,k3)];
+                end
                 if r12 <= r12max && r23 <= r23max && r34 <= r34max
                     fprintf(report,'M(%i)SL(%i,%i,%i): %5.1f, %5.1f, %5.1f Å\n',k,...
                         valid_decoys(1,k1),valid_decoys(2,k2),valid_decoys(3,k3),...
@@ -140,25 +161,12 @@ for k = 1:nmod % 1:nmod loop over all models
                     solutions(spoi,3) = valid_decoys(2,k2);
                     solutions(spoi,4) = valid_decoys(3,k3);
                     valid_rbas(k) = 1;
-                    stretch = 0;
-                    lnt12 = r12/link_nt(1);
-                    if lnt12 > max_length_per_nt
-                        stretch = stretch + (lnt12-max_length_per_nt)^2;
-                    end
-                    lnt23 = r23/link_nt(2);
-                    if lnt23 > max_length_per_nt
-                        stretch = stretch + (lnt23-max_length_per_nt)^2;
-                    end
-                    lnt34 = r34/link_nt(3);
-                    if lnt34 > max_length_per_nt
-                        stretch = stretch + (lnt34-max_length_per_nt)^2;
-                    end
                     solutions(spoi,5) = stretch;
                 end
             end
         end
     end
-    drawnow
+    fprintf(report,'Best combination:\n, M(%i)SL(%i,%i,%i): %5.1f, %5.1f, %5.1f Å\n',k,best_combi,best_r);
 end
 toc
 solutions = solutions(1:spoi,:);
