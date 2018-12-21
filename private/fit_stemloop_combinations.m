@@ -10,9 +10,9 @@ link_nt = zeros(1,length(restraints.RNA.bind)-1);
 for k = 2:length(restraints.RNA.bind)
     link_nt(k-1) = restraints.RNA.bind(k).nta-restraints.RNA.bind(k-1).nte;
 end
-thr_length_per_nt = 6.5;
-max_length_per_nt = 6;
-max_link_length = link_nt*thr_length_per_nt; % LinkEF-F should be 24, replaced by 27 Å to find solutions
+thr_length_per_nt = 6;
+max_length_per_nt = 5.5;
+max_link_length = link_nt*thr_length_per_nt; 
 
 nmod = length(model.structures{snum}(1).residues);
 trafo = cell(nmod,3);

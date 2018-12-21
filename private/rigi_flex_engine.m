@@ -12,11 +12,13 @@ function diagnostics = rigi_flex_engine(restraints,options,handles)
 
 global model
 
-restraints.stemlibs = {};
-restraints.stemloop_rlinks.rba = [];
-restraints.stemloop_rlinks.coor1 = [];
-restraints.stemloop_rlinks.coor2 = [];
-restraints.stemloop_rlinks.lib = [];
+stemloop_mode = false;
+
+% restraints.stemlibs = {};
+% restraints.stemloop_rlinks.rba = [];
+% restraints.stemloop_rlinks.coor1 = [];
+% restraints.stemloop_rlinks.coor2 = [];
+% restraints.stemloop_rlinks.lib = [];
 
 solutions_given = false;
 solutions = [];
@@ -309,7 +311,7 @@ worst_res = 0;
 parblocks = 0;
 if options.exhaustive
     maxmodels = 200; % 200;
-    maxtime = 400; % ### uncomment for production runs
+    maxtime = 600; % ### uncomment for production runs
 end
 tic,
 
@@ -317,6 +319,7 @@ tic,
 
 [pathstr,basname] = fileparts(fname);
 solutionname = fullfile(pathstr,strcat(basname,'_solutions.dat'));
+repname = fullfile(pathstr,strcat(basname,'_stemloops.dat'));
 fid = fopen(solutionname,'wt');
 fprintf(fid,'%pblock trial  combi % at granularity %i\n',options.granularity);
 fclose(fid);
@@ -521,7 +524,7 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                             fulfill = false;
                         end
                     end
-                    if fulfill % check for stemloop linker restraints
+                    if fulfill && stemloop_mode % check for stemloop linker restraints
                         libind = cell(1,length(sl_lib_len));
                         for lib = 1:length(sl_lib_len)
                             libind{lib} = 1:sl_lib_len(lib);
@@ -628,7 +631,7 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                             end
                         end
                     end
-                    if fulfill && ~isempty(sl_DEER) % check for stemloop label restraints
+                    if fulfill && stemloop_mode && ~isempty(sl_DEER) % check for stemloop label restraints
                         libpairs = zeros(length(sl_DEER),2);
                         for sld = 1:length(sl_DEER)
                             libpairs(sld,:) = sl_DEER(sld).stemlib;
@@ -735,7 +738,7 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                     end
                     if fulfill
                         atransmat = tmats{kt};
-                        if ~isempty(stemlibs)
+                        if ~isempty(stemlibs) && stemloop_mode
                             % add stemloop anchors and label coordinates to
                             % points and restraints to auxiliary and links,
                             % if necessary
@@ -891,7 +894,7 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                             lerr_vec(kt) = errvec(3);
                             cerr_vec(kt) = errvec(4);
                             xerr_vec(kt) = errvec(5);
-                        else % treatment in the absence of stemlibs
+                        else % treatment in the absence of stemlibs or if stemloop_mode is false
                             % the first refinement is performed without
                             % testing for clashes, as this is much faster
                             if solutions_given
@@ -961,18 +964,20 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                 ccombi = all_combi(kcombi,:);
                 probabilities(success) = model_prob(k-bask)^(1/(naux+ncore));
                 tmstd = [];
-                % replace binding motifs by stemloops from library if stemmloop
-                % libraries are tested
-                for klib = 1:length(stemlibs)
-                    for kr = 1:length(restraints.rb)
-                        for kcc = 1:length(restraints.rb(kr).chains)
-                            if stemlibs{klib}.cind(2) == restraints.rb(kr).chains(kcc)
-                                chain_coor{kr,kcc} = stemlibs{klib}.chains{ccombi(klib)}.xyz{1};
-                                if success == 1
-                                    fields = fieldnames(model.structures{snum}(restraints.rb(kr).chains(kcc)));
-                                    for kfield = 1:length(fields)
-                                        if isfield(stemlibs{klib}.chains{ccombi(klib)},fields{kfield})
-                                            model.structures{snum}(restraints.rb(kr).chains(kcc)).(fields{kfield}) = stemlibs{klib}.chains{ccombi(klib)}.(fields{kfield});
+                if stemloop_mode
+                    % replace binding motifs by stemloops from library if stemmloop
+                    % libraries are tested
+                    for klib = 1:length(stemlibs)
+                        for kr = 1:length(restraints.rb)
+                            for kcc = 1:length(restraints.rb(kr).chains)
+                                if stemlibs{klib}.cind(2) == restraints.rb(kr).chains(kcc)
+                                    chain_coor{kr,kcc} = stemlibs{klib}.chains{ccombi(klib)}.xyz{1};
+                                    if success == 1
+                                        fields = fieldnames(model.structures{snum}(restraints.rb(kr).chains(kcc)));
+                                        for kfield = 1:length(fields)
+                                            if isfield(stemlibs{klib}.chains{ccombi(klib)},fields{kfield})
+                                                model.structures{snum}(restraints.rb(kr).chains(kcc)).(fields{kfield}) = stemlibs{klib}.chains{ccombi(klib)}.(fields{kfield});
+                                            end
                                         end
                                     end
                                 end
@@ -1149,6 +1154,15 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                         end
                     end
                 end
+                % now compare stemloop restraints
+                if ~stemloop_mode && ~isempty(restraints.stemlibs)
+                    solutions = fit_stemloop_combinations(restraints,snum0,snum,repname);
+                    if isempty(solutions)
+                        success = success - 1;
+                        stem_fail = stem_fail + 1;
+                        fulfill = false;
+                    end
+                end
                 if fulfill
                     fid = fopen(solutionname,'at');
                     if ~isempty(ccombi)
@@ -1224,7 +1238,7 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
         left_trials = left_trials - clash_err;
         handles.text_xlink_fail.String = sprintf('%6.2f',100*xlink_fail/left_trials);
         left_trials = left_trials - xlink_fail;
-        % fprintf(1,'Stem link failures: %6.2f%%\n',100*stem_fail/left_trials);
+        fprintf(1,'Stem link failures: %6.2f%%\n',100*stem_fail/left_trials);
         left_trials = left_trials - stem_fail;
         % fprintf(1,'Stem label failures: %6.2f%%\n',100*stem2_fail/left_trials);
         left_trials = left_trials - stem2_fail;
