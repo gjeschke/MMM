@@ -13,6 +13,7 @@ function diagnostics = rigi_flex_engine(restraints,options,handles)
 global model
 
 stemloop_mode = false;
+trial_echo = false;
 
 % restraints.stemlibs = {};
 % restraints.stemloop_rlinks.rba = [];
@@ -32,6 +33,7 @@ if isfield(restraints,'solutions') && ~isempty(restraints.solutions)
         soln_name = restraints.solutions;
     end
     solutions = load(soln_name);
+    solutions = round(solutions);
 end
 
 skip_mode = true;
@@ -897,19 +899,21 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                         else % treatment in the absence of stemlibs or if stemloop_mode is false
                             % the first refinement is performed without
                             % testing for clashes, as this is much faster
-                            if solutions_given
+                            if solutions_given && trial_echo
                                 fprintf(1,'Trial %i.%i: Model will be refined\n',parblocks,kt);
                             end
                             atransmat0 = atransmat;
                             [atransmat,errvec,mprob,xld] = ...
                                 refine_rba(rb,atransmat0,points,pthr,naux,auxiliary,ncore,core,links,1e6,heavy_coor,xlink_percentage,xlinks);
                             if ~sum(errvec)
-                                if solutions_given
+                                if solutions_given && trial_echo
                                     fprintf(1,'Trial %i.%i: Model will be refined with clash score\n',parblocks,kt);
                                 end
                                 [atransmat,errvec,mprob,xld,cost,costs] = ...
                                     refine_rba_fast(rb,atransmat,points,pthr,naux,auxiliary,ncore,core,links,clash_threshold,heavy_coor,xlink_percentage,xlinks);
-                                fprintf(1,'Total cost: %5.2f. aux. %5.2f; core %5.2f; links %5.2f; clash %5.2f; stem %5.2f\n',cost,costs.aux,costs.core,costs.link,costs.clash,costs.stem);
+                                if trial_echo
+                                    fprintf(1,'Total cost: %5.2f. aux. %5.2f; core %5.2f; links %5.2f; clash %5.2f; stem %5.2f\n',cost,costs.aux,costs.core,costs.link,costs.clash,costs.stem);
+                                end
                             end
                             tmats{kt} = atransmat;
                             xlink_distances{kt} = xld;
@@ -1015,7 +1019,7 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                 % now it should be compared to SANS or SAXS restraints,
                 % if any
                 if solutions_given
-                    if isempty(ccombi)
+                    if isempty(ccombi) || sum(ccombi) == 0
                         fprintf(1,'Trial %i.%i is compared with SAS fits\n',parblocks,k-bask);
                     else
                         fprintf(1,'Trial %i.%i: Combination (%i,%i,%i) is compared with SAS fits\n',parblocks,k-bask,ccombi(:));
@@ -1059,7 +1063,7 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                         xlink_fulfill(:,sans_poi) = xlink_distances{k-bask};
                     end
                     chi2 = SANS_chi/length(restraints.SANS);
-                    if chi2 > SANS_threshold
+                    if chi2 > SANS_threshold && fulfill
                         if interactive
                             fprintf(1,'SANS chi^2 of %4.2f exceeded threshold of %4.2f in trial %i.\n',chi2,SANS_threshold,k);
                         end
@@ -1155,9 +1159,12 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                     end
                 end
                 % now compare stemloop restraints
-                if ~stemloop_mode && ~isempty(restraints.stemlibs)
-                    solutions = fit_stemloop_combinations(restraints,snum0,snum,repname);
-                    if isempty(solutions)
+                if ~stemloop_mode && ~isempty(restraints.stemlibs) && fulfill
+                    modnum.block = parblocks;
+                    modnum.num = k-bask;
+                    modnum.model = success;
+                    sl_solutions = fit_stemloop_combinations(restraints,snum0,snum,repname,modnum);
+                    if isempty(sl_solutions)
                         success = success - 1;
                         stem_fail = stem_fail + 1;
                         fulfill = false;
@@ -1165,7 +1172,7 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                 end
                 if fulfill
                     fid = fopen(solutionname,'at');
-                    if ~isempty(ccombi)
+                    if ~isempty(ccombi) && sum(ccombi) > 0
                         fprintf(fid,'%8i%6i%6i%6i%6i\n',parblocks,k-bask,ccombi(:));
                     else
                         fprintf(fid,'%8i%6i\n',parblocks,k-bask);
@@ -1238,16 +1245,12 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
         left_trials = left_trials - clash_err;
         handles.text_xlink_fail.String = sprintf('%6.2f',100*xlink_fail/left_trials);
         left_trials = left_trials - xlink_fail;
-        fprintf(1,'Stem link failures: %6.2f%%\n',100*stem_fail/left_trials);
-        left_trials = left_trials - stem_fail;
-        % fprintf(1,'Stem label failures: %6.2f%%\n',100*stem2_fail/left_trials);
-        left_trials = left_trials - stem2_fail;
-        % fprintf(1,'SLD identity failures: %6.2f%%\n',100*stem3_fail/left_trials);
-        left_trials = left_trials - stem3_fail;
         handles.text_SANS_fail.String = sprintf('%6.2f',100*sans_fail/left_trials);
         left_trials = left_trials - sans_fail;
         handles.text_SAXS_fail.String = sprintf('%6.2f',100*saxs_fail/left_trials);
         left_trials = left_trials - saxs_fail;
+        % fprintf(1,'Stem link failures: %6.2f%%\n',100*stem_fail/left_trials);
+        left_trials = left_trials - stem_fail;
         if left_trials ~= success
             fprintf(2,'Trial dissipation. Expected success: %i. Found success %i.\n',left_trials,success);
         end

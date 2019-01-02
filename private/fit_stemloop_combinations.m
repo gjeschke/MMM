@@ -1,6 +1,10 @@
-function [solutions,trafo,libs] = fit_stemloop_combinations(restraints,snum0,snum,repname)
+function [solutions,trafo,libs] = fit_stemloop_combinations(restraints,snum0,snum,repname,modnum)
 
 global model
+
+if ~exist('modnum','var')
+    modnum = [];
+end
 
 forgive = 0.8;
 clash_threshold = 1.5*forgive;
@@ -15,6 +19,11 @@ max_length_per_nt = 5.5;
 max_link_length = link_nt*thr_length_per_nt; 
 
 nmod = length(model.structures{snum}(1).residues);
+if isempty(modnum)
+    models = 1:nmod;
+else
+    models = modnum.model;
+end
 trafo = cell(nmod,3);
 template = cell(1,3);
 target = cell(1,3);
@@ -34,18 +43,18 @@ for k = 1:length(restraints.stemlibs)
     sls(k) = restraints.stemlibs{k}.chaintag(2);
 end
 
-report = fopen(repname,'wt');
+report = fopen(repname,'at');
 % for kl = 1:3
 %     figure(10+kl); clf;
 %     hold on;
 %     plot([1,nmod],[max_link_length(kl),max_link_length(kl)],'k');
 % end
-tic,
+%tic,
 
 solutions = zeros(10000,5);
 valid_rbas = zeros(1,nmod);
 spoi = 0;
-for k = 1:nmod % 1:nmod loop over all models
+for k = models % 1:nmod loop over all models
     % determine the transformations
     for kc = 1:3
         adr = sprintf('%s(%c){%i}',stag,chains(kc),k);
@@ -152,6 +161,9 @@ for k = 1:nmod % 1:nmod loop over all models
                     best_combi = [valid_decoys(1,k1),valid_decoys(2,k2),valid_decoys(3,k3)];
                 end
                 if r12 <= r12max && r23 <= r23max && r34 <= r34max
+                    if ~isempty(modnum)
+                        fprintf(report,'R%i.%i|',modnum.block,modnum.num);
+                    end
                     fprintf(report,'M(%i)SL(%i,%i,%i): %5.1f, %5.1f, %5.1f Å\n',k,...
                         valid_decoys(1,k1),valid_decoys(2,k2),valid_decoys(3,k3),...
                         r12,r23,r34);
@@ -166,9 +178,13 @@ for k = 1:nmod % 1:nmod loop over all models
             end
         end
     end
-    fprintf(report,'Best combination:\n, M(%i)SL(%i,%i,%i): %5.1f, %5.1f, %5.1f Å\n',k,best_combi,best_r);
+    fprintf(report,'Best combination:\n');
+    if ~isempty(modnum)
+        fprintf(report,'R%i.%i|',modnum.block,modnum.num);
+    end
+    fprintf(report,'M(%i)SL(%i,%i,%i): %5.1f, %5.1f, %5.1f Å\n',k,best_combi,best_r);
 end
-toc
+%toc
 solutions = solutions(1:spoi,:);
 save test_SL solutions trafo 
 fprintf(report,'\n%i solutions were found in %i valid RBAs.\n',spoi,sum(valid_rbas));
