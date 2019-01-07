@@ -20,15 +20,15 @@ function coor1=affine_trafo_coor(coor0,matrices)
 
 [mm,~]=size(coor0);
 
-if iscell(matrices),
+if iscell(matrices)
     matrix=eye(4);
     num=length(matrices);
-    for k=1:num,
+    for k=1:num
         matrix=matrices{k}*matrix;
-    end;
+    end
 else
     matrix=matrices;
-end;
+end
 
 xyz=[coor0 ones(mm,1)];
 xyz=matrix*xyz';

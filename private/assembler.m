@@ -58,7 +58,7 @@ for ka = 1:arrangements
     end
     if combi == 0 % at least for one section no models were found
         continue;
-    end;
+    end
     fprintf(fidr,'\nRigid-body arrangement %i has %i potential combinations of flexible sections.\n',ka,combi);
     if interactive
         handles.uipanel_runtime.Title = sprintf('Assembling flexible sections for rigid-body arrangement %i',ka);
@@ -72,7 +72,7 @@ for ka = 1:arrangements
         [m,~] = size(rigid_all_xyz{km});
         rigid_xyz(poi+1:poi+m,:) = rigid_all_xyz{km};
         poi = poi + m;
-    end;
+    end
     rigid_xyz = rigid_xyz(1:poi,:);
     all_combi = zeros(1,2*sections);
     for ks = 1:sections
@@ -87,7 +87,7 @@ for ka = 1:arrangements
             all_combi(basnum+1:basnum+mc,2*ks-1) = secnumvec;
             all_combi(basnum+1:basnum+mc,2*ks) = kc*ones(mc,1);
         end
-    end;
+    end
     [mc,~] =size(all_combi);
     min_dist = 1e6*ones(1,mc);
     for kc = 1:mc % test all combinations for clashes
@@ -159,14 +159,14 @@ for ka = 1:arrangements
                         if interactive
                             fprintf(2,'Warning: SANS fitting failed for combination %i:\n',kc);
                             fprintf(2,'%s',result);
-                        end;
+                        end
                         fprintf(fidr,'SANS fitting of curve %i failed in arrangement %i for combination %i.\n',ks,ka,kc);
                     else
                         SANS_curves{ks} = fit;
                         SANS_chi = SANS_chi + chi2;
                     end
                     delete(to_be_deleted);
-                end;
+                end
                 chi2 = SANS_chi/length(restraints.SANS);
                 SANS_scores(kc) = SANS_scores(kc)+chi2;
                 if chi2 < 1e5
@@ -180,13 +180,13 @@ for ka = 1:arrangements
                             fit = SANS_curves{ks};
                             plot(fit(:,1),fit(:,2));
                             plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
-                        end;
+                        end
                         title(sprintf('SANS fit for arrangement %i combi %i (chi^2 = %4.2f)',ka,kc,chi2));
                         drawnow
                     end
                 end
             end
-        end;
+        end
         all_SANS{ka} = SANS_curves;
         scores = scores + SANS_scores;
     end

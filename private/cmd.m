@@ -19,7 +19,7 @@ end
 set(hMain.MMM,'Pointer','watch');
 drawnow
 
-commands=':atompair:attach:beacons:bckg:bilabel:blscan:camup:color:colorscheme:compact:copy:delete:detach:dihedrals:distance:domain:download:dssp:echo:helix:help:hide:inertiaframe:label:libcomp:libtest:lock:loop:mass:motion:mushroom:new:ortho:pdbload:persp:plot:radgyr:redo:refrmsd:remodel:repack:replace:report:rmsd:rotamers:SAS:scopy:select:sheet:show:statistics:symmetry:synonym:transparency:undo:undefine:unlock:unselect:view:wrseq:zoom:';
+commands=':atompair:attach:beacons:bckg:bilabel:blscan:camup:color:colorscheme:compact:copy:delete:detach:dihedrals:distance:domain:download:dssp:echo:helix:help:hide:inertiaframe:label:libcomp:libtest:lock:locrmsd:locorder:loop:mass:motion:mushroom:new:ortho:pdbload:persp:plot:radgyr:redo:refrmsd:remodel:repack:replace:report:rmsd:rotamers:SAS:scopy:select:sheet:show:statistics:symmetry:synonym:transparency:undo:undefine:unlock:unselect:view:wrseq:zoom:';
 
 [cmd,args]=strtok(command_line); % separate command and arguments
 
@@ -113,6 +113,10 @@ switch cmd,
         handles=libtest(handles,args);
     case 'lock'
         handles=lock(handles,args);
+    case 'locorder'
+        handles=local_order(handles,args);
+    case 'locrmsd'
+        handles=local_rmsd(handles,args);
     case 'loop'
         handles=def_loop(handles,args);
     case 'mass' 
@@ -3621,32 +3625,32 @@ command=sprintf('rmsd %s',strtrim(args));
 undo_cmd='noundo';
 [handles]=cmd_history(handles,command,undo_cmd);
 
-if isempty(args) || isempty(strtrim(args)),
+if isempty(args) || isempty(strtrim(args))
     add_msg_board('Usage: rmsd adr [type]');
     add_msg_board('type can be ''all'' or ''backbone'' and defaults to ''all''');
     return
-end;
+end
 
 myargs=textscan(args,'%s');
-if length(myargs{1}) < 2,
+if length(myargs{1}) < 2
     type = 'all';
 else
     type=char(myargs{1}(2));
-    if ~strcmp(type,'all') && ~strcmp(type,'backbone'),
+    if ~strcmp(type,'all') && ~strcmp(type,'backbone')
         add_msg_board(sprintf('ERROR: Unknown r.m.s.d. type %s.',type));
         return
-    end;
-end;
+    end
+end
 
 adr = char(myargs{1}(1));
 
 rindices1 = resolve_address(adr);
-if isempty(rindices1),
+if isempty(rindices1)
     add_msg_board(sprintf('ERROR: Address %s could not be resolved.',adr));
     return
-end;
+end
 [m,n] = size(rindices1);
-if n == 3,
+if n == 3
     add_msg_board('ERROR: Chain model selection is not allowed for ensemble r.m.s.d. computation.');
     return
 elseif n < 3
@@ -3654,115 +3658,115 @@ elseif n < 3
     rindices1 = resolve_address(adr);
 else
     rindices1(:,3) = ones(m,1); % select residues, atoms, or locations in chain models 1
-end;
-if strcmp(type,'backbone'),
-    if n > 4,
+end
+if strcmp(type,'backbone')
+    if n > 4
         add_msg_board('ERROR: Backbone r.m.s.d. cannot be requested for atoms or locations.');
         return
     else
         adr = strcat(adr,'.N,CA,C');
         rindices1 = resolve_address(adr);
-    end;
-end;
+    end
+end
 
 [m1,~] = size(rindices1);
-if m1 < 1,
+if m1 < 1
     add_msg_board(sprintf('ERROR: Address %s could not be resolved.',adr));
     return;
-end;
+end
 
 mods = length(model.structures{rindices1(1,1)}(rindices1(1,2)).residues);
 [msg,xyzcell] = get_object(rindices1,'xyz');
-if msg.error,
+if msg.error
     add_msg_board(sprintf('ERROR: Coordinate retrieval failed (%s)',msg.text));
     return
-end;
+end
 xd = 0;
-for k = 1:m1,
-    if iscell(xyzcell),
+for k = 1:m1
+    if iscell(xyzcell)
         xt = xyzcell{k};
     else
         xt = xyzcell;
-    end;
+    end
     [mt,nt] = size(xt);
     xd = xd + mt;
-end;
+end
 xyz = zeros(xd,nt);
 xd = 0;
-for k = 1:m1,
-    if iscell(xyzcell),
+for k = 1:m1
+    if iscell(xyzcell)
         xt = xyzcell{k};
     else
         xt = xyzcell;
-    end;
+    end
     [mt,~] = size(xt);
     xyz(xd+1:xd+mt,:) = xt;
     xd = xd + mt;
-end;
+end
 [mc,~] = size(xyz);
 
-for k = 2:mods,
+for k = 2:mods
     rindices1(:,3) = k*ones(m1,1);
     [~,xyzcell] = get_object(rindices1,'xyz');
     xd = 0;
-    for kk = 1:m1,
-        if iscell(xyzcell),
+    for kk = 1:m1
+        if iscell(xyzcell)
             xt = xyzcell{kk};
         else
             xt = xyzcell;
-        end;
+        end
         [mt,nt] = size(xt);
         xd = xd + mt;
-    end;
+    end
     xyzc = zeros(xd,nt);
     xd = 0;
-    for kk = 1:m1,
-        if iscell(xyzcell),
+    for kk = 1:m1
+        if iscell(xyzcell)
             xt = xyzcell{kk};
         else
             xt = xyzcell;
-        end;
+        end
         [mt,~] = size(xt);
         xyzc(xd+1:xd+mt,:) = xt;
         xd = xd + mt;
-    end;
+    end
     [mcc,~] = size(xyzc);
-    if mcc~=mc,
+    if mcc~=mc
         add_msg_board('ERROR: Inconsistent coordinate sets in different models');
         return;
-    end;
+    end
     xyz = xyz + xyzc;
-end;
+end
 xyz = xyz/mods; % mean coordinates
 rmsd = 0;
-for k = 1:mods,
+for k = 1:mods
     rindices1(:,3) = k*ones(m1,1);
     [~,xyzcell] = get_object(rindices1,'xyz');
     xd = 0;
-    for kk = 1:m1,
-        if iscell(xyzcell),
+    for kk = 1:m1
+        if iscell(xyzcell)
             xt = xyzcell{kk};
         else
             xt = xyzcell;
-        end;
+        end
         [mt,nt] = size(xt);
         xd = xd + mt;
-    end;
+    end
     xyzc = zeros(xd,nt);
     xd = 0;
-    for kk = 1:m1,
-        if iscell(xyzcell),
+    for kk = 1:m1
+        if iscell(xyzcell)
             xt = xyzcell{kk};
         else
             xt = xyzcell;
-        end;
+        end
         [mt,~] = size(xt);
         xyzc(xd+1:xd+mt,:) = xt;
         xd = xd + mt;
-    end;
+    end
     diff = xyz - xyzc;
     rmsd = rmsd + sum(sum(diff.^2));
-end;
+end
 rmsd = sqrt(rmsd/(m1*mods));
 add_msg_board(sprintf('Ensemble r.m.s.d. for selection %s is %4.2f Å',adr,rmsd)); 
 
@@ -3774,28 +3778,28 @@ command=sprintf('refrmsd %s',strtrim(args));
 undo_cmd='noundo';
 [handles]=cmd_history(handles,command,undo_cmd);
 
-if isempty(args) || isempty(strtrim(args)),
+if isempty(args) || isempty(strtrim(args))
     add_msg_board('Usage: refrmsd adr refadr [type]');
     add_msg_board('type can be ''all'' or ''backbone'' and defaults to ''all''');
     return
-end;
+end
 
 myargs=textscan(args,'%s');
 
-if length(myargs{1}) < 2,
+if length(myargs{1}) < 2
     add_msg_board('ERROR: At least two address arguments are required.');
     return
-end;
+end
 
-if length(myargs{1}) < 3,
+if length(myargs{1}) < 3
     type = 'all';
 else
     type=char(myargs{1}(3));
-    if ~strcmp(type,'all') && ~strcmp(type,'backbone'),
+    if ~strcmp(type,'all') && ~strcmp(type,'backbone')
         add_msg_board(sprintf('ERROR: Unknown r.m.s.d. type %s.',type));
         return
-    end;
-end;
+    end
+end
 
 adr = char(myargs{1}(1));
 refadr = char(myargs{1}(2));
@@ -3915,6 +3919,120 @@ end;
 rmsd = sqrt(msq/mods);
 add_msg_board(sprintf('Ensemble r.m.s.d. for selection %s with respect to %s is %4.2f Å',adr,refadr,rmsd)); 
 add_msg_board(sprintf('Ensemble rmsd_100 for selection %s with respect to %s is %4.2f Å',adr,refadr,rmsd/(1+log(sqrt(mc/100))))); 
+
+function handles = local_rmsd(handles,args)
+
+global model
+
+command=sprintf('locrmsd %s',strtrim(args));
+undo_cmd='noundo';
+[handles]=cmd_history(handles,command,undo_cmd);
+
+if isempty(args) || isempty(strtrim(args))
+    add_msg_board('Usage: locrmsd adr');
+    add_msg_board('''adr'' must be a peptide chain address');
+    return
+end
+
+myargs=textscan(args,'%s');
+
+adr = char(myargs{1}(1));
+
+indices = resolve_address(adr);
+if isempty(indices)
+    add_msg_board(sprintf('ERROR: Address %s could not be resolved.',adr));
+    return
+end
+[~,n] = size(indices);
+if n ~= 2
+    add_msg_board('ERROR: For local ensemble r.m.s.d. computation, a chain address must be given.');
+    add_msg_board('Usage: locrmsd adr');
+    add_msg_board('''adr'' must be a peptide chain address');
+    return
+end
+
+snum = indices(1);
+cnum = indices(2);
+
+residues=length(model.structures{snum}(cnum).residues{1}.info);
+resnum = zeros(1,residues);
+for k = 1:residues
+    resnum(k) = model.structures{snum}(cnum).residues{1}.info(k).number;
+end
+
+figure(1); clf;
+set(gca,'FontSize',12);
+plot(resnum,model.structures{snum}(cnum).CA_rmsd,'k.');
+xlabel('Residue number');
+ylabel('rmsd [Å]');
+title(sprintf('Calpha ensemble rmsd for chain %s',adr));
+fname = sprintf('ensemble_CA_rmsd_%s.mat',adr);
+data = [resnum' model.structures{snum}(cnum).CA_rmsd'];
+save(fname,'data');
+
+function handles = local_order(handles,args)
+
+global model
+
+command=sprintf('locorder %s',strtrim(args));
+undo_cmd='noundo';
+[handles]=cmd_history(handles,command,undo_cmd);
+
+if isempty(args) || isempty(strtrim(args))
+    add_msg_board('Usage: locorder adr');
+    add_msg_board('''adr'' must be a peptide chain address');
+    return
+end
+
+myargs=textscan(args,'%s');
+
+adr = char(myargs{1}(1));
+
+indices = resolve_address(adr);
+if isempty(indices)
+    add_msg_board(sprintf('ERROR: Address %s could not be resolved.',adr));
+    return
+end
+[~,n] = size(indices);
+if n ~= 2
+    add_msg_board('ERROR: For local order analysis, a chain address must be given.');
+    add_msg_board('Usage: locorder adr');
+    add_msg_board('''adr'' must be a peptide chain address');
+    return
+end
+
+snum = indices(1);
+cnum = indices(2);
+
+if length(model.structures{snum}(cnum).residues) < 2
+    add_msg_board('Warning: Not an ensemble structure. Aborting.');
+    return
+end
+
+[resaxis,s,npN,npC,meanct,msg] = analyze_local_order(indices);
+
+if msg.error
+    add_msg_board(sprintf('ERROR (locorder): %s',msg.text)); 
+end
+
+figure(1); clf;
+set(gca,'FontSize',12);
+plot(resaxis,s,'k.','MarkerSize',14);
+xlabel('Residue number');
+ylabel('Order parameter s');
+title(sprintf('Local order parameter for chain %s',adr));
+
+figure(2); clf;
+set(gca,'FontSize',12);
+hold on
+plot(resaxis,npN,'.','Color',[0,0,0.75],'MarkerSize',14);
+plot(resaxis,npC,'.','Color',[0.75,0,0],'MarkerSize',14);
+xlabel('Residue number');
+ylabel('n_p');
+title(sprintf('Shape persistence numbers n_{p,N} and n_{p,C} for chain %s',adr));
+
+fname = sprintf('ensemble_local_order_%s.mat',adr);
+save(fname,'resaxis','s','npN','npC','meanct');
 
 function inertiaframe
 

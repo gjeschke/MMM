@@ -1,9 +1,13 @@
-function [solutions,trafo,libs] = fit_stemloop_combinations(restraints,snum0,snum,repname,modnum)
+function [solutions,trafo,libs,dvecs] = fit_stemloop_combinations(restraints,snum0,snum,repname,modnum,options)
 
 global model
 
 if ~exist('modnum','var')
     modnum = [];
+end
+
+if ~exist('options','var') || isempty(options)
+    options.refine = true;
 end
 
 forgive = 0.8;
@@ -15,10 +19,11 @@ for k = 2:length(restraints.RNA.bind)
     link_nt(k-1) = restraints.RNA.bind(k).nta-restraints.RNA.bind(k-1).nte;
 end
 thr_length_per_nt = 6;
-max_length_per_nt = 5.5;
+max_length_per_nt = 5;
 max_link_length = link_nt*thr_length_per_nt; 
 
 nmod = length(model.structures{snum}(1).residues);
+dvecs = zeros(nmod,12); 
 if isempty(modnum)
     models = 1:nmod;
 else
@@ -183,6 +188,41 @@ for k = models % 1:nmod loop over all models
         fprintf(report,'R%i.%i|',modnum.block,modnum.num);
     end
     fprintf(report,'M(%i)SL(%i,%i,%i): %5.1f, %5.1f, %5.1f Å\n',k,best_combi,best_r);
+    if options.refine
+        trafos = cell(1,3);
+        anchors = cell(3,2);
+        assign = zeros(3,2); % RBA assignment of anchor nucleotides
+        for krb = 1:3
+            trafos{krb} = trafo{k,krb};
+        end
+        library = libs{1};
+        a12 = library.linksites(1).coor(best_combi(1),:);
+        anchors{1,1} = a12;
+        assign(1,1) = 1;
+        library = libs{2};
+        a21 = library.linksites(1).coor(best_combi(2),:);
+        anchors{1,2} = a21;
+        assign(1,2) = 2;
+        a23 = library.linksites(2).coor(best_combi(2),:);
+        anchors{2,1} = a23;
+        assign(2,1) = 2;
+        a32 = a32c;
+        anchors{2,2} = a32;
+        assign(2,2) = 0;
+        a34 = a34c;
+        anchors{3,1} = a34;
+        assign(3,1) = 0;
+        library = libs{3};
+        a43 = library.linksites(1).coor(best_combi(3),:);
+        anchors{3,2} = a43;
+        assign(3,2) = 3;
+        [trafos,adj_r,score,dv] = adjust_rba(trafos,anchors,assign,link_nt);
+        dvecs(k,:) = dv;
+        for krb = 1:3
+            trafo{k,krb} = trafos{krb};
+        end
+        fprintf(report,'ADJ#M(%i)SL(%i,%i,%i): %5.1f, %5.1f, %5.1f Å (Score: %5.1f)\n',k,best_combi,adj_r,score);
+    end
 end
 %toc
 solutions = solutions(1:spoi,:);
@@ -190,3 +230,80 @@ save test_SL solutions trafo
 fprintf(report,'\n%i solutions were found in %i valid RBAs.\n',spoi,sum(valid_rbas));
 fclose(report);
 add_msg_board(sprintf('%i solutions were found in %i valid RBAs.\n',spoi,sum(valid_rbas)));
+
+function [trafos,adj_r,score,dv] = adjust_rba(trafos,anchors,assign,link_nt)
+
+[m,~] = size(anchors);
+adj_r = zeros(1,m);
+
+v0 = zeros(1,6*(length(link_nt)-1)); % vector of Euler angles and translation vectors
+% fprintf(1,'%i rigid bodies\n',length(rb));
+% fprintf(1,'Size of the transformation matrix is (%i,%i)\n',size(atransmat));
+for kr = 2:3
+    [trans,euler] = affine2transrot(trafos{kr});
+    baspoi6 = 6*(kr-2);
+    v0(baspoi6+1:baspoi6+3) = trans/10; % go to nm, better balance of x values
+    v0(baspoi6+4:baspoi6+6) = euler;
+end
+options = optimset('Display','none','TolFun',0.1,'TolX',0.01,'MaxFunEvals',50000);
+[v,score] = fminsearch(@link_score,v0,options,v0,trafos,anchors,assign,link_nt);
+dv = v - v0;
+% score = link_score(v,v0,trafos,anchors,assign,link_nt);
+for kr = 2:3
+    baspoi6 = (kr-2)*6;
+    trans = 10*v(baspoi6+1:baspoi6+3);
+    dtrans = 10*dv(baspoi6+1:baspoi6+3);
+    fprintf(1,'Translation(%i): (%3.1f, %3.1f, %3.1f) Å\n',kr,dtrans);
+    euler = v(baspoi6+4:baspoi6+6);
+    deuler = dv(baspoi6+4:baspoi6+6);
+    fprintf(1,'Rotation(%i)   : (%3.1f, %3.1f, %3.1f)°\n',kr,180*deuler/pi);
+    trafos{kr} = transrot2affine(trans,euler);
+end
+for k = 1:m
+    a5 = anchors{k,1};
+    if assign(k,1) ~= 0
+        transmat = trafos{assign(k,1)};
+        a5 = affine_coor_set(a5,transmat);
+    end
+    a3 = anchors{k,2};
+    if assign(k,2) ~= 0
+        transmat = trafos{assign(k,2)};
+        a3 = affine_coor_set(a3,transmat);
+    end
+    adj_r(k) = norm(a5-a3);
+end
+
+function score = link_score(v,v0,trafos,anchors,assign,link_nt)
+
+max_length_per_nt = 5;
+weight_links = 2;
+
+[m,~] = size(anchors);
+score = 0;
+for kr = 2:3
+    baspoi6 = (kr-2)*6;
+    trans = 10*v(baspoi6+1:baspoi6+3);
+    trans0 = 10*v0(baspoi6+1:baspoi6+3);
+    score = score + norm(trans-trans0);
+    euler = v(baspoi6+4:baspoi6+6);
+    euler0 = v0(baspoi6+4:baspoi6+6);
+    score = score + 20*norm(euler-euler0);
+    % score = score + 180*norm(euler-euler0)/pi;
+    trafos{kr} = transrot2affine(trans,euler);
+end
+for k = 1:m
+    a5 = anchors{k,1};
+    if assign(k,1) ~= 0
+        transmat = trafos{assign(k,1)};
+        a5 = affine_coor_set(a5,transmat);
+    end
+    a3 = anchors{k,2};
+    if assign(k,2) ~= 0
+        transmat = trafos{assign(k,2)};
+        a3 = affine_coor_set(a3,transmat);
+    end
+    lnt = norm(a5-a3)/link_nt(k);
+    if lnt > max_length_per_nt
+        score = score + weight_links*link_nt(k)*(lnt-max_length_per_nt)^2;
+    end
+end

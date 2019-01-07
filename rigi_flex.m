@@ -348,7 +348,21 @@ switch handles.progress
         stag = mk_address_parts(handles.diagnostics.snum);
         [pathstr,basname] = fileparts(handles.options.fname);
         report_name = fullfile(pathstr,strcat(basname,'_RNA_link_report.txt'));
-        [solutions,trafo,stemlibs] = fit_stemloop_combinations(handles.restraints,handles.template_snum,handles.diagnostics.snum,report_name);
+        [solutions,trafo,stemlibs,dvecs] = fit_stemloop_combinations(handles.restraints,handles.template_snum,handles.diagnostics.snum,report_name);
+        % assign the stemloops to rigid bodies, needed for RBA adjustment
+        rb_assign = zeros(1,length(stemlibs));
+        rna_chains = zeros(1,length(stemlibs));
+        for klib = 1:length(stemlibs)
+            slindi = resolve_address(sprintf('%s%s',stag,stemlibs{klib}.chaintag));
+            rna_chains(klib) = slindi(2);
+            for kr = 1:length(handles.restraints.rb)
+                for kcc = 1:length(handles.restraints.rb(kr).chains)
+                    if slindi(2) == handles.restraints.rb(kr).chains(kcc)
+                        rb_assign(klib) = kr;
+                    end
+                end
+            end
+        end
         report_fid = fopen(report_name,'at');
         % handles.diagnostics.snum = 2; % ### only for debugging
         handles = set_progress_interface(handles);
@@ -378,9 +392,31 @@ switch handles.progress
                 kcombi = 0;
                 snum = handles.diagnostics.snum;
                 initialize_model = true;
-                while ~isempty(stretch) && ~success && kcombi < length(stretch)
+                while ~isempty(stretch) && ~success && kcombi < length(stretch) && kcombi < 1
                     kcombi = kcombi + 1;
                     ccombi = csoln(kcombi,2:4);
+                    % make adjustment transformation matrices
+                    adj_transmats = cell(1,length(handles.restraints.rb));
+                    for kr = 1:length(handles.restraints.rb)
+                        adj_transmats{kr} = zeros(4);
+                    end
+                    for kr = 2:3
+                        baspoi6 = (kr-2)*6;
+                        dtrans = 10*dvecs(km,baspoi6+1:baspoi6+3);
+                        fprintf(1,'Translation(%i): (%3.1f, %3.1f, %3.1f) Å\n',kr,dtrans);
+                        deuler = dvecs(km,baspoi6+4:baspoi6+6);
+                        fprintf(1,'Rotation(%i)   : (%3.1f, %3.1f, %3.1f)°\n',kr,180*deuler/pi);
+                        adj_transmats{rb_assign(kr)} = transrot2affine(dtrans,deuler);
+                    end
+                    % apply adjustment of RBA
+%                     for kr = 1:length(handles.restraints.rb)                       
+%                         for kc = 1:length(handles.restraints.rb(kr).chains)
+%                             if min(abs(rna_chains-handles.restraints.rb(kr).chains(kc))) ~= 0
+%                                 model.structures{snum}(handles.restraints.rb(kr).chains(kc)).xyz{km} = ...
+%                                     affine_coor_set(model.structures{snum}(handles.restraints.rb(kr).chains(kc)).xyz{km},adj_transmats{kr});
+%                             end
+%                         end
+%                     end
                     % replace binding motifs by stemloops from library if stemloop
                     % libraries are tested
                     for klib = 1:length(stemlibs)
@@ -393,11 +429,12 @@ switch handles.progress
                                     model.structures{snum}(chain_indices(klib)).(fields{kfield}) = stemlibs{klib}.chains{ccombi(klib)}.(fields{kfield});
                                 end
                             end
-                            model.structures{snum}(chain_indices(klib)).xyz{km} = chain_coor;
-                            model.structures{snum}(chain_indices(klib)).residues{km} = stemlibs{klib}.chains{ccombi(klib)}.residues{1};
-                            model.structures{snum}(chain_indices(klib)).Bfactor{km} = stemlibs{klib}.chains{ccombi(klib)}.Bfactor{1};
-                            model.structures{snum}(chain_indices(klib)).Btensor{km} = stemlibs{klib}.chains{ccombi(klib)}.Btensor{1};
                         end
+                        model.structures{snum}(chain_indices(klib)).xyz{km} = chain_coor;
+                        model.structures{snum}(chain_indices(klib)).residues{km} = stemlibs{klib}.chains{ccombi(klib)}.residues{1};
+                        model.structures{snum}(chain_indices(klib)).Bfactor{km} = stemlibs{klib}.chains{ccombi(klib)}.Bfactor{1};
+                        model.structures{snum}(chain_indices(klib)).Btensor{km} = stemlibs{klib}.chains{ccombi(klib)}.Btensor{1};
+                        model.structures{snum}(chain_indices(klib)).atoms{km} = stemlibs{klib}.chains{ccombi(klib)}.atoms{1};
                     end
                     initialize_model = false;
                     env_sel = zeros(num_ch,2);
@@ -537,7 +574,7 @@ switch handles.progress
                 [restrain,restraints,monitor,cancelled,number,number_monitor] = process_domain_restraints(handles.restraints.pflex(kp),km);
                 if cancelled
                     add_msg_board(sprintf('ERROR: Restraint processing failed for flexible domain %i in model %i',kp,kp));
-                    return
+                    options.max_trials = -1;
                 end
                 options.n_restraints = number;
                 options.n_monitor = number_monitor;
@@ -548,7 +585,7 @@ switch handles.progress
                 flex_diagnostics = flex_engine(restraints,restrain,options,handles);
                 if flex_diagnostics.success == 0
                     add_msg_board(sprintf('Warning: No models found for flexible domain %i in rigid-body arrangement %i',kp,km));
-                    fprintf(fidr,'Modelling of flexible domain %i in rigid-body arrangement %i failed after %i s\n',kp,km,flex_diagnostics.runtime); 
+                    fprintf(fidr,'Modelling of flexible domain %i in rigid-body arrangement %i failed after %i s\n',kp,km,flex_diagnostics.runtime);
                     if kp < length(handles.restraints.pflex)
                         add_msg_board('Skipping remaining flexible sections in this rigid-body arrangement');
                         fprintf(fidr,'Skipping remaining flexible sections in this rigid-body arrangement\n');

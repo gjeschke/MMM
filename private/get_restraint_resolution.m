@@ -2,7 +2,7 @@ function [ntrials,res,trial_pattern,minlb,maxub] = get_restraint_resolution(lb,u
 
 if ~exist('restarget','var') || isempty(restarget)
     restarget = 1e6;
-end;
+end
 
 ntrials = 1;
 res = 0;
@@ -31,17 +31,17 @@ for k = 1:irbr
     ctrials = 1;
     while mi/(ctrials+1) > restarget
         ctrials = ctrials + 1;
-    end;
+    end
     if mi/(ctrials+1) > res
         res = mi/(ctrials+1);
-    end;
+    end
     ntrials = ntrials * ctrials;
     if ub(poi1,poi2) > maxub
         maxub = ub(poi1,poi2);
-    end;
+    end
     if lb(poi1,poi2) < minlb
         minlb = lb(poi1,poi2);
-    end;
+    end
     lb(poi1,poi2) = lb(poi1,poi2) + range(poi1,poi2)/2;
     lb(poi2,poi1) = lb(poi1,poi2);
     ub(poi1,poi2) = lb(poi1,poi2);
