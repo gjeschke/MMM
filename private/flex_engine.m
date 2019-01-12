@@ -196,13 +196,13 @@ while kMC <= ntrials
         else
             [coor,errcode,restrain1,cumprob,kres] = mk_loop_model(sequence, p_anchorN, p_anchorC, p_anchorNp, p_anchorCn, prot_coor, restrain, Rama_res, rescodes, min_prob, n_restraints);
             kres = kres-1;
-        end;
+        end
         p_coor{kp} = coor; 
         p_errcode(kp) = errcode;
         p_restrain{kp} = restrain1;
         p_cumprob(kp) = cumprob;
         p_kres(kp) = kres;
-    end;
+    end
     for kp = 1:parnum
         kMC = kMC + 1;
         coor = p_coor{kp};

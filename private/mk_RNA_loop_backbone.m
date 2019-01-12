@@ -130,7 +130,7 @@ if ~exist('options','var') || ~isfield(options,'attempts')
 end
 
 if ~exist('options','var') || ~isfield(options,'max_rot')
-    options.max_rot = 20; % maximum rotation of the loop end for matching final anchor fragment
+    options.max_rot = 25; % maximum rotation of the loop end for matching final anchor fragment, was 20
 end
 
 if ~exist('options','var') || ~isfield(options,'anchor_acc')
@@ -398,6 +398,10 @@ while err ~= 0 && runtime < 3600*options.maxtime && trials < maxtrials
                         fprintf(1,'rotation %4.1f°\n',EV(4));
                     end
                 end
+%                 if abs(EV(4)) < min_rot && norm(transmat_link(1:3,4))/fit_thresh < 3
+%                     fprintf(1,'rotation %4.1f°, translation %4.2f Å, RMSD %4.2f Å\n',EV(4),norm(transmat_link(1:3,4)),rmsd);
+%                     fprintf(1,'rel. rot. %4.2f, rel. trans. %4.2f, rel. RMSD %4.2f\n',EV(4)/min_rot,norm(transmat_link(1:3,4))/fit_thresh,rmsd/2*options.anchor_acc);
+%                 end
                 if abs(EV(4)) < min_rot && rmsd < 2*options.anchor_acc && norm(transmat_link(1:3,4)) < fit_thresh
                     err = 0;
                     correction.trans = transmat_link(1:3,4)';

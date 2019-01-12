@@ -43,7 +43,11 @@ p = [p1;p2];
 
 [np,~] = size(p);
 if np > 3
-    [~,cost] = convhulln(double(p));
+    try
+        [~,cost] = convhulln(double(p));
+    catch
+        cost = 1e6;
+    end
 end
 
 if cost > eps && cost < ft

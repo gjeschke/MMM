@@ -7,7 +7,7 @@ if ~exist('modnum','var')
 end
 
 if ~exist('options','var') || isempty(options)
-    options.refine = true;
+    options.refine = false;
 end
 
 forgive = 0.8;

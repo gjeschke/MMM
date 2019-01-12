@@ -1178,6 +1178,9 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                         fprintf(fid,'%8i%6i\n',parblocks,k-bask);
                     end
                     fclose(fid);
+                    if restraints.search
+                        success = success -1;
+                    end
                 end
             end
             if ~skip_mode

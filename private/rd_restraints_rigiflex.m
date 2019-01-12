@@ -69,6 +69,8 @@ if fid==-1
 end
 
 clear restraints
+
+restraints.search = false;
 restraints.ensemble = [];
 restraints.p_model = [];
 restraints.rb(1).chains = [];
@@ -154,6 +156,9 @@ while 1
         args=myline{1};
         if strcmp(char(args(1)),'#')
             switch upper(char(args(2)))
+                case 'SEARCH'
+                    mode=0;
+                    restraints.search = true;
                 case 'ENSEMBLE'
                     mode=0;
                     restraints.ensemble=str2double(char(args(3)));

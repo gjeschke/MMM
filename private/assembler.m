@@ -120,76 +120,76 @@ for ka = 1:arrangements
             scores(kc) = 1e6;
         end
     end
-    if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
-        fprintf(fidr,'\n    --- SANS fitting ---\n');
-        SANS_scores= zeros(1,mc);
-        SANS_curves{1} = [];
-        for kc = 1:mc
-            runtime = toc;
-            if runtime > maxtime
-                break
-            end
-            if min_dist(kc) > clash_threshold
-                if isfield(model, 'selected')
-                    model = rmfield(model,'selected');
-                end
-                ksel = 0;
-                SANS_chi = 0;
-                SANS_scores(kc) = 0;
-                for ks = 1:length(restraints.SANS)
-                    % ### needs to be fixed for RNA-connected model ###
-                    for kch = 1:length(restraints.SANS(ks).chains)
-                        ksel = ksel + 1;
-                        if restraints.SANS(ks).chains(kch) > 0 % chain in the rigid-body arrangement
-                            model.selected{ksel} = [model.current_structure restraints.SANS(ks).chains(kch) ka];
-                        else % flexible segment
-                            bas = 2*(abs(restraints.SANS(ks).chains(kch))-1);
-                            secstruct = all_combi(kc,bas+1);
-                            secmod = all_combi(kc,bas+2);
-                            model.selected{ksel} = [secstruct 1 secmod]; % the model that specifies this segment has only one chain
-                        end
-                    end
-                    % model.selected{1} = [all_combi(kc,1) 1 all_combi(kc,2)];
-                    pdbfile = sprintf('c%i_%i',ka,kc);
-                    to_be_deleted = sprintf('c%i_*.*',ka);
-                    wr_pdb_selected(pdbfile,'SANS');
-                    [chi2,~,~,result,fit] = fit_SANS_by_cryson(restraints.SANS(ks).data,pdbfile,restraints.SANS(ks).illres);
-                    if isempty(chi2) || isnan(chi2)
-                        SANS_chi = 1e6;
-                        if interactive
-                            fprintf(2,'Warning: SANS fitting failed for combination %i:\n',kc);
-                            fprintf(2,'%s',result);
-                        end
-                        fprintf(fidr,'SANS fitting of curve %i failed in arrangement %i for combination %i.\n',ks,ka,kc);
-                    else
-                        SANS_curves{ks} = fit;
-                        SANS_chi = SANS_chi + chi2;
-                    end
-                    delete(to_be_deleted);
-                end
-                chi2 = SANS_chi/length(restraints.SANS);
-                SANS_scores(kc) = SANS_scores(kc)+chi2;
-                if chi2 < 1e5
-                    fprintf(fidr,'SANS fit for arrangement %i with flexible section combination %i has chi^2 = %5.2f.\n',ka,kc,chi2);
-                    if interactive && options.display_SANS_fit
-                        % update multi plot axes
-                        axes(handles.axes_multi_plot);
-                        cla;
-                        hold on;
-                        for ks = 1:length(restraints.SANS)
-                            fit = SANS_curves{ks};
-                            plot(fit(:,1),fit(:,2));
-                            plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
-                        end
-                        title(sprintf('SANS fit for arrangement %i combi %i (chi^2 = %4.2f)',ka,kc,chi2));
-                        drawnow
-                    end
-                end
-            end
-        end
-        all_SANS{ka} = SANS_curves;
-        scores = scores + SANS_scores;
-    end
+% %     if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
+% %         fprintf(fidr,'\n    --- SANS fitting ---\n');
+% %         SANS_scores= zeros(1,mc);
+% %         SANS_curves{1} = [];
+% %         for kc = 1:mc
+% %             runtime = toc;
+% %             if runtime > maxtime
+% %                 break
+% %             end
+% %             if min_dist(kc) > clash_threshold
+% %                 if isfield(model, 'selected')
+% %                     model = rmfield(model,'selected');
+% %                 end
+% %                 ksel = 0;
+% %                 SANS_chi = 0;
+% %                 SANS_scores(kc) = 0;
+% %                 for ks = 1:length(restraints.SANS)
+% %                     % ### needs to be fixed for RNA-connected model ###
+% %                     for kch = 1:length(restraints.SANS(ks).chains)
+% %                         ksel = ksel + 1;
+% %                         if restraints.SANS(ks).chains(kch) > 0 % chain in the rigid-body arrangement
+% %                             model.selected{ksel} = [model.current_structure restraints.SANS(ks).chains(kch) ka];
+% %                         else % flexible segment
+% %                             bas = 2*(abs(restraints.SANS(ks).chains(kch))-1);
+% %                             secstruct = all_combi(kc,bas+1);
+% %                             secmod = all_combi(kc,bas+2);
+% %                             model.selected{ksel} = [secstruct 1 secmod]; % the model that specifies this segment has only one chain
+% %                         end
+% %                     end
+% %                     % model.selected{1} = [all_combi(kc,1) 1 all_combi(kc,2)];
+% %                     pdbfile = sprintf('c%i_%i',ka,kc);
+% %                     to_be_deleted = sprintf('c%i_*.*',ka);
+% %                     wr_pdb_selected(pdbfile,'SANS');
+% %                     [chi2,~,~,result,fit] = fit_SANS_by_cryson(restraints.SANS(ks).data,pdbfile,restraints.SANS(ks).illres);
+% %                     if isempty(chi2) || isnan(chi2)
+% %                         SANS_chi = 1e6;
+% %                         if interactive
+% %                             fprintf(2,'Warning: SANS fitting failed for combination %i:\n',kc);
+% %                             fprintf(2,'%s',result);
+% %                         end
+% %                         fprintf(fidr,'SANS fitting of curve %i failed in arrangement %i for combination %i.\n',ks,ka,kc);
+% %                     else
+% %                         SANS_curves{ks} = fit;
+% %                         SANS_chi = SANS_chi + chi2;
+% %                     end
+% %                     delete(to_be_deleted);
+% %                 end
+% %                 chi2 = SANS_chi/length(restraints.SANS);
+% %                 SANS_scores(kc) = SANS_scores(kc)+chi2;
+% %                 if chi2 < 1e5
+% %                     fprintf(fidr,'SANS fit for arrangement %i with flexible section combination %i has chi^2 = %5.2f.\n',ka,kc,chi2);
+% %                     if interactive && options.display_SANS_fit
+% %                         % update multi plot axes
+% %                         axes(handles.axes_multi_plot);
+% %                         cla;
+% %                         hold on;
+% %                         for ks = 1:length(restraints.SANS)
+% %                             fit = SANS_curves{ks};
+% %                             plot(fit(:,1),fit(:,2));
+% %                             plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
+% %                         end
+% %                         title(sprintf('SANS fit for arrangement %i combi %i (chi^2 = %4.2f)',ka,kc,chi2));
+% %                         drawnow
+% %                     end
+% %                 end
+% %             end
+% %         end
+% %         all_SANS{ka} = SANS_curves;
+% %         scores = scores + SANS_scores;
+% %     end
     if isfield(restraints,'SAXS') && ~isempty(restraints.SAXS)
         fprintf(fidr,'\n    --- SAXS fitting ---\n');
         SAXS_scores= zeros(1,mc);
@@ -276,12 +276,12 @@ end
 
 diagnostics.scores = full_scores;
 diagnostics.combi = full_combi;
-if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
-    diagnostics.SANS_curves = all_SANS;
-end
-if isfield(restraints,'SAXS') && ~isempty(restraints.SAXS)
-    diagnostics.SAXS_curves = all_SAXS;
-end
+% if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
+%     diagnostics.SANS_curves = all_SANS;
+% end
+% if isfield(restraints,'SAXS') && ~isempty(restraints.SAXS)
+%     diagnostics.SAXS_curves = all_SAXS;
+% end
 
 
 % combine and sort scores

@@ -4009,7 +4009,7 @@ if length(model.structures{snum}(cnum).residues) < 2
     return
 end
 
-[resaxis,s,npN,npC,meanct,msg] = analyze_local_order(indices);
+[resaxis,s,npN,npC,meanct,uncert,msg] = analyze_local_order(indices);
 
 if msg.error
     add_msg_board(sprintf('ERROR (locorder): %s',msg.text)); 
@@ -4017,7 +4017,7 @@ end
 
 figure(1); clf;
 set(gca,'FontSize',12);
-plot(resaxis,s,'k.','MarkerSize',14);
+errorbar(resaxis,s,uncert(1,:),uncert(2,:),'k.','MarkerSize',14);
 xlabel('Residue number');
 ylabel('Order parameter s');
 title(sprintf('Local order parameter for chain %s',adr));
@@ -4032,7 +4032,7 @@ ylabel('n_p');
 title(sprintf('Shape persistence numbers n_{p,N} and n_{p,C} for chain %s',adr));
 
 fname = sprintf('ensemble_local_order_%s.mat',adr);
-save(fname,'resaxis','s','npN','npC','meanct');
+save(fname,'resaxis','s','npN','npC','meanct','uncert');
 
 function inertiaframe
 

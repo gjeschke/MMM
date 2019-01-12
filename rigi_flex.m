@@ -345,9 +345,25 @@ switch handles.progress
         guidata(hObject,handles);
         
     case 1 % RNA Flex
+        solutions_given = false;
+        solutions = [];
+        
+        if isfield(handles.restraints,'solutions') && ~isempty(handles.restraints.solutions)
+            solutions_given = true;
+            poi = strfind(handles.restraints.solutions,'.dat');
+            if isempty(poi)
+                soln_name = strcat(handles.restraints.solutions,'.dat');
+            else
+                soln_name = handles.restraints.solutions;
+            end
+            solutions = load(soln_name);
+            rba_solutions = round(solutions);
+        end
         stag = mk_address_parts(handles.diagnostics.snum);
         [pathstr,basname] = fileparts(handles.options.fname);
         report_name = fullfile(pathstr,strcat(basname,'_RNA_link_report.txt'));
+        linkable_name = fullfile(pathstr,strcat(basname,'_linkable.dat'));
+        curated_name = fullfile(pathstr,strcat(basname,'_curated.dat'));
         [solutions,trafo,stemlibs,dvecs] = fit_stemloop_combinations(handles.restraints,handles.template_snum,handles.diagnostics.snum,report_name);
         % assign the stemloops to rigid bodies, needed for RBA adjustment
         rb_assign = zeros(1,length(stemlibs));
@@ -398,25 +414,27 @@ switch handles.progress
                     % make adjustment transformation matrices
                     adj_transmats = cell(1,length(handles.restraints.rb));
                     for kr = 1:length(handles.restraints.rb)
-                        adj_transmats{kr} = zeros(4);
+                        adj_transmats{kr} = eye(4);
                     end
                     for kr = 2:3
                         baspoi6 = (kr-2)*6;
                         dtrans = 10*dvecs(km,baspoi6+1:baspoi6+3);
-                        fprintf(1,'Translation(%i): (%3.1f, %3.1f, %3.1f) Å\n',kr,dtrans);
+                        % fprintf(1,'Translation(%i): (%3.1f, %3.1f, %3.1f) Å\n',kr,dtrans);
                         deuler = dvecs(km,baspoi6+4:baspoi6+6);
-                        fprintf(1,'Rotation(%i)   : (%3.1f, %3.1f, %3.1f)°\n',kr,180*deuler/pi);
+                        % fprintf(1,'Rotation(%i)   : (%3.1f, %3.1f, %3.1f)°\n',kr,180*deuler/pi);
                         adj_transmats{rb_assign(kr)} = transrot2affine(dtrans,deuler);
                     end
                     % apply adjustment of RBA
-%                     for kr = 1:length(handles.restraints.rb)                       
-%                         for kc = 1:length(handles.restraints.rb(kr).chains)
-%                             if min(abs(rna_chains-handles.restraints.rb(kr).chains(kc))) ~= 0
-%                                 model.structures{snum}(handles.restraints.rb(kr).chains(kc)).xyz{km} = ...
-%                                     affine_coor_set(model.structures{snum}(handles.restraints.rb(kr).chains(kc)).xyz{km},adj_transmats{kr});
-%                             end
-%                         end
-%                     end
+                    for kr = 1:length(handles.restraints.rb)                       
+                        for kc = 1:length(handles.restraints.rb(kr).chains)
+                            if min(abs(rna_chains-handles.restraints.rb(kr).chains(kc))) ~= 0
+                                adr_rep = mk_address([snum handles.restraints.rb(kr).chains(kc) km]);
+          %                      fprintf(1,'Replacing coordinates of %s\n',adr_rep);
+                                model.structures{snum}(handles.restraints.rb(kr).chains(kc)).xyz{km} = ...
+                                    affine_coor_set(model.structures{snum}(handles.restraints.rb(kr).chains(kc)).xyz{km},adj_transmats{kr});
+                            end
+                        end
+                    end
                     % replace binding motifs by stemloops from library if stemloop
                     % libraries are tested
                     for klib = 1:length(stemlibs)
@@ -519,6 +537,35 @@ switch handles.progress
                         initflag = false;
                         success_vec(km) = 1;
                         success = true;
+                        if solutions_given
+                            link_fid = fopen(linkable_name,'at');
+                            fprintf(link_fid,'%8i%6i\n',rba_solutions(km,1),rba_solutions(km,2));
+                            fclose(link_fid);
+                            add_msg_board('Fitting SAXS restraints');
+                            model = rmfield(model,'selected');
+                            model.selected{1} = [handles.diagnostics.snum,1,km];
+                            model.selected{2} = [handles.diagnostics.snum,3,km];
+                            model.selected{3} = [handles.diagnostics.snum,5,km];
+                            model.selected{4} = [handles.diagnostics.snum,8,km];
+                            pdbfile = sprintf('t_%i',round(10000*rand));
+                            to_be_deleted = 't*.*';
+                            wr_pdb_selected(pdbfile,'SAXS');
+                            SAXS_curve = load_SAXS_curve('1-4s-Buffer.dat');
+                            sm = max(SAXS_curve(:,1));
+                            [chi2,~,~,result] = fit_SAXS_by_crysol('1-4s-Buffer.dat',pdbfile,sm);
+                            if isempty(chi2) || isnan(chi2)
+                                SAXS_chi = 1e6;
+                                fprintf(2,'Warning: SAXS fitting failed\n');
+                                fprintf(2,'%s',result);
+                            else
+                                fprintf(1,'SAXS curve fitted with chi^2 of %6.3f\n',chi2);
+                                SAXS_chi = chi2;
+                            end
+                            delete(to_be_deleted);
+                            curated_fid = fopen(curated_name,'at');
+                            fprintf(curated_fid,'%8i%6i%8.3f%8.3f\n',rba_solutions(km,1),rba_solutions(km,2),handles.diagnostics.final_chi2_SANS(km),SAXS_chi);
+                            fclose(curated_fid);
+                        end
                     end
                 end
             end
@@ -2648,3 +2695,27 @@ if isfield(restraints.RNA,'DEER')
     handles.distributions = distributions;
 end
 
+function curve = load_SAXS_curve(fname)
+
+fid = fopen(fname);
+if fid==-1
+    curve = [];
+    add_msg_board('Warning. Loading of SAXS curve failed');
+    return;
+end
+nl=0;
+curve = zeros(10000,4);
+while 1
+    tline = fgetl(fid);
+    if ~ischar(tline), break, end
+    %         fprintf(1,'%s\n',tline); % echo for debugging
+    if nl > 0 % skip first line
+        dataset = str2num(tline);
+        ncol = length(dataset);
+        curve(nl,1:ncol) = dataset;
+    end
+    nl = nl + 1;
+end
+curve = curve(1:nl-1,:);
+curve(:,1) = 10*curve(:,1);
+fclose(fid);

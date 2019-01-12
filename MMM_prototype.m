@@ -5872,7 +5872,7 @@ if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
 end
 
 SAXS_chi = 0;
-if isfield(restraints,'SAXS') && ~isempty(restraints.SANS)
+if isfield(restraints,'SAXS') && ~isempty(restraints.SAXS)
     add_msg_board('Fitting SAXS restraints');
     fprintf(fid,'\nSAXS restraints\n\n');
     to_be_deleted = '';
