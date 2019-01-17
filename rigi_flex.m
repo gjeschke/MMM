@@ -346,7 +346,6 @@ switch handles.progress
         
     case 1 % RNA Flex
         solutions_given = false;
-        solutions = [];
         
         if isfield(handles.restraints,'solutions') && ~isempty(handles.restraints.solutions)
             solutions_given = true;
@@ -362,8 +361,8 @@ switch handles.progress
         stag = mk_address_parts(handles.diagnostics.snum);
         [pathstr,basname] = fileparts(handles.options.fname);
         report_name = fullfile(pathstr,strcat(basname,'_RNA_link_report.txt'));
-        linkable_name = fullfile(pathstr,strcat(basname,'_linkable.dat'));
-        curated_name = fullfile(pathstr,strcat(basname,'_curated.dat'));
+        linkable_name = fullfile(pathstr,strcat(basname,'_RNA_linkable.dat'));
+        curated_name = fullfile(pathstr,strcat(basname,'_RNA_curated.dat'));
         [solutions,trafo,stemlibs,dvecs] = fit_stemloop_combinations(handles.restraints,handles.template_snum,handles.diagnostics.snum,report_name);
         % assign the stemloops to rigid bodies, needed for RBA adjustment
         rb_assign = zeros(1,length(stemlibs));
@@ -399,6 +398,7 @@ switch handles.progress
                 chain_indices(ksl) = ind(2);
             end
             success_vec = zeros(1,handles.diagnostics.success);
+            initialize_model = true;
             for km = 1:handles.diagnostics.success % loop over rigid-body models
                 csoln = solutions(solutions(:,1)==km,:);
                 stretch = csoln(:,5);
@@ -407,7 +407,6 @@ switch handles.progress
                 success = false;
                 kcombi = 0;
                 snum = handles.diagnostics.snum;
-                initialize_model = true;
                 while ~isempty(stretch) && ~success && kcombi < length(stretch) && kcombi < 1
                     kcombi = kcombi + 1;
                     ccombi = csoln(kcombi,2:4);
@@ -581,6 +580,23 @@ switch handles.progress
         guidata(hObject,handles);
 
     case 2 % Flex
+        solutions_given = false;
+        
+        if isfield(handles.restraints,'solutions') && ~isempty(handles.restraints.solutions)
+            solutions_given = true;
+            poi = strfind(handles.restraints.solutions,'.dat');
+            if isempty(poi)
+                soln_name = strcat(handles.restraints.solutions,'.dat');
+            else
+                soln_name = handles.restraints.solutions;
+            end
+            solutions = load(soln_name);
+            rba_solutions = round(solutions);
+        end
+        [pathstr,basname] = fileparts(handles.options.fname);
+        linkable_name = fullfile(pathstr,strcat(basname,'_peptide_linkable.dat'));
+        curated_name = fullfile(pathstr,strcat(basname,'_peptide_curated.dat'));
+
         options.min_approach = 1.2;
         options.deterministic = handles.checkbox_std_seed.Value;
         options.max_trials = handles.max_trials;
@@ -646,6 +662,111 @@ switch handles.progress
                 handles.text_time_left.ForegroundColor = [0,127,0]/256;
                 drawnow
                 set(gcf,'Pointer','arrow');
+            end
+            if flex_diagnostics.success
+                if solutions_given
+                    link_fid = fopen(linkable_name,'at');
+                    fprintf(link_fid,'%8i%6i\n',rba_solutions(km,1),rba_solutions(km,2));
+                    fclose(link_fid);
+                    add_msg_board('Fitting SAXS restraints');
+                    model = rmfield(model,'selected');
+                    model.selected{1} = [handles.diagnostics.snum,1,km];
+                    model.selected{2} = [handles.diagnostics.snum,3,km];
+                    model.selected{3} = [handles.diagnostics.snum,5,km];
+                    model.selected{4} = [handles.diagnostics.snum,8,km];
+                    pdbfile = sprintf('t_%i',round(10000*rand));
+                    to_be_deleted = 't*.*';
+                    wr_pdb_selected(pdbfile,'SAXS');
+                    SAXS_curve = load_SAXS_curve('1-4s-Buffer.dat');
+                    sm = max(SAXS_curve(:,1));
+                    [chi2,~,~,result] = fit_SAXS_by_crysol('1-4s-Buffer.dat',pdbfile,sm);
+                    if isempty(chi2) || isnan(chi2)
+                        SAXS_chi_0 = 1e6;
+                        fprintf(2,'Warning: SAXS fitting failed\n');
+                        fprintf(2,'%s',result);
+                    else
+                        fprintf(1,'SAXS curve fitted with chi^2 of %6.3f\n',chi2);
+                        SAXS_chi_0 = chi2;
+                    end
+                    delete(to_be_deleted);
+                    for kp = 1:length(handles.restraints.pflex)
+                        model.selected{4+kp} = [all_flex_models(km,kp),1,1];
+                    end
+                    pdbfile = sprintf('t_%i',round(10000*rand));
+                    to_be_deleted = 't*.*';
+                    wr_pdb_selected(pdbfile,'SAXS');
+                    SAXS_curve = load_SAXS_curve('1-4s-Buffer.dat');
+                    sm = max(SAXS_curve(:,1));
+                    [chi2,~,~,result] = fit_SAXS_by_crysol('1-4s-Buffer.dat',pdbfile,sm);
+                    if isempty(chi2) || isnan(chi2)
+                        SAXS_chi = 1e6;
+                        fprintf(2,'Warning: SAXS fitting failed\n');
+                        fprintf(2,'%s',result);
+                    else
+                        fprintf(1,'SAXS curve fitted with chi^2 of %6.3f\n',chi2);
+                        SAXS_chi = chi2;
+                    end
+                    delete(to_be_deleted);
+                    add_msg_board('Fitting SANS restraints');
+                    model = rmfield(model,'selected');
+                    model.selected{1} = [handles.diagnostics.snum,1,km];
+                    model.selected{2} = [handles.diagnostics.snum,3,km];
+                    model.selected{3} = [handles.diagnostics.snum,5,km];
+                    pdbfile = sprintf('t_%i',round(10000*rand));
+                    to_be_deleted = 't*.*';
+                    wr_pdb_selected(pdbfile,'SANS');
+                    [chi2,~,~,result] = fit_SANS_by_cryson('1-4sD2O_66_1p2m_atsas.dat',pdbfile,'ill_1p2m.res');
+                    if isempty(chi2) || isnan(chi2)
+                        SANS_chi_1p2_0 = 1e6;
+                        fprintf(2,'Warning: SANS fitting failed\n');
+                        fprintf(2,'%s',result);
+                    else
+                        fprintf(1,'SANS curve fitted with chi^2 of %6.3f\n',chi2);
+                        SANS_chi_1p2_0 = chi2;
+                    end
+                    [chi2,~,~,result] = fit_SANS_by_cryson('1-4sD2O_66_4m_atsas.dat',pdbfile,'ill_4m.res');
+                    if isempty(chi2) || isnan(chi2)
+                        SANS_chi_4_0 = 1e6;
+                        fprintf(2,'Warning: SANS fitting failed\n');
+                        fprintf(2,'%s',result);
+                    else
+                        fprintf(1,'SANS curve fitted with chi^2 of %6.3f\n',chi2);
+                        SANS_chi_4_0 = chi2;
+                    end
+                    delete(to_be_deleted);
+                    for kp = 1:length(handles.restraints.pflex)
+                        model.selected{3+kp} = [all_flex_models(km,kp),1,1];
+                    end
+                    pdbfile = sprintf('t_%i',round(10000*rand));
+                    to_be_deleted = 't*.*';
+                    wr_pdb_selected(pdbfile,'SANS');
+                    [chi2,~,~,result] = fit_SANS_by_cryson('1-4sD2O_66_1p2m_atsas.dat',pdbfile,'ill_1p2m.res');
+                    if isempty(chi2) || isnan(chi2)
+                        SANS_chi_1p2 = 1e6;
+                        fprintf(2,'Warning: SANS fitting failed\n');
+                        fprintf(2,'%s',result);
+                    else
+                        fprintf(1,'SANS curve fitted with chi^2 of %6.3f\n',chi2);
+                        SANS_chi_1p2 = chi2;
+                    end
+                    [chi2,~,~,result] = fit_SANS_by_cryson('1-4sD2O_66_4m_atsas.dat',pdbfile,'ill_4m.res');
+                    if isempty(chi2) || isnan(chi2)
+                        SANS_chi_4 = 1e6;
+                        fprintf(2,'Warning: SANS fitting failed\n');
+                        fprintf(2,'%s',result);
+                    else
+                        fprintf(1,'SANS curve fitted with chi^2 of %6.3f\n',chi2);
+                        SANS_chi_4 = chi2;
+                    end
+                    delete(to_be_deleted);
+                    curated_fid = fopen(curated_name,'at');
+                    fprintf(curated_fid,'%8i%6i%8.3f%8.3f%8.3f%8.3f%8.3f%8.3f%8.3f%8.3f\n',rba_solutions(km,1),rba_solutions(km,2),...
+                        handles.diagnostics.final_chi2_SANS(km),(SANS_chi_1p2+SANS_chi_4)/2,...
+                        SANS_chi_1p2_0,SANS_chi_1p2,...
+                        SANS_chi_4_0,SANS_chi_4,...
+                        SAXS_chi_0,SAXS_chi);
+                    fclose(curated_fid);
+                end
             end
         end
         handles.all_flex_models = all_flex_models;
