@@ -22,7 +22,7 @@ function conformation = fit_RNA_to_binding_motif(decoys,motif,nts,rrmcoor,used,o
 %
 % G. Jeschke, 19.03.2018
 
-acceptance = 2.5; % acceptance threshold, RMSD (Å) for overlap of bases of the binding nts
+acceptance = 2.0; % acceptance threshold, RMSD (Å) for overlap of bases of the binding nts
 
 if ~exist('conformation','var') || isempty(conformation)
     conformation = 0;

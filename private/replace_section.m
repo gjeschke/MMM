@@ -1,5 +1,5 @@
-function replace_section(res1i,res1f,res2i,res2f)
-% replace_section(adr1,res1a,res1e,adr2,res2a,res2e)
+function [trans,euler,anchors] = replace_section(res1i,res1f,res2i,res2f,test)
+% [trans,euler,anchor] = replace_section(adr1,res1a,res1e,adr2,res2a,res2e,test)
 %
 % - replaces a section of amino acid residues in a chain model by
 %   corresponding residues from another chain model
@@ -14,11 +14,19 @@ function replace_section(res1i,res1f,res2i,res2f)
 % res1f     final residue adddress, C-terminal anchor for superposition
 % res2i     initial residue address of the new conformation
 % res2f     final residue address of the new conformation
+% test      optional flag for test mode, defaults to false
+%
+% trans     translation vectors for initial and final anchor residues
+% euler     euler rotations for initial and final anchor residues
+% anchors   mean backbone coordinates of initial and final anchor residues
 %
 % G. Jeschke, 18.10.2018
 
 global model
 
+if ~exist('test','var')
+    test = false;
+end
 
 [indr1i,msg] = resolve_address(res1i);
 if msg.error
@@ -61,29 +69,6 @@ if length(indr2f) ~= 4
     return
 end
 
-inconsistent = sum(abs(indr1i(1:3)-indr1f(1:3)));
-
-if inconsistent
-    add_msg_board(sprintf('ERROR: Targte initial (%s) and final (%s) residue address do not belong to the same chain model in section replacement. Aborting.',res1i,res1f));
-    return
-end
-
-numlinks0 = indr1f(4) - indr1i(4);
-
-inconsistent = sum(abs(indr2i(1:3)-indr2f(1:3)));
-
-if inconsistent
-    add_msg_board(sprintf('ERROR: Template initial (%s) and final (%s) residue address do not belong to the same chain model in section replacement. Aborting.',res2i,res2f));
-    return
-end
-
-numlinks = indr2f(4) - indr2i(4);
-
-if numlinks ~= numlinks0
-    add_msg_board(sprintf('ERROR: Template (%i) and target (%) section have different length in section replacement. Aborting.',numlinks,numlinks0));
-    return
-end
-
 [msg,coor1i] = get_residue(indr1i,'xyz_backbone'); 
 if msg.error
     add_msg_board(sprintf('ERROR: Coordinates of target initial residue %s could not be retrieved in section replacement (%s). Aborting.',res1i,msg.text));
@@ -123,28 +108,68 @@ if m1f ~= m2f
 end
     
 [~,~,transmati] = rmsd_superimpose(coor1i,coor2i); % affine transformation for initial residue
-coor2fa = affine_trafo_coor(coor2f,transmati); % applied to final residue
-[~,~,transmata] = rmsd_superimpose(coor1f,coor2fa); % additional affine transfor required at final residue
+[transi,euleri] = affine2transrot(transmati); % additional translation vector and euler angles for final residue
+
+[~,~,transmata] = rmsd_superimpose(coor1f,coor2f); % additional affine transformation required at final residue
 [transa,eulera] = affine2transrot(transmata); % additional translation vector and euler angles for final residue
+
+trans = zeros(2,3);
+trans(1,:) = transi;
+trans(2,:) = transa;
+
+euler = zeros(2,3);
+euler(1,:) = euleri;
+euler(2,:) = eulera;
+
+anchors = zeros(2,3);
+anchors(1,:) = mean(coor2i);
+anchors(2,:) = mean(coor2f);
+
+if test
+    return
+end
+
+numlinks0 = indr1f(4) - indr1i(4);
+
+numlinks = indr2f(4) - indr2i(4);
+
+if numlinks ~= numlinks0
+    add_msg_board(sprintf('ERROR: Template (%i) and target (%i) section have different length in section replacement. Aborting.',numlinks,numlinks0));
+    return
+end
+
+inconsistent = sum(abs(indr1i(1:3)-indr1f(1:3)));
+
+if inconsistent
+    add_msg_board(sprintf('ERROR: Target initial (%s) and final (%s) residue address do not belong to the same chain model in section replacement. Aborting.',res1i,res1f));
+    return
+end
+
+inconsistent = sum(abs(indr2i(1:3)-indr2f(1:3)));
+
+if inconsistent
+    add_msg_board(sprintf('ERROR: Template initial (%s) and final (%s) residue address do not belong to the same chain model in section replacement. Aborting.',res2i,res2f));
+    return
+end
+
 
 target_ind = indr1i;
 template_ind = indr2i;
 
+xyz = model.structures{target_ind(1)}(target_ind(2)).xyz{target_ind(3)};
+xyz0 = model.structures{template_ind(1)}(template_ind(2)).xyz{template_ind(3)};
+
 for k = 1:numlinks-1 % loop over all residues that have to be replaced
-    dtrans = k*transa/numlinks;
-    deuler = k*eulera/numlinks;
-    transmat1 = affine('translation',dtrans);
-    transmat2 = affine('Euler',deuler);
-    transmat = transmat1*transmat2;
     target_ind(4) = indr1i(4)+k;
     template_ind(4) = indr2i(4)+k;
+%     target_adr = mk_address(target_ind,true);
+%     template_adr = mk_address(template_ind,true);
+%     fprintf(1,'Replacing residue %s by residue %s\n',target_adr,template_adr);
     tags = model.structures{target_ind(1)}(target_ind(2)).residues{target_ind(3)}.info(target_ind(4)).atom_tags;
     atom_numbers = model.structures{target_ind(1)}(target_ind(2)).residues{target_ind(3)}.info(target_ind(4)).atom_numbers;
     nat = length(atom_numbers);
-    xyz = model.structures{target_ind(1)}(target_ind(2)).xyz{target_ind(3)};
     temp_tags = model.structures{template_ind(1)}(template_ind(2)).residues{template_ind(3)}.info(template_ind(4)).atom_tags;
     temp_atom_numbers = model.structures{template_ind(1)}(template_ind(2)).residues{template_ind(3)}.info(template_ind(4)).atom_numbers;
-    xyz0 = model.structures{template_ind(1)}(template_ind(2)).xyz{template_ind(3)};
     new_tags = ':';
     new_anums = cell(1,nat);
     atpoi = 0;
@@ -166,8 +191,7 @@ for k = 1:numlinks-1 % loop over all residues that have to be replaced
             for kl = 1:mtemp
                 poi_temp = temp_anums(kl,1);
                 xyz_temp = xyz0(poi_temp,:);
-                coor1 = affine_trafo_coor(xyz_temp,transmati);
-                xyz_targ = affine_trafo_coor(coor1,transmat);
+                xyz_targ = adjust_xyz(xyz_temp,anchors,trans,euler);
                 poi_targ = targ_anums(kl,1);
                 xyz(poi_targ,:) = xyz_targ;
             end       
@@ -175,7 +199,23 @@ for k = 1:numlinks-1 % loop over all residues that have to be replaced
     end
     model.structures{target_ind(1)}(target_ind(2)).residues{target_ind(3)}.info(target_ind(4)).atom_tags = new_tags;
     model.structures{target_ind(1)}(target_ind(2)).residues{target_ind(3)}.info(target_ind(4)).atom_numbers = new_anums(1:atpoi);
-    model.structures{target_ind(1)}(target_ind(2)).xyz{target_ind(3)} = xyz;
 end
+model.structures{target_ind(1)}(target_ind(2)).xyz{target_ind(3)} = xyz;
 
+function coor = adjust_xyz(coor0,anchors,trans,euler)
+
+weights = zeros(1,length(anchors));
+for ka = 1:2
+    d = norm(coor0 - anchors(ka,:)) + 1e-6; % avoid accidental zero coordinate
+    weights(ka) = 1/d;
+end
+weights = weights/sum(weights); % normalization
+mean_trans = zeros(1,3);
+mean_euler = zeros(1,3);
+for ka = 1:2
+    mean_trans = mean_trans + weights(ka)*trans(ka,:);
+    mean_euler = mean_euler + weights(ka)*euler(ka,:);
+end
+transmat =  transrot2affine(mean_trans,mean_euler);
+coor = affine_trafo_coor(coor0,transmat);
 

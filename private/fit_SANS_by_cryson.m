@@ -1,5 +1,9 @@
-function [chi2,outname,status,result,fit] = fit_SANS_by_cryson(datafile,pdbfile,illres)
+function [chi2,outname,status,result,fit] = fit_SANS_by_cryson(datafile,pdbfile,illres,options)
 %
+
+if ~exist('options','var')
+    options.err = false;
+end
 
 poi = strfind(pdbfile,'.pdb');
 if isempty(poi)
@@ -7,10 +11,23 @@ if isempty(poi)
     pdbfile = strcat(pdbfile,'.pdb');
 else
     outname = [pdbfile(1:poi-1) '00.fit'];
-end;
+end
 
 s=which('cryson.exe');
 cmd=[s ' ' pdbfile ' ' datafile ' -res ' illres];
+
+if isfield(options,'lm')
+    cmd = sprintf('%s -lm %i',cmd,options.lm);
+end
+
+if isfield(options,'fb')
+    cmd = sprintf('%s -fb %i',cmd,options.fb);
+end
+
+if isfield(options,'D2O')
+    cmd = sprintf('%s -D2O %5.2f',cmd,options.D2O);
+end
+
 [status,result]=dos(cmd);
 
 % chi = [];
@@ -36,7 +53,7 @@ fid = fopen(outname);
 if fid==-1
     fit = [];
     return;
-end;
+end
 nl=0;
 while 1
     tline = fgetl(fid);
@@ -58,13 +75,17 @@ while 1
             args = rem{1};
             chi = str2double(char(args(1)));
             chi2 = chi^2;
-        end;
+        end
     end
     nl=nl+1;
 end
 fit = fit(1:nl-1,:);
 if ncol == 4 % remove error column from output of newer CRYSON
-    fit = fit(:,[1 2 4]);
+    if options.err
+        fit = fit(:,[1 2 4 3]);
+    else
+        fit = fit(:,[1 2 4]);
+    end
 end
 fclose(fid);
 

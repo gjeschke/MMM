@@ -39,6 +39,8 @@ stag0 = mk_address(snum0);
 libs = cell(1,length(restraints.stemlibs));
 chains = char(1,3);
 sls = char(1,3);
+rrm_hulls(3).vertices = [];
+rrm_hulls(3).faces = [];
 for k = 1:length(restraints.stemlibs)
     lib = load(restraints.stemlibs{k}.name);
     libs{k} = lib.library;
@@ -65,6 +67,11 @@ for k = models % 1:nmod loop over all models
         adr = sprintf('%s(%c){%i}',stag,chains(kc),k);
         [~,xyz_new] = get_object(adr,'xyz_heavy');
         target{kc} = xyz_new;
+        faces = convhulln(xyz_new);
+        [na,~] = size(faces);
+        [kpa,ar] = reducepatch(faces,xyz_new,na);
+        rrm_hulls(kc).vertices = double(ar);
+        rrm_hulls(kc).faces = kpa;
         [~,~,transmat] = rmsd_superimpose(xyz_new,template{kc});
         trafo{k,kc} = transmat;
     end
@@ -75,14 +82,21 @@ for k = models % 1:nmod loop over all models
         library = libs{ksl};
         for kdecoy = 1:length(library.chains)
             xyz_sl = library.chains{kdecoy}.xyz{1};
+            hull_vert = library.hulls(kdecoy).vertices;
             transmat = trafo{k,ksl};
             xyz_sl = affine_trafo_coor(xyz_sl,transmat);
+            hull_vert = affine_trafo_coor(hull_vert,transmat);
             full_cost = 0;
             all_costs = zeros(1,3);
+            % all_costs1 = zeros(1,3);
             for kc = 1:3
                 xyz_rrm = target{kc};
-                cost = clash_cost(xyz_rrm,xyz_sl,clash_threshold);
+                % cost = clash_cost(xyz_rrm,xyz_sl,clash_threshold);
+                cost = clash_cost_super_fast(rrm_hulls(kc).vertices,...
+                    rrm_hulls(kc).faces,hull_vert,library.hulls(kdecoy).faces,...
+                    xyz_rrm,xyz_sl,clash_threshold);
                 all_costs(kc) = cost;
+                % all_costs1(kc) = cost1;
                 if kc ~= ksl % exclude clashes with the own RRM
                     full_cost = full_cost + cost;
                 end

@@ -1541,7 +1541,7 @@ seqtype=0;
                 [f,status]=urlwrite(query,fname);
                 if status,
                     newref=rd_MEDLINE(f,1);
-                    if ~isempty(newref),
+                    if ~isempty(newref)
                         newref(1).short=references(k).short;
                         if ~isempty(references(k).DOI),
                             newref(1).DOI=references(k).DOI;

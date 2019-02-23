@@ -1630,10 +1630,10 @@ handles.snum_vec = snum_vec;
 
 fprintf(fid_report,'--- Distribution shifts and overlaps ---\n\n');
 fprintf(fid_report,'Shift [Å]\tOverlap\n');
-for kd = 1:handles.n_restraints,
+for kd = 1:handles.n_restraints
     [overlap,shift] = get_overlap(handles.rax,handles.distributions{kd},handles.restraint_distr{kd});
     fprintf(fid_report,'%5.2f\t%5.3f\n',shift,overlap);
-end;
+end
 fclose(fid_report);
 
 
@@ -3107,8 +3107,7 @@ distr2 = distr2/sum(distr2);
 shift = sum(rax.*distr1) - sum(rax.*distr2); 
 % fprintf(1,'Sim. mean distance: %5.2f\n',sum(rax.*distr1));
 % fprintf(1,'Restraint mean distance: %5.2f\n',sum(rax.*distr2));
-diff = distr1-distr2;
-overlap = 1 - sqrt(sum(diff.^2));
+overlap = sum(min([distr1;distr2]));
     
 
 function spin_coor = get_bilabel_pos(rindices,label)

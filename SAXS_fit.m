@@ -161,7 +161,10 @@ my_fig = gcf;
 set(my_fig,'Pointer','watch');
 drawnow;
 wr_pdb_selected(pdbfile,'SAXS');
-[chi2,~,~,result,fit] = fit_SAXS_by_crysol(handles.SAXS_datafile,pdbfile,handles.sm);
+options.sm = 10*handles.sm;
+options.lm = 30;
+options.fb = 18;
+[chi2,~,~,result,fit] = fit_SAXS_by_crysol(handles.SAXS_datafile,pdbfile,options);
 if isempty(chi2) || isnan(chi2)
     handles.SAXS_chi2 = 1e6;
     handles.SAXS_fit = [];
@@ -226,31 +229,6 @@ xlabel('q');
 ylabel('I');
 
 guidata(handles.pushbutton_copy,handles);
-
-function curve = load_SAXS_curve(fname)
-
-fid = fopen(fname);
-if fid==-1
-    curve = [];
-    add_msg_board('Warning. Loading of SAXS curve failed');
-    return;
-end;
-nl=0;
-curve = zeros(10000,4);
-while 1
-    tline = fgetl(fid);
-    if ~ischar(tline), break, end
-    %         fprintf(1,'%s\n',tline); % echo for debugging
-    if nl > 0 % skip first line
-        dataset = str2num(tline);
-        ncol = length(dataset);
-        curve(nl,1:ncol) = dataset;
-    end;
-    nl = nl + 1;
-end;
-curve = curve(1:nl-1,:);
-curve(:,1) = 10*curve(:,1);
-fclose(fid);
 
 
 

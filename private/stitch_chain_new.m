@@ -166,9 +166,7 @@ for k = 1:segments
         model.structures{snum}(cnum).isotopes(atpoi+1:atpoi+nat,:) = model.structures{ssnum}(scnum).isotopes;
     end
     newinfo = model.structures{ssnum}(scnum).residues{smnum}.info;
-    atom_indices = newinfo(1).atom_numbers;
-    cai = atom_indices{1};
-    lpoi = cai(1,1) - 1;
+    lpoi = 0;
     for kr = 1:length(newinfo)
         model.structures{snum}(cnum).sequence(newinfo(kr).number) = model.structures{ssnum}(scnum).sequence(newinfo(kr).number);
         if newinfo(kr).number > maxresnum
@@ -180,8 +178,10 @@ for k = 1:segments
         atom_indices = newinfo(kr).atom_numbers;
         for ka = 1:length(atom_indices)
             cai = atom_indices{ka};
-            cai(:,1) = cai(:,1) - lpoi + atpoi;
+            [mat,~] = size(cai);
+            cai(:,1) = zeros(size(cai(:,1))) + lpoi + atpoi;
             atom_indices{ka} = cai;
+            lpoi = lpoi + mat;
         end
         newinfo(kr).atom_numbers = atom_indices;
         if k ~= segments % remove signalling of terminal nt/residue, except for the last segment

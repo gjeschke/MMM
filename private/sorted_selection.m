@@ -4,7 +4,6 @@ function indices = sorted_selection
 
 global model
 
-
 indices = [];
 if ~isfield(model,'selected') || isempty(model.selected) || isempty(model.selected{1})
     return

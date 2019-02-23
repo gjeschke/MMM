@@ -34,9 +34,9 @@ transmat=eye(4);
 
 % Check if input coordinate arrays have the correct dimension and are
 % consistent
-if m1~=m2 || n1~=3 || n2 ~=3,
+if m1~=m2 || n1~=3 || n2 ~=3
     return;
-end;
+end
 
 cent1=sum(coor1)/m1;
 cent2=sum(coor2)/m2;
@@ -45,44 +45,44 @@ cent2=sum(coor2)/m2;
 % coor1b=coor1-shift1;
 % coor2b=coor2-shift2;
 bas=0;
-for k=1:m1,
+for k=1:m1
     coor1b(k,:)=coor1(k,:)-cent1;
     coor2b(k,:)=coor2(k,:)-cent2;
     bas=bas+sum(coor1b(k,:).*coor1b(k,:))+sum(coor2b(k,:).*coor2b(k,:));
-end;
+end
 bas=bas/(2*m1);
     
 
 U=coor1b'*coor2b/m1;
 
-[h,D0,v]=svd(U);
+[h,~,v]=svd(U);
 
 UUp=U*U';
 
 D=sort(sqrt(eig(UUp)),1,'descend'); 
 
 
-if det(U)>0,
+if det(U)>0
     rms=bas-sum(D);
     rot=v*h';
 else
     rms=bas-D(1)-D(2)+D(3);
     rot=zeros(3,3);
-    for ii=1:3,
-        for jj=1:3,
-            for k=1:3,
+    for ii=1:3
+        for jj=1:3
+            for k=1:3
                 signum=1;
-                if k==3, signum=-1; end;
+                if k==3, signum=-1; end
                 rot(ii,jj)=rot(ii,jj)+signum*v(ii,k)*h(jj,k);
-            end;
-        end;
-    end;
-end;
+            end
+        end
+    end
+end
 
 coor2c=coor2b;
-for k=1:m1,
+for k=1:m1
     coor2b(k,:)=coor2c(k,:)*rot+cent1;
-end;
+end
 
 rms=sqrt(2*rms);
 

@@ -2,6 +2,12 @@ function [atransmat,errvec,model_prob,xld,cost,costs,aux_fulfill] = refine_rba(r
     pthr,naux,auxiliary,ncore,core,links,clash_threshold,heavy_coor,xlink_percentage,xlinks,...
     stemlibs,combination)
 
+global v_first_fit
+global rba_refined
+
+v_first_fit = [];
+rba_refined = false;
+
 clash_threshold = single(clash_threshold);
 
 verbose = false;
@@ -81,6 +87,12 @@ else
 end
 telapsed = toc(tstart);
 
+% rba_refined = false;
+
+if rba_refined
+    v1 = v_first_fit;
+end
+
 Dv = v1 - v0;
 if length(Dv) == 12
     trans = [Dv(1:3) Dv(7:9)];
@@ -151,7 +163,7 @@ for kaux = 1:naux
     paux = paux*prob;
 end
 % fprintf(1,'Auxiliary restraint fulfilment: %8.5f\n',paux/pthr^naux);
-if paux < pthr^naux
+if paux < pthr^naux && ~rba_refined
     if (clash_threshold < 2 && verbose) || preliminary_verbose
         fprintf(2,'Auxiliary restraint fulfilment: %8.5f\n',paux/pthr^naux)
     end
@@ -173,7 +185,7 @@ for kcore = 1:ncore
     plabels = plabels*prob;
 end
 % fprintf(1,'Core restraint fulfilment: %8.5f\n',plabels/pthr^ncore);
-if plabels < pthr^ncore
+if plabels < pthr^ncore && ~rba_refined
     if (clash_threshold < 2 && verbose) || preliminary_verbose
         fprintf(2,'Core restraint fulfilment: %8.5f\n',plabels/pthr^ncore);
     end
@@ -197,7 +209,7 @@ if ~isempty(links(1).maxr)
             end
         end
     end
-    if ~fulfill
+    if ~fulfill && ~rba_refined
         if (clash_threshold < 2 && verbose) || preliminary_verbose
             fprintf(2,'Linker lengths not fulfilled.\n');
         end
@@ -245,7 +257,7 @@ for kr1 = 1:length(rb)-1
         end
     end
 end
-if clashed
+if clashed && ~rba_refined
     if clash_threshold < 2 && verbose
         fprintf(2,'Core rigid body clashes persist at cost %8.1f (threshold %3.1f) with limit %4.0f.\n',max_cost,clash_threshold,clash_fail);
     end
@@ -254,65 +266,12 @@ elseif clash_threshold < 1e4 && verbose
     fprintf(1,'Core clashes reduced to cost %8.1f (threshold %3.1f) with limit %4.0f.\n',max_cost,clash_threshold,clash_fail);
 end
 
-% check for stemloop rigid-body clashes
-% if ~clashed && ~isempty(stemlibs) && ~isempty(combination)
-%     max_cost = 0;
-%     rbas = zeros(1,length(stemlibs));
-%     for klib = 1:length(stemlibs)
-%         rbas(klib) = stemlibs{klib}.rba;
-%     end
-%     all_sl_coor = single(zeros(sl_atoms,3));
-%     slcpoi =0;
-%     for klib = 1:length(stemlibs)
-%         sl_coor = stemlibs{klib}.chains{combination(klib)}.xyz{1};
-%         [msla,~] = size(sl_coor);
-%         baspoi4 = 4*(rbas(klib)-1);
-%         sl_transmat = atransmat(baspoi4+1:baspoi4+4,:);
-%         sl_coor = single(affine_coor_set(sl_coor,sl_transmat));
-%         if klib > 1
-%             rcost = clash_cost(sl_coor,all_sl_coor(1:slcpoi,:),clash_threshold);
-%             if rcost > max_cost
-%                 max_cost = rcost;
-%             end
-%             if rcost > sl_clash_fail
-%                 clashed = true;
-%             end
-%         end
-%         all_sl_coor(slcpoi+1:slcpoi+msla,:) = sl_coor;
-%         slcpoi = slcpoi + msla;
-%     end
-%     for kr1 = 1:length(rb)
-%         baspoi4 = 4*(kr1-1);
-%         transmat = atransmat(baspoi4+1:baspoi4+4,:);
-%         hc = single(affine_coor_set(heavy_coor{kr1},transmat));
-%         rcost = clash_cost(all_sl_coor,hc,clash_threshold);
-%         if rcost > max_cost
-%             max_cost = rcost;
-%         end
-%         if rcost > sl_clash_fail
-%             clashed = true;
-%         end
-%     end
-%     if clashed
-%         if clash_threshold < 2 && verbose
-%             fprintf(2,'Stemloop clashes (%i,%i,%i) persist at cost %8.1f (threshold %3.1f) with limit %4.0f.\n',combination,max_cost,clash_threshold,clash_fail);
-%         end
-%         errvec(4) = 1;
-%     elseif clash_threshold < 2 && verbose
-%         fprintf(1,'Clashes reduced to cost %8.1f (threshold %3.1f, limit %4.0f).\n',max_cost,clash_threshold,clash_fail);
-%     end
-% end
-
-% if preliminary_verbose
-%     if ~sum(errvec)
-%         fprintf(1,'Successful refinement with cost: %12.1f\n',cost);
-%     else
-%         fprintf(2,'Refinement failed with pattern: %i,%i,%i,%i,%i\n',errvec);
-%     end
-% end
-
-
 function [cost,costs] = rba_cost_fct(v,atransmat,rb,points,naux,auxiliary,ncore,core,links,clash_threshold,heavy_coor,stemlibs,combination,sl_atoms,pthr,clash_fail,echo,v0)
+
+global v_first_fit
+global rba_refined
+
+fit_success = true;
 
 link_weight = 1;
 
@@ -363,6 +322,9 @@ else
     costs.aux = 0;
 end
 cost = cost + costs.aux;
+if costs.aux > 1
+    fit_success = false;
+end
 if echo
     fprintf(1,'Auxiliary : %5.2f\n',costs.aux);
 end
@@ -379,6 +341,9 @@ for kcore = 1:ncore
 end
 costs.core = cost_core/(-ncore*log(pthr));
 cost = cost + costs.core;
+if costs.core > 1
+    fit_success = false;
+end
 if echo
     fprintf(1,'Core      : %5.2f\n',costs.core);
 end
@@ -402,6 +367,9 @@ if ~isempty(links(1).maxr)
 end
 costs.link = cost_link;
 cost = cost + cost_link;
+if costs.link > 1
+    fit_success = false;
+end
 if echo
     fprintf(1,'Links     : %5.2f\n',cost_link);
 end
@@ -442,83 +410,18 @@ if clash_threshold < 1e4
     end
     costs.clash = cost_clash/clash_fail;
     cost = cost + costs.clash;
+    if costs.clash > 1
+        fit_success = false;
+    end
     if echo
         fprintf(1,'Core clash: %5.2f\n',costs.clash);
     end
-%     if ~isempty(stemlibs) && ~isempty(combination)
-%         cost_stem = 0;
-%         rbas = zeros(1,length(stemlibs));
-%         for klib = 1:length(stemlibs)
-%             rbas(klib) = stemlibs{klib}.rba;
-%         end
-%         all_sl_coor = single(zeros(sl_atoms,3));
-%         slcpoi =0;
-%         for klib = 1:length(stemlibs)
-%             sl_coor = stemlibs{klib}.chains{combination(klib)}.xyz{1};
-%             [msla,~] = size(sl_coor);
-%             baspoi4 = 4*(rbas(klib)-1);
-%             sl_transmat = atransmat(baspoi4+1:baspoi4+4,:);
-%             sl_coor = single(affine_coor_set(sl_coor,sl_transmat));
-%             if klib > 1
-%                 rstem = clash_cost(sl_coor,all_sl_coor(1:slcpoi,:),clash_threshold);
-%                 if rstem > cost_stem
-%                     cost_stem = rstem;
-%                 end
-%             end
-%             all_sl_coor(slcpoi+1:slcpoi+msla,:) = sl_coor;
-%             slcpoi = slcpoi + msla;
-%         end
-%         for kr1 = 1:length(rb)
-%             baspoi4 = 4*(kr1-1);
-%             transmat = atransmat(baspoi4+1:baspoi4+4,:);
-%             hc = single(affine_coor_set(heavy_coor{kr1},transmat));
-%             rstem = clash_cost(all_sl_coor,hc,clash_threshold);
-%             if rstem > cost_stem
-%                 cost_stem = rstem;
-%             end
-%         end
-%         costs.stem = cost_stem/clash_fail;
-%         cost = cost + costs.stem;
-%         if echo
-%             fprintf(1,'Stem clash: %5.2f\n',costs.stem);
-%         end
-%        
-%         rbas = zeros(1,length(stemlibs));
-%         for klib = 1:length(stemlibs)
-%             rbas(klib) = stemlibs{klib}.rba;
-%         end
-%         sl_clash_score = 0;
-%         hcl = cell(1,length(stemlibs));
-%         mcl = zeros(1,length(stemlibs));
-%         for klib = 1:length(stemlibs)
-%             sl_coor = stemlibs{klib}.chains{combination(klib)}.xyz{1};
-%             baspoi4 = 4*(rbas(klib)-1);
-%             sl_transmat = atransmat(baspoi4+1:baspoi4+4,:);
-%             hcl{klib} = affine_coor_set(sl_coor,sl_transmat);
-%             [m,~] = size(hcl{klib});
-%             mcl(klib) = m;
-%         end
-%         for klib1 = 1:length(stemlibs)-1
-%             for klib2 = klib1+1:length(stemlibs)
-%                 sl_clash_score = sl_clash_score + clash_cost(hcl{klib1},hcl{klib2},clash_threshold);
-%             end
-%         end
-%         allrb = zeros(sum(mcr),3);
-%         rpoi = 0;
-%         for kr = 1:length(rb)
-%             allrb(rpoi+1:rpoi+mcr(kr),:) = hcs{kr};
-%             rpoi = rpoi + mcr(kr);
-%         end
-%         alllib = zeros(sum(mcl),3);
-%         lpoi = 0;
-%         for klib = 1:length(stemlibs)
-%             alllib(lpoi+1:lpoi+mcl(klib),:) = hcl{klib};
-%             lpoi = lpoi + mcl(klib);
-%         end
-%         sl_clash_score = sl_clash_score + clash_cost(allrb,alllib,clash_threshold);
-%         cost = cost + sl_clash_score;
-%     end
 end
 if echo
     fprintf(2,'Total cost: %5.2f\n',cost);
+end
+
+if fit_success && ~rba_refined
+    rba_refined = true;
+    v_first_fit = v;
 end

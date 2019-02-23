@@ -2,6 +2,12 @@ function [atransmat,errvec,model_prob,xld,cost,costs,aux_fulfill] = refine_rba_f
     pthr,naux,auxiliary,ncore,core,links,clash_threshold,heavy_coor,xlink_percentage,xlinks,...
     stemlibs,combination)
 
+global v_first_fit
+global rba_refined
+
+v_first_fit = [];
+rba_refined = false;
+
 clash_threshold = single(clash_threshold);
 
 verbose = false;
@@ -89,6 +95,12 @@ else
 end
 telapsed = toc(tstart);
 
+% rba_refined = false;
+
+if rba_refined
+    v1 = v_first_fit;
+end
+
 Dv = v1 - v0;
 if length(Dv) == 12
     trans = [Dv(1:3) Dv(7:9)];
@@ -159,7 +171,7 @@ for kaux = 1:naux
     paux = paux*prob;
 end
 % fprintf(1,'Auxiliary restraint fulfilment: %8.5f\n',paux/pthr^naux);
-if paux < pthr^naux
+if paux < pthr^naux && ~rba_refined
     if (clash_threshold < 2 && verbose) || preliminary_verbose
         fprintf(2,'Auxiliary restraint fulfilment: %8.5f\n',paux/pthr^naux)
     end
@@ -181,7 +193,7 @@ for kcore = 1:ncore
     plabels = plabels*prob;
 end
 % fprintf(1,'Core restraint fulfilment: %8.5f\n',plabels/pthr^ncore);
-if plabels < pthr^ncore
+if plabels < pthr^ncore && ~rba_refined
     if (clash_threshold < 2 && verbose) || preliminary_verbose
         fprintf(2,'Core restraint fulfilment: %8.5f\n',plabels/pthr^ncore);
     end
@@ -205,7 +217,7 @@ if ~isempty(links(1).maxr)
             end
         end
     end
-    if ~fulfill
+    if ~fulfill && ~rba_refined
         if (clash_threshold < 2 && verbose) || preliminary_verbose
             fprintf(2,'Linker lengths not fulfilled.\n');
         end
@@ -255,7 +267,7 @@ for kr1 = 1:length(rb)-1
         end
     end
 end
-if clashed
+if clashed && ~rba_refined
     if clash_threshold < 2 && verbose
         fprintf(2,'Core rigid body clashes persist at cost %8.1f (threshold %3.1f) with limit %4.0f.\n',max_cost,clash_threshold,clash_fail);
     end
@@ -267,7 +279,12 @@ end
 
 function [cost,costs] = rba_cost_fct(v,atransmat,rb,points,naux,auxiliary,ncore,core,links,clash_threshold,heavy_coor,hulls,pthr,clash_fail,echo,v0)
 
+global v_first_fit
+global rba_refined
+
 link_weight = 1;
+
+fit_success = true;
 
 if ~exist('echo','var')
     echo = false;
@@ -312,6 +329,9 @@ else
     costs.aux = 0;
 end
 cost = cost + costs.aux;
+if costs.aux > 1
+    fit_success = false;
+end
 if echo
     fprintf(1,'Auxiliary : %5.2f\n',costs.aux);
 end
@@ -328,6 +348,9 @@ for kcore = 1:ncore
 end
 costs.core = cost_core/(-ncore*log(pthr));
 cost = cost + costs.core;
+if costs.core > 1
+    fit_success = false;
+end
 if echo
     fprintf(1,'Core      : %5.2f\n',costs.core);
 end
@@ -351,6 +374,9 @@ if ~isempty(links(1).maxr)
 end
 costs.link = cost_link;
 cost = cost + cost_link;
+if cost_link > 1
+    fit_success = false;
+end
 if echo
     fprintf(1,'Links     : %5.2f\n',cost_link);
 end
@@ -384,10 +410,18 @@ if clash_threshold < 1e4
     end
     costs.clash = cost_clash/clash_fail;
     cost = cost + costs.clash;
+    if costs.clash > 1
+        fit_success = false;
+    end
     if echo
         fprintf(1,'Core clash: %5.2f\n',costs.clash);
     end
 end
 if echo
     fprintf(2,'Total cost: %5.2f\n',cost);
+end
+
+if fit_success && ~rba_refined
+    rba_refined = true;
+    v_first_fit = v;
 end

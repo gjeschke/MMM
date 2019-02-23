@@ -550,8 +550,8 @@ switch handles.progress
                             to_be_deleted = 't*.*';
                             wr_pdb_selected(pdbfile,'SAXS');
                             SAXS_curve = load_SAXS_curve('1-4s-Buffer.dat');
-                            sm = max(SAXS_curve(:,1));
-                            [chi2,~,~,result] = fit_SAXS_by_crysol('1-4s-Buffer.dat',pdbfile,sm);
+                            SAXS_options.sm = 10*max(SAXS_curve(:,1));
+                            [chi2,~,~,result] = fit_SAXS_by_crysol('1-4s-Buffer.dat',pdbfile,SAXS_options);
                             if isempty(chi2) || isnan(chi2)
                                 SAXS_chi = 1e6;
                                 fprintf(2,'Warning: SAXS fitting failed\n');
@@ -678,8 +678,8 @@ switch handles.progress
                     to_be_deleted = 't*.*';
                     wr_pdb_selected(pdbfile,'SAXS');
                     SAXS_curve = load_SAXS_curve('1-4s-Buffer.dat');
-                    sm = max(SAXS_curve(:,1));
-                    [chi2,~,~,result] = fit_SAXS_by_crysol('1-4s-Buffer.dat',pdbfile,sm);
+                    SAXS_options.sm = 10*max(SAXS_curve(:,1));
+                    [chi2,~,~,result] = fit_SAXS_by_crysol('1-4s-Buffer.dat',pdbfile,SAXS_options);
                     if isempty(chi2) || isnan(chi2)
                         SAXS_chi_0 = 1e6;
                         fprintf(2,'Warning: SAXS fitting failed\n');
@@ -696,8 +696,8 @@ switch handles.progress
                     to_be_deleted = 't*.*';
                     wr_pdb_selected(pdbfile,'SAXS');
                     SAXS_curve = load_SAXS_curve('1-4s-Buffer.dat');
-                    sm = max(SAXS_curve(:,1));
-                    [chi2,~,~,result] = fit_SAXS_by_crysol('1-4s-Buffer.dat',pdbfile,sm);
+                    SAXS_options.sm = 10*max(SAXS_curve(:,1));              
+                    [chi2,~,~,result] = fit_SAXS_by_crysol('1-4s-Buffer.dat',pdbfile,SAXS_options);
                     if isempty(chi2) || isnan(chi2)
                         SAXS_chi = 1e6;
                         fprintf(2,'Warning: SAXS fitting failed\n');
@@ -1103,7 +1103,7 @@ for kr1 = 1:length(restraints.rb)-1
                     sim_distr = exp(-sim_distr);
                     sim_distr = sim_distr/sum(sim_distr);
                     known(poi) = 1;
-                    overlap = sum(sqrt(sum_distr.*sim_distr));
+                    overlap = sum(min([sum_distr;sim_distr]));
                     fprintf(fid_report,' for restraint <r> = %4.1f Å, sigr = %4.1f Å (overlap: %6.4f).\n',r_restr,sigr_restr,overlap);
                     fprintf(fid_report,'Rigidity index to restraint: %5.2f\n',sqrt(mean_var/sigr_restr^2));
                 else
@@ -1112,7 +1112,7 @@ for kr1 = 1:length(restraints.rb)-1
                 mean_overlap = 0;
                 for km1 = 1:handles.diagnostics.success-1
                     for km2 = km1+1:handles.diagnostics.success
-                        mean_overlap = mean_overlap + sum(sqrt(distr(km1,:).*distr(km2,:))); 
+                        mean_overlap = mean_overlap + sum(min([distr(km1,:);distr(km2,:)])); 
                     end
                 end
                 mean_overlap = 2*mean_overlap/((handles.diagnostics.success-1)*handles.diagnostics.success);
@@ -1187,12 +1187,12 @@ for kr = 1:length(restraints.DEER)
             sim_distr = (rax-restraints.DEER(kr).r/10).^2/(2*0.01*restraints.DEER(kr).sigr^2);
             sim_distr = exp(-sim_distr);
             sim_distr = sim_distr/sum(sim_distr);
-            overlap = sum(sqrt(sum_distr.*sim_distr));
+            overlap = sum(min([sum_distr;sim_distr]));
             fprintf(fid_report,' (overlap: %6.4f).\n',overlap);
             mean_overlap = 0;
             for km1 = 1:handles.diagnostics.success-1
                 for km2 = km1+1:handles.diagnostics.success
-                    mean_overlap = mean_overlap + sum(sqrt(distr(km1,:).*distr(km2,:)));
+                    mean_overlap = mean_overlap + sum(min([distr(km1,:);distr(km2,:)]));
                 end
             end
             mean_overlap = 2*mean_overlap/((handles.diagnostics.success-1)*handles.diagnostics.success);
@@ -1425,7 +1425,7 @@ if handles.radiobutton_DEER.Value
         sim_distr = exp(-sim_distr);
         sim_distr = sim_distr/sum(sim_distr);
         plot(info.rax,sim_distr,'Color',[0.75,0,0]);
-        overlap = sum(sqrt(info.sum_distr.*sim_distr));
+        overlap = sum(min([info.sum_distr;sim_distr]));
         my_title = sprintf('%s, Fulfillment: %5.3f',my_title,overlap);
     end;
     title(my_title);
@@ -1483,8 +1483,7 @@ distr2 = distr2/sum(distr2);
 shift = sum(rax.*distr1) - sum(rax.*distr2); 
 % fprintf(1,'Sim. mean distance: %5.2f\n',sum(rax.*distr1));
 % fprintf(1,'Restraint mean distance: %5.2f\n',sum(rax.*distr2));
-diff = distr1-distr2;
-overlap = 1 - sqrt(sum(diff.^2));
+overlap = sum(min([distr1;distr2]));
     
 
 
@@ -2795,7 +2794,7 @@ if isfield(restraints.RNA,'DEER')
             sim_distr = (rax-restraints.DEER(kr).r/10).^2/(2*0.01*restraints.DEER(kr).sigr^2);
             sim_distr = exp(-sim_distr);
             sim_distr = sim_distr/sum(sim_distr);
-            overlap = sum(sqrt(sum_distr.*sim_distr));
+            overlap = sum(min([sum_distr;sim_distr]));
             fprintf(fid_report,' (overlap: %6.4f).\n',overlap);
             mean_overlap = 0;
             overlap_counter = 0;
@@ -2803,7 +2802,7 @@ if isfield(restraints.RNA,'DEER')
                 for km2 = km1+1:handles.diagnostics.success
                     if handles.RNA_link_success(km1) && handles.RNA_link_success(km2)
                         overlap_counter = overlap_counter + 1;
-                        mean_overlap = mean_overlap + sum(sqrt(distr(km1,:).*distr(km2,:)));
+                        mean_overlap = mean_overlap + sum(min([distr(km1,:);distr(km2,:)]));
                     end
                 end
             end

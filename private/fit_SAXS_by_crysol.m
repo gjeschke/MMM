@@ -1,5 +1,9 @@
-function [chi2,outname,status,result,fit] = fit_SAXS_by_crysol(datafile,pdbfile,sm)
+function [chi2,outname,status,result,fit] = fit_SAXS_by_crysol(datafile,pdbfile,options)
 %
+
+if ~exist('options','var') || ~isfield(options,'err')
+    options.err = false;
+end
 
 poi = strfind(pdbfile,'.pdb');
 if isempty(poi)
@@ -7,13 +11,23 @@ if isempty(poi)
     pdbfile = strcat(pdbfile,'.pdb');
 else
     outname = [pdbfile(1:poi-1) '00.fit'];
-end;
+end
 
 s=which('crysol.exe');
 cmd=[s ' ' pdbfile ' ' datafile ' -cst'];
-if exist('sm','var') && ~isempty(sm)
-    cmd = [cmd ' -sm ' sprintf('%4.2f',sm)];
+
+if isfield(options,'sm')
+    cmd = sprintf('%s -sm %6.3f',cmd,options.sm);
 end
+
+if isfield(options,'lm')
+    cmd = sprintf('%s -lm %i',cmd,options.lm);
+end
+
+if isfield(options,'fb')
+    cmd = sprintf('%s -fb %i',cmd,options.fb);
+end
+
 [status,result]=dos(cmd);
 
 % chi = [];
@@ -39,7 +53,7 @@ fid = fopen(outname);
 if fid==-1
     fit = [];
     return;
-end;
+end
 nl=0;
 while 1
     tline = fgetl(fid);
@@ -61,13 +75,21 @@ while 1
             args = rem{1};
             chi = str2double(char(args(1)));
             chi2 = chi^2;
-        end;
+        end
     end
     nl=nl+1;
 end
 fit = fit(1:nl-1,:);
 if ncol == 4 % remove error column from output of newer CRYSON
-    fit = fit(:,[1 2 4]);
+    if options.err
+        fit = fit(:,[1 2 4 3]);
+    else
+        fit = fit(:,[1 2 4]);
+    end
+end
+if isfield(options,'smin') && ~isempty(options.smin)
+    [~,poi] = min(abs(fit(:,1)-options.smin));
+    fit = fit(poi:end,:);
 end
 fclose(fid);
 

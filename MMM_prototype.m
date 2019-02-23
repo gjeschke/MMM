@@ -22,7 +22,7 @@ function varargout = MMM_prototype(varargin)
 
 % Edit the above text to modify the response to help MMM_prototype
 
-% Last Modified by GUIDE v2.5 26-Oct-2018 17:51:17
+% Last Modified by GUIDE v2.5 16-Feb-2019 19:10:43
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -5237,7 +5237,7 @@ function menu_build_rigiflex_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 rigi_flex;
-
+guidata(hObject,handles);
 
 % --------------------------------------------------------------------
 function meun_analysis_SANS_Callback(hObject, eventdata, handles)
@@ -5246,7 +5246,7 @@ function meun_analysis_SANS_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 SANS_fit;
-
+guidata(hObject,handles);
 
 % --------------------------------------------------------------------
 function menu_analysis_SAXS_Callback(hObject, eventdata, handles)
@@ -5255,7 +5255,7 @@ function menu_analysis_SAXS_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 SAXS_fit;
-
+guidata(hObject,handles);
 
 % --------------------------------------------------------------------
 function menu_build_docking_Callback(hObject, eventdata, handles)
@@ -5264,6 +5264,7 @@ function menu_build_docking_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 docking_window;
+guidata(hObject,handles);
 
 % --------------------------------------------------------------------
 function menu_utilities_Callback(hObject, eventdata, handles)
@@ -5326,6 +5327,9 @@ function menu_jobs_test_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+PTBP1_quality_check;
+return
+
 global model
 
 forgive = 0.8;
@@ -5333,158 +5337,158 @@ clash_threshold = 1.5*forgive;
 
 interactive = true;
 unprocessed = true;
-make_ensemble = true;
+make_ensemble = false;
 
 max_link_length = [26,42,26]; % LinkEF-F should be 24, replaced by 27 Å to find solutions
 link_nt = [4,7,4];
 thr_length_per_nt = 6.5;
 max_length_per_nt = 6;
 
-libs = cell(1,3);
-% load the stemloop libraries
-load SLD_20181203
-% load SLD_20180816c
-libs{1} = library;
-load SLE_20181203
-% load SLE_20180816c
-libs{2} = library;
-load SLF_20181203
-% load SLF_20180816c
-libs{3} = library;
-
-snum = resolve_address('[PTB1]');
-nmod = length(model.structures{snum}(1).residues);
-template = cell(1,3);
-target = cell(1,3);
-[~,xyz_A] = get_object('[PTB7](A){1}','xyz_heavy');
-template{1} = xyz_A;
-[~,xyz_C] = get_object('[PTB7](C){1}','xyz_heavy');
-template{2} = xyz_C;
-[~,xyz_E] = get_object('[PTB7](E){1}','xyz_heavy');
-template{3} = xyz_E;
-chains = 'ACE';
-sls = 'DEF';
-trafo = cell(nmod,3);
-% repname = fullfile('PTB1_20181124_SL_report.txt');
-repname = fullfile('PTB1_20181128s_SL_report.txt');
-report = fopen(repname,'wt');
-for kl = 1:3
-    figure(kl); clf;
-    hold on;
-    plot([1,nmod],[max_link_length(kl),max_link_length(kl)],'k');
-end
-tic,
-sl_to_rrm = [3 1 2];
-solutions = zeros(10000,4);
-valid_rbas = zeros(1,nmod);
-spoi = 0;
-for k = 1:nmod % 1:nmod loop over all models
-    % determine the transformations
-    for kc = 1:3
-        adr = sprintf('[PTB1](%c){%i}',chains(kc),k);
-        [~,xyz_new] = get_object(adr,'xyz_heavy');
-        target{kc} = xyz_new;
-        [~,~,transmat] = rmsd_superimpose(xyz_new,template{kc});
-        trafo{k,kc} = transmat;
-    end
-    % find non-clashing RNA stemloops
-    valid_decoys = zeros(3,100);
-    vpoi = zeros(1,3);
-    for ksl = 1:3
-        library = libs{ksl};
-        for kdecoy = 1:length(library.chains)
-            xyz_sl = library.chains{kdecoy}.xyz{1};
-            transmat = trafo{k,sl_to_rrm(ksl)};
-            xyz_sl = affine_trafo_coor(xyz_sl,transmat);
-            full_cost = 0;
-            all_costs = zeros(1,3);
-            for kc = 1:3
-                xyz_rrm = target{kc};
-                cost = clash_cost(xyz_rrm,xyz_sl,clash_threshold);
-                all_costs(kc) = cost;
-                if kc ~= sl_to_rrm(ksl) % exclude clashes with the own RRM
-                    full_cost = full_cost + cost;
-                end
-            end
-            if full_cost < 5*eps
-                vpoi(ksl) = vpoi(ksl) + 1;
-                valid_decoys(ksl,vpoi(ksl)) = kdecoy;
-                % fprintf(report,'Model %i, stemloop %c(%i) has clash cost %6.2f (%6.2f, %6.2f, %6.2f)\n',k,sls(ksl),kdecoy,full_cost,all_costs);
-            end
-        end
-    end
-    fprintf(report,'Model %i, %i SL%c models, %i SL%c models, and %i SL%c models are non-clashing.\n',k,vpoi(1),sls(1),vpoi(2),sls(2),vpoi(3),sls(3));
-    % check link restraints
-    transmat1 = trafo{k,sl_to_rrm(1)};
-    transmat2 = trafo{k,sl_to_rrm(2)};
-    transmat3 = trafo{k,sl_to_rrm(3)};
-    library = libs{1};
-    anchor_12 = library.linksites(1).coor;
-    anchor_12 = affine_trafo_coor(anchor_12,transmat1);
-    library = libs{2};
-    anchor_21 = library.linksites(1).coor;
-    anchor_21 = affine_trafo_coor(anchor_21,transmat2);
-    anchor_23 = library.linksites(2).coor;
-    anchor_23 = affine_trafo_coor(anchor_23,transmat2);
-    library = libs{3};
-    anchor_43 = library.linksites(1).coor;
-    anchor_43 = affine_trafo_coor(anchor_43,transmat3);
-    [~,a32c] = get_object(sprintf('[PTB1](F){%i}342.C5''',k),'coor');
-    [~,a34c] = get_object(sprintf('[PTB1](F){%i}344.C5''',k),'coor');
-%     fprintf(report,'Anchor 32: %4.1f, %4.1f, %4.1f Å\n',a32c);
-%     fprintf(report,'Anchor 34: %4.1f, %4.1f, %4.1f Å\n',a34c);
-    % loop over all non-clashing decoys
-    for k1 = 1:vpoi(1)
-        a12c = anchor_12(valid_decoys(1,k1),:);
-%         fprintf(report,'Anchor 12(%i): %4.1f, %4.1f, %4.1f Å\n',valid_decoys(1,k1),a12c);
-        for k2 = 1:vpoi(2)
-            a21c = anchor_21(valid_decoys(2,k2),:);
-            r12 = norm(a12c-a21c);
-            figure(1);
-            plot(k,r12,'r.');
-            a23c = anchor_23(valid_decoys(2,k2),:);
-            r23 = norm(a23c-a32c);
-%             if k1 == 1
-%                 fprintf(report,'Anchor 21(%i): %4.1f, %4.1f, %4.1f Å\n',valid_decoys(2,k2),a21c);
-%                 fprintf(report,'Anchor 23(%i): %4.1f, %4.1f, %4.1f Å\n',valid_decoys(2,k2),a23c);
-%             end
-            if k1 == 1
-                figure(2);
-                plot(k,r23,'g.');
-            end
-            for k3 = 1:vpoi(3)
-                a43c = anchor_43(valid_decoys(3,k3),:);
-                r34 = norm(a34c-a43c);
-                if k1 == 1 && k2 == 1
-                    figure(3);
-                    plot(k,r34,'b.');
-                end
-%                 if k1 == 1 && k2 == 1
-%                     fprintf(report,'Anchor 43(%i): %4.1f, %4.1f, %4.1f Å\n',valid_decoys(3,k3),a43c);
+% libs = cell(1,3);
+% % load the stemloop libraries
+% load SLD_20181203
+% % load SLD_20180816c
+% libs{1} = library;
+% load SLE_20181203
+% % load SLE_20180816c
+% libs{2} = library;
+% load SLF_20181203
+% % load SLF_20180816c
+% libs{3} = library;
+% 
+% snum = resolve_address('[PTB1]');
+% nmod = length(model.structures{snum}(1).residues);
+% template = cell(1,3);
+% target = cell(1,3);
+% [~,xyz_A] = get_object('[PTB7](A){1}','xyz_heavy');
+% template{1} = xyz_A;
+% [~,xyz_C] = get_object('[PTB7](C){1}','xyz_heavy');
+% template{2} = xyz_C;
+% [~,xyz_E] = get_object('[PTB7](E){1}','xyz_heavy');
+% template{3} = xyz_E;
+% chains = 'ACE';
+% sls = 'DEF';
+% trafo = cell(nmod,3);
+% % repname = fullfile('PTB1_20181124_SL_report.txt');
+% repname = fullfile('PTB1_20181128s_SL_report.txt');
+% report = fopen(repname,'wt');
+% for kl = 1:3
+%     figure(kl); clf;
+%     hold on;
+%     plot([1,nmod],[max_link_length(kl),max_link_length(kl)],'k');
+% end
+% tic,
+% sl_to_rrm = [3 1 2];
+% solutions = zeros(10000,4);
+% valid_rbas = zeros(1,nmod);
+% spoi = 0;
+% for k = 1:nmod % 1:nmod loop over all models
+%     % determine the transformations
+%     for kc = 1:3
+%         adr = sprintf('[PTB1](%c){%i}',chains(kc),k);
+%         [~,xyz_new] = get_object(adr,'xyz_heavy');
+%         target{kc} = xyz_new;
+%         [~,~,transmat] = rmsd_superimpose(xyz_new,template{kc});
+%         trafo{k,kc} = transmat;
+%     end
+%     % find non-clashing RNA stemloops
+%     valid_decoys = zeros(3,100);
+%     vpoi = zeros(1,3);
+%     for ksl = 1:3
+%         library = libs{ksl};
+%         for kdecoy = 1:length(library.chains)
+%             xyz_sl = library.chains{kdecoy}.xyz{1};
+%             transmat = trafo{k,sl_to_rrm(ksl)};
+%             xyz_sl = affine_trafo_coor(xyz_sl,transmat);
+%             full_cost = 0;
+%             all_costs = zeros(1,3);
+%             for kc = 1:3
+%                 xyz_rrm = target{kc};
+%                 cost = clash_cost(xyz_rrm,xyz_sl,clash_threshold);
+%                 all_costs(kc) = cost;
+%                 if kc ~= sl_to_rrm(ksl) % exclude clashes with the own RRM
+%                     full_cost = full_cost + cost;
 %                 end
-                if r12 <= max_link_length(1) && r23 <= max_link_length(2) && r34 <= max_link_length(3)
-                    fprintf(report,'M(%i)SL(%i,%i,%i): %5.1f, %5.1f, %5.1f Å\n',k,...
-                        valid_decoys(1,k1),valid_decoys(2,k2),valid_decoys(3,k3),...
-                        r12,r23,r34);
-                    spoi = spoi + 1;
-                    solutions(spoi,1) = k;
-                    solutions(spoi,2) = valid_decoys(1,k1);
-                    solutions(spoi,3) = valid_decoys(2,k2);
-                    solutions(spoi,4) = valid_decoys(3,k3);
-                    valid_rbas(k) = 1;
-                end
-            end
-        end
-    end
-    drawnow
-end
-toc
-solutions = solutions(1:spoi,:);
-save PTB1_20181124_trafo trafo solutions
-fprintf(report,'\n%i solutions were found in %i valid RBAs.\n',spoi,sum(valid_rbas));
-fclose(report);
-fprintf('%i solutions were found in %i valid RBAs.\n',spoi,sum(valid_rbas));
-return
+%             end
+%             if full_cost < 5*eps
+%                 vpoi(ksl) = vpoi(ksl) + 1;
+%                 valid_decoys(ksl,vpoi(ksl)) = kdecoy;
+%                 % fprintf(report,'Model %i, stemloop %c(%i) has clash cost %6.2f (%6.2f, %6.2f, %6.2f)\n',k,sls(ksl),kdecoy,full_cost,all_costs);
+%             end
+%         end
+%     end
+%     fprintf(report,'Model %i, %i SL%c models, %i SL%c models, and %i SL%c models are non-clashing.\n',k,vpoi(1),sls(1),vpoi(2),sls(2),vpoi(3),sls(3));
+%     % check link restraints
+%     transmat1 = trafo{k,sl_to_rrm(1)};
+%     transmat2 = trafo{k,sl_to_rrm(2)};
+%     transmat3 = trafo{k,sl_to_rrm(3)};
+%     library = libs{1};
+%     anchor_12 = library.linksites(1).coor;
+%     anchor_12 = affine_trafo_coor(anchor_12,transmat1);
+%     library = libs{2};
+%     anchor_21 = library.linksites(1).coor;
+%     anchor_21 = affine_trafo_coor(anchor_21,transmat2);
+%     anchor_23 = library.linksites(2).coor;
+%     anchor_23 = affine_trafo_coor(anchor_23,transmat2);
+%     library = libs{3};
+%     anchor_43 = library.linksites(1).coor;
+%     anchor_43 = affine_trafo_coor(anchor_43,transmat3);
+%     [~,a32c] = get_object(sprintf('[PTB1](F){%i}342.C5''',k),'coor');
+%     [~,a34c] = get_object(sprintf('[PTB1](F){%i}344.C5''',k),'coor');
+% %     fprintf(report,'Anchor 32: %4.1f, %4.1f, %4.1f Å\n',a32c);
+% %     fprintf(report,'Anchor 34: %4.1f, %4.1f, %4.1f Å\n',a34c);
+%     % loop over all non-clashing decoys
+%     for k1 = 1:vpoi(1)
+%         a12c = anchor_12(valid_decoys(1,k1),:);
+% %         fprintf(report,'Anchor 12(%i): %4.1f, %4.1f, %4.1f Å\n',valid_decoys(1,k1),a12c);
+%         for k2 = 1:vpoi(2)
+%             a21c = anchor_21(valid_decoys(2,k2),:);
+%             r12 = norm(a12c-a21c);
+%             figure(1);
+%             plot(k,r12,'r.');
+%             a23c = anchor_23(valid_decoys(2,k2),:);
+%             r23 = norm(a23c-a32c);
+% %             if k1 == 1
+% %                 fprintf(report,'Anchor 21(%i): %4.1f, %4.1f, %4.1f Å\n',valid_decoys(2,k2),a21c);
+% %                 fprintf(report,'Anchor 23(%i): %4.1f, %4.1f, %4.1f Å\n',valid_decoys(2,k2),a23c);
+% %             end
+%             if k1 == 1
+%                 figure(2);
+%                 plot(k,r23,'g.');
+%             end
+%             for k3 = 1:vpoi(3)
+%                 a43c = anchor_43(valid_decoys(3,k3),:);
+%                 r34 = norm(a34c-a43c);
+%                 if k1 == 1 && k2 == 1
+%                     figure(3);
+%                     plot(k,r34,'b.');
+%                 end
+% %                 if k1 == 1 && k2 == 1
+% %                     fprintf(report,'Anchor 43(%i): %4.1f, %4.1f, %4.1f Å\n',valid_decoys(3,k3),a43c);
+% %                 end
+%                 if r12 <= max_link_length(1) && r23 <= max_link_length(2) && r34 <= max_link_length(3)
+%                     fprintf(report,'M(%i)SL(%i,%i,%i): %5.1f, %5.1f, %5.1f Å\n',k,...
+%                         valid_decoys(1,k1),valid_decoys(2,k2),valid_decoys(3,k3),...
+%                         r12,r23,r34);
+%                     spoi = spoi + 1;
+%                     solutions(spoi,1) = k;
+%                     solutions(spoi,2) = valid_decoys(1,k1);
+%                     solutions(spoi,3) = valid_decoys(2,k2);
+%                     solutions(spoi,4) = valid_decoys(3,k3);
+%                     valid_rbas(k) = 1;
+%                 end
+%             end
+%         end
+%     end
+%     drawnow
+% end
+% toc
+% solutions = solutions(1:spoi,:);
+% save PTB1_20181124_trafo trafo solutions
+% fprintf(report,'\n%i solutions were found in %i valid RBAs.\n',spoi,sum(valid_rbas));
+% fclose(report);
+% fprintf('%i solutions were found in %i valid RBAs.\n',spoi,sum(valid_rbas));
+% return
 
 if make_ensemble
     fid=fopen('ensemble_list.dat');
@@ -5509,14 +5513,14 @@ if make_ensemble
     % Make ensemble PDB file
     [msg,snum0] = add_pdb(flist{1});
     if msg.error
-        add_msg_board(sprintf('ERROR: First FDP file %s could not be read (%s).',flist{1},msg.text));
+        add_msg_board(sprintf('ERROR: First PDB file %s could not be read (%s).',flist{1},msg.text));
         return
     end
     for kf = 2:nf
         copy_structure(snum0,'+mod',[],kf,snum0); % make a copy of the first model
         [msg,snumc] = add_pdb(flist{kf});
         if msg.error
-            add_msg_board(sprintf('ERROR: PDP file #%i (%s) could not be read (%s).',kf,flist{kf},msg.text));
+            add_msg_board(sprintf('ERROR: PDB file #%i (%s) could not be read (%s).',kf,flist{kf},msg.text));
             return
         end
         for kc = 1:2
@@ -5624,7 +5628,7 @@ end
 
 snum0 = model.current_structure;
 
-[restraints,failed] = rd_restraints_rigiflex('PTBP1_restraints_181105.dat',unprocessed);
+[restraints,failed] = rd_restraints_rigiflex('PTBP1_restraints_181122.dat',unprocessed); % 181105
 
 if failed
     add_msg_board('Restraint file could not be read.');
@@ -5884,8 +5888,10 @@ if isfield(restraints,'SAXS') && ~isempty(restraints.SAXS)
         to_be_deleted = 't*.*';
         wr_pdb_selected(pdbfile,'SAXS');
         SAXS_curve = load_SAXS_curve(restraints.SAXS(ks).data);
-        sm = max(SAXS_curve(:,1));
-        [chi2,~,~,result,fit] = fit_SAXS_by_crysol(restraints.SAXS(ks).data,pdbfile,sm);
+        options.sm = 10*max(SAXS_curve(:,1));
+        options.lm = 30;
+        options.fb = 18;
+        [chi2,~,~,result,fit] = fit_SAXS_by_crysol(restraints.SAXS(ks).data,pdbfile,options);
         if isempty(chi2) || isnan(chi2)
             SAXS_chi = 1e6;
             if interactive
@@ -6131,7 +6137,7 @@ options.solvation = 'still';
 options.tolerance = 0.1;
 options.forcefield = 'amber99';
 
-[defs,links,sites] = rd_definition_stemloop_library('stemloop_definition_20181203.dat');
+[defs,links,sites] = rd_definition_stemloop_library('stemloop_definition_20190131.dat');
 
 if compile
     stag = mk_address_parts(model.current_structure);
@@ -6366,27 +6372,46 @@ end
 set(hfig,'Pointer','arrow');
 add_msg_board(sprintf('Msg %i: %s. Structure %i generated. Energy is %5.3f kJ/mol.\n',msg.error,msg.text,snum,energy/1000));
 
-function curve = load_SAXS_curve(fname)
 
-fid = fopen(fname);
-if fid==-1
-    curve = [];
-    add_msg_board('Warning. Loading of SAXS curve failed');
-    return;
-end
-nl=0;
-curve = zeros(10000,4);
-while 1
-    tline = fgetl(fid);
-    if ~ischar(tline), break, end
-    %         fprintf(1,'%s\n',tline); % echo for debugging
-    if nl > 0 % skip first line
-        dataset = str2num(tline);
-        ncol = length(dataset);
-        curve(nl,1:ncol) = dataset;
-    end
-    nl = nl + 1;
-end
-curve = curve(1:nl-1,:);
-curve(:,1) = 10*curve(:,1);
-fclose(fid);
+% --------------------------------------------------------------------
+function menu_jobs_test2_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_jobs_test2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+PTBP1_ensemble_maker;
+% loop_assembler_PTB1;
+guidata(hObject,handles);
+
+
+% --------------------------------------------------------------------
+function menu_jobs_test3_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_jobs_test3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+PTBP1_ensemble_SAS_fit(100);
+% loop_assembler_PTB1;
+guidata(hObject,handles);
+
+
+% --------------------------------------------------------------------
+function menu_jobs_test4_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_jobs_test4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+PTBP1_ensemble_DEER_fit(100);
+% loop_assembler_PTB1;
+guidata(hObject,handles);
+
+
+% --------------------------------------------------------------------
+function menu_jobs_test5_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_jobs_test5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+PTB1_SAS_DEER_fit;
+% loop_assembler_PTB1;
+guidata(hObject,handles);

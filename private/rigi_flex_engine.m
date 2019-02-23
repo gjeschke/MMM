@@ -15,6 +15,7 @@ global model
 stemloop_mode = false;
 trial_echo = false;
 
+
 % restraints.stemlibs = {};
 % restraints.stemloop_rlinks.rba = [];
 % restraints.stemloop_rlinks.coor1 = [];
@@ -308,9 +309,9 @@ probabilities = zeros(1,maxmodels);
 transmats = cell(1,3);
 
 runtime = 0;
-bask = 0;
 worst_res = 0;
-parblocks = 0;
+parblocks = 0; % ### 0
+bask = parblocks*options.granularity;
 if options.exhaustive
     maxmodels = 200; % 200;
     maxtime = 600; % ### uncomment for production runs
@@ -1027,137 +1028,6 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                 end
                 SANS_chi = 0;
                 fulfill = true;
-                if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
-                    to_be_deleted = '';
-                    sans_vec = -ones(2,1);
-                    for ks = 1:length(restraints.SANS)
-                        model = rmfield(model,'selected');
-                        ksel = 0;
-                        for kc = 1:length(restraints.SANS(ks).chains)
-                            if restraints.SANS(ks).chains(kc) > 0
-                                ksel = ksel + 1;
-                                model.selected{ksel} = [snum restraints.SANS(ks).chains(kc) success];
-                            end
-                        end
-                        pdbfile = sprintf('t%i_%i',k,ks);
-                        to_be_deleted = sprintf('t%i_*.*',k);
-                        wr_pdb_selected(pdbfile,'SANS');
-                        [chi2,~,~,result,fit] = fit_SANS_by_cryson(restraints.SANS(ks).data,pdbfile,restraints.SANS(ks).illres);
-                        if isempty(chi2) || isnan(chi2)
-                            SANS_chi = 1e6;
-                            if interactive
-                                fprintf(2,'Warning: SANS fitting failed in trial %i:\n',k);
-                                fprintf(2,'%s',result);
-                                success = success - 1;
-                                fulfill = false;
-                            end
-                        else
-                            SANS_curves{ks,success} = fit;
-                            sans_vec(ks) = chi2;
-                            SANS_chi = SANS_chi + chi2;
-                        end
-                    end
-                    if min(sans_vec) > 0
-                        sans_poi = sans_poi + 1;
-                        chi_SANS(:,sans_poi) = sans_vec;
-                        xlink_fulfill(:,sans_poi) = xlink_distances{k-bask};
-                    end
-                    chi2 = SANS_chi/length(restraints.SANS);
-                    if chi2 > SANS_threshold && fulfill
-                        if interactive
-                            fprintf(1,'SANS chi^2 of %4.2f exceeded threshold of %4.2f in trial %i.\n',chi2,SANS_threshold,k);
-                        end
-                        success = success - 1;
-                        sans_fail = sans_fail + 1;
-                        fulfill = false;
-                        if strcmp(delete_SANS,'all') || strcmp(delete_SANS,'poor')
-                            delete(strcat(to_be_deleted,'*.*'));
-                        end
-                    else
-                        if strcmp(delete_SANS,'all') && ~isempty(to_be_deleted)
-                            delete(strcat(to_be_deleted,'*.*'));
-                        end
-                        final_chi2_SANS(success) = chi2;
-                        if interactive && options.display_SANS_fit
-                            % update multi plot axes
-                            axes(handles.axes_multi_plot);
-                            cla;
-                            hold on;
-                            for ks = 1:length(restraints.SANS)
-                                fit = SANS_curves{ks,success};
-                                plot(fit(:,1),fit(:,2));
-                                plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
-                            end
-                            title(sprintf('SANS fit for model %i (chi^2 = %4.2f, p = %4.2f)',success,final_chi2_SANS(success),probabilities(success)));
-                            drawnow
-                        end
-                    end
-                else
-                    sans_poi = sans_poi + 1;
-                    xlink_fulfill(:,sans_poi) = xlink_distances{k-bask};
-                end
-                SAXS_chi = 0;
-                if isfield(restraints,'SAXS') && fulfill
-                    to_be_deleted = '';
-                    for ks = 1:length(restraints.SAXS)
-                        model = rmfield(model,'selected');
-                        ksel = 0;
-                        for kc = 1:length(restraints.SAXS(ks).chains)
-                            if restraints.SAXS(ks).chains(kc) > 0
-                                ksel = ksel + 1;
-                                model.selected{ksel} = [snum restraints.SAXS(ks).chains(kc) success];
-                            end
-                        end
-                        pdbfile = sprintf('tx%i_%i',k,ks);
-                        to_be_deleted = sprintf('tx%i_*.*',k);
-                        wr_pdb_selected(pdbfile,'SAXS');
-                        [chi2,~,~,result,fit] = fit_SAXS_by_crysol(restraints.SAXS(ks).data,pdbfile,restraints.SAXS(ks).sm);
-                        if isnan(chi2)
-                            chi2 = 1e6;
-                        end
-                        if isempty(chi2)
-                            if interactive
-                                fprintf(2,'Warning: SAXS fitting failed in trial %i:\n',k);
-                                fprintf(2,'%s',result);
-                            end
-                            delete(strcat(pdbfile,'*.*'));
-                            success = success - 1;
-                            fulfill = false;
-                            saxs_fail = saxs_fail + 1;
-                        else
-                            chi_SAXS(ks,success) = chi2;
-                            SAXS_curves{ks,success} = fit;
-                            SAXS_chi = SAXS_chi + chi2;
-                        end
-                    end
-                    chi2 = SAXS_chi/length(restraints.SAXS);
-                    if chi2 > SAXS_threshold
-                        success = success - 1;
-                        saxs_fail = saxs_fail + 1;
-                        fulfill = false;
-                        if strcmp(delete_SAXS,'all') || strcmp(delete_SAXS,'poor')
-                            delete(strcat(to_be_deleted,'*.*'));
-                        end
-                    elseif ~isempty(chi2)
-                        final_chi2_SAXS(success) = chi2;
-                        if interactive && options.display_SAXS_fit
-                            % update multi plot axes
-                            axes(handles.axes_multi_plot);
-                            cla;
-                            hold on;
-                            for ks = 1:length(restraints.SAXS)
-                                fit = SAXS_curves{ks,success};
-                                plot(fit(:,1),fit(:,2));
-                                plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
-                            end
-                            title(sprintf('SAXS fit for model %i (chi^2 = %4.2f, p = %4.2f)',success,final_chi2_SAXS(success),probabilities(success)));
-                            drawnow
-                        end
-                        if strcmp(delete_SAXS,'all') && ~isempty(to_be_deleted)
-                            delete(strcat(to_be_deleted,'*.*'));
-                        end
-                    end
-                end
                 % now compare stemloop restraints
                 if ~stemloop_mode && ~isempty(restraints.stemlibs) && fulfill
                     modnum.block = parblocks;
@@ -1171,19 +1041,155 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                     end
                 end
                 if fulfill
-                    fid = fopen(solutionname,'at');
-                    if ~isempty(ccombi) && sum(ccombi) > 0
-                        fprintf(fid,'%8i%6i%6i%6i%6i\n',parblocks,k-bask,ccombi(:));
+                    if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
+                        to_be_deleted = '';
+                        sans_vec = -ones(2,1);
+                        for ks = 1:length(restraints.SANS)
+                            model = rmfield(model,'selected');
+                            ksel = 0;
+                            for kc = 1:length(restraints.SANS(ks).chains)
+                                if restraints.SANS(ks).chains(kc) > 0
+                                    ksel = ksel + 1;
+                                    model.selected{ksel} = [snum restraints.SANS(ks).chains(kc) success];
+                                end
+                            end
+                            pdbfile = sprintf('t%i_%i',k,ks);
+                            to_be_deleted = sprintf('t%i_*.*',k);
+                            wr_pdb_selected(pdbfile,'SANS');
+                            [chi2,~,~,result,fit] = fit_SANS_by_cryson(restraints.SANS(ks).data,pdbfile,restraints.SANS(ks).illres);
+                            if isempty(chi2) || isnan(chi2)
+                                SANS_chi = 1e6;
+                                if interactive
+                                    fprintf(2,'Warning: SANS fitting failed in trial %i:\n',k);
+                                    fprintf(2,'%s',result);
+                                    if success > 0
+                                        success = success - 1;
+                                    end
+                                    fulfill = false;
+                                end
+                            else
+                                SANS_curves{ks,success} = fit;
+                                sans_vec(ks) = chi2;
+                                SANS_chi = SANS_chi + chi2;
+                            end
+                        end
+                        if min(sans_vec) > 0
+                            sans_poi = sans_poi + 1;
+                            chi_SANS(:,sans_poi) = sans_vec;
+                            xlink_fulfill(:,sans_poi) = xlink_distances{k-bask};
+                        end
+                        chi2 = SANS_chi/length(restraints.SANS);
+                        if chi2 > SANS_threshold && fulfill
+                            if interactive
+                                fprintf(1,'SANS chi^2 of %4.2f exceeded threshold of %4.2f in trial %i.\n',chi2,SANS_threshold,k);
+                            end
+                            success = success - 1;
+                            sans_fail = sans_fail + 1;
+                            fulfill = false;
+                            if strcmp(delete_SANS,'all') || strcmp(delete_SANS,'poor')
+                                delete(strcat(to_be_deleted,'*.*'));
+                            end
+                        else
+                            if strcmp(delete_SANS,'all') && ~isempty(to_be_deleted)
+                                delete(strcat(to_be_deleted,'*.*'));
+                            end
+                            final_chi2_SANS(success) = chi2;
+                            if interactive && options.display_SANS_fit
+                                % update multi plot axes
+                                axes(handles.axes_multi_plot);
+                                cla;
+                                hold on;
+                                for ks = 1:length(restraints.SANS)
+                                    fit = SANS_curves{ks,success};
+                                    plot(fit(:,1),fit(:,2));
+                                    plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
+                                end
+                                title(sprintf('SANS fit for model %i (chi^2 = %4.2f, p = %4.2f)',success,final_chi2_SANS(success),probabilities(success)));
+                                drawnow
+                            end
+                        end
                     else
-                        fprintf(fid,'%8i%6i\n',parblocks,k-bask);
+                        sans_poi = sans_poi + 1;
+                        xlink_fulfill(:,sans_poi) = xlink_distances{k-bask};
                     end
-                    fclose(fid);
-                    if restraints.search
-                        success = success -1;
+                    SAXS_chi = 0;
+                    if isfield(restraints,'SAXS') && fulfill
+                        to_be_deleted = '';
+                        for ks = 1:length(restraints.SAXS)
+                            model = rmfield(model,'selected');
+                            ksel = 0;
+                            for kc = 1:length(restraints.SAXS(ks).chains)
+                                if restraints.SAXS(ks).chains(kc) > 0
+                                    ksel = ksel + 1;
+                                    model.selected{ksel} = [snum restraints.SAXS(ks).chains(kc) success];
+                                end
+                            end
+                            pdbfile = sprintf('tx%i_%i',k,ks);
+                            to_be_deleted = sprintf('tx%i_*.*',k);
+                            wr_pdb_selected(pdbfile,'SAXS');
+                            SAXS_options.sm = 10*restraints.SAXS(ks).sm;
+                            [chi2,~,~,result,fit] = fit_SAXS_by_crysol(restraints.SAXS(ks).data,pdbfile,SAXS_options);
+                            if isnan(chi2)
+                                chi2 = 1e6;
+                            end
+                            if isempty(chi2)
+                                if interactive
+                                    fprintf(2,'Warning: SAXS fitting failed in trial %i:\n',k);
+                                    fprintf(2,'%s',result);
+                                end
+                                delete(strcat(pdbfile,'*.*'));
+                                success = success - 1;
+                                fulfill = false;
+                                saxs_fail = saxs_fail + 1;
+                            else
+                                chi_SAXS(ks,success) = chi2;
+                                SAXS_curves{ks,success} = fit;
+                                SAXS_chi = SAXS_chi + chi2;
+                            end
+                        end
+                        chi2 = SAXS_chi/length(restraints.SAXS);
+                        if chi2 > SAXS_threshold
+                            success = success - 1;
+                            saxs_fail = saxs_fail + 1;
+                            fulfill = false;
+                            if strcmp(delete_SAXS,'all') || strcmp(delete_SAXS,'poor')
+                                delete(strcat(to_be_deleted,'*.*'));
+                            end
+                        elseif ~isempty(chi2)
+                            final_chi2_SAXS(success) = chi2;
+                            if interactive && options.display_SAXS_fit
+                                % update multi plot axes
+                                axes(handles.axes_multi_plot);
+                                cla;
+                                hold on;
+                                for ks = 1:length(restraints.SAXS)
+                                    fit = SAXS_curves{ks,success};
+                                    plot(fit(:,1),fit(:,2));
+                                    plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
+                                end
+                                title(sprintf('SAXS fit for model %i (chi^2 = %4.2f, p = %4.2f)',success,final_chi2_SAXS(success),probabilities(success)));
+                                drawnow
+                            end
+                            if strcmp(delete_SAXS,'all') && ~isempty(to_be_deleted)
+                                delete(strcat(to_be_deleted,'*.*'));
+                            end
+                        end
+                    end
+                    if fulfill
+                        fid = fopen(solutionname,'at');
+                        if ~isempty(ccombi) && sum(ccombi) > 0
+                            fprintf(fid,'%8i%6i%6i%6i%6i\n',parblocks,k-bask,ccombi(:));
+                        else
+                            fprintf(fid,'%8i%6i\n',parblocks,k-bask);
+                        end
+                        fclose(fid);
+                        if restraints.search
+                            success = success -1;
+                        end
                     end
                 end
             end
-            if ~skip_mode
+            if ~skip_mode && fulfill
                 fid = fopen(combinationname,'at');
                 all_combi = all_s_combi{k-bask};
                 [ncombi,~] = size(all_combi);
@@ -1195,6 +1201,7 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
         end
     end
     bask = bask + options.granularity;
+    % save SANS_fitting_RNA chi_SANS sans_poi
     runtime=toc;
     if interactive
         % update multi plot axes
