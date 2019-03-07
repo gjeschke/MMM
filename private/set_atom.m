@@ -342,9 +342,6 @@ if ~isempty(graphics)
         for k=1:length(graphics.objects),
             if ishandle(graphics.objects(k)) && graphics.objects(k)~=0,
                 delete(graphics.objects(k));
-                if isfield(hMain,'unrecord'),
-                    model.unrecord=[hMain.unrecord graphics.objects(k)];
-                end;
             end;
         end;
     end;

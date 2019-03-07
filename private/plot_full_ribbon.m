@@ -25,7 +25,6 @@ if isfield(model.structures{indices(1)}(indices(2)).residues{indices(3)},'chain_
             for k=1:length(graphics.objects),
                 if ishandle(graphics.objects(k)) && graphics.objects(k)~=0,
                     delete(graphics.objects(k));
-                    model.unrecord=[model.unrecord graphics.objects(k)];
                 end;
             end;
         end;
@@ -42,7 +41,6 @@ if isfield(model.structures{indices(1)}(indices(2)).residues{indices(3)},'second
                     for kk=1:length(graphics.objects),
                         if ishandle(graphics.objects(kk)) && graphics.objects(kk)~=0,
                             delete(graphics.objects(kk));
-                            model.unrecord=[model.unrecord graphics.objects(kk)];
                         end;
                     end;
                 end;

@@ -69,7 +69,7 @@ command=sprintf('bckg white');
 cmd(hMain,command);
 
 if isfield(model,'selections')
-    if model.selections>=1,
+    if model.selections>=1
         set(handles.slider_focus,'Value',0);
         set(handles.slider_back,'Value',1.5);
         set(handles.edit_focus,'String','0.00');
@@ -79,13 +79,13 @@ if isfield(model,'selections')
         set(handles.slider_back,'Value',1.5);
         set(handles.edit_focus,'String','0.00');
         set(handles.edit_back,'String','1.50');
-    end;
+    end
 else
     set(handles.slider_focus,'Value',0);
     set(handles.slider_back,'Value',1.5);
     set(handles.edit_focus,'String','0.00');
     set(handles.edit_back,'String','1.50');
-end;
+end
 guidata(hObject,handles);
 handles=depth_cueing(handles);
 
@@ -281,45 +281,49 @@ global model
 global hModel
 
 set(hMain.figure,'Pointer','watch');
-if hMain.detached,
+if hMain.detached
     set(hModel.figure,'Pointer','watch');
-end;
+end
 
-switch hMain.color,
+switch hMain.color
     case 'white'
         bckg=[1,1,1];
     case 'grey'
         bckg=[0.941,0.941,0.941];
     case 'black'
         bckg=[0,0,0];
-end;
+end
 
+% Get list of objects with xyz and indices data
+obj = hMain.axes_model.Children;
+rmv = arrayfun(@(o)isempty(o.UserData),obj);
+obj(rmv) = [];
+nObjects = numel(obj);
 
-m=model.graphics_lookup_pointer;
 campos=get(hMain.axes_model,'CameraPosition');
 camtarget=get(hMain.axes_model,'CameraTarget');
 camvec=camtarget-campos;
 camvec=camvec/norm(camvec);
-z=linspace(0,1,m);
-xyzmat=zeros(m,3);
-for k=1:m,
-    xyzext=model.graphics_xyz(k,:);
+z=linspace(0,1,nObjects);
+xyzmat=zeros(nObjects,3);
+for k=1:nObjects
+    xyzext=obj(k).UserData.xyz;
     xyz=(xyzext(1:3)+xyzext(4:6))/2-campos;
     xyzmat(k,:)=xyz;
     z(k)=norm(xyz.*camvec);
-end;
+end
 
 minz=min(z);
 maxz=max(z);
 
 selection_flag=0;
 if isfield(model,'selections')
-    if model.selections>=1,
+    if model.selections>=1
         minz=1e6;
         maxz=-1e6;
         selection_flag=1;
         z2=zeros(1,model.selections);
-        for k=1:model.selections,
+        for k=1:model.selections
             cindices=model.selected{k};
             cindices=cindices(cindices>0);
             [msg,xyz]=get_object(cindices,'xyz');
@@ -327,22 +331,22 @@ if isfield(model,'selections')
             ma=norm((ma-campos).*camvec);
             mi=min(xyz);
             mi=norm((mi-campos).*camvec);
-            if mi>ma,
+            if mi>ma
                 tmp=mi; mi=ma; ma=tmp;
-            end;
-            if ma>maxz, maxz=ma; end;
-            if mi<minz, minz=mi; end;
+            end
+            if ma>maxz, maxz=ma; end
+            if mi<minz, minz=mi; end
             z2(k)=norm((mean(xyz)-campos).*camvec);
-        end;
+        end
         maxz=maxz+2.5;
         minz=minz-2.5;
-    end;
-end;
+    end
+end
 
-if minz>=maxz,
+if minz>=maxz
     minz=maxz-2.5;
     maxz=minz+2.5;
-end;
+end
 
 dz=(z-minz)/(maxz-minz);
 
@@ -358,37 +362,37 @@ db=1-dz;
 dz=dz.^2;
 admix=0.3;
 ambient=sqrt((1-admix)*dz+admix);
-for kk=1:m,
-    indices=model.graphics_lookup(kk,2:end);
-    if indices(4)<0,
+for kk=1:nObjects
+    indices=obj(k).UserData.lookup(2:end);
+    if indices(4)<0
         [msg,allgraphics]=get_object(indices(1:3),'secondary_graphics');
     else
         indices=indices(indices>0);
         [msg,allgraphics]=get_object(indices,'graphics');
     end;
-    if ~isempty(allgraphics),
-        for kkk=1:length(allgraphics),
+    if ~isempty(allgraphics)
+        for kkk=1:length(allgraphics)
             graphics=allgraphics(kkk);
-            if ~isempty(graphics),
+            if ~isempty(graphics)
                 setcolor=dz(kk)*bckg+db(kk)*graphics.color(1,:);
-                for k=1:length(graphics.objects),
+                for k=1:length(graphics.objects)
                     if ishandle(graphics.objects(k)) && graphics.objects(k)~=0,
-                        if isprop(graphics.objects(k),'Color'),
+                        if isprop(graphics.objects(k),'Color')
                             set(graphics.objects(k),'Color',setcolor);
-                        elseif isprop(graphics.objects(k),'FaceColor'),
+                        elseif isprop(graphics.objects(k),'FaceColor')
                             set(graphics.objects(k),'FaceColor',setcolor,'AmbientStrength',ambient(kk),'FaceAlpha',graphics.opaque(1,:)*trans(kk));
-                        end;
-                    end;
-                end;
-            end;
-        end;
-    end;
-end;
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
 
 set(hMain.figure,'Pointer','arrow');
-if hMain.detached,
+if hMain.detached
     set(hModel.figure,'Pointer','arrow');
-end;
+end
 
 function handles=cancel_depth_cueing(handles)
 
@@ -397,37 +401,41 @@ global model
 global hModel
 
 set(hMain.figure,'Pointer','watch');
-if hMain.detached,
+if hMain.detached
     set(hModel.figure,'Pointer','watch');
-end;
+end
 
-m=model.graphics_lookup_pointer;
+% Get list of objects with xyz and indices data
+obj = hMain.axes_model.Children;
+rmv = arrayfun(@(o)isempty(o.UserData),obj);
+obj(rmv) = [];
+nObjects = numel(obj);
 
-for kk=1:m,
-    indices=model.graphics_lookup(kk,2:end);
-    if indices(4)<0,
+for kk=1:nObjects
+    indices=obj(kk).UserData.lookup(2:end);
+    if indices(4)<0
         [msg,allgraphics]=get_object(indices(1:3),'secondary_graphics');
     else
         indices=indices(indices>0);
         [msg,allgraphics]=get_object(indices,'graphics');
-    end;
-    if ~isempty(allgraphics),
-        for kkk=1:length(allgraphics),
+    end
+    if ~isempty(allgraphics)
+        for kkk=1:length(allgraphics)
             graphics=allgraphics(kkk);
-            if ~isempty(graphics),
-                for k=1:length(graphics.objects),
+            if ~isempty(graphics)
+                for k=1:length(graphics.objects)
                     if ishandle(graphics.objects(k)) && graphics.objects(k)~=0,
-                        if isprop(graphics.objects(k),'Color'),
+                        if isprop(graphics.objects(k),'Color')
                             set(graphics.objects(k),'Color',graphics.color(1,:));
-                        elseif isprop(graphics.objects(k),'FaceColor'),
+                        elseif isprop(graphics.objects(k),'FaceColor')
                             set(graphics.objects(k),'FaceColor',graphics.color(1,:),'FaceAlpha',graphics.opaque(1,:),'AmbientStrength',0.3);
-                        end;
-                    end;
-                end;
-            end;
-        end;
-    end;
-end;
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
 
 highlight_selection;
 camlight(hMain.camlight);
@@ -436,9 +444,9 @@ command=sprintf('bckg %s',handles.old_bckg_color);
 cmd(hMain,command);
 
 set(hMain.figure,'Pointer','arrow');
-if hMain.detached,
+if hMain.detached
     set(hModel.figure,'Pointer','arrow');
-end;
+end
 
 
 

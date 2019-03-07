@@ -84,7 +84,6 @@ for k=kstart:kend, % loop over all alternate locations
                         for kk=1:length(graphics.objects),
                             if ishandle(graphics.objects(kk)) && graphics.objects(kk)~=0,
                                 delete(graphics.objects(kk));
-                                model.unrecord=[model.unrecord graphics.objects(kk)];
                             end;
                         end;      
                     end;

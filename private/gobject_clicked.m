@@ -22,8 +22,7 @@ if strcmpi(mouseclick,'open')
     return
 end
 
-poi=find(model.graphics_objects(1:model.graphics_lookup_pointer)==cb);
-indices=model.graphics_lookup(poi,2:end);
+indices=cb.UserData.lookup(2:end);
 
 if indices(1)<0 % special handling for indexed isosurfaces
     if isfield(model,'surfaces')
@@ -75,7 +74,7 @@ if indices(4)<0 % index extension for secondary structure elements
                     if ~isempty(model.secondary_selected)
                         poi=0;
                         for k=1:length(model.secondary_selected)
-                            if graphics.objects~=model.secondary_selected{k}.objects,
+                            if graphics.objects~=model.secondary_selected{k}.objects
                                 poi=poi+1;
                                 model.secondary_selected{poi}=model.secondary_selected{k};
                             end

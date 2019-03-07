@@ -1,9 +1,9 @@
 function record_object(obj,indices,xyz,num)
 % function record_object(obj,indices,xyz,num)
 %
-% Stores graphics object handle and corresponding indices of structure
-% elements in a central lookup table and sets the function that is executed
-% on clicking an object, the extensions of the object are also stored
+% Stores indices of structure elements in the object's UserData and
+% sets the callback for clicking an object, the extensions of the
+% object are also stored
 %
 % obj       graphics object handle
 % indices   corresponding index vector
@@ -14,34 +14,25 @@ function record_object(obj,indices,xyz,num)
 %
 % G. Jeschke, 2009
 
-global model
+if obj==0, return;  end
 
+% Assemble index vector
+idx = zeros(1,7);
+idx(2:length(indices)+1) = indices;
+if nargin>3
+    idx(7)=num;
+end
+
+% Calculate graphics object extent and store it
+minx=xyz(1)-xyz(4)/2;
+miny=xyz(2)-xyz(5)/2;
+minz=xyz(3)-xyz(6)/2;
+maxx=xyz(1)+xyz(4)/2;
+maxy=xyz(2)+xyz(5)/2;
+maxz=xyz(3)+xyz(6)/2;
+xyzrange = [minx miny minz maxx maxy maxz];
+
+% Store data in graphics object, set callback
+obj.UserData.lookup = idx;
+obj.UserData.xyz = xyzrange;
 obj.ButtonDownFcn = @gobject_clicked;
-
-if ~isfield(model,'graphics_lookup')
-    model.graphics_objects=gobjects(1,50000);
-    model.graphics_lookup=zeros(50000,7);
-    model.graphics_lookup_pointer=0;
-    model.graphics_xyz=zeros(50000,6);
-end
-poi=model.graphics_lookup_pointer;
-
-if obj~=0 % disregard empty objects
-    poi=poi+1;
-    model.graphics_objects(poi)=obj;
-    model.graphics_lookup(poi,2:length(indices)+1)=indices;
-    if nargin>3
-        model.graphics_lookup(poi,7)=num;
-    end
-    
-    % Calculate graphics object extent and store it
-    minx=xyz(1)-xyz(4)/2;
-    miny=xyz(2)-xyz(5)/2;
-    minz=xyz(3)-xyz(6)/2;
-    maxx=xyz(1)+xyz(4)/2;
-    maxy=xyz(2)+xyz(5)/2;
-    maxz=xyz(3)+xyz(6)/2;
-    model.graphics_xyz(poi,:)=[minx miny minz maxx maxy maxz];
-end
-
-model.graphics_lookup_pointer=poi;

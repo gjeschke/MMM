@@ -1473,12 +1473,10 @@ if ~isempty(strfind(address,'|')) % bilabel case
                     objects = model.bisites{scan}.sites{site}.gobjects;
                     for k = 1:length(objects)
                         delete(objects(k));
-                        model.unrecord=[model.unrecord objects(k)];
                     end
                 end
             end
         end
-        unrecord_objects;
     end
 end
 
@@ -1495,7 +1493,6 @@ if strcmp(address(1),'$'), % surface request
     end;
 else
     [message,argout]=set_object(address,'hide');
-    unrecord_objects;
 end;
 lighting gouraud
 
@@ -1782,7 +1779,6 @@ else
 end;
 axes(handles.axes_model);
 [message,argout]=set_object('[:]','hide');
-unrecord_objects;
 [transmat,target,moving,alpha]=opt_superposition_ensemble(adr1,adr2);
 if ~isempty(target) && ~isempty(moving) && ~isempty(alpha),
     if isfield(model,'motion'),
@@ -2099,7 +2095,6 @@ else
     if ~msg.error || msg.error>100,
         if ~silent && ~isempty(snum),
             [message,argout]=set_object(snum,'hide');
-            unrecord_objects;
         end;
     end;
 end;
