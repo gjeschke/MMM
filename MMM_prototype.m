@@ -22,7 +22,7 @@ function varargout = MMM_prototype(varargin)
 
 % Edit the above text to modify the response to help MMM_prototype
 
-% Last Modified by GUIDE v2.5 16-Feb-2019 19:10:43
+% Last Modified by GUIDE v2.5 07-Mar-2019 12:58:54
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -2168,6 +2168,15 @@ set_view;
 
 cd(my_path);
 
+% [~,heavy_coor] = get_structure(snum,'xyz_heavy');
+% faces = convhulln(heavy_coor);
+% [na,~] = size(faces);
+% [kpa,ar] = reducepatch(faces,heavy_coor,na);
+% 
+% p = patch('Faces',kpa,'Vertices',ar);
+% p.FaceAlpha = 0.25;
+% p.FaceColor = [0 0.6 0];
+
 guidata(hObject,handles);
 
 
@@ -2531,6 +2540,11 @@ else
         return
     end
     add_msg_board(sprintf('Model %s loaded.',filename));
+    if ~isfield(model,'graphics_lookup_pointer'), %#ok
+        if isfield(model,'graphics_lookup')
+            model.graphics_lookup_pointer=sum(ishandle(model.graphics_objects));
+        end
+    end
     if display
         set(gcf,'Pointer','watch');
         drawnow;
@@ -2917,6 +2931,8 @@ function MMM_CloseRequestFcn(hObject, eventdata, handles)
 global hMain
 global hModel
 global general
+
+delete(hObject);
 
 for k=1:length(general.timers)
     stop(general.timers{k});
@@ -6219,41 +6235,39 @@ if ~isempty(restraints.rigid(1).indices)
     [snum0,distance_restraints] = optimize_RBA(distance_restraints,restraints.rigid,restraints.randomize);
 end
 
-if ~isempty(distance_restraints(1).r)
-    sadr = mk_address(snum0);
-    for k = 1:length(distance_restraints)
-        adr1 = sprintf('%s%s.CA',sadr,distance_restraints(k).adr1);
-        [indices,message]=resolve_address(adr1);
-        if message.error
-            add_msg_board(sprintf('ERROR: Calpha atom of residue %s does not exist. Aborting.',adr1));
-            return
-        end
-        [message,coor1]=get_atom(indices,'coor');
-        if message.error || isempty(coor1)
-            add_msg_board(sprintf('ERROR: Coordinates of Calpha atom of residue %s could not be retrieved. Aborting.',adr1));
-            return
-        end
-        distance_restraints(k).CA1 = coor1;
-        adr2 = sprintf('%s%s.CA',sadr,distance_restraints(k).adr2);
-        [indices,message]=resolve_address(adr2);
-        if message.error
-            add_msg_board(sprintf('ERROR: Calpha atom of residue %s does not exist. Aborting.',adr2));
-            return
-        end
-        [message,coor2]=get_atom(indices,'coor');
-        if message.error || isempty(coor2)
-            add_msg_board(sprintf('ERROR: Coordinates of Calpha atom of residue %s could not be retrieved. Aborting.',adr2));
-            return
-        end
-        distance_restraints(k).CA2 = coor2;
-        distance_restraints(k).rCA0 = norm(coor1-coor2);
-        corr = distance_restraints(k).rCA0 - distance_restraints(k).r0;
-        distance_restraints(k).rCA = distance_restraints(k).r + corr;
-        if distance_restraints(k).sigr > distance_restraints(k).sigr0
-            distance_restraints(k).sigrCA = sqrt(distance_restraints(k).sigr^2 - distance_restraints(k).sigr0^2);
-        else
-            distance_restraints(k).sigrCA = 0.1;
-        end
+sadr = mk_address(snum0);
+for k = 1:length(distance_restraints)
+    adr1 = sprintf('%s%s.CA',sadr,distance_restraints(k).adr1);
+    [indices,message]=resolve_address(adr1);
+    if message.error
+        add_msg_board(sprintf('ERROR: Calpha atom of residue %s does not exist. Aborting.',adr1));
+        return
+    end
+    [message,coor1]=get_atom(indices,'coor');
+    if message.error || isempty(coor1)
+        add_msg_board(sprintf('ERROR: Coordinates of Calpha atom of residue %s could not be retrieved. Aborting.',adr1));
+        return
+    end
+    distance_restraints(k).CA1 = coor1;
+    adr2 = sprintf('%s%s.CA',sadr,distance_restraints(k).adr2);
+    [indices,message]=resolve_address(adr2);
+    if message.error
+        add_msg_board(sprintf('ERROR: Calpha atom of residue %s does not exist. Aborting.',adr2));
+        return
+    end
+    [message,coor2]=get_atom(indices,'coor');
+    if message.error || isempty(coor2)
+        add_msg_board(sprintf('ERROR: Coordinates of Calpha atom of residue %s could not be retrieved. Aborting.',adr2));
+        return
+    end
+    distance_restraints(k).CA2 = coor2;
+    distance_restraints(k).rCA0 = norm(coor1-coor2);
+    corr = distance_restraints(k).rCA0 - distance_restraints(k).r0;
+    distance_restraints(k).rCA = distance_restraints(k).r + corr;
+    if distance_restraints(k).sigr > distance_restraints(k).sigr0
+        distance_restraints(k).sigrCA = sqrt(distance_restraints(k).sigr^2 - distance_restraints(k).sigr0^2);
+    else
+        distance_restraints(k).sigrCA = 0.1;
     end
 end
 
@@ -6306,18 +6320,16 @@ else
     else
         fprintf(fid,'site1    site2   r0 (Å)  sigr0 (Å)  r (Å)  sigr (Å)\n');
     end
-    if ~isempty(restraints.DEER(1).r)
-        for k = 1:length(restraints.DEER)
-            if restraints.randomize
-                fprintf(fid,'%8s%8s%7.1f%10.1f%7.1f%10.1f%7.1f%10.1f\n',restraints.DEER(k).adr1,...
-                    restraints.DEER(k).adr2,restraints.DEER(k).r0,restraints.DEER(k).sigr0,...
-                    restraints.DEER(k).r_rand,restraints.DEER(k).sigr_rand,...
-                    restraints.DEER(k).r,restraints.DEER(k).sigr);
-            else
-                fprintf(fid,'%8s%8s%7.1f%10.1f%7.1f%10.1f\n',restraints.DEER(k).adr1,...
-                    restraints.DEER(k).adr2,restraints.DEER(k).r0,restraints.DEER(k).sigr0,...
-                    restraints.DEER(k).r,restraints.DEER(k).sigr);
-            end
+    for k = 1:length(restraints.DEER)
+        if restraints.randomize
+            fprintf(fid,'%8s%8s%7.1f%10.1f%7.1f%10.1f%7.1f%10.1f\n',restraints.DEER(k).adr1,...
+                restraints.DEER(k).adr2,restraints.DEER(k).r0,restraints.DEER(k).sigr0,...
+                restraints.DEER(k).r_rand,restraints.DEER(k).sigr_rand,...
+                restraints.DEER(k).r,restraints.DEER(k).sigr);
+        else
+            fprintf(fid,'%8s%8s%7.1f%10.1f%7.1f%10.1f\n',restraints.DEER(k).adr1,...
+                restraints.DEER(k).adr2,restraints.DEER(k).r0,restraints.DEER(k).sigr0,...
+                restraints.DEER(k).r,restraints.DEER(k).sigr);
         end
     end
     fclose(fid);
@@ -6340,34 +6352,33 @@ end
 
 model.current_structure = snum;
 
-if ~isempty(restraints.DEER(1).r)
-    for k = 1:length(restraints.DEER)
-        [rax,distr] = mk_distance_distribution(restraints.DEER(k).adr1,restraints.DEER(k).adr2,restraints.DEER(k).label);
-        if isempty(rax)
-            figure(k); clf;
-            title(sprintf('%s: %s-%s. Labeling failure',name,restraints.DEER(k).adr1,restraints.DEER(k).adr2));
-            continue
-        end
-        rax = 10*rax;
+for k = 1:length(restraints.DEER)
+    [rax,distr] = mk_distance_distribution(restraints.DEER(k).adr1,restraints.DEER(k).adr2,restraints.DEER(k).label);
+    if isempty(rax)
         figure(k); clf;
-        title(sprintf('%s: %s-%s',name,restraints.DEER(k).adr1,restraints.DEER(k).adr2));
-        hold on
-        plot(rax,distr,'k');
-        xlabel('r [Å]');
-        ylabel('P(r)');
-        hold on
-        argr = (restraints.DEER(k).r-rax)/(sqrt(2)*restraints.DEER(k).sigr);
+        title(sprintf('%s: %s-%s. Labeling failure',name,restraints.DEER(k).adr1,restraints.DEER(k).adr2));
+        continue
+    end
+    rax = 10*rax;
+    figure(k); clf;
+    title(sprintf('%s: %s-%s',name,restraints.DEER(k).adr1,restraints.DEER(k).adr2));
+    hold on
+    plot(rax,distr,'k');
+    xlabel('r [Å]');
+    ylabel('P(r)');
+    hold on
+    argr = (restraints.DEER(k).r-rax)/(sqrt(2)*restraints.DEER(k).sigr);
+    distr_sim = exp(-argr.^2);
+    distr_sim = distr_sim/sum(distr_sim);
+    plot(rax,distr_sim,'Color',[0.75,0,0]);
+    if restraints.randomize
+        argr = (restraints.DEER(k).r_rand-rax)/(sqrt(2)*restraints.DEER(k).sigr_rand);
         distr_sim = exp(-argr.^2);
         distr_sim = distr_sim/sum(distr_sim);
-        plot(rax,distr_sim,'Color',[0.75,0,0]);
-        if restraints.randomize
-            argr = (restraints.DEER(k).r_rand-rax)/(sqrt(2)*restraints.DEER(k).sigr_rand);
-            distr_sim = exp(-argr.^2);
-            distr_sim = distr_sim/sum(distr_sim);
-            plot(rax,distr_sim,'Color',[0,0,0.75]);
-        end
+        plot(rax,distr_sim,'Color',[0,0,0.75]);
     end
 end
+
 
 set(hfig,'Pointer','arrow');
 add_msg_board(sprintf('Msg %i: %s. Structure %i generated. Energy is %5.3f kJ/mol.\n',msg.error,msg.text,snum,energy/1000));
@@ -6379,8 +6390,8 @@ function menu_jobs_test2_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-PTBP1_ensemble_maker;
-% loop_assembler_PTB1;
+fname = 'PTB1_20190223_block16';
+loop_assembler_PTB1(fname);
 guidata(hObject,handles);
 
 
@@ -6390,8 +6401,8 @@ function menu_jobs_test3_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-PTBP1_ensemble_SAS_fit(100);
-% loop_assembler_PTB1;
+fname = 'PTB1_20190223_ensemble14';
+PTBP1_ensemble_SAS_fit(fname);
 guidata(hObject,handles);
 
 
@@ -6401,8 +6412,8 @@ function menu_jobs_test4_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-PTBP1_ensemble_DEER_fit(100);
-% loop_assembler_PTB1;
+fname = 'PTB1_20190223_ensemble14';
+PTBP1_ensemble_DEER_fit(fname);
 guidata(hObject,handles);
 
 
@@ -6412,6 +6423,18 @@ function menu_jobs_test5_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-PTB1_SAS_DEER_fit;
-% loop_assembler_PTB1;
+% PTBP1_quality_check_CYANA;
+fname = 'PTB1_20190223_ensemble14';
+PTB1_SAS_DEER_fit(fname);
+guidata(hObject,handles);
+
+
+% --------------------------------------------------------------------
+function menu_jobs_test6_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_jobs_test6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+fname = 'PTB1_20190223_ensemble14';
+PTBP1_ensemble_maker(fname);
 guidata(hObject,handles);
