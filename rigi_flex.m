@@ -452,6 +452,7 @@ switch handles.progress
                         model.structures{snum}(chain_indices(klib)).Bfactor{km} = stemlibs{klib}.chains{ccombi(klib)}.Bfactor{1};
                         model.structures{snum}(chain_indices(klib)).Btensor{km} = stemlibs{klib}.chains{ccombi(klib)}.Btensor{1};
                         model.structures{snum}(chain_indices(klib)).atoms{km} = stemlibs{klib}.chains{ccombi(klib)}.atoms{1};
+                        model.structures{snum}(chain_indices(klib)).isotopes = stemlibs{klib}.chains{ccombi(klib)}.isotopes;
                     end
                     initialize_model = false;
                     env_sel = zeros(num_ch,2);
@@ -2837,5 +2838,5 @@ while 1
     nl = nl + 1;
 end
 curve = curve(1:nl-1,:);
-curve(:,1) = 10*curve(:,1);
+%curve(:,1) = curve(:,1);
 fclose(fid);

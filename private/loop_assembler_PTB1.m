@@ -1,4 +1,4 @@
-function loop_assembler_PTB1
+function loop_assembler_PTB1(fname)
 % Morphs and assigns loop models to rigid-body arrangements of PTBP1 with
 % an already linked EMCV-IRES RNA model
 % models are tested for fulfilment of small-angle scattering restraints
@@ -11,7 +11,13 @@ function loop_assembler_PTB1
 
 global model
 
-solutions = load('PTB1_20190111_r_RNA_linkable.dat');
+soln_name = sprintf('%s_linkable.dat',fname);
+report_name = sprintf('%s_assembler_report.dat',fname);
+list_file = sprintf('%s_scores.dat',fname);
+match_file = sprintf('%s_section_matches.mat',fname);
+
+restraint_file = 'PTBP1_restraints_190208.dat';
+solutions = load(soln_name);
 
 tic,
 
@@ -28,7 +34,7 @@ n_f2 = length(model.structures{snum_f2}(1).xyz);
 
 chi2_SAS = zeros(n_RBA,3);
 
-fid = fopen('PTB1_loop_assembler_report.dat','wt');
+fid = fopen(report_name,'wt');
 
 fprintf(fid,'--- PTBP1/EMCV-IRES loop assembler report ---\n\n');
 fprintf(fid,'%i RBAs with linked RNA\n',n_RBA);
@@ -115,7 +121,7 @@ for kr = 1:n_RBA
     % RRM1
     cmind = cmind0;
     cmind(2) = 1;
-    [~,rrm1] = get_chain_model(cmind,'xyz_heavy');
+    % [~,rrm1] = get_chain_model(cmind,'xyz_heavy');
     stitch_indices(1,:) = cmind;
     r0 = 57;
     ch_coor = zeros(10000,3);
@@ -132,7 +138,7 @@ for kr = 1:n_RBA
     cmind = cmind0;
     cmind(2) = 2;
     stitch_indices(3,:) = cmind;
-    [~,rrm2] = get_chain_model(cmind,'xyz_heavy');
+    % [~,rrm2] = get_chain_model(cmind,'xyz_heavy');
     r0 = 181;
     ch_coor = zeros(10000,3);
     cpoi = 0;
@@ -148,7 +154,7 @@ for kr = 1:n_RBA
     cmind = cmind0;
     cmind(2) = 3;
     stitch_indices(5,:) = cmind;
-    [~,rrm34] = get_chain_model(cmind,'xyz_heavy');
+    % [~,rrm34] = get_chain_model(cmind,'xyz_heavy');
     r0 = 336;
     ch_coor = zeros(10000,3);
     cpoi = 0;
@@ -243,12 +249,13 @@ for kr = 1:n_RBA
     RNA = resolve_address(['[PTBP](D){' mtag '}']);
     model.selected{1} = protein;
     model.selected{2} = RNA;
-    fname = sprintf('PTB1_f%i_R%i_%i_m%i',poi,solutions(poi,:),kr);
+    model_name = sprintf('PTB1_f%i_R%i_%i_m%i',poi,solutions(poi,:),kr);
     score = full_chi2(poi);
-    wr_pdb_selected(fname,'PTB1',score);
+    wr_pdb_selected(model_name,'PTB1',score);
+    PTBP1_quality_check(model_name,restraint_file,list_file);
 end
 
-save section_matches all_matches_f1 all_matches_f2
+save(match_file,'all_matches_f1','all_matches_f2');
 
 toc,
 
@@ -331,6 +338,11 @@ function [chi2_SANS,chi2_SAXS] = fit_SAS(protein,RNA,fid)
 
 global model
 
+options.err = true;
+options.lm = 50;
+options.fb = 18;
+options.D2O = 0.66;
+
 restraints.SANS(1).data = '1-4sD2O_66_1p2m_atsas.dat';
 restraints.SANS(1).illres = 'ill_1p2m.res';
 restraints.SANS(2).data = '1-4sD2O_66_4m_atsas.dat';
@@ -343,10 +355,11 @@ for ks = 1:length(restraints.SANS)
         model = rmfield(model,'selected');
     end
     model.selected{1} = protein;
+    model.selected{2} = RNA;
     pdbfile = sprintf('t_%i',ks);
     to_be_deleted = 't*.*';
     wr_pdb_selected(pdbfile,'SANS');
-    [chi2,~,~,result] = fit_SANS_by_cryson(restraints.SANS(ks).data,pdbfile,restraints.SANS(ks).illres);
+    [chi2,~,~,result] = fit_SANS_by_cryson(restraints.SANS(ks).data,pdbfile,restraints.SANS(ks).illres,options);
     if isempty(chi2) || isnan(chi2)
         chi2_SANS(ks) = 1e6;
             fprintf(2,'Warning: SANS fitting failed\n');

@@ -22,7 +22,7 @@ function varargout = MMM_prototype(varargin)
 
 % Edit the above text to modify the response to help MMM_prototype
 
-% Last Modified by GUIDE v2.5 16-Feb-2019 19:10:43
+% Last Modified by GUIDE v2.5 07-Mar-2019 12:58:54
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -2168,6 +2168,15 @@ set_view;
 
 cd(my_path);
 
+% [~,heavy_coor] = get_structure(snum,'xyz_heavy');
+% faces = convhulln(heavy_coor);
+% [na,~] = size(faces);
+% [kpa,ar] = reducepatch(faces,heavy_coor,na);
+% 
+% p = patch('Faces',kpa,'Vertices',ar);
+% p.FaceAlpha = 0.25;
+% p.FaceColor = [0 0.6 0];
+
 guidata(hObject,handles);
 
 
@@ -2922,6 +2931,8 @@ function MMM_CloseRequestFcn(hObject, eventdata, handles)
 global hMain
 global hModel
 global general
+
+delete(hObject);
 
 for k=1:length(general.timers)
     stop(general.timers{k});
@@ -6379,8 +6390,8 @@ function menu_jobs_test2_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-PTBP1_ensemble_maker;
-% loop_assembler_PTB1;
+fname = 'PTB1_20190223_block16';
+loop_assembler_PTB1(fname);
 guidata(hObject,handles);
 
 
@@ -6390,8 +6401,8 @@ function menu_jobs_test3_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-PTBP1_ensemble_SAS_fit(100);
-% loop_assembler_PTB1;
+fname = 'PTB1_20190223_ensemble14';
+PTBP1_ensemble_SAS_fit(fname);
 guidata(hObject,handles);
 
 
@@ -6401,8 +6412,8 @@ function menu_jobs_test4_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-PTBP1_ensemble_DEER_fit(100);
-% loop_assembler_PTB1;
+fname = 'PTB1_20190223_ensemble14';
+PTBP1_ensemble_DEER_fit(fname);
 guidata(hObject,handles);
 
 
@@ -6412,6 +6423,18 @@ function menu_jobs_test5_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-PTB1_SAS_DEER_fit;
-% loop_assembler_PTB1;
+% PTBP1_quality_check_CYANA;
+fname = 'PTB1_20190223_ensemble14';
+PTB1_SAS_DEER_fit(fname);
+guidata(hObject,handles);
+
+
+% --------------------------------------------------------------------
+function menu_jobs_test6_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_jobs_test6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+fname = 'PTB1_20190223_ensemble14';
+PTBP1_ensemble_maker(fname);
 guidata(hObject,handles);

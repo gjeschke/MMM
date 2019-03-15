@@ -1,9 +1,16 @@
-function PTBP1_ensemble_maker
+function PTBP1_ensemble_maker(fname)
 
 global model
 
+SAS_fit_file = sprintf('%s_SAS_fit.mat',fname);
+DEER_fit_file = sprintf('%s_DEER_fit.mat',fname);
+definition_file = sprintf('%s_ensemble_definition.mat',fname);
+pdb_file = sprintf('%s_ensemble.pdb',fname);
+script_file = sprintf('%s_ensemble.mmm',fname);
+model_list = 'best_models.dat';
 
-scores0 = load('PTBP1_solution_scores.dat');
+score_file = sprintf('%s_scores.dat',fname);
+scores0 = load(score_file);
 scores = scores0;
 
 [~,n] = size(scores);
@@ -13,9 +20,10 @@ for k = 1:n
 end
 total_score = sum(scores,2);
 [~,score_poi] = sort(total_score);
+sorted_scores = scores(score_poi,:);
+sorted_scores0 = scores0(score_poi,:);
 
-
-fid=fopen('PTBP1_solution_scores.dat');
+fid=fopen(score_file);
 if fid==-1
     add_msg_board('ERROR: Ensemble file list does not exist');
     return;
@@ -37,34 +45,36 @@ end
 fclose(fid);
 flist = flist(1:nf);
 
-load PTB1_SAS_fits
-all_fits_SAS = all_fits;
+SAS_fits = load(SAS_fit_file);
+all_fits_SAS = SAS_fits.all_fits;
 
 % load PTB1_DEER_coeff
-load PTB1_DEER_coeff
-all_fits_DEER = all_fits;
+DEER_fits = load(DEER_fit_file);
+all_fits_DEER = DEER_fits.all_fits;
 
-load PTB1_ensemble_definition
+def = load(definition_file);
+v = def.v;
 
-figure(1); clf;
+figure(100); clf;
 plot(v(1:end-3),'k.');
 % remove insignificant contributions
-coeff = v(1:100);
+coeff = v(1:end-3);
+coeff = coeff/max(coeff);
 coeff(coeff<1e-2) = 0;
 sc_coeff = sum(coeff);
-v(1:100) = coeff;
+v(1:end-3) = coeff;
 v = v/sc_coeff;
 
 hold on
 plot(v(1:end-3),'ro');
 
-fprintf(1,'Fit with %6.4f\n',fom);
+fprintf(1,'Fit with %6.4f\n',def.fom);
 
 [fom_SAS,fits] = sim_multi_SAS(v,all_fits_SAS);
 
 fprintf(1,'Total SAS chi2 %6.4f\n',fom_SAS);
 
-figure(2); clf;
+figure(102); clf;
 plot(fits(1).s,fits(1).curve);
 hold on;
 plot(fits(1).s,fits(1).sim);
@@ -72,7 +82,7 @@ plot(fits(2).s,fits(2).curve);
 plot(fits(2).s,fits(2).sim);
 title(sprintf('SANS curve fits with chi2 = %5.2f and %5.2f',fits(1).chi2,fits(2).chi2));
 
-figure(3); clf;
+figure(103); clf;
 plot(fits(3).s,fits(3).curve);
 hold on;
 plot(fits(3).s,fits(3).sim);
@@ -91,12 +101,15 @@ for k = 1:n_DEER
     title(sprintf('DEER fit with overlap %5.3f',sum(min([fits_DEER(k).restraint';fits_DEER(k).distr']))));
 end
 
-coeff = v(1:100);
+flists = flist(score_poi);
+coeff = v(1:end-3);
 coeff1 = coeff(coeff>0);
-flist1 = flist(coeff>0);
+flist1 = flists(coeff>0);
+s_scores1 = sorted_scores0(coeff>0,:);
+
 [coeff2,poi] = sort(coeff1,'descend');
 flist2 = flist1(poi);
-
+s_scores2 = s_scores1(poi,:);
 
 % Make ensemble PDB file
 fprintf(1,'Population of model  1: %5.2f\n',coeff2(1));
@@ -123,16 +136,26 @@ for kf = 2:length(flist2)
 end
 model.selected = cell(1,1);
 model.selected{1} = snum0;
-message = wr_pdb_selected('PTBP1_EMCV_IRES_ensemble','PTB1');
+message = wr_pdb_selected(pdb_file,'PTB1');
+
+fid = fopen(model_list,'wt');
+if fid == -1
+    add_msg_board('Ensemble score file could not be recorded.');
+    return
+end
+
+for km = 1:length(flist2)
+    fprintf(fid,'%5.3f    %5.2f   %% %s\n',s_scores2(km,:),flist2{km});
+end
+fclose(fid);
 
 if message.error
     add_msg_board(strcat('ERROR (wr_pdb_selected): ',message.text));
 else
-    add_msg_board('Structure file PTBP1_EMCV_IRES_ensemble.pdb written');
+    add_msg_board('Structure file PTBP1_EMCV_IRES_ensemble_101.pdb written');
 end
 
-scriptname = 'PTBP1_EMCV_IRES_ensemble.mmm';
-fid = fopen(scriptname,'wt');
+fid = fopen(script_file,'wt');
 fprintf(fid,'show [PTB1] ribbon\n');
 fprintf(fid,'color [PTB1](A){:} grey\n');
 fprintf(fid,'color [PTB1](B){:}58-154 crimson\n');
