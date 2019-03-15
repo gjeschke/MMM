@@ -6224,39 +6224,41 @@ if ~isempty(restraints.rigid(1).indices)
     [snum0,distance_restraints] = optimize_RBA(distance_restraints,restraints.rigid,restraints.randomize);
 end
 
-sadr = mk_address(snum0);
-for k = 1:length(distance_restraints)
-    adr1 = sprintf('%s%s.CA',sadr,distance_restraints(k).adr1);
-    [indices,message]=resolve_address(adr1);
-    if message.error
-        add_msg_board(sprintf('ERROR: Calpha atom of residue %s does not exist. Aborting.',adr1));
-        return
-    end
-    [message,coor1]=get_atom(indices,'coor');
-    if message.error || isempty(coor1)
-        add_msg_board(sprintf('ERROR: Coordinates of Calpha atom of residue %s could not be retrieved. Aborting.',adr1));
-        return
-    end
-    distance_restraints(k).CA1 = coor1;
-    adr2 = sprintf('%s%s.CA',sadr,distance_restraints(k).adr2);
-    [indices,message]=resolve_address(adr2);
-    if message.error
-        add_msg_board(sprintf('ERROR: Calpha atom of residue %s does not exist. Aborting.',adr2));
-        return
-    end
-    [message,coor2]=get_atom(indices,'coor');
-    if message.error || isempty(coor2)
-        add_msg_board(sprintf('ERROR: Coordinates of Calpha atom of residue %s could not be retrieved. Aborting.',adr2));
-        return
-    end
-    distance_restraints(k).CA2 = coor2;
-    distance_restraints(k).rCA0 = norm(coor1-coor2);
-    corr = distance_restraints(k).rCA0 - distance_restraints(k).r0;
-    distance_restraints(k).rCA = distance_restraints(k).r + corr;
-    if distance_restraints(k).sigr > distance_restraints(k).sigr0
-        distance_restraints(k).sigrCA = sqrt(distance_restraints(k).sigr^2 - distance_restraints(k).sigr0^2);
-    else
-        distance_restraints(k).sigrCA = 0.1;
+if ~isempty(distance_restraints(1).r)
+    sadr = mk_address(snum0);
+    for k = 1:length(distance_restraints)
+        adr1 = sprintf('%s%s.CA',sadr,distance_restraints(k).adr1);
+        [indices,message]=resolve_address(adr1);
+        if message.error
+            add_msg_board(sprintf('ERROR: Calpha atom of residue %s does not exist. Aborting.',adr1));
+            return
+        end
+        [message,coor1]=get_atom(indices,'coor');
+        if message.error || isempty(coor1)
+            add_msg_board(sprintf('ERROR: Coordinates of Calpha atom of residue %s could not be retrieved. Aborting.',adr1));
+            return
+        end
+        distance_restraints(k).CA1 = coor1;
+        adr2 = sprintf('%s%s.CA',sadr,distance_restraints(k).adr2);
+        [indices,message]=resolve_address(adr2);
+        if message.error
+            add_msg_board(sprintf('ERROR: Calpha atom of residue %s does not exist. Aborting.',adr2));
+            return
+        end
+        [message,coor2]=get_atom(indices,'coor');
+        if message.error || isempty(coor2)
+            add_msg_board(sprintf('ERROR: Coordinates of Calpha atom of residue %s could not be retrieved. Aborting.',adr2));
+            return
+        end
+        distance_restraints(k).CA2 = coor2;
+        distance_restraints(k).rCA0 = norm(coor1-coor2);
+        corr = distance_restraints(k).rCA0 - distance_restraints(k).r0;
+        distance_restraints(k).rCA = distance_restraints(k).r + corr;
+        if distance_restraints(k).sigr > distance_restraints(k).sigr0
+            distance_restraints(k).sigrCA = sqrt(distance_restraints(k).sigr^2 - distance_restraints(k).sigr0^2);
+        else
+            distance_restraints(k).sigrCA = 0.1;
+        end
     end
 end
 
@@ -6309,16 +6311,18 @@ else
     else
         fprintf(fid,'site1    site2   r0 (Å)  sigr0 (Å)  r (Å)  sigr (Å)\n');
     end
-    for k = 1:length(restraints.DEER)
-        if restraints.randomize
-            fprintf(fid,'%8s%8s%7.1f%10.1f%7.1f%10.1f%7.1f%10.1f\n',restraints.DEER(k).adr1,...
-                restraints.DEER(k).adr2,restraints.DEER(k).r0,restraints.DEER(k).sigr0,...
-                restraints.DEER(k).r_rand,restraints.DEER(k).sigr_rand,...
-                restraints.DEER(k).r,restraints.DEER(k).sigr);
-        else
-            fprintf(fid,'%8s%8s%7.1f%10.1f%7.1f%10.1f\n',restraints.DEER(k).adr1,...
-                restraints.DEER(k).adr2,restraints.DEER(k).r0,restraints.DEER(k).sigr0,...
-                restraints.DEER(k).r,restraints.DEER(k).sigr);
+    if ~isempty(restraints.DEER(1).r)
+        for k = 1:length(restraints.DEER)
+            if restraints.randomize
+                fprintf(fid,'%8s%8s%7.1f%10.1f%7.1f%10.1f%7.1f%10.1f\n',restraints.DEER(k).adr1,...
+                    restraints.DEER(k).adr2,restraints.DEER(k).r0,restraints.DEER(k).sigr0,...
+                    restraints.DEER(k).r_rand,restraints.DEER(k).sigr_rand,...
+                    restraints.DEER(k).r,restraints.DEER(k).sigr);
+            else
+                fprintf(fid,'%8s%8s%7.1f%10.1f%7.1f%10.1f\n',restraints.DEER(k).adr1,...
+                    restraints.DEER(k).adr2,restraints.DEER(k).r0,restraints.DEER(k).sigr0,...
+                    restraints.DEER(k).r,restraints.DEER(k).sigr);
+            end
         end
     end
     fclose(fid);
@@ -6341,33 +6345,34 @@ end
 
 model.current_structure = snum;
 
-for k = 1:length(restraints.DEER)
-    [rax,distr] = mk_distance_distribution(restraints.DEER(k).adr1,restraints.DEER(k).adr2,restraints.DEER(k).label);
-    if isempty(rax)
+if ~isempty(restraints.DEER(1).r)
+    for k = 1:length(restraints.DEER)
+        [rax,distr] = mk_distance_distribution(restraints.DEER(k).adr1,restraints.DEER(k).adr2,restraints.DEER(k).label);
+        if isempty(rax)
+            figure(k); clf;
+            title(sprintf('%s: %s-%s. Labeling failure',name,restraints.DEER(k).adr1,restraints.DEER(k).adr2));
+            continue
+        end
+        rax = 10*rax;
         figure(k); clf;
-        title(sprintf('%s: %s-%s. Labeling failure',name,restraints.DEER(k).adr1,restraints.DEER(k).adr2));
-        continue
-    end
-    rax = 10*rax;
-    figure(k); clf;
-    title(sprintf('%s: %s-%s',name,restraints.DEER(k).adr1,restraints.DEER(k).adr2));
-    hold on
-    plot(rax,distr,'k');
-    xlabel('r [Å]');
-    ylabel('P(r)');
-    hold on
-    argr = (restraints.DEER(k).r-rax)/(sqrt(2)*restraints.DEER(k).sigr);
-    distr_sim = exp(-argr.^2);
-    distr_sim = distr_sim/sum(distr_sim);
-    plot(rax,distr_sim,'Color',[0.75,0,0]);
-    if restraints.randomize
-        argr = (restraints.DEER(k).r_rand-rax)/(sqrt(2)*restraints.DEER(k).sigr_rand);
+        title(sprintf('%s: %s-%s',name,restraints.DEER(k).adr1,restraints.DEER(k).adr2));
+        hold on
+        plot(rax,distr,'k');
+        xlabel('r [Å]');
+        ylabel('P(r)');
+        hold on
+        argr = (restraints.DEER(k).r-rax)/(sqrt(2)*restraints.DEER(k).sigr);
         distr_sim = exp(-argr.^2);
         distr_sim = distr_sim/sum(distr_sim);
-        plot(rax,distr_sim,'Color',[0,0,0.75]);
+        plot(rax,distr_sim,'Color',[0.75,0,0]);
+        if restraints.randomize
+            argr = (restraints.DEER(k).r_rand-rax)/(sqrt(2)*restraints.DEER(k).sigr_rand);
+            distr_sim = exp(-argr.^2);
+            distr_sim = distr_sim/sum(distr_sim);
+            plot(rax,distr_sim,'Color',[0,0,0.75]);
+        end
     end
 end
-
 
 set(hfig,'Pointer','arrow');
 add_msg_board(sprintf('Msg %i: %s. Structure %i generated. Energy is %5.3f kJ/mol.\n',msg.error,msg.text,snum,energy/1000));

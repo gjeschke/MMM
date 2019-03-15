@@ -1319,6 +1319,8 @@ if isfield(restraints, 'SAXS')
     end
 end
 
+return % ###
+
 if success > 0
     model = rmfield(model,'selected');
     spoi = 0;

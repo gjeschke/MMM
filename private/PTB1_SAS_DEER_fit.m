@@ -1,14 +1,18 @@
-function PTB1_SAS_DEER_fit
+function PTB1_SAS_DEER_fit(fname)
 
-load PTB1_SAS_fits
-normalize.SAS = fom;
-all_fits_SAS = all_fits;
+SAS_fit_file = sprintf('%s_SAS_fit.mat',fname);
+DEER_fit_file = sprintf('%s_DEER_fit.mat',fname);
+definition_file = sprintf('%s_ensemble_definition.mat',fname);
+
+SAS_fits = load(SAS_fit_file);
+normalize.SAS = SAS_fits.fom;
+all_fits_SAS = SAS_fits.all_fits;
 
 % load PTB1_DEER_coeff
-load PTB1_DEER_coeff
-ensemble_size = length(coeff);
-normalize.DEER = fom1;
-all_fits_DEER = all_fits;
+DEER_fits = load(DEER_fit_file);
+ensemble_size = length(DEER_fits.coeff);
+normalize.DEER = DEER_fits.fom1;
+all_fits_DEER = DEER_fits.all_fits;
 
 fanonym=@(v_opt)fit_multi_SAS_DEER(v_opt,all_fits_SAS,all_fits_DEER,normalize);
 
@@ -24,7 +28,12 @@ toc,
 figure(1); clf;
 plot(v(1:end-3),'k.');
 
-fprintf(1,'Fit with %6.4f\n',fom);
+coeff1 = v(1:end-3);
+coeff2 = coeff1/max(coeff1);
+coeff2 = coeff2(coeff2 >= 1e-2);
+fprintf(1,'%i populations are at least 1%% of the maximum population\n',length(coeff2)); 
+
+fprintf(1,'Fit with quality loss %6.4f\n',fom);
 
 [fom_SAS,fits] = sim_multi_SAS(v,all_fits_SAS);
 
@@ -50,7 +59,7 @@ title(sprintf('SAXS curve fit with chi2 = %5.2f',fits(3).chi2));
 
 fprintf(1,'DEER overlap deficiency %6.4f\n',fom_DEER);
 
-save PTB1_ensemble_definition v fom fom_SAS fom_DEER fits fits_DEER exitflag output
+save(definition_file,'v','fom','fom_SAS','fom_DEER','fits','fits_DEER','exitflag','output');
 
 n_DEER = length(fits_DEER);
 for k = 1:n_DEER

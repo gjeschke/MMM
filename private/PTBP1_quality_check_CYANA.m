@@ -13,7 +13,7 @@ score_DEER = 1;
 n_DEER = 0;
 n_SAS = 0;
 
-[restraints,failed] = rd_restraints_rigiflex('PTBP1_restraints_190220.dat',unprocessed); % 181105
+[restraints,failed] = rd_restraints_rigiflex('PTBP1_restraints_cyana.dat',unprocessed); % 181105
 
 if failed
     add_msg_board('Restraint file could not be read.');

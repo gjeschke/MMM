@@ -212,7 +212,7 @@ for k = 1:np
     end
 end
 
-if isfield(options,'restraints')
+if isfield(options,'restraints') && ~isempty(options.restraints(1).r)
     options.restrain_d = zeros(length(options.restraints),5);
     for kr = 1:length(options.restraints)
         ccoor = options.restraints(kr).CA1;

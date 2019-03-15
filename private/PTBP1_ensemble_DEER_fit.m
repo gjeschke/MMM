@@ -1,10 +1,13 @@
-function PTBP1_ensemble_DEER_fit(ensemble_size)
+function PTBP1_ensemble_DEER_fit(fname)
 
-if ~exist('ensemble_size','var')
-    ensemble_size = 20;
-end
+score_file = sprintf('%s_scores.dat',fname);
+DEER_score_file = sprintf('%s_DEER_scores.dat',fname);
+fit_file = sprintf('%s_DEER_fit.mat',fname);
 
-scores0 = load('PTBP1_solution_scores.dat');
+
+ensemble_size = 10000;
+
+scores0 = load(score_file);
 [m,n] = size(scores0);
 scores = scores0;
 if ensemble_size > m
@@ -19,7 +22,7 @@ total_score = sum(scores,2);
 [sorted_score,score_poi] = sort(total_score);
 
 
-fid=fopen('PTBP1_solution_scores.dat');
+fid=fopen(score_file);
 if fid==-1
     add_msg_board('ERROR: Ensemble file list does not exist');
     return;
@@ -35,9 +38,6 @@ while 1
         nf = nf + 1;
         [~,remain] = strtok(tline,'%');
         fname = strtok(remain(2:end));
-%         if ~contains(fname,'.pdb')
-%             fname=strcat(fname,'.pdb'); 
-%         end
         flist{nf} = fname;
     end
 end
@@ -53,7 +53,7 @@ if isempty(overlaps)
 end
 n_DEER = length(overlaps);
 score_DEER = 1 - prod(overlaps)^(1/n_DEER);
-fid = fopen('PTBP1_DEER_scores.dat','at');
+fid = fopen(DEER_score_file,'at');
 if fid == -1
     add_msg_board('Solution score could not be recorded.');
     return
@@ -78,7 +78,7 @@ for km = 2:ensemble_size
         continue
     else
         score_DEER = 1 - prod(overlaps)^(1/n_DEER);
-        fid = fopen('PTBP1_DEER_scores.dat','at');
+        fid = fopen(DEER_score_file,'at');
         if fid == -1
             add_msg_board('Solution score could not be recorded.');
             return
@@ -113,6 +113,10 @@ toc,
 coeff = v(1:ensemble_size);
 coeff = coeff/sum(coeff);
 
+coeff2 = coeff/max(coeff);
+coeff2 = coeff2(coeff2 >= 1e-2);
+fprintf(1,'%i populations are at least 1%% of the maximum population\n',length(coeff2)); 
+
 figure(1); clf;
 plot(coeff,'k.');
 
@@ -125,7 +129,7 @@ for k = 1:n_DEER
 end
 fprintf(1,'Total DEER overlap improved from %6.3f to %6.3f\n',fom0,fom);
 
-save PTB1_DEER_coeff coeff fom1 exitflag output v all_fits
+save(fit_file,'coeff','fom1','exitflag','output','v','all_fits');
 
 function [overlaps,fits] = get_DEER(fname)
 
