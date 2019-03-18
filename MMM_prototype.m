@@ -2540,11 +2540,6 @@ else
         return
     end
     add_msg_board(sprintf('Model %s loaded.',filename));
-    if ~isfield(model,'graphics_lookup_pointer'), %#ok
-        if isfield(model,'graphics_lookup')
-            model.graphics_lookup_pointer=sum(ishandle(model.graphics_objects));
-        end
-    end
     if display
         set(gcf,'Pointer','watch');
         drawnow;
