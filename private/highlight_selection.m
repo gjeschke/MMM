@@ -104,16 +104,6 @@ for ko=1:m, % loop over all objects
                             xx = get(graphics.objects(k),'XData');
                             yy = get(graphics.objects(k),'YData');
                             zz = get(graphics.objects(k),'ZData');
-%                             lookup=find(model.graphics_lookup(1:model.graphics_lookup_pointer,1)==graphics.objects(k));
-%                             xyzext=model.graphics_xyz(lookup,:);
-%                             if numel(xyzext)>=6,
-%                                 maxx=max([maxx,xyzext(4)]);
-%                                 minx=min([minx,xyzext(1)]);
-%                                 maxy=max([maxy,xyzext(5)]);
-%                                 miny=min([miny,xyzext(2)]);
-%                                 maxz=max([maxz,xyzext(6)]);
-%                                 minz=min([minz,xyzext(3)]);
-%                             end;
                             maxx=max([maxx,max(xx)]);
                             minx=min([minx,min(xx)]);
                             maxy=max([maxy,max(yy)]);
@@ -136,16 +126,6 @@ for ko=1:m, % loop over all objects
                                 miny=min([miny,min(yy)]);
                                 maxz=max([maxz,max(zz)]);
                                 minz=min([minz,min(zz)]);
-%                                 lookup=find(model.graphics_lookup(1:model.graphics_lookup_pointer,1)==graphics.objects(k));
-%                                 xyzext=model.graphics_xyz(lookup,:);
-%                                 if numel(xyzext)>=6,
-%                                     maxx=max([maxx,xyzext(4)]);
-%                                     minx=min([minx,xyzext(1)]);
-%                                     maxy=max([maxy,xyzext(5)]);
-%                                     miny=min([miny,xyzext(2)]);
-%                                     maxz=max([maxz,xyzext(6)]);
-%                                     minz=min([minz,xyzext(3)]);
-%                                 end;
                             end;
                         end;
                     end;
@@ -177,14 +157,6 @@ if isfield(model,'secondary_selected') && ~isempty(model.secondary_selected),
                     miny=min([miny,min(yy)]);
                     maxz=max([maxz,max(zz)]);
                     minz=min([minz,min(zz)]);
-%                     lookup=find(model.graphics_lookup(1:model.graphics_lookup_pointer,1)==graphics.objects(kk));
-%                     xyzext=model.graphics_xyz(lookup,:);
-%                     maxx=max([maxx,xyzext(4)]);
-%                     minx=min([minx,xyzext(1)]);
-%                     maxy=max([maxy,xyzext(5)]);
-%                     miny=min([miny,xyzext(2)]);
-%                     maxz=max([maxz,xyzext(6)]);
-%                     minz=min([minz,xyzext(3)]);
                 end;
             end;
         end;

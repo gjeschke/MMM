@@ -53,7 +53,6 @@ if isempty(model) || ~isfield(model,'structures') || isempty(model.structures),
     snum=1; % this is the first structure
     model.structure_tags=':';
     model.structure_ids=[];
-    model.unrecord=[];
     model.annotations=[];
 else
     snum=length(model.structures)+1;

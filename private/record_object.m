@@ -1,12 +1,11 @@
 function record_object(obj,indices,xyz,num)
 % function record_object(obj,indices,xyz,num)
 %
-% Stores graphics object handles and corresponding indices of structure
-% elements in a central lookup table and sets the function that is executed
-% on clicking an object, the extensions of the object are also
-% stored
+% Stores indices of structure elements in the object's UserData and
+% sets the callback for clicking an object, the extensions of the
+% object are also stored
 %
-% gobjects  vector of object handles
+% obj       graphics object handle
 % indices   corresponding index vector
 % xyz       midpoint and extension of graphics object, midpoint values
 %           x,y,z, extensions max(x)-min(x), max(y)-min(y), max(z)-min(z)
@@ -15,40 +14,25 @@ function record_object(obj,indices,xyz,num)
 %
 % G. Jeschke, 2009
 
-global model
+if obj==0, return;  end
 
-maxx=xyz(1)+xyz(4)/2;
+% Assemble index vector
+idx = zeros(1,7);
+idx(2:length(indices)+1) = indices;
+if nargin>3
+    idx(7)=num;
+end
+
+% Calculate graphics object extent and store it
 minx=xyz(1)-xyz(4)/2;
-maxy=xyz(2)+xyz(5)/2;
 miny=xyz(2)-xyz(5)/2;
-maxz=xyz(3)+xyz(6)/2;
 minz=xyz(3)-xyz(6)/2;
+maxx=xyz(1)+xyz(4)/2;
+maxy=xyz(2)+xyz(5)/2;
+maxz=xyz(3)+xyz(6)/2;
+xyzrange = [minx miny minz maxx maxy maxz];
 
-set(obj, 'ButtonDownFcn',@gobject_clicked);
-
-if isfield(model,'graphics_lookup')
-    poi=model.graphics_lookup_pointer;
-else
-    poi=0;
-    model.graphics_objects=gobjects(1,50000);
-    model.graphics_lookup=zeros(50000,7);
-    model.graphics_lookup_pointer=0;
-end;
-
-if ~isfield(model,'graphics_xyz')
-    model.graphics_xyz=zeros(50000,6);
-end;
-
-if obj~=0 % discard empty objects
-    poi=poi+1;
-    model.graphics_objects(poi)=obj;
-    model.graphics_lookup(poi,2:length(indices)+1)=indices;
-    if nargin>3,
-        model.graphics_lookup(poi,7)=num;
-    end;
-    model.graphics_xyz(poi,:)=[minx miny minz maxx maxy maxz];
-end;
-
-model.graphics_lookup_pointer=poi;
-
-    
+% Store data in graphics object, set callback
+obj.UserData.lookup = idx;
+obj.UserData.xyz = xyzrange;
+obj.ButtonDownFcn = @gobject_clicked;

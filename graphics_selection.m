@@ -232,7 +232,6 @@ end;
 
 lighting gouraud
 highlight_selection;
-unrecord_objects;
 set(handles.figure,'Pointer','arrow');
 delete(handles.figure);
 

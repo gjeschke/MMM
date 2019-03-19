@@ -1216,7 +1216,6 @@ if ~isempty(graphics),
         for k=1:length(graphics.objects),
             if ishandle(graphics.objects(k)) && graphics.objects(k)~=0,
                 delete(graphics.objects(k));
-                model.unrecord=[model.unrecord graphics.objects(k)];
             end;
         end;
     end;
@@ -1253,9 +1252,6 @@ if isfield(model.structures{indices(1)}(indices(2)),'atom_graphics') && ~isempty
                 for kk=1:length(graphics.objects),
                     if ishandle(graphics.objects(kk)) && graphics.objects(kk)~=0,
                         delete(graphics.objects(kk));
-                        if isfield(hMain,'unrecord'),
-                            model.unrecord=[hMain.unrecord graphics.objects(kk)];
-                        end;
                     end;
                 end;
             end;

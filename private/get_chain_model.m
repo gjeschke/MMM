@@ -240,7 +240,12 @@ xyz=zeros(max_atoms,3);
 
 poi=0;
 
-info=model.structures{indices(1)}(indices(2)).residues{indices(3)}.info;
+if isempty(model.structures{indices(1)}(indices(2)).residues{indices(3)})
+    xyz = zeros(0,3);
+    return
+else
+    info=model.structures{indices(1)}(indices(2)).residues{indices(3)}.info;
+end
 xyz_ch=model.structures{indices(1)}(indices(2)).xyz{indices(3)};
 for kk=1:length(info), % loop over residues
     if waterflag || ~strcmpi(info(kk).name,'HOH'),
