@@ -22,7 +22,7 @@ function varargout = MMM_prototype(varargin)
 
 % Edit the above text to modify the response to help MMM_prototype
 
-% Last Modified by GUIDE v2.5 07-Mar-2019 12:58:54
+% Last Modified by GUIDE v2.5 06-Apr-2019 10:13:55
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1065,7 +1065,7 @@ webcall(web_adr.Spritz);
 
 
 % --------------------------------------------------------------------
-function menu_predict_top_MEMSAT3_Callback(hObject, eventdata, handles)
+function menu_predict_top_MEMSAT3_Callback(~, eventdata, handles)
 % hObject    handle to menu_predict_top_MEMSAT3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -6389,13 +6389,30 @@ add_msg_board(sprintf('Msg %i: %s. Structure %i generated. Energy is %5.3f kJ/mo
 
 
 % --------------------------------------------------------------------
-function menu_jobs_test2_Callback(hObject, eventdata, handles)
+function menu_jobs_test2_Callback(hObject, ~, handles)
 % hObject    handle to menu_jobs_test2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-fname = 'PTB1_20190223_block19';
-loop_assembler_PTB1(fname);
+% fname = 'PTB1_20190223_block29';
+% loop_assembler_PTB1(fname);
+% mk_quality_check_yasara;
+
+% model_name = 'PTB1_f37_R73_3717_m1_y';
+
+
+list_file = 'PTBP1_cyana_updated_ensemble_scores.dat';
+% restraint_file = 'PTBP1_restraints_190208.dat';
+restraint_file = 'PTBP1_restraints_cyana_updated.dat';
+yasara_numbers = [1,3,6,9,14,15,25,28,29,30,32,42,47,59,61,67,69,80,89];
+for k = 1:100
+    if min(abs(yasara_numbers-k)) > 0
+        model_name = sprintf('PTB1_cyana_%i_corr',k);
+        fprintf(1,'Processing %s...\n',model_name);
+        PTBP1_quality_check_CYANA(model_name,restraint_file,list_file);
+        fprintf(1,'Completed.\n');
+    end
+end
 guidata(hObject,handles);
 
 
@@ -6405,8 +6422,13 @@ function menu_jobs_test3_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-fname = 'PTB1_20190223_ensemble17';
+% fname = 'PTBP1_refined_sRRM2';
+% PTBP1_ensemble_SAS_fit(fname);
+fname = 'PTBP1_cyana_ensemble5';
 PTBP1_ensemble_SAS_fit(fname);
+PTBP1_ensemble_DEER_fit(fname);
+PTB1_SAS_DEER_fit(fname);
+PTBP1_ensemble_maker(fname);
 guidata(hObject,handles);
 
 
@@ -6416,8 +6438,12 @@ function menu_jobs_test4_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-fname = 'PTB1_20190223_ensemble17';
+fname = 'PTB1_new_refined36';
+% fname = 'PTBP1_cyana_ensemble';
+PTBP1_ensemble_SAS_fit(fname);
 PTBP1_ensemble_DEER_fit(fname);
+PTB1_SAS_DEER_fit(fname);
+PTBP1_ensemble_maker(fname);
 guidata(hObject,handles);
 
 
@@ -6428,8 +6454,10 @@ function menu_jobs_test5_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % PTBP1_quality_check_CYANA;
-fname = 'PTB1_20190223_ensemble17';
-PTB1_SAS_DEER_fit(fname);
+model_name = 'PTB1_f36_R73_3630_m7_y';
+restraint_file = 'PTBP1_restraints_190208.dat';
+list_file = 'added_models.dat';
+PTBP1_quality_check(model_name,restraint_file,list_file);
 guidata(hObject,handles);
 
 
@@ -6439,6 +6467,6 @@ function menu_jobs_test6_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-fname = 'PTB1_20190223_ensemble17';
+fname = 'PTBP1_refined_sRRM2';
 PTBP1_ensemble_maker(fname);
 guidata(hObject,handles);

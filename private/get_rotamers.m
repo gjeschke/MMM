@@ -48,39 +48,39 @@ n_rot=length(library);  % get number of rotamers in the library
 
 % code for dealing with libraries generated before version 2014.1
 labnum=tag2id(rot_lib.label,label_defs.restags);
-if isfield(label_defs.residues(labnum),'class') && ~isempty(label_defs.residues(labnum).class),
+if isfield(label_defs.residues(labnum),'class') && ~isempty(label_defs.residues(labnum).class)
     class = label_defs.residues(labnum).class; 
 else
     class = 'nitroxide';
-end;
-if isfield(rot_lib,'spin_density') && ~ isempty(rot_lib.spin_density),
+end
+if isfield(rot_lib,'spin_density') && ~ isempty(rot_lib.spin_density)
     spin_density = rot_lib.spin_density;
-elseif strcmpi(class,'nitroxide'),
+elseif strcmpi(class,'nitroxide')
     spin_density = zeros(2,2);
     spin_density(:,1) = usefull_atoms.midNO;
     spin_density(:,2) = [0.5;0.5];
 else
     msg.error=5;
     msg.text=sprintf('Spin density center not defined. Setting populations to zero.');
-end;
+end
 
 % determine attachment frame
 clabel = rot_lib.label;
 cli = tag2id(clabel,label_defs.restags);
 attach_frame = label_defs.residues(cli).res_frame;
-if isempty(attach_frame),
+if isempty(attach_frame)
     attach_frame = ':C:N:CA:';
-end;
+end
 
 % extract information on calculation options
 
-if isfield(calc_opt,'T'),
+if isfield(calc_opt,'T')
     T=calc_opt.T;	% absolute temperature (K);
 else
     T=calibration.T;
-end;
+end
 
-if isfield(calc_opt,'ext_potential'),
+if isfield(calc_opt,'ext_potential')
     switch calc_opt.ext_potential
         case 'OPLS'
             type_poten=1;
@@ -106,29 +106,29 @@ if isfield(calc_opt,'ext_potential'),
             type_poten=9;
         case 'UFF_attract'
             type_poten=10;
-    end;
+    end
 else
     type_poten=2; % charmm27 as default
-end;
+end
 
-if isfield(calc_opt,'forgive'), % forgive factor for minor clashes (reduction factor for effective van-der-Waals radius)
+if isfield(calc_opt,'forgive') % forgive factor for minor clashes (reduction factor for effective van-der-Waals radius)
     forgive=calc_opt.forgive;
 else
     forgive=0.5; % default forgive factor
-end;
+end
 
-if isfield(calc_opt,'repulsion'), % repulsion exponent
+if isfield(calc_opt,'repulsion') % repulsion exponent
     repulsion=calc_opt.repulsion;
 else
     repulsion=7; % default repulsion factor
-end;
+end
 
-if isfield(calc_opt,'pair_stats'),
+if isfield(calc_opt,'pair_stats')
     pair_stats=calc_opt.pair_stats;	% flag: 0 - no statistics made (default)
     %                                       1 - statistics for every pair of atoms is saved (results in a huge file, time consuming)
 else
     pair_stats=0;
-end;
+end
 
 % extract information on mutation site
 
@@ -155,21 +155,21 @@ int_pop=int_pop0(1:n_rot); % debugging trick: to be able to reduce n_rot easily
 
 relative_Delta_T=T/calibration.T-1; % relative temperature difference from calibration
 
-if abs(relative_Delta_T)>temperature_warning,
+if abs(relative_Delta_T)>temperature_warning
     msg.error=1;
     msg.text=sprintf('Target temperature deviates by %2.0f%% from calibration temperature. Reliable limit is %2.0f%%.',100*abs(relative_Delta_T),100*temperature_warning);
 end
 
-[m,n]=size(coor);
+[m,~]=size(coor);
 
 poten_ext=zeros(1,n_rot);
 pop_rot=poten_ext;
 rot_clash=cell(1,n_rot);
 
 offset=coor(orig,2:4);	% origin of attachment frame
-for kp=1:m,
+for kp=1:m
     coor(kp,2:4)=coor(kp,2:4)-offset;
-end;
+end
 x=coor(xax,2:4)-coor(orig,2:4); % x axis is along C_alpha-N bond for peptides
 x=x/norm(x);    % unit vector along x
 yp=coor(ypax,2:4)-coor(orig,2:4); % y axis is in the plane spanned by x axis and C-Ca bond for peptide
@@ -189,11 +189,11 @@ Rp=dircos; % rotation matrix for conversion to standard frame
 % prepare protein atoms for the analysis:
 % atoms of the labelled residue must be excluded
 all_indices = 1:m;
-if ~isempty(index_array),
-    for kk = 1:length(index_array),
+if ~isempty(index_array)
+    for kk = 1:length(index_array)
         all_indices(index_array(kk)) = 0;
-    end;
-end;
+    end
+end
 coor0ind = all_indices(all_indices~=0);
 coor0 = coor(coor0ind,:);
 Bfac_protein = Bfac(coor0ind);
@@ -227,14 +227,14 @@ for k=1:n_rot % number of rotamers in the library
     new_lcoor=lcoor;
     rot_lcoor=lcoor;
     own_lcoor=lcoor;
-    [ml,nl]=size(lcoor);
+    [ml,~]=size(lcoor);
     for kr=1:ml % conversion to standard frame
         vec=lcoor(kr,2:4);
         newvec=vec*Rp; 
         new_lcoor(kr,2:4)=newvec+coor(orig,2:4);
         rot_lcoor(kr,2:4)=newvec+offset;
         own_lcoor(kr,2:4)=newvec;        % labels are stored in their own residue frame (Ca is always [0,0,0]);
-    end;
+    end
     
     mut_coor1{k}=rot_lcoor;	% stores coordinates for running rotamer (k)
     labels_own{k}=own_lcoor;

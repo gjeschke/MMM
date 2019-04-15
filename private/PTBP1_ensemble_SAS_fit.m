@@ -1,5 +1,6 @@
 function PTBP1_ensemble_SAS_fit(fname)
 
+fprintf(1,'Processing %s...\n',fname);
 score_file = sprintf('%s_scores.dat',fname);
 fit_file = sprintf('%s_SAS_fit.mat',fname);
 

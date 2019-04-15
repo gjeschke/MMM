@@ -305,8 +305,10 @@ for k = 1:core+flex
     all_distr(k,:) = all_distr(k,:)/sum(all_distr(k,:));
     figure(k); hold on;
     plot(rax,all_distr(k,:),'Color',[0.6,0,0]);
+    overlap_exp = NaN;
     if sum(all_distr_exp(k,:)) > 10*eps
         plot(rax,all_distr_exp(k,:),'k');
+        overlap_exp = sum(min([all_distr_exp(k,:);all_distr(k,:)]));
     end
     overlap = sum(min([all_distr_sim(k,:);all_distr(k,:)]));
     if ~isnan(overlap) && overlap > 10*eps
@@ -317,6 +319,7 @@ for k = 1:core+flex
         ftype = 'fit';
     else
         ftype = 'control';
+        overlap = overlap_exp;
     end
     title(sprintf('%s: %s-%s. overlap: %5.3f',ftype,all_adr1{k},all_adr2{k},overlap));
     [texp,vexp,deer,bckg,param] = fit_DEER_primary(rax/10,all_distr(k,:),strcat('deer\',all_fnames{k}),fit_options);

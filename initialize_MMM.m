@@ -433,6 +433,13 @@ rotamer_libraries(22).files=':GDM_298K_UFF_f09_1367:';
 rotamer_libraries(22).type='peptide';
 rotamer_libraries(22).exclude=':H2:OXT:HXT:H:';
 
+rotamer_libraries(23).label='DZC';
+rotamer_libraries(23).tc='DZC';
+rotamer_libraries(23).T= 298;
+rotamer_libraries(23).files=':DZC_298K_UFF_216_r4:';
+rotamer_libraries(23).type='peptide';
+rotamer_libraries(23).exclude=':H2:OXT:HXT:H:';
+
 ligand_libraries(1).label='dHisCuIDA';
 ligand_libraries(1).tc='IDA';
 ligand_libraries(1).files=':dHis_Cu_IDA_asym:';

@@ -1,4 +1,4 @@
-function PTBP1_quality_check_CYANA
+function PTBP1_quality_check_CYANA(fname0,restraint_file,list_file)
 
 global model
 global general
@@ -6,30 +6,40 @@ global general
 interactive = true;
 unprocessed = true;
 
-snum0 = model.current_structure;
+if exist('fname0','var')
+    [~,snum0] = add_pdb(fname0);
+    fname = sprintf('%s_q.pdb',fname0);
+    options.fname = fname;
+    [~,name,~] = fileparts(fname);
+else
+    snum0 = model.current_structure;
+end
+adr0 = mk_address(snum0);
 
 score_SAS = 0;
 score_DEER = 1;
 n_DEER = 0;
 n_SAS = 0;
 
-[restraints,failed] = rd_restraints_rigiflex('PTBP1_restraints_cyana.dat',unprocessed); % 181105
+[restraints,failed] = rd_restraints_rigiflex(restraint_file,unprocessed); % 181105
 
 if failed
     add_msg_board('Restraint file could not be read.');
     return
 end
 
-[filename, pathname] = uiputfile(['PTB1' '.pdb'], 'Save final model as PDB');
-if isequal(filename,0) || isequal(pathname,0)
-    add_msg_board('Quality check cancelled by user');
-    return
-else
-    reset_user_paths(pathname);
-    general.pdb_files=pathname;
-    fname = fullfile(pathname, filename);
-    [~,name,~] = fileparts(fname);
-    options.fname = fname;
+if ~exist('fname0','var')
+    [filename, pathname] = uiputfile(['PTB1' '.pdb'], 'Save final model as PDB');
+    if isequal(filename,0) || isequal(pathname,0)
+        add_msg_board('Quality check cancelled by user');
+        return
+    else
+        reset_user_paths(pathname);
+        general.pdb_files=pathname;
+        fname = fullfile(pathname, filename);
+        [~,name,~] = fileparts(fname);
+        options.fname = fname;
+    end
 end
 
 fid = fopen(sprintf('%s_diagnosis.dat',name),'wt');
@@ -380,7 +390,7 @@ end
 fprintf(fid,'\nTesting for RNA binding motif superposition\n\n');
 
 adr1 = '[PTB7](B)327-329';
-adr2 = '(B)642-644';
+adr2 = '(B)327-329';
 
 [rmsd,~,msg] = overlap_nucleic_acid(adr1,adr2);
 if msg.error
@@ -391,7 +401,7 @@ else
 end
 
 adr1 = '[PTB7](D)358-360';
-adr2 = '(B)673-675';
+adr2 = '(B)358-360';
 
 [rmsd,~,msg] = overlap_nucleic_acid(adr1,adr2);
 if msg.error
@@ -402,7 +412,7 @@ else
 end
 
 adr1 = '[PTB7](F)342-344';
-adr2 = '(B)657-659';
+adr2 = '(B)342-344';
 
 [rmsd,~,msg] = overlap_nucleic_acid(adr1,adr2);
 if msg.error
@@ -413,7 +423,7 @@ else
 end
 
 adr1 = '[PTB7](G)302-304';
-adr2 = '(B)617-619';
+adr2 = '(B)302-304';
 
 [rmsd,~,msg] = overlap_nucleic_acid(adr1,adr2);
 if msg.error
@@ -519,8 +529,7 @@ else
     add_msg_board(sprintf('Structure file %s written',fname));
 end
 
-
-fid = fopen('PTBP1_solution_scores.dat','at');
+fid = fopen(list_file,'at');
 if fid == -1
     add_msg_board('Solution score could not be recorded.');
     return
@@ -529,5 +538,6 @@ end
 fprintf(fid,'%5.3f    %5.2f   %% %s\n',score_DEER,score_SAS,name);
 
 fclose(fid);
+
 
 set(hfig,'Pointer','arrow');

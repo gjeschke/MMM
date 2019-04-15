@@ -17,13 +17,14 @@ snum=[];
 msg.error=0;
 msg.text='No error.';
 
+fname0 = fname;
 fname=which(fname);
 
-if isempty(fname),
+if isempty(fname)
     msg.error=1;
-    msg.text='ERROR: PDB file not found.';
+    msg.text=sprintf('ERROR: PDB file %s not found in directory %s.',fname0,pwd);
     return
-end;
+end
 
 [msg,snum]=add_pdb(fname);
 
