@@ -563,7 +563,7 @@ switch handles.progress
                             end
                             delete(to_be_deleted);
                             curated_fid = fopen(curated_name,'at');
-                            fprintf(curated_fid,'%8i%6i%8.3f%8.3f\n',rba_solutions(km,1),rba_solutions(km,2),handles.diagnostics.final_chi2_SANS(km),SAXS_chi);
+                            fprintf(curated_fid,'%8i%6i%8.3f\n',rba_solutions(km,1),rba_solutions(km,2),SAXS_chi);
                             fclose(curated_fid);
                         end
                     end
@@ -573,6 +573,26 @@ switch handles.progress
         handles.RNA_link_success = success_vec;
         handles = mk_RNA_report_distributions(report_fid,handles);
         fclose(report_fid);
+        model = rmfield(model,'selected');
+        spoi = 0;
+        for kc = [1 3 5 8]
+            for km = 1:length(success_vec)
+                if success_vec(km)
+                    spoi = spoi + 1;
+                    model.selected{spoi} = [snum kc km];
+                end
+            end
+        end
+        fname = fullfile(pathstr,strcat(basname,'_RNA.pdb'));
+        message = wr_pdb_selected(fname,'PTB1');
+        if message.error
+            diagnostics.unsaved = true;
+            if interactive
+                add_msg_board(sprintf(2,'Warning: Model could not be automatically saved. %s\n',message.text));
+            end
+        else
+            diagnostics.unsaved = false;
+        end
         handles.text_time_left.String = 'Completed.';
         handles.text_time_left.ForegroundColor = [0,127,0]/256;
         set(gcf,'Pointer','arrow');
@@ -1008,23 +1028,23 @@ end
 fprintf(fid_report,'Parallelization granularity: %i\n',options.granularity);
 fprintf(fid_report,'\n%i models were generated.\n',handles.diagnostics.success);
 
-if ~isempty(handles.restraints.SANS)
-    fprintf(fid_report,'--- SANS fit results ---\n');
-    for km = 1:handles.diagnostics.success
-        fprintf(fid_report,'Model %i, SANS chi^2 = %4.2f',km,handles.diagnostics.final_chi2_SANS(km));
-        if length(handles.restraints.SANS) > 1
-            fprintf(fid_report,'(');
-            for ks = 1:length(handles.restraints.SANS)
-                fprintf(fid_report,'%4.2f',handles.diagnostics.chi_SANS(ks,km));
-                if ks < length(handles.restraints.SANS)
-                    fprintf(fid_report,', ');
-                end
-            end
-            fprintf(fid_report,')');
-        end
-        fprintf(fid_report,'\n');
-    end
-end
+% if ~isempty(handles.restraints.SANS)
+%     fprintf(fid_report,'--- SANS fit results ---\n');
+%     for km = 1:handles.diagnostics.success
+%         fprintf(fid_report,'Model %i, SANS chi^2 = %4.2f',km,handles.diagnostics.final_chi2_SANS(km));
+%         if length(handles.restraints.SANS) > 1
+%             fprintf(fid_report,'(');
+%             for ks = 1:length(handles.restraints.SANS)
+%                 fprintf(fid_report,'%4.2f',handles.diagnostics.chi_SANS(ks,km));
+%                 if ks < length(handles.restraints.SANS)
+%                     fprintf(fid_report,', ');
+%                 end
+%             end
+%             fprintf(fid_report,')');
+%         end
+%         fprintf(fid_report,'\n');
+%     end
+% end
 poi = 0;
 restraints = handles.restraints;
 is_core_restraint = zeros(1,length(restraints.DEER));
@@ -1360,34 +1380,34 @@ if ~copy_mode
     set(gca,'XTickLabelMode','auto');
     cla
 end;
-if handles.radiobutton_SANS_fit.Value
-    hold on;
-    for ks = 1:length(handles.restraints.SANS)
-        fit = handles.diagnostics.SANS_curves{ks,cm};
-        plot(fit(:,1),fit(:,2));
-        plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
-    end;
-    title(sprintf('SANS fit for model %i (chi^2 = %4.2f)',cm,handles.diagnostics.final_chi2_SANS(cm)));
-end
-if handles.radiobutton_SANS_chi2.Value
-    hold on;
-    [ms,nm] = size(handles.diagnostics.chi_SANS);
-    for kl = 1:ms
-        plot(handles.diagnostics.chi_SANS(kl,:),'.');
-    end
-    plot(sum(handles.diagnostics.chi_SANS)/ms,'Color',[0.25,0.25,0.25]);
-    plot([1,nm],[handles.SANS_threshold,handles.SANS_threshold],'Color',[0.75,0,0]);
-    title('SANS fulfillment');
-end
-if handles.radiobutton_SAXS_fit.Value
-    hold on;
-    for ks = 1:length(handles.restraints.SAXS)
-        fit = handles.diagnostics.SAXS_curves{ks,cm};
-        plot(fit(:,1),fit(:,2));
-        plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
-    end;
-    title(sprintf('SAXS fit for model %i (chi^2 = %4.2f)',cm,handles.diagnostics.final_chi2_SAXS(cm)));
-end
+% if handles.radiobutton_SANS_fit.Value
+%     hold on;
+%     for ks = 1:length(handles.restraints.SANS)
+%         fit = handles.diagnostics.SANS_curves{ks,cm};
+%         plot(fit(:,1),fit(:,2));
+%         plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
+%     end;
+%     title(sprintf('SANS fit for model %i (chi^2 = %4.2f)',cm,handles.diagnostics.final_chi2_SANS(cm)));
+% end
+% if handles.radiobutton_SANS_chi2.Value
+%     hold on;
+%     [ms,nm] = size(handles.diagnostics.chi_SANS);
+%     for kl = 1:ms
+%         plot(handles.diagnostics.chi_SANS(kl,:),'.');
+%     end
+%     plot(sum(handles.diagnostics.chi_SANS)/ms,'Color',[0.25,0.25,0.25]);
+%     plot([1,nm],[handles.SANS_threshold,handles.SANS_threshold],'Color',[0.75,0,0]);
+%     title('SANS fulfillment');
+% end
+% if handles.radiobutton_SAXS_fit.Value
+%     hold on;
+%     for ks = 1:length(handles.restraints.SAXS)
+%         fit = handles.diagnostics.SAXS_curves{ks,cm};
+%         plot(fit(:,1),fit(:,2));
+%         plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
+%     end;
+%     title(sprintf('SAXS fit for model %i (chi^2 = %4.2f)',cm,handles.diagnostics.final_chi2_SAXS(cm)));
+% end
 if handles.radiobutton_crosslinks.Value
     hold on;
     xlink_fulfill = handles.diagnostics.xlink_fulfill;
