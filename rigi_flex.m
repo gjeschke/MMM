@@ -260,6 +260,7 @@ function pushbutton_run_Callback(hObject, eventdata, handles)
 global general
 global model
 
+test_mode = true;
 % handles.progress = 1; % ### debugging
 
 switch handles.progress
@@ -311,6 +312,9 @@ switch handles.progress
             result_name = fullfile(pathstr,strcat(basname,'_rigi_diagnostics.mat'));
             handles.options = options;
             distributions = mk_report_distributions(report_name,handles,options);
+            if test_mode
+                test_109_500(basname,handles);
+            end
             handles.distributions = distributions;
             restraints = handles.restraints;
             save(result_name,'diagnostics','options','restraints','distributions','report_name');
@@ -563,7 +567,7 @@ switch handles.progress
                             end
                             delete(to_be_deleted);
                             curated_fid = fopen(curated_name,'at');
-                            fprintf(curated_fid,'%8i%6i%8.3f%8.3f\n',rba_solutions(km,1),rba_solutions(km,2),handles.diagnostics.final_chi2_SANS(km),SAXS_chi);
+                            fprintf(curated_fid,'%8i%6i%8.3f\n',rba_solutions(km,1),rba_solutions(km,2),SAXS_chi);
                             fclose(curated_fid);
                         end
                     end
@@ -573,6 +577,26 @@ switch handles.progress
         handles.RNA_link_success = success_vec;
         handles = mk_RNA_report_distributions(report_fid,handles);
         fclose(report_fid);
+        model = rmfield(model,'selected');
+        spoi = 0;
+        for kc = [1 3 5 8]
+            for km = 1:length(success_vec)
+                if success_vec(km)
+                    spoi = spoi + 1;
+                    model.selected{spoi} = [snum kc km];
+                end
+            end
+        end
+        fname = fullfile(pathstr,strcat(basname,'_RNA.pdb'));
+        message = wr_pdb_selected(fname,PDBid);
+        if message.error
+            diagnostics.unsaved = true;
+            if interactive
+                add_msg_board(sprintf(2,'Warning: Model could not be automatically saved. %s\n',message.text));
+            end
+        else
+            diagnostics.unsaved = false;
+        end
         handles.text_time_left.String = 'Completed.';
         handles.text_time_left.ForegroundColor = [0,127,0]/256;
         set(gcf,'Pointer','arrow');
@@ -2840,3 +2864,35 @@ end
 curve = curve(1:nl-1,:);
 %curve(:,1) = curve(:,1);
 fclose(fid);
+
+function test_109_500(bas_name,handles)
+
+report_name = sprintf('%s_109_500.dat',bas_name);
+data_name = sprintf('%s_109_500_data.mat',bas_name);
+fid_report = fopen(report_name,'wt');
+overlaps = zeros(1,handles.diagnostics.success);
+
+all_distr = zeros(handles.diagnostics.success,301);
+for km = 1:handles.diagnostics.success
+    adr1 = sprintf('[PTB1](A){%i}109',km);
+    adr2 = sprintf('[PTB1](E){%i}500',km);
+    ind1 = resolve_address(adr1);
+    ind2 = resolve_address(adr2);
+    NO_pos1 = get_NO_pos(ind1,'MTSL',298);
+    NO_pos2 = get_NO_pos(ind2,'MTSL',298);
+    [rax,sim_distr] = get_distribution(NO_pos1,NO_pos2,0.05);
+    res_distr = (rax-77.5).^2/(2*7.8^2);
+    res_distr = exp(-res_distr);
+    res_distr = res_distr/sum(res_distr);
+    overlap = sum(min([res_distr;sim_distr]));
+    overlaps(km) = overlap;
+    fprintf(fid_report,'%i\t%5.3f\n',km,overlap);
+    all_distr(km,:) = sim_distr;
+    sum_distr= sum_distr + sim_distr*handles.diagnostics.probabilities(km);
+end
+sum_distr = sum_distr/sum(handles.diagnostics.probabilities);
+ 
+fclose(fid_report);
+
+save(data_name,'rax','sum_distr','all_distr','res_distr','overlaps');
+
