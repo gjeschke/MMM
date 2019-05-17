@@ -18,7 +18,7 @@ function [coor,errcode,restrain,p_model,k] = mk_loop_model(sequence, anchorN, an
 %           residue in the order N, CA, C, O (Cartesian in Å) 
 % anchorCn  backbone coordinates of the residue after the C-terminal anchor
 %           residue in the order N, CA, C, O (Cartesian in Å) 
-% prot_coor protein coordinates for clash test
+% prot_xyz  protein coordinates for clash test
 % restrain  set of restraints to be tested or enforced, loop residues,
 %           format restrain(k).[type] with .[type] being
 %           .secondary  0   no secondary structure
@@ -98,22 +98,15 @@ errcode = 0;
 
 reboots = 100;
 
-if ~exist('min_prob','var')
+if ~exist('min_prob','var'),
     min_prob = 0.25;
-end
-
-faces = convhulln(prot_coor);
-[na,~] = size(faces);
-[kpa,ar] = reducepatch(faces,prot_coor,na);
-hull.vertices = ar;
-hull.faces = kpa;
+end;
 
 accstd = 0.5; % standard deviation for Monte Carlo Metropolis
 accrad = 3.0; % maximum accepted distance from target Calpha
 
 clash_threshold = 2.0; % (was 2.5) minimum distance between atoms in non-consecutive residues
 clash_threshold_lp = 2.0; % (was 2.5) minimum distance between loop and protein residues (except terminal residues)
-preliminary_clash_threshold = 0.01;
 
 p_model = 1; % default probability of an unrestrained model
 
@@ -142,9 +135,9 @@ PPII_psi = 160;
 cis_Xaa_Pro = 0.065;
 cis_Xaa_non_Pro = 0.0003;
 
-if ~isempty(anchorC)
+if ~isempty(anchorC),
     sequence = sequence(1:end-1);
-end
+end;
 
 dextended = 3.8; % extended mean Calpha-Calpha distance
 dhelix = 1.5; % helical (contracted) mean Calpha-Calpha distance
@@ -175,62 +168,62 @@ soc = sin(omega_cis); coc = cos(omega_cis);
 
 % process propensity restraints, if any
 
-if isfield(restrain,'aprop')
-    for k = 1:length(restrain)
-        if restrain(k).secondary == 0 && ~isempty(restrain(k).aprop)
-            if rand <= restrain(k).aprop
+if isfield(restrain,'aprop'),
+    for k = 1:length(restrain),
+        if restrain(k).secondary == 0 && ~isempty(restrain(k).aprop),
+            if rand <= restrain(k).aprop,
                 restrain(k).secondary = 1;
-            end
-        end
-    end
+            end;
+        end;
+    end;
     % determine 'inside helix' residues
     count = 0;
-    for k = 1:length(restrain)
-        if restrain(k).secondary == 1
+    for k = 1:length(restrain),
+        if restrain(k).secondary == 1,
             count = count + 1;
-        end
-        if restrain(k).secondary ~= 1 && restrain(k).secondary ~= 3
+        end;
+        if restrain(k).secondary ~= 1 && restrain(k).secondary ~= 3,
             count = 0;
-        end
-        if count > 2
+        end;
+        if count > 2,
             restrain(k).secondary = 3;
-        end
-    end
+        end;
+    end;
     count = 0;
-    for k = length(restrain):-1:1
-        if restrain(k).secondary == 3
+    for k = length(restrain):-1:1,
+        if restrain(k).secondary == 3,
             count = count + 1;
-        end
-        if restrain(k).secondary ~= 1 && restrain(k).secondary ~= 3
+        end;
+        if restrain(k).secondary ~= 1 && restrain(k).secondary ~= 3,
             count = 0;
-        end
-        if count < 3 && count > 0
+        end;
+        if count < 3 && count > 0,
             restrain(k).secondary = 1;
-        end
-    end
-end
+        end;
+    end;
+end;
 
-if isfield(restrain,'bprop')
-    for k = 1:length(restrain)
-        if restrain(k).secondary == 0 && ~isempty(restrain(k).bprop)
-            if rand <= restrain(k).bprop
+if isfield(restrain,'bprop'),
+    for k = 1:length(restrain),
+        if restrain(k).secondary == 0 && ~isempty(restrain(k).bprop),
+            if rand <= restrain(k).bprop,
                 restrain(k).secondary = 2;
-            end
-        end
-    end
-end
+            end;
+        end;
+    end;
+end;
 
-if isfield(restrain,'pprop')
-    for k = 1:length(restrain)
-        if restrain(k).secondary == 0 && ~isempty(restrain(k).pprop)
-            if rand <= restrain(k).pprop
+if isfield(restrain,'pprop'),
+    for k = 1:length(restrain),
+        if restrain(k).secondary == 0 && ~isempty(restrain(k).pprop),
+            if rand <= restrain(k).pprop,
                 restrain(k).secondary = 4;
-            end
-        end
-    end
-end
+            end;
+        end;
+    end;
+end;
 
-if ~isempty(anchorC)
+if ~isempty(anchorC),
     ngap = length(sequence)-2;
     backbone = zeros(4*(ngap+3),3);
     backbone(end-7:end-4,:) = anchorC;
@@ -238,7 +231,7 @@ if ~isempty(anchorC)
 else
     backbone = zeros(4*(length(sequence)+1),3);
     ngap = length(sequence)-1;
-end
+end;
 
 phivec = zeros(1,ngap);
 psivec = zeros(1,ngap);
@@ -256,7 +249,7 @@ A=eye(3);
 k = 2;
 
 free_standing = true;
-if ~isempty(anchorN)
+if ~isempty(anchorN),
     free_standing = false;
     backbone(1:4,:) = anchorN;
 
@@ -309,30 +302,30 @@ if ~isempty(anchorN)
     so = sot;
     co = cot;
     dice = rand;
-    if upper(sequence(2))~='P'
-        if dice < cis_Xaa_non_Pro
+    if upper(sequence(2))~='P',
+        if dice < cis_Xaa_non_Pro,
             so = soc; co = coc;
-        end
+        end;
     else
-        if dice < cis_Xaa_Pro
+        if dice < cis_Xaa_Pro,
             so = soc; co = coc;
-        end
-    end
+        end;
+    end;
     A31=[-cfi3,-sfi3,0;sfi3*co,-cfi3*co,-so;sfi3*so,-cfi3*so,co];
     A=A*A31; % local frame at N of first gap residue
     k = 2;
-end
+end;
 
 kend1 = nout+1;
-if isempty(anchorC)
+if isempty(anchorC),
     kend1 = length(sequence);
     sequence = strcat(sequence,'.');
-    if free_standing
+    if free_standing,
         kend1 = kend1 + 1;
         sequence = strcat('.',sequence);
         rescodes = [0 rescodes];
-    end
-end
+    end;
+end;
 
 reboot.k = k - 1;
 reboot.counter = reboots;
@@ -346,11 +339,11 @@ tested_restraints = 0;
 
 % first half loop generation, index k starts with k = 1 at existing anchor 
 % for C-terminal loop, this generates the whole loop
-while k <= kend1
+while k <= kend1,
     updated = false;
-    if restrain(k-1).secondary == 3
+    if restrain(k-1).secondary == 3,
         [rphi,rpsi] = get_phi_psi_in_helix(sequence(k));
-    elseif restrain(k-1).secondary == 4
+    elseif restrain(k-1).secondary == 4,
         phi = PPII_phi + 5*randn;
         rphi = pi*phi/180;
         psi = PPII_psi + 5*randn;
@@ -359,32 +352,32 @@ while k <= kend1
         poi = round(rand*Rama_res.me{rescodes(k)}+0.5);
         rphi=Rama_res.ephi{rescodes(k)}(poi);
         rpsi=Rama_res.epsi{rescodes(k)}(poi);
-    end
+    end;
     phivec(k) = 180*rphi/pi;
     psivec(k) = 180*rpsi/pi;
     so = sot;
     co = cot;
     dice = rand;
-    if upper(sequence(k+1))~='P'
-        if dice < cis_Xaa_non_Pro
+    if upper(sequence(k+1))~='P',
+        if dice < cis_Xaa_non_Pro,
             so = soc; co = coc;
-        end
+        end;
     else
-        if dice < cis_Xaa_Pro
+        if dice < cis_Xaa_Pro,
             so = soc; co = coc;
-        end
-    end
-    if restrain(k-1).cis
+        end;
+    end;
+    if restrain(k-1).cis,
         so = soc;
         co = coc;
-    end
-    if restrain(k-1).secondary
+    end;
+    if restrain(k-1).secondary,
         att_sec = 1;
-        if restrain(k-1).secondary == 1 % alpha-helix
+        if restrain(k-1).secondary == 1, % alpha-helix
             while phivec(k) < alpha_phi_LB || phivec(k) > alpha_phi_UB || ...
                   psivec(k) < alpha_psi_LB || psivec(k) > alpha_psi_UB || ...
                   phivec(k) + psivec(k) < alpha_phi_psi_LB || ...
-                  phivec(k) + psivec(k) > alpha_phi_psi_UB
+                  phivec(k) + psivec(k) > alpha_phi_psi_UB,
 %                       fprintf(1,'%4.1f, %4.1f, %4.1f\n',phivec(k),psivec(k),phivec(k)+psivec(k));
 %                       figure(1); hold on;
 %                       plot(phivec(k),psivec(k),'r.');
@@ -396,34 +389,34 @@ while k <= kend1
 %                     att_sec = att_sec + 1;
 %                     if att_sec > 100,
 %                         disp('Aber Hallo');
-%                     end
-            end
+%                     end;
+            end;
 %            fprintf(1,'%i attempts for ensuring alpha-helical secondary structure\n',att_sec);
-        elseif restrain(k-1).secondary == 2 % beta-sheet
-            if upper(sequence(k+1))~='P'
+        elseif restrain(k-1).secondary == 2, % beta-sheet
+            if upper(sequence(k+1))~='P',
                 while phivec(k) < beta_phi_LB || phivec(k) > beta_phi_UB || ...
-                      psivec(k) < beta_psi_LB || psivec(k) > beta_psi_UB
+                      psivec(k) < beta_psi_LB || psivec(k) > beta_psi_UB,
                         poi = round(rand*Rama_res.me{rescodes(k)}+0.5);
                         rphi=Rama_res.ephi{rescodes(k)}(poi);
                         rpsi=Rama_res.epsi{rescodes(k)}(poi);
                         phivec(k) = 180*rphi/pi;
                         psivec(k) = 180*rpsi/pi;
                         att_sec = att_sec + 1;
-                end
+                end;
             else % special handling for proline case
                 while phivec(k) < beta_phi_LB || phivec(k) > beta_phi_UB_proline || ...
-                      psivec(k) < beta_psi_LB || psivec(k) > beta_psi_UB
+                      psivec(k) < beta_psi_LB || psivec(k) > beta_psi_UB,
                         poi = round(rand*Rama_res.me{rescodes(k)}+0.5);
                         rphi=Rama_res.ephi{rescodes(k)}(poi);
                         rpsi=Rama_res.epsi{rescodes(k)}(poi);
                         phivec(k) = 180*rphi/pi;
                         psivec(k) = 180*rpsi/pi;
                         att_sec = att_sec + 1;
-                end
-            end
+                end;
+            end;
 %             fprintf(1,'%i attempts for ensuring beta-sheet secondary structure\n',att_sec);
-        end
-    end
+        end;
+    end;
     backbone(4*k-3,:)=acoor'; % coordinates of N
     acoor=acoor+A*b1vec'; % coordinates of C_alpha
     backbone(4*k-2,:)=acoor';
@@ -433,8 +426,7 @@ while k <= kend1
     A=A*A12;
     acoor=acoor+A*b2vec'; % coordinates of C
     backbone(4*k-1,:)=acoor';
-    backbone = add_O(k,backbone);
-    if ~isempty(restrain(k-1).label) 
+    if ~isempty(restrain(k-1).label), 
         % make spin label coordinate
         x= backbone(4*k-3,:) - backbone(4*k-2,:); % x axis is along C_alpha-N bond
         x=x/norm(x);    % unit vector along x
@@ -447,7 +439,7 @@ while k <= kend1
         Rp=dircos; % rotation matrix for conversion to standard frame
         restrain(k-1).xyz = restrain(k-1).label*Rp + backbone(4*k-2,:);
         p_beacon = 1;
-        for kr = 1:length(restrain(k-1).r_beacon)
+        for kr = 1:length(restrain(k-1).r_beacon),
             r = norm(restrain(k-1).xyz-restrain(k-1).r_beacon(kr).xyz); 
             switch restrain(k-1).r_beacon(kr).type
                 case 'Gaussian'
@@ -458,17 +450,17 @@ while k <= kend1
                     updated = true;
                 case 'bounds'
                     if r < restrain(k-1).r_beacon(kr).par1 || ...
-                            r > restrain(k-1).r_beacon(kr).par2 % bounds violated
+                            r > restrain(k-1).r_beacon(kr).par2, % bounds violated
                        restrain(k-1).r_beacon(kr).p = 0;
                        p_beacon = 0;
-                    end                        
+                    end;                        
                 otherwise
                     error('MMM:mk_loop_model:unknownRestraintType','Restraint type %s not known',restrain(k-1).r_beacon(kr).type);
-            end
-        end
+            end;
+        end;
         p_model = p_beacon*p_model;
-        if p_model < min_prob
-            if reboot.counter > 0
+        if p_model < min_prob,
+            if reboot.counter > 0,
                 reboot.counter = reboot.counter - 1;
                 A = reboot.A;
                 acoor = reboot.acoor;
@@ -476,14 +468,14 @@ while k <= kend1
                 tested_restraints = reboot.tested;
                 p_model = reboot.p_model;
                 continue
-            end
+            end;
             errcode = 5;
             coor = [];
 %                 fprintf(2,'Model rejected at residue %i by too low restraint fulfillment (beacon).\n',k-1);
             return
-        end
+        end;
         p_intern = 1;
-        for kr = 1:length(restrain(k-1).r_intern)
+        for kr = 1:length(restrain(k-1).r_intern),
             site = restrain(k-1).r_intern(kr).site;
             r = norm(restrain(k-1).xyz-restrain(site).xyz); 
             switch restrain(k-1).r_intern(kr).type
@@ -495,18 +487,18 @@ while k <= kend1
                     updated = true;
                 case 'bounds'
                     if r < restrain(k-1).r_intern(kr).par1 || ...
-                            r > restrain(k-1).r_intern(kr).par2 % bounds violated
+                            r > restrain(k-1).r_intern(kr).par2, % bounds violated
                         restrain(k-1).r_intern(kr).p = 0;
                         p_intern = 0;
-                    end                        
+                    end;                        
                 otherwise
                     error('MMM:mk_loop_model:unknownRestraintType','Restraint type %s not known',restrain(k-1).r_beacon(kr).type);
-            end
+            end;
         
-        end
+        end;
         p_model = p_intern*p_model;
-        if p_model < min_prob
-            if reboot.counter > 0
+        if p_model < min_prob,
+            if reboot.counter > 0,
                 reboot.counter = reboot.counter - 1;
                 A = reboot.A;
                 acoor = reboot.acoor;
@@ -514,14 +506,14 @@ while k <= kend1
                 tested_restraints = reboot.tested;
                 p_model = reboot.p_model;
                 continue
-            end
+            end;
             errcode = 5;
 %                 fprintf(2,'Model rejected at residue %i by too low restraint fulfillment (internal).\n',k-1);
             coor = [];
             return
-        end
+        end;
         p_oligomer = 1;
-        for kr = 1:length(restrain(k-1).oligomer)
+        for kr = 1:length(restrain(k-1).oligomer),
             r = 2*sqrt(sum(restrain(k-1).xyz(1:2).^2))*sin(pi/restrain(k-1).oligomer(kr).n); 
             switch restrain(k-1).oligomer.type
                 case 'Gaussian'
@@ -532,17 +524,17 @@ while k <= kend1
                     updated = true;                     
                 case 'bounds'
                     if r < restrain(k-1).oligomer(kr).par1 || ...
-                            r > restrain(k-1).oligomer.par2 % bounds violated
+                            r > restrain(k-1).oligomer.par2, % bounds violated
                         restrain(k-1).oligomer(kr).p = 0;
                         p_oligomer = 0;
-                    end                        
+                    end;                        
                 otherwise
                     error('MMM:mk_loop_model_reverse:unknownRestraintType','Restraint type %s not known',restrain(k).oligomer(kr).type);
-            end
-        end
+            end;
+        end;
         p_model = p_oligomer*p_model;
-        if p_model < min_prob
-            if reboot.counter > 0
+        if p_model < min_prob,
+            if reboot.counter > 0,
                 reboot.counter = reboot.counter - 1;
                 A = reboot.A;
                 acoor = reboot.acoor;
@@ -550,14 +542,14 @@ while k <= kend1
                 tested_restraints = reboot.tested;
                 p_model = reboot.p_model;
                 continue
-            end
+            end;
             errcode = 5;
 %                 fprintf(2,'Model rejected at residue %i by too low restraint fulfillment (oligomer).\n',k);
             coor = [];
             return
-        end
+        end;
         p_depth = 1;
-        for kr = 1:length(restrain(k-1).depth)
+        for kr = 1:length(restrain(k-1).depth),
             switch restrain(k-1).depth(kr).site
                 case 'CA'
                     z = abs(backbone(4*k-2,3));
@@ -565,7 +557,7 @@ while k <= kend1
                     z = abs(restrain(k-1).xyz(3));
                 otherwise
                     error('MMM:mk_loop_model_reverse:unknownRestraintModifier','Depth restraint site %s not known',restrain(k).depth(kr).site);
-            end
+            end;
             switch restrain(k-1).depth.type
                 case 'Gaussian'
                     restrain(k-1).depth(kr).p = ...
@@ -575,34 +567,20 @@ while k <= kend1
                     updated = true;
                 case 'bounds'
                     if z >= restrain(k-1).depth(kr).par1 && ...
-                            z <= restrain(k-1).depth.par2 % bounds not violated
+                            z <= restrain(k-1).depth.par2, % bounds not violated
                         restrain(k-1).depth(kr).p = 1;
                         p_depth = 1;
                     else
                         restrain(k-1).depth(kr).p = 1;
                         p_depth = 0;
-                    end                       
+                    end;                        
                 otherwise
-                    error('MMM:mk_loop_model:unknownRestraintType','Restraint type %s not known',restrain(k).depth(kr).type);
-            end
-        end
+                    error('MMM:mk_loop_model_reverse:unknownRestraintType','Restraint type %s not known',restrain(k).depth(kr).type);
+            end;
+        end;
         p_model = p_depth*p_model;
-        cost = 0;
-        if k > 3 && k < kend1-1
-            try
-                faces = convhulln(backbone(1:4*k,:));
-            catch 
-                cost = 1e6;
-            end
-            if cost < 100
-                [nb,~] = size(faces);
-                [kpb,br] = reducepatch(faces,backbone(1:4*k,:),nb);
-                cost = clash_cost_super_fast(hull.vertices,hull.faces,br,kpb,[],[],[],-1);
-            end
-        end
-        min_dist = get_min_pair_dist(k-2,backbone(1:4*k,:));
-        if p_model < min_prob || cost > preliminary_clash_threshold || min_dist < clash_threshold
-            if reboot.counter > 0
+        if p_model < min_prob,
+            if reboot.counter > 0,
                 reboot.counter = reboot.counter - 1;
                 A = reboot.A;
                 acoor = reboot.acoor;
@@ -610,13 +588,13 @@ while k <= kend1
                 tested_restraints = reboot.tested;
                 p_model = reboot.p_model;
                 continue
-            end
+            end;
             errcode = 5;
 %                  fprintf(2,'Model rejected at residue %i by too low restraint fulfillment (depth).\n',k);
             coor = [];
             return
-        end
-    end
+        end;
+    end;
     ctau=cos(rpsi);
     stau=sin(rpsi);
     A23=[-cfi2,-sfi2,0;sfi2*ctau,-cfi2*ctau,-stau;sfi2*stau,-cfi2*stau,ctau];
@@ -629,57 +607,57 @@ while k <= kend1
 %         errcode = 7;
 %         coor = [];
 %         return
-%     end
+%     end;
     A31=[-cfi3,-sfi3,0;sfi3*co,-cfi3*co,-so;sfi3*so,-cfi3*so,co];
     A=A*A31;    
-    if p_model^(1/tested_restraints) > reboot_thresh && updated % set reboot point, if model is 'better than expected' at this poiunt
+    if p_model^(1/tested_restraints) > reboot_thresh && updated, % set reboot point, if model is 'better than expected' at this poiunt
         reboot.k = k;
         reboot.counter = reboots;
         reboot.A = A;
         reboot.acoor = acoor;
         reboot.p_model = p_model;
         reboot.tested = tested_restraints;
-    end
+    end;
     k = k + 1;
-end
+end;
 
 % add backbone O atoms
-% for k = 2:kend1,
-%     backbone = add_O(k,backbone);
-% end
+for k = 2:kend1,
+    backbone = add_O(k,backbone);
+end;
 
-if ~isempty(prot_coor)
+if ~isempty(prot_coor),
     % check for clashes with protein
     pair_dist = get_all_pair_dist(backbone(9:4*(kend1-1)+3,:),prot_coor);
     min_dist = min(min(pair_dist));
-    if min_dist < clash_threshold_lp
+    if min_dist < clash_threshold_lp,
         errcode = 6;
         coor = [];
         return
-    end
-end
+    end;
+end;
 
 % self-clash test
 k = 1;
 clash = false;
-while ~clash && k <= kend1-2
+while ~clash && k <= kend1-2,
     min_dist = get_min_pair_dist(k,backbone(1:4*(kend1-1)+4,:));
-    if min_dist < clash_threshold
+    if min_dist < clash_threshold,
         clash = true;
-    end
+    end;
     k = k + 1;
-end
+end;
 
-if clash
+if clash,
     errcode = 7;
     coor = [];
     return
-end
+end;
 
-if isempty(anchorC) % C-terminal loop is complete at this point
+if isempty(anchorC), % C-terminal loop is complete at this point
     coor = backbone(5:end,:); % exclude N-terminal anchor
     return;
-end
+end;
 
 k = nout+1;
 A00 = A;
@@ -687,7 +665,7 @@ acoor00 = acoor;
 failed = 0;
 p_model_half = p_model;
 
-if p_model^(1/tested_restraints) > reboot_thresh
+if p_model^(1/tested_restraints) > reboot_thresh,
     reboot.k = k;
     reboot.counter = reboots;
     reboot.A = A;
@@ -696,10 +674,10 @@ if p_model^(1/tested_restraints) > reboot_thresh
     reboot.tested = tested_restraints;
 else
     reboot.counter = 0;
-end
+end;
         
 % second half loop generation
-while k<ngap+1 && failed < maxattempts
+while k<ngap+1 && failed < maxattempts,
     updated = false;
     Rvec = anchorC(1,:) - acoor';
     R = norm(Rvec);
@@ -710,11 +688,11 @@ while k<ngap+1 && failed < maxattempts
     acoor0 = acoor;
     A0 = A;
     detvec = zeros(1,resattempts);
-    while unaccepted && attempts<resattempts
+    while unaccepted && attempts<resattempts,
         attempts = attempts + 1;
-        if restrain(k-1).secondary == 3
+        if restrain(k-1).secondary == 3,
             [rphi,rpsi] = get_phi_psi_in_helix(sequence(k));
-        elseif restrain(k-1).secondary == 4
+        elseif restrain(k-1).secondary == 4,
             phi = PPII_phi + 5*randn;
             rphi = pi*phi/180;
             psi = PPII_psi + 5*randn;
@@ -723,65 +701,65 @@ while k<ngap+1 && failed < maxattempts
             poi = round(rand*Rama_res.me{rescodes(k)}+0.5);
             rphi=Rama_res.ephi{rescodes(k)}(poi);
             rpsi=Rama_res.epsi{rescodes(k)}(poi);
-        end
+        end;
         phivec(k) = 180*rphi/pi;
         psivec(k) = 180*rpsi/pi;
         so = sot;
         co = cot;
         dice = rand;
-        if upper(sequence(k+1))~='P'
-            if dice < cis_Xaa_non_Pro
+        if upper(sequence(k+1))~='P',
+            if dice < cis_Xaa_non_Pro,
                 so = soc; co = coc;
-            end
+            end;
         else
-            if dice < cis_Xaa_Pro
+            if dice < cis_Xaa_Pro,
                 so = soc; co = coc;
-            end
-        end
-        if restrain(k-1).cis
+            end;
+        end;
+        if restrain(k-1).cis,
             so = soc;
             co = coc;
-        end
-        if restrain(k-1).secondary
+        end;
+        if restrain(k-1).secondary,
             att_sec = 1;
-            if restrain(k-1).secondary == 1 % alpha-helix
+            if restrain(k-1).secondary == 1, % alpha-helix
                 while phivec(k) < alpha_phi_LB || phivec(k) > alpha_phi_UB || ...
                       psivec(k) < alpha_psi_LB || psivec(k) > alpha_psi_UB || ...
                       phivec(k) + psivec(k) < alpha_phi_psi_LB || ...
-                      phivec(k) + psivec(k) > alpha_phi_psi_UB
+                      phivec(k) + psivec(k) > alpha_phi_psi_UB,
                         poi = round(rand*Rama_res.me{rescodes(k)}+0.5);
                         rphi=Rama_res.ephi{rescodes(k)}(poi);
                         rpsi=Rama_res.epsi{rescodes(k)}(poi);
                         phivec(k) = 180*rphi/pi;
                         psivec(k) = 180*rpsi/pi;
 %                         att_sec = att_sec + 1;
-                end
+                end;
 %                 fprintf(1,'%i attempts for ensuring alpha-helical secondary structure\n',att_sec);
-            elseif restrain(k-1).secondary == 2 % beta-sheet
-                if upper(sequence(k+1))~='P'
+            elseif restrain(k-1).secondary == 2, % beta-sheet
+                if upper(sequence(k+1))~='P',
                     while phivec(k) < beta_phi_LB || phivec(k) > beta_phi_UB || ...
-                          psivec(k) < beta_psi_LB || psivec(k) > beta_psi_UB
+                          psivec(k) < beta_psi_LB || psivec(k) > beta_psi_UB,
                             poi = round(rand*Rama_res.me{rescodes(k)}+0.5);
                             rphi=Rama_res.ephi{rescodes(k)}(poi);
                             rpsi=Rama_res.epsi{rescodes(k)}(poi);
                             phivec(k) = 180*rphi/pi;
                             psivec(k) = 180*rpsi/pi;
                             att_sec = att_sec + 1;
-                    end
+                    end;
                 else % special handling for proline case
                     while phivec(k) < beta_phi_LB || phivec(k) > beta_phi_UB_proline || ...
-                          psivec(k) < beta_psi_LB || psivec(k) > beta_psi_UB
+                          psivec(k) < beta_psi_LB || psivec(k) > beta_psi_UB,
                             poi = round(rand*Rama_res.me{rescodes(k)}+0.5);
                             rphi=Rama_res.ephi{rescodes(k)}(poi);
                             rpsi=Rama_res.epsi{rescodes(k)}(poi);
                             phivec(k) = 180*rphi/pi;
                             psivec(k) = 180*rpsi/pi;
                             att_sec = att_sec + 1;
-                    end
-                end
+                    end;
+                end;
 %                  fprintf(1,'%i attempts for ensuring beta-sheet secondary structure',att_sec);
-            end
-        end
+            end;
+        end;
         backbone(4*k-3,:)=acoor'; % coordinates of N
         acoor=acoor+A*b1vec'; % coordinates of C_alpha
         backbone(4*k-2,:)=acoor';
@@ -791,7 +769,6 @@ while k<ngap+1 && failed < maxattempts
         A=A*A12;
         acoor=acoor+A*b2vec'; % coordinates of C
         backbone(4*k-1,:)=acoor';
-        backbone = add_O(k,backbone);
         ctau=cos(rpsi);
         stau=sin(rpsi);
         A23=[-cfi2,-sfi2,0;sfi2*ctau,-cfi2*ctau,-stau;sfi2*stau,-cfi2*stau,ctau];
@@ -803,24 +780,24 @@ while k<ngap+1 && failed < maxattempts
         dr = sum(rvec.*Rvec)/R; % distance change towards C anchor
         detm = (dr - dR)/dmean;
         detvec(attempts) = detm;
-        if abs(detm)<accstd
+        if abs(detm)<accstd,
             unaccepted = false;
-        elseif attempts < resattempts
+        elseif attempts < resattempts,
             acoor = acoor0;
             A = A0;
-        end
-    end
+        end;
+    end;
     rejections(k) = attempts-1;
     drvec(k) = dr;
     dRvec(k) = dR;
-    if k >= ngap+1 && norm(acoor'-anchorC(1,:)) > accrad
+    if k >= ngap+1 && norm(acoor'-anchorC(1,:)) > accrad,
         A = A00;
         acoor = acoor00;
         k = nout + 1;
         failed = failed +1;
         p_model = p_model_half;
-    end
-    if ~isempty(restrain(k-1).label) 
+    end;
+    if ~isempty(restrain(k-1).label), 
         % make spin label coordinate
         x= backbone(4*k-3,:) - backbone(4*k-2,:); % x axis is along C_alpha-N bond
         x=x/norm(x);    % unit vector along x
@@ -833,7 +810,7 @@ while k<ngap+1 && failed < maxattempts
         Rp=dircos; % rotation matrix for conversion to standard frame
         restrain(k-1).xyz = restrain(k-1).label*Rp + backbone(4*k-2,:);
         p_beacon = 1;
-        for kr = 1:length(restrain(k-1).r_beacon)
+        for kr = 1:length(restrain(k-1).r_beacon),
             r = norm(restrain(k-1).xyz-restrain(k-1).r_beacon(kr).xyz); 
             switch restrain(k-1).r_beacon(kr).type
                 case 'Gaussian'
@@ -844,17 +821,17 @@ while k<ngap+1 && failed < maxattempts
                     updated = true;
                 case 'bounds'
                     if r < restrain(k-1).r_beacon(kr).par1 || ...
-                            r > restrain(k-1).r_beacon(kr).par2 % bounds violated
+                            r > restrain(k-1).r_beacon(kr).par2, % bounds violated
                         restrain(k-1).r_beacon(kr).p = 0;
                         p_beacon = 0;
-                    end                        
+                    end;                        
                 otherwise
                     error('MMM:mk_loop_model:unknownRestraintType','Restraint type %s not known',restrain(k-1).r_beacon(kr).type);
-            end
-        end
+            end;
+        end;
         p_model = p_beacon*p_model;
-        if p_model < min_prob
-            if reboot.counter > 0
+        if p_model < min_prob,
+            if reboot.counter > 0,
                 reboot.counter = reboot.counter - 1;
                 A = reboot.A;
                 acoor = reboot.acoor;
@@ -862,14 +839,14 @@ while k<ngap+1 && failed < maxattempts
                 tested_restraints = reboot.tested;
                 p_model = reboot.p_model;
                 continue
-            end
+            end;
             errcode = 5;
             coor = [];
 %                 fprintf(2,'Model rejected at residue %i by too low restraint fulfillment (beacon).\n',k-1);
             return
-        end
+        end;
         p_intern = 1;
-        for kr = 1:length(restrain(k-1).r_intern)
+        for kr = 1:length(restrain(k-1).r_intern),
             site = restrain(k-1).r_intern(kr).site;
             r = norm(restrain(k-1).xyz-restrain(site).xyz); 
             switch restrain(k-1).r_intern(kr).type
@@ -880,18 +857,17 @@ while k<ngap+1 && failed < maxattempts
                     updated = true;
                case 'bounds'
                     if r < restrain(k-1).r_intern(kr).par1 || ...
-                            r > restrain(k-1).r_intern(kr).par2 % bounds violated
+                            r > restrain(k-1).r_intern(kr).par2, % bounds violated
                         restrain(k-1).r_intern(kr).p = 0;
                         p_intern = 0;
-                    end                        
+                    end;                        
                 otherwise
                     error('MMM:mk_loop_model:unknownRestraintType','Restraint type %s not known',restrain(k-1).r_beacon(kr).type);
-            end
-        end
-        backbone = add_O(k,backbone);
+            end;
+        end;
         p_model = p_intern*p_model;
-        if p_model < min_prob
-            if reboot.counter > 0
+        if p_model < min_prob,
+            if reboot.counter > 0,
                 reboot.counter = reboot.counter - 1;
                 A = reboot.A;
                 acoor = reboot.acoor;
@@ -899,14 +875,14 @@ while k<ngap+1 && failed < maxattempts
                 tested_restraints = reboot.tested;
                 p_model = reboot.p_model;
                 continue
-            end
+            end;
             errcode = 5;
 %                fprintf(2,'Model rejected at residue %i by too low restraint fulfillment (internal).\n',k-1);
             coor = [];
             return
-        end
+        end;
         p_oligomer = 1;
-        for kr = 1:length(restrain(k-1).oligomer)
+        for kr = 1:length(restrain(k-1).oligomer),
             r = 2*sqrt(sum(restrain(k-1).xyz(1:2).^2))*sin(pi/restrain(k-1).oligomer(kr).n); 
             switch restrain(k-1).oligomer.type
                 case 'Gaussian'
@@ -917,17 +893,17 @@ while k<ngap+1 && failed < maxattempts
                     updated = true;                    
                 case 'bounds'
                     if r < restrain(k-1).oligomer(kr).par1 || ...
-                            r > restrain(k-1).oligomer.par2 % bounds violated
+                            r > restrain(k-1).oligomer.par2, % bounds violated
                         restrain(k-1).oligomer(kr).p = 0;
                         p_oligomer = 0;
-                    end                        
+                    end;                        
                 otherwise
-                    error('MMM:mk_loop_model:unknownRestraintType','Restraint type %s not known',restrain(k).oligomer(kr).type);
-            end
-        end
+                    error('MMM:mk_loop_model_reverse:unknownRestraintType','Restraint type %s not known',restrain(k).oligomer(kr).type);
+            end;
+        end;
         p_model = p_oligomer*p_model;
-        if p_model < min_prob
-            if reboot.counter > 0
+        if p_model < min_prob,
+            if reboot.counter > 0,
                 reboot.counter = reboot.counter - 1;
                 A = reboot.A;
                 acoor = reboot.acoor;
@@ -935,14 +911,14 @@ while k<ngap+1 && failed < maxattempts
                 tested_restraints = reboot.tested;
                 p_model = reboot.p_model;
                 continue
-            end
+            end;
             errcode = 5;
 %                 fprintf(2,'Model rejected at residue %i by too low restraint fulfillment (oligomer).\n',k);
             coor = [];
             return
-        end
+        end;
         p_depth = 1;
-        for kr = 1:length(restrain(k-1).depth)
+        for kr = 1:length(restrain(k-1).depth),
             switch restrain(k-1).depth(kr).site
                 case 'CA'
                     z = abs(backbone(4*k-2,3));
@@ -950,7 +926,7 @@ while k<ngap+1 && failed < maxattempts
                     z = abs(restrain(k-1).xyz(3));
                 otherwise
                     error('MMM:mk_loop_model_reverse:unknownRestraintModifier','Depth restraint site %s not known',restrain(k).depth(kr).site);
-            end
+            end;
             switch restrain(k-1).depth.type
                 case 'Gaussian'
                     restrain(k-1).depth(kr).p = ...
@@ -960,28 +936,19 @@ while k<ngap+1 && failed < maxattempts
                     updated = true;
                 case 'bounds'
                     if z >= restrain(k-1).depth(kr).par1 && ...
-                            z <= restrain(k-1).depth.par2 % bounds not violated
+                            z <= restrain(k-1).depth.par2, % bounds not violated
                         restrain(k-1).depth(kr).p = 1;
                         p_depth = 1;
                     else
                         p_depth = 0;
-                    end                        
+                    end;                        
                 otherwise
                     error('MMM:mk_loop_model_reverse:unknownRestraintType','Restraint type %s not known',restrain(k).depth(kr).type);
-            end
-        end
+            end;
+        end;
         p_model = p_depth*p_model;
-        if k < ngap+1
-            faces = convhulln(backbone(1:4*k,:));
-            [nb,~] = size(faces);
-            [kpb,br] = reducepatch(faces,backbone(1:4*k,:),nb);
-            cost = clash_cost_super_fast(hull.vertices,hull.faces,br,kpb,[],[],[],-1);
-        else
-            cost = 0;
-        end
-        min_dist = get_min_pair_dist(k-2,backbone(1:4*k,:));
-        if p_model < min_prob || cost > preliminary_clash_threshold || min_dist < clash_threshold
-            if reboot.counter > 0
+        if p_model < min_prob,
+            if reboot.counter > 0,
                 reboot.counter = reboot.counter - 1;
                 A = reboot.A;
                 acoor = reboot.acoor;
@@ -989,42 +956,42 @@ while k<ngap+1 && failed < maxattempts
                 tested_restraints = reboot.tested;
                 p_model = reboot.p_model;
                 continue
-            end
+            end;
             errcode = 5;
 %                  fprintf(2,'Model rejected at residue %i by too low restraint fulfillment (depth).\n',k);
             coor = [];
             return
-        end
-    end
-    if p_model^(1/tested_restraints) > reboot_thresh && updated % set reboot point, if model is 'better than expected' at this point
+        end;
+    end;
+    if p_model^(1/tested_restraints) > reboot_thresh && updated, % set reboot point, if model is 'better than expected' at this point
         reboot.k = k;
         reboot.counter = reboots;
         reboot.A = A;
         reboot.acoor = acoor;
         reboot.p_model = p_model;
         reboot.tested = tested_restraints;
-    end
-end
+    end;
+end;
 
 kres = k;
-if failed >= maxattempts
+if failed >= maxattempts,
     % fprintf(2,'Maximum attempts without finding closed loop solution\n');
     errcode = 1;
     coor = [];
     return
 else
 %     fprintf(1,'%i attempts required to generate loop model.\n',failed + 1);
-end
+end;
 % redetermine dihedrals
 rphivec = zeros(1,ngap+2);
 rpsivec = rphivec;
 romvec = rphivec;
-for k = 2:ngap+1
+for k = 2:ngap+1,
     [phi,psi,omega] = dihedrals(k,backbone);
     rphivec(k) = 180*phi/pi;
     rpsivec(k) = 180*psi/pi;
     romvec(k) = 180*omega/pi;
-end
+end;
 backbone(4*(ngap+2)-3,:) = acoor';
 acoor=acoor+A*b1vec'; % coordinates of C_alpha
 backbone(4*(ngap+2)-2,:) = acoor';
@@ -1034,35 +1001,35 @@ R0 = anchorC(2,:) - acoor'; % difference vector
 steps = 3*ngap + 1; 
 dR0 = R0/steps;
 % fprintf(1,'Atom coordinate shift: %5.3f Å\n',norm(dR0));
-for k = 1:steps
+for k = 1:steps,
     res = 2 + floor(k/3); % number of residue to be corrected, starts with first gap residue 2
     poi = 4*(res-1) + 1 + mod(k,3);
     backbone(poi,:) = backbone(poi,:) + k*dR0;
-end
+end;
 
-% for k = 2:ngap+1
-%     backbone = add_O(k,backbone);
-% end
+for k = 2:ngap+1,
+    backbone = add_O(k,backbone);
+end;
 
 % self-clash test
 k = 1;
 clash = false;
-while ~clash && k <= ngap
+while ~clash && k <= ngap,
     min_dist = get_min_pair_dist(k,backbone);
-    if min_dist < clash_threshold
+    if min_dist < clash_threshold,
         clash = true;
-    end
+    end;
     k = k + 1;
-end
+end;
 
 k = kres;
 
-if clash
+if clash,
 %      fprintf(2,'Self clash of loop at %4.2f A.\n',min_dist);
     errcode = 2;
     coor = [];
     return
-end
+end;
 coor = backbone(5:end,:); % exclude N-terminal anchor
 
 % [phi,psi] = dihedrals(ngap+2,backbone);
@@ -1072,11 +1039,11 @@ coor = backbone(5:end,:); % exclude N-terminal anchor
 % fprintf(1,'C-terminal anchor psi  : %4.1f\n',180*psi/pi);
 
 % phipoi = 181 + round(180*phi/pi);
-% if phipoi < 1, phipoi = 1; end
-% if phipoi >361, phipoi = 361; end
+% if phipoi < 1, phipoi = 1; end;
+% if phipoi >361, phipoi = 361; end;
 % psipoi = 181 + round(180*psi/pi);
-% if psipoi < 1, psipoi = 1; end
-% if psipoi >361, psipoi = 361; end
+% if psipoi < 1, psipoi = 1; end;
+% if psipoi >361, psipoi = 361; end;
 % 
 % allowed = Rama_gen(psipoi,phipoi);
 % 
@@ -1084,84 +1051,85 @@ coor = backbone(5:end,:); % exclude N-terminal anchor
 %     errcode = 3;
 % %     fprintf(2,'C-terminal anchor outside allowed Ramachandran region.\n');
 %     return
-% end
+% end;
 
 allowed = test_Rama(ngap+2,backbone,Rama_res,sequence);
-if ~allowed
+if ~allowed,
     [backbone_f,success] = try_fix_rama(ngap+2,backbone,Rama_res,sequence,+1);
-    if ~success
+    if ~success,
         [backbone_f,success] = try_fix_rama(ngap+2,backbone,Rama_res,sequence,-1);
-    end
-    if ~success
+    end;
+    if ~success,
 %        fprintf(2,'Backbone could not be fixed.\n');
 %         fprintf(1,'Tested at %i.\n',ngap+2);
 %         repair_dihedrals_fun(backbone);
-          errcode = 3;
-%         return
+        errcode = 3;
+        return
     else
         backbone = backbone_f;
 %        fprintf(1,'Backbone was fixed. Testing restraints.\n');
         errcode = test_constraints(backbone,restrain,min_prob,ngap+1);
-        if errcode
+        if errcode,
 %             fprintf(2,'Model with fixed backbone violates constraints %i.\n',errcode);
             errcode = 8;
             coor = [];
             return
         else
             errcode = -1;
-        end
-    end
+        end;
+    end;
 %     fprintf(2,'C-terminal anchor outside allowed Ramachandran region.\n');
-end
+end;
 
 pair_dist = get_all_pair_dist(backbone(9:4*ngap,:),prot_coor);
 min_dist = min(min(pair_dist));
-if min_dist < clash_threshold_lp
-    if errcode == -1
+if min_dist < clash_threshold_lp,
+    if errcode == -1,
         errcode = -4;
     else
         errcode = 4;
-    end
+    end;
 %     fprintf(2,'Loop clashes with protein (minimum approach %4.2f Å).\n',min_dist);
     return
 else
 %     fprintf(1,'Closest loop aproach to protein is %4.2f Å.\n',min_dist);
-end
+end;
 
 
-% % The following code is for test purposes
-% 
-% % redetermine dihedrals
-% cphivec = zeros(1,ngap+2);
-% cpsivec = cphivec;
-% comvec = cphivec;
-% for k = 2:ngap+1
-%     [phi,psi,omega] = dihedrals(k,backbone);
-%     cphivec(k) = 180*phi/pi;
-%     cpsivec(k) = 180*psi/pi;
-%     comvec(k) = 180*omega/pi;
-% end
-% 
-% figure(7); clf;
-% plot(1:ngap,phivec(2:ngap+1),'k.');
-% hold on
-% plot(1:ngap,rphivec(2:ngap+1),'bo');
-% plot(1:ngap,cphivec(2:ngap+1),'rx');
-% 
-% figure(8); clf;
-% plot(1:ngap,psivec(2:ngap+1),'k.');
-% hold on
-% plot(1:ngap,rpsivec(2:ngap+1),'bo');
-% plot(1:ngap,cpsivec(2:ngap+1),'rx');
-% 
-% figure(9); clf;
-% hold on
-% plot(1:ngap,romvec(2:ngap+1),'bo');
-% plot(1:ngap,comvec(2:ngap+1),'rx');
+return
+% The following code is for test purposes
+
+% redetermine dihedrals
+cphivec = zeros(1,ngap+2);
+cpsivec = cphivec;
+comvec = cphivec;
+for k = 2:ngap+1,
+    [phi,psi,omega] = dihedrals(k,backbone);
+    cphivec(k) = 180*phi/pi;
+    cpsivec(k) = 180*psi/pi;
+    comvec(k) = 180*omega/pi;
+end;
+
+figure(7); clf;
+plot(1:ngap,phivec(2:ngap+1),'k.');
+hold on
+plot(1:ngap,rphivec(2:ngap+1),'bo');
+plot(1:ngap,cphivec(2:ngap+1),'rx');
+
+figure(8); clf;
+plot(1:ngap,psivec(2:ngap+1),'k.');
+hold on
+plot(1:ngap,rpsivec(2:ngap+1),'bo');
+plot(1:ngap,cpsivec(2:ngap+1),'rx');
+
+figure(9); clf;
+hold on
+plot(1:ngap,romvec(2:ngap+1),'bo');
+plot(1:ngap,comvec(2:ngap+1),'rx');
 
 function [phi,psi,omega] = dihedrals(k,backbone)
 
-[m,~] = size(backbone);
+[m,n] = size(backbone);
 CA_back = backbone(4*k-6,:);
 C_back = backbone(4*k-5,:);
 N = backbone(4*k-3,:);
@@ -1169,12 +1137,12 @@ CA = backbone(4*k-2,:);
 C = backbone(4*k-1,:);
 omega = dihedral_fast(CA_back,C_back,N,CA);
 phi = dihedral_fast(C_back,N,CA,C);
-if 4*k+1 > m
+if 4*k+1 > m,
     psi = [];
 else
     N_next = backbone(4*k+1,:);
     psi = dihedral_fast(N,CA,C,N_next);
-end
+end;
 
 function backbone = add_O(k,backbone)
 % carbonyl O position in standard frame (CA-N is x axis, CA-C in xy plane,
@@ -1217,15 +1185,6 @@ transmat(3,3)=t*nz^2+c;
 
 function min_dist = get_min_pair_dist(k,backbone)
 
-min_dist = 1e6;
-if k < 1
-    return
-end
-[m,~] = size(backbone);
-if 4*k+5 < m
-    return
-end
-
 a = backbone(4*k-3:4*k,:);
 b = backbone(4*k+5:end,:);
 
@@ -1256,7 +1215,7 @@ switch res
     otherwise
         phi = 4*(rand-0.5) - 63.8;
         psi = 4*(rand-0.5) - 41.1;
-end
+end;
 phi = pi*phi/180;
 psi = pi*psi/180;
 
@@ -1269,11 +1228,11 @@ function allowed = test_Rama(poi,backbone,Rama_res,sequence)
 % fprintf(1,'C-terminal anchor psi  : %4.1f\n',180*psi/pi);
 
 phipoi = 181 + round(180*phi/pi);
-if phipoi < 1, phipoi = 1; end
-if phipoi >360, phipoi = 360; end
+if phipoi < 1, phipoi = 1; end;
+if phipoi >360, phipoi = 360; end;
 psipoi = 181 + round(180*psi/pi);
-if psipoi < 1, psipoi = 1; end
-if psipoi >360, psipoi = 360; end
+if psipoi < 1, psipoi = 1; end;
+if psipoi >360, psipoi = 360; end;
 
 switch sequence(poi)
     case 'P'
@@ -1282,7 +1241,7 @@ switch sequence(poi)
         allowed = Rama_res.allowed_G(psipoi,phipoi);
     otherwise
         allowed = Rama_res.allowed_gen(psipoi,phipoi);
-end
+end;
 
 % fprintf(1,'Save backbone for %i.\n',allowed);
 % fprintf(1,'Waiting\n.');
@@ -1296,18 +1255,18 @@ backbone_f = backbone;
 
 success = false;
 
-while k > 1
+while k > 1,
     CA_back = backbone(4*k-6,:);
     C_back = backbone(4*k-5,:);
     O_back = backbone(4*k-4,:);
     N = backbone(4*k-3,:);
     CA = backbone(4*k-2,:);
     allowed = test_Rama(k,backbone,Rama_res,sequence);
-    if ~allowed
+    if ~allowed,
         success = false;
         rotax = CA_back - CA;
         transmat = affine('rotn',step,rotax);
-        for kr = 1:360/step0
+        for kr = 1:360/step0, 
             C_back = affine_trafo_vector(C_back - CA,transmat) + CA;
             O_back = affine_trafo_vector(O_back - CA,transmat) + CA;
             N = affine_trafo_vector(N - CA,transmat) + CA;
@@ -1315,23 +1274,23 @@ while k > 1
             backbone_f(4*k-4,:)  = O_back;
             backbone_f(4*k-3,:) = N;
             allowed = test_Rama(k,backbone_f,Rama_res,sequence);
-            if allowed
-                if k < k0
+            if allowed,
+                if k < k0,
                     allowed2 = test_Rama(k0,backbone_f,Rama_res,sequence);
-                    if ~allowed2
+                    if ~allowed2,
 %                         fprintf(2,'Ramachandran angle of previous residue no longer allowed.\n');
                     else
 %                         fprintf(1,'Ramachandran angle of previous residue still allowed.\n');
-                    end
-                end
+                    end;
+                end;
                 break
-            end
-        end
-        if ~allowed
+            end;
+        end;
+        if ~allowed,
             return
         else
             success = true;
-        end
+        end;
         backbone(4*k-5,:) = C_back;
         backbone(4*k-4,:)  = O_back;
         backbone(4*k-3,:) = N;
@@ -1339,16 +1298,16 @@ while k > 1
     else
         success = true;
         return
-    end
-end
+    end;
+end;
 
 function errcode = test_constraints(backbone,restrain,min_prob,kend)
 
 p_model = 1;
 errcode = 0;
 
-for k = 2:kend
-    if ~isempty(restrain(k-1).label) 
+for k = 2:kend,
+    if ~isempty(restrain(k-1).label), 
         % make spin label coordinate
         x= backbone(4*k-3,:) - backbone(4*k-2,:); % x axis is along C_alpha-N bond
         x=x/norm(x);    % unit vector along x
@@ -1361,7 +1320,7 @@ for k = 2:kend
         Rp=dircos; % rotation matrix for conversion to standard frame
         restrain(k-1).xyz = restrain(k-1).label*Rp + backbone(4*k-2,:);
         p_beacon = 1;
-        for kr = 1:length(restrain(k-1).r_beacon)
+        for kr = 1:length(restrain(k-1).r_beacon),
             r = norm(restrain(k-1).xyz-restrain(k-1).r_beacon(kr).xyz); 
             switch restrain(k-1).r_beacon(kr).type
                 case 'Gaussian'
@@ -1370,21 +1329,21 @@ for k = 2:kend
                     p_beacon = p_beacon * restrain(k-1).r_beacon(kr).p;
                 case 'bounds'
                     if r >= restrain(k-1).r_beacon(kr).par1 && ...
-                            r <= restrain(k-1).r_beacon(kr).par2 % bounds violated
+                            r <= restrain(k-1).r_beacon(kr).par2, % bounds violated
                        restrain(k-1).r_beacon(kr).p = 1;
                        p_beacon = 1;
-                    end                        
+                    end;                        
                 otherwise
                     error('MMM:mk_loop_model:unknownRestraintType','Restraint type %s not known',restrain(k-1).r_beacon(kr).type);
-            end
-        end
+            end;
+        end;
         p_model = p_beacon*p_model;
-        if p_model < min_prob
+        if p_model < min_prob,
             errcode = 5;
             return
-        end
+        end;
         p_intern = 1;
-        for kr = 1:length(restrain(k-1).r_intern)
+        for kr = 1:length(restrain(k-1).r_intern),
             site = restrain(k-1).r_intern(kr).site;
             r = norm(restrain(k-1).xyz-restrain(site).xyz); 
             switch restrain(k-1).r_intern(kr).type
@@ -1394,22 +1353,22 @@ for k = 2:kend
                     p_intern = p_intern * restrain(k-1).r_intern(kr).p;                 
                 case 'bounds'
                     if r >= restrain(k-1).r_intern(kr).par1 && ...
-                            r <= restrain(k-1).r_intern(kr).par2 % bounds violated
+                            r <= restrain(k-1).r_intern(kr).par2, % bounds violated
                         restrain(k-1).r_intern(kr).p = 1;
                         p_intern = 1;
-                    end                        
+                    end;                        
                 otherwise
                     error('MMM:mk_loop_model:unknownRestraintType','Restraint type %s not known',restrain(k-1).r_beacon(kr).type);
-            end
+            end;
         
-        end
+        end;
         p_model = p_intern*p_model;
-        if p_model < min_prob
+        if p_model < min_prob,
             errcode = 5;
             return
-        end
+        end;
         p_oligomer = 1;
-        for kr = 1:length(restrain(k-1).oligomer)
+        for kr = 1:length(restrain(k-1).oligomer),
             r = 2*sqrt(sum(restrain(k-1).xyz(1:2).^2))*sin(pi/restrain(k-1).oligomer(kr).n); 
             switch restrain(k-1).oligomer.type
                 case 'Gaussian'
@@ -1419,21 +1378,21 @@ for k = 2:kend
                      
                 case 'bounds'
                     if r >= restrain(k-1).oligomer(kr).par1 && ...
-                            r <= restrain(k-1).oligomer.par2 % bounds violated
+                            r <= restrain(k-1).oligomer.par2, % bounds violated
                         restrain(k-1).oligomer(kr).p = 1;
                         p_oligomer = 1;
-                    end                        
+                    end;                        
                 otherwise
                     error('MMM:mk_loop_model_reverse:unknownRestraintType','Restraint type %s not known',restrain(k).oligomer(kr).type);
-            end
-        end
+            end;
+        end;
         p_model = p_oligomer*p_model;
-        if p_model < min_prob
+        if p_model < min_prob,
             errcode = 5;
             return
-        end
+        end;
         p_depth = 1;
-        for kr = 1:length(restrain(k-1).depth)
+        for kr = 1:length(restrain(k-1).depth),
             switch restrain(k-1).depth(kr).site
                 case 'CA'
                     z = abs(backbone(4*k-6,3));
@@ -1441,7 +1400,7 @@ for k = 2:kend
                     z = abs(restrain(k-1).xyz(3));
                 otherwise
                     error('MMM:mk_loop_model_reverse:unknownRestraintModifier','Depth restraint site %s not known',restrain(k).depth(kr).site);
-            end
+            end;
             switch restrain(k-1).depth.type
                 case 'Gaussian'
                     restrain(k-1).depth(kr).p = ...
@@ -1449,20 +1408,20 @@ for k = 2:kend
                     p_depth = p_depth * restrain(k-1).depth(kr).p;                 
                 case 'bounds'
                     if z >= restrain(k-1).depth(kr).par1 && ...
-                            z <= restrain(k-1).depth.par2 % bounds violated
+                            z <= restrain(k-1).depth.par2, % bounds violated
                         restrain(k-1).depth(kr).p = 1;
                         p_depth = 1;
                     else
                         p_depth = 0;
-                    end                        
+                    end;                        
                 otherwise
                     error('MMM:mk_loop_model_reverse:unknownRestraintType','Restraint type %s not known',restrain(k).depth(kr).type);
-            end
-        end
+            end;
+        end;
         p_model = p_depth*p_model;
-        if p_model < min_prob
+        if p_model < min_prob,
             errcode = 5;
             return
-        end
-    end
-end
+        end;
+    end;
+end;

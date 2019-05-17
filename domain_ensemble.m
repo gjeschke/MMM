@@ -1327,7 +1327,7 @@ Rama_res.allowed_G = Ramachandran.allowed_G;
 Rama_res.allowed_gen = Ramachandran.allowed_gen;
 
 while kMC <= ntrials,
-    parfor kp = 1:parnum,
+    parfor kp = 1:parnum, % parfor
         if reverse,
             [coor,errcode,restrain1,cumprob,kres] = mk_loop_model_reverse(sequence, p_anchorC, p_anchorCn, prot_coor, restrain, Rama_res, rescodes, min_prob,n_restraints);
         else
@@ -1379,6 +1379,7 @@ while kMC <= ntrials,
                 add_msg_board(sprintf('Model superimposes onto first model with rmsd of %4.1f Å',rms));
             end;
             loopname = write_pdb_backbone(coor,restraints.sequence,fname,success,res1,directory);
+            [pclash,iclash] = check_decorated_loop(loopname,prot_coor,res1,resend,min_approach,directory);
             [pmodel,status,result] = make_SCWRL4_sidegroups(loopname,directory);
     %         fprintf(1,'Model %s: ',pmodel);
     %         if ~status,
@@ -2130,18 +2131,18 @@ fname = sprintf('%s_m%i',fname0,model);
 
 loopname = [fname '.pdb'];
 wfile=fopen(loopname,'w');
-for k = 1:length(sequence),
+for k = 1:length(sequence)
     respoi=strfind(oneletter,sequence(k));
     residue=residues(1+3*(respoi-1):3+3*(respoi-1));
     N = coor(4*k-3,:);
     CA = coor(4*k-2,:);
     C = coor(4*k-1,:);
     O = coor(4*k,:);
-    fprintf(wfile,'%s%3i%s%s%6i%12.3f%8.3f%8.3f  1.00  0.00           N\n','ATOM    ',4*k-3,'  N   ',residue,k+res1-1,N(1),N(2),N(3));
-    fprintf(wfile,'%s%3i%s%s%6i%12.3f%8.3f%8.3f  1.00  0.00           C\n','ATOM    ',4*k-2,'  CA  ',residue,k+res1-1,CA(1),CA(2),CA(3));
-    fprintf(wfile,'%s%3i%s%s%6i%12.3f%8.3f%8.3f  1.00  0.00           C\n','ATOM    ',4*k-1,'  C   ',residue,k+res1-1,C(1),C(2),C(3));
-    fprintf(wfile,'%s%3i%s%s%6i%12.3f%8.3f%8.3f  1.00  0.00           O\n','ATOM    ',4*k,'  O   ',residue,k+res1-1,O(1),O(2),O(3));
-end;
+    fprintf(wfile,'%s%5i%s%s%6i%12.3f%8.3f%8.3f  1.00  0.00           N\n','ATOM  ',4*k-3,'  N   ',residue,k+res1-1,N(1),N(2),N(3));
+    fprintf(wfile,'%s%5i%s%s%6i%12.3f%8.3f%8.3f  1.00  0.00           C\n','ATOM  ',4*k-2,'  CA  ',residue,k+res1-1,CA(1),CA(2),CA(3));
+    fprintf(wfile,'%s%5i%s%s%6i%12.3f%8.3f%8.3f  1.00  0.00           C\n','ATOM  ',4*k-1,'  C   ',residue,k+res1-1,C(1),C(2),C(3));
+    fprintf(wfile,'%s%5i%s%s%6i%12.3f%8.3f%8.3f  1.00  0.00           O\n','ATOM  ',4*k,'  O   ',residue,k+res1-1,O(1),O(2),O(3));
+end
 fclose(wfile);
 
 cd(my_dir);
@@ -2172,9 +2173,9 @@ function [pclash,iclash,approach_prot,approach_loop] = check_decorated_loop(loop
 my_dir = pwd;
 cd(directory);
 
-if ~exist('min_approach','var'),
-    min_approach = 2.00; % ### should be 2.0
-end;
+if ~exist('min_approach','var')
+    min_approach = 1.2; 
+end
 
 approach_prot = -1;
 approach_loop = -1;
@@ -2183,11 +2184,11 @@ iclash = 1;
 loop_coor = zeros(5000,3);
 l_res_assign = zeros(5000,3);
 fid=fopen(loopname);
-if fid==-1,
+if fid==-1
     add_msg_board(sprintf('Warning: Loop structure PDB file %s missing. Rejected.',loopname));
     cd(my_dir);
     return;
-end;
+end
 poi = 0;
 while 1
     tline = fgetl(fid);
@@ -2195,18 +2196,18 @@ while 1
     if length(tline) >= 6
         record=tline(1:6);
         resnum = str2double(tline(23:26));
-        if strcmpi(record,'ATOM  ') || strcmpi(record,'HETATM'),
-            if length(tline) < 78 || tline(78)~='H',
-                if ~strcmpi(tline(14),'H') && resnum ~= res1 && resnum ~= resend,
+        if strcmpi(record,'ATOM  ') || strcmpi(record,'HETATM')
+            if length(tline) < 78 || tline(78)~='H'
+                if ~strcmpi(tline(14),'H') && resnum ~= res1 && resnum ~= resend
                     poi = poi +1;
                     l_res_assign(poi) = resnum;
                     valstr = [tline(31:38) ' ' tline(39:46) ' ' tline(47:54)];
                     loop_coor(poi,:) = str2num(valstr);
-                end;
-            end;
-        end;
-    end;
-end;
+                end
+            end
+        end
+    end
+end
 fclose(fid);
 
 cd(my_dir);
@@ -2220,38 +2221,40 @@ iclash = 0;
 [m1,~] = size(loop_coor); % get sizes of the coordinates arrays
 [m2,~] = size(prot_coor);
 
-if m2 > 0,
+if m2 > 0
     a2 = repmat(sum(loop_coor.^2,2),1,m2);
     b2 = repmat(sum(prot_coor.^2,2),1,m1).';
     pair_dist = sqrt(abs(a2 + b2 - 2*loop_coor*prot_coor.'));
     min_dist = min(min(pair_dist));
 
     approach_prot = min_dist;
-    if min_dist < min_approach,
+    if min_dist < min_approach
     %    fprintf(2,'Minimum sidegroup distance to protein is %6.2f Å\n',min_dist);
        pclash = 1;
        cd(my_dir);
        return
-    end;
-end;
+    end
+end
 
 min_dist = 1e6;
 % test for minimum distance within loop
-for k1 = 1:poi-1,
-    for k2 = k1+1:poi,
-        if abs(l_res_assign(k1)-l_res_assign(k2))>1,
+we_clash = zeros(1,2);
+for k1 = 1:poi-1
+    for k2 = k1+1:poi
+        if abs(l_res_assign(k1)-l_res_assign(k2))>1
             approach = norm(loop_coor(k1,:) - loop_coor(k2,:));
-            if approach < min_dist,
+            if approach < min_dist
                 min_dist = approach;
-            end;
-        end;
-    end;
-end;
+                we_clash = [k1,k2];
+            end
+        end
+    end
+end
 approach_loop = min_dist;
-if min_dist < min_approach,
-%     fprintf(2,'Minimum distance of two heavy atoms in loop with sidegroups is: %6.2f Å\n',min_dist);
+if min_dist < min_approach
+%    fprintf(2,'Minimum heavy-atom distance: %6.2f Å at (%i,%i)\n',min_dist,we_clash);
     iclash = 1;
-end;
+end
 
 
 % --- Executes on button press in checkbox_display.
