@@ -85,7 +85,7 @@ if ~exist('model','var') || ~isfield(model,'current_structure'),
 %     return;
 else
     adr=mk_address(model.current_structure);
-end;
+end
 
 set(handles.fig_domain_model,'Name',sprintf('Monte Carlo domain ensemble at structure %s',adr));
 
@@ -171,7 +171,7 @@ global residue_defs
 snum = [];
 if isfield(model,'current_structure'),
     snum=model.current_structure;
-end;
+end
 
 my_path=pwd;
 cd(general.restraint_files);
@@ -216,30 +216,30 @@ else
                         return
                     else
                         model.current_structure=snum;
-                    end;
-                end;
-            end;
-        end;
-    end;
+                    end
+                end
+            end
+        end
+    end
 
     restraints.template = snum;
     if ~isempty(snum),
         handles.template_seq = model.structures{snum}(1).sequence;
     else
         handles.template_seq = '';
-    end;
+    end
     
     [restrain,monitor,restraints,number,number_monitor,cancelled]=process_domain_restraints(handles,restraints);
     if isfield(model,'current_structure');
         snum = model.current_structure;
     else
         snum = [];
-    end;
+    end
     if cancelled,
         add_msg_board('Processing of restraints cancelled.');
         set(hfig,'Pointer','arrow');
         return
-    end;
+    end
     handles.restrain = restrain;
     handles.monitor = monitor;
     handles.restraints = restraints;
@@ -251,10 +251,10 @@ else
         handles.ensemble = restraints.ensemble;
     else
         handles.ensemble = 0;
-    end;
+    end
     if isfield(restraints,'uncertainty'),
         handles.p_model = restraints.uncertainty/restraints.rescale;
-    end;
+    end
     Na_indices = [];
     if isfield(restraints,'Nanchor'),
         [indices,message]=resolve_address(restraints.Nanchor);
@@ -264,7 +264,7 @@ else
             add_msg_board(message.text);
             set(hfig,'Pointer','arrow');
             return
-        end;
+        end
         Nname = model.structures{indices(1)}(indices(2)).residues{indices(3)}.info(indices(4)).name; 
         id = tag2id(Nname,upper(residue_defs.restags));
         N_slc = residue_defs.single_letter_code(id);
@@ -283,7 +283,7 @@ else
             return
         else
             anchorNp(1,:) = coor;
-        end;
+        end
         [msg,coor] = get_object(sprintf('%s.CA',restraints.Nanchor_p),'coor');
         if msg.error,
             add_msg_board(sprintf('ERROR: For residue %s before N-terminal anchor CA atom does not exist.',restraints.Nanchor_p));
@@ -292,7 +292,7 @@ else
             return
         else
             anchorNp(2,:) = coor;
-        end;
+        end
         [msg,coor] = get_object(sprintf('%s.C',restraints.Nanchor_p),'coor');
         if msg.error,
             add_msg_board(sprintf('ERROR: For residue %s before N-terminal anchor C atom does not exist.',restraints.Nanchor_p));
@@ -301,7 +301,7 @@ else
             return
         else
             anchorNp(3,:) = coor;
-        end;
+        end
         [msg,coor] = get_object(sprintf('%s.O',restraints.Nanchor_p),'coor');
         if msg.error,
             add_msg_board(sprintf('ERROR: For residue %s before N-terminal anchor O atom does not exist.',restraints.Nanchor_p));
@@ -310,7 +310,7 @@ else
             return
         else
             anchorNp(4,:) = coor;
-        end;
+        end
         anchorN = zeros(4,3);
         [msg,coor] = get_object(sprintf('%s.N',restraints.Nanchor),'coor');
         if msg.error,
@@ -320,7 +320,7 @@ else
             return
         else
             anchorN(1,:) = coor;
-        end;
+        end
         [msg,coor] = get_object(sprintf('%s.CA',restraints.Nanchor),'coor');
         if msg.error,
             add_msg_board(sprintf('ERROR: For N-terminal anchor residue %s CA atom does not exist.',restraints.Nanchor));
@@ -329,7 +329,7 @@ else
             return
         else
             anchorN(2,:) = coor;
-        end;
+        end
         [msg,coor] = get_object(sprintf('%s.C',restraints.Nanchor),'coor');
         if msg.error,
             add_msg_board(sprintf('ERROR: For N-terminal anchor residue %s C atom does not exist.',restraints.Nanchor));
@@ -338,7 +338,7 @@ else
             return
         else
             anchorN(3,:) = coor;
-        end;
+        end
         [msg,coor] = get_object(sprintf('%s.O',restraints.Nanchor),'coor');
         if msg.error,
             add_msg_board(sprintf('ERROR: For N-terminal anchor residue %s O atom does not exist.',restraints.Nanchor));
@@ -347,7 +347,7 @@ else
             return
         else
             anchorN(4,:) = coor;
-        end;
+        end
         restraints.anchorN = anchorN;
         restraints.anchorNp = anchorNp;
         restraints.Nseq = [Np_slc N_slc];
@@ -355,7 +355,7 @@ else
         restraints.anchorN = [];
         restraints.anchorNp = [];
         restraints.Nseq = '';
-    end;
+    end
     Ca_indices = [];
     if isfield(restraints,'Canchor'),
         [indices,message]=resolve_address(restraints.Canchor);
@@ -365,7 +365,7 @@ else
             add_msg_board(message.text);
             set(hfig,'Pointer','arrow');
             return
-        end;
+        end
         Cname = model.structures{indices(1)}(indices(2)).residues{indices(3)}.info(indices(4)).name; 
         id = tag2id(Cname,upper(residue_defs.restags));
         C_slc = residue_defs.single_letter_code(id);
@@ -384,7 +384,7 @@ else
             return
         else
             anchorCn(1,:) = coor;
-        end;
+        end
         [msg,coor] = get_object(sprintf('%s.CA',restraints.Canchor_n),'coor');
         if msg.error,
             add_msg_board(sprintf('ERROR: For residue %s after C-terminal anchor CA atom does not exist.',restraints.Canchor_n));
@@ -393,7 +393,7 @@ else
             return
         else
             anchorCn(2,:) = coor;
-        end;
+        end
         [msg,coor] = get_object(sprintf('%s.C',restraints.Canchor_n),'coor');
         if msg.error,
             add_msg_board(sprintf('ERROR: For residue %s after C-terminal anchor C atom does not exist.',restraints.Canchor_n));
@@ -402,7 +402,7 @@ else
             return
         else
             anchorCn(3,:) = coor;
-        end;
+        end
         [msg,coor] = get_object(sprintf('%s.O',restraints.Canchor_n),'coor');
         if msg.error,
             add_msg_board(sprintf('ERROR: For residue %s after C-terminal anchor O atom does not exist.',restraints.Canchor_n));
@@ -411,7 +411,7 @@ else
             return
         else
             anchorCn(4,:) = coor;
-        end;
+        end
         anchorC = zeros(4,3);
         [msg,coor] = get_object(sprintf('%s.N',restraints.Canchor),'coor');
         if msg.error,
@@ -421,7 +421,7 @@ else
             return
         else
             anchorC(1,:) = coor;
-        end;
+        end
         [msg,coor] = get_object(sprintf('%s.CA',restraints.Canchor),'coor');
         if msg.error,
             add_msg_board(sprintf('ERROR: For C-terminal anchor residue %s CA atom does not exist.',restraints.Canchor));
@@ -430,7 +430,7 @@ else
             return
         else
             anchorC(2,:) = coor;
-        end;
+        end
         [msg,coor] = get_object(sprintf('%s.C',restraints.Canchor),'coor');
         if msg.error,
             add_msg_board(sprintf('ERROR: For C-terminal anchor residue %s C atom does not exist.',restraints.Canchor));
@@ -439,7 +439,7 @@ else
             return
         else
             anchorC(3,:) = coor;
-        end;
+        end
         [msg,coor] = get_object(sprintf('%s.O',restraints.Canchor),'coor');
         if msg.error,
             add_msg_board(sprintf('ERROR: For C-terminal anchor residue %s O atom does not exist.',restraints.Canchor));
@@ -448,7 +448,7 @@ else
             return
         else
             anchorC(4,:) = coor;
-        end;
+        end
         restraints.anchorC = anchorC;
         restraints.anchorCn = anchorCn;
         restraints.Cseq = [C_slc Cn_slc];
@@ -456,8 +456,8 @@ else
         restraints.anchorC = [];
         restraints.anchorCn = [];
         restraints.Cseq = '';
-    end;
-end;
+    end
+end
 restraints.Na_indices = Na_indices;
 restraints.Ca_indices = Ca_indices;
 if handles.ensemble == 0,
@@ -465,14 +465,14 @@ if handles.ensemble == 0,
 else
     handles.ensemble_user = handles.ensemble;
     set(handles.edit_p_model,'String',sprintf('%4.2f',handles.p_model_user));
-end;
+end
 
 if handles.p_model == 0,
     handles.p_model = handles.p_model_user;
 else
     handles.p_model_user = handles.p_model;
     set(handles.edit_ensemble,'String',sprintf('%i',handles.ensemble_user));
-end;
+end
 
 handles.restraints = restraints;
 handles.restrain = restrain;
@@ -501,7 +501,7 @@ if ~isfield(restraints,'sequence'),
     restrain=[];
     cancelled = true;
     return;
-end;
+end
 
 for k = 1:length(restraints.sequence),
     restrain(k).secondary = 0;
@@ -511,7 +511,7 @@ for k = 1:length(restraints.sequence),
     restrain(k).r_intern = [];
     restrain(k).oligomer = [];
     restrain(k).depth = [];
-end;
+end
 
 monitor = restrain;
 
@@ -532,7 +532,7 @@ else
             return;
         else
             chain_model = restraints.domain_start(1:poi1);
-        end;
+        end
     else
         poi1 = strfind(restraints.domain_start,')');
         if ~isempty(poi1);
@@ -545,12 +545,12 @@ else
                 return;
             else
                 chain_model = restraints.domain_start(1:poi1);
-            end;
+            end
         else
             chain_model = '';
             poi1 = 0;
-        end;
-    end;
+        end
+    end
     res1 = str2double(restraints.domain_start(poi1+1:end));
     rese = str2double(restraints.domain_end(poi1+1:end));
     if isnan(res1) || isnan(rese),
@@ -558,8 +558,8 @@ else
         restrain=[];
         cancelled = true;
         return;
-    end;
-end;
+    end
+end
 
 restraints.chain_model = chain_model;
 restraints.res1 = res1;
@@ -575,8 +575,8 @@ for k = res1:rese,
         restrain=[];
         cancelled = true;
         return;
-    end;
-end;
+    end
+end
 
 if isfield(restraints,'DEER'),
     poi = 0;
@@ -601,7 +601,7 @@ if isfield(restraints,'DEER'),
                 restrain=[];
                 cancelled = true;
                 return;
-            end;
+            end
             poi = poi + 1;
             llist{poi} = restraints.DEER(k).adr1;
             T(poi) = restraints.DEER(k).T;
@@ -615,27 +615,27 @@ if isfield(restraints,'DEER'),
                     [mi,pT] = min(abs(Tvec-restraints.DEER(k).T));
                     if mi > eps,
                         add_msg_board('Warning: No library exactly fits the specified labelling temperature.');
-                    end;
+                    end
                     libname = id2tag(pT,rotamer_libraries(kr).files);
                     NO = get_relative_label(libname);
                     restraints.DEER(k).NO_rel1 = NO;
                     restraints.DEER(k).type1 = 0;
-                end;
-            end;
+                end
+            end
             for kr = 1:length(ligand_libraries),
                 if strcmpi(ligand_libraries(kr).label,label1) || strcmpi(ligand_libraries(kr).tc,label1),
                     Tvec = ligand_libraries(kr).T;
                     [mi,pT] = min(abs(Tvec-restraints.DEER(k).T));
                     if mi > eps,
                         add_msg_board('Warning: No library exactly fits the specified labelling temperature.');
-                    end;
+                    end
                     libname = id2tag(pT,ligand_libraries(kr).files);
                     spin = get_relative_bilabel(libname,ligand_libraries(kr).V_ksi);
                     restraints.DEER(k).NO_rel1 = spin;
                     restraints.DEER(k).type1 = 0;
-                end;
-            end;
-        end;
+                end
+            end
+        end
         [indices,message]=resolve_address(restraints.DEER(k).adr2);
         if message.error ~= 2 && message.error ~= 13, % this site exists and is thus a beacon
             if message.error,
@@ -645,7 +645,7 @@ if isfield(restraints,'DEER'),
                 restrain=[];
                 cancelled = true;
                 return;
-            end;
+            end
             poi = poi + 1;
             llist{poi} = restraints.DEER(k).adr2;
             T(poi) = restraints.DEER(k).T;
@@ -659,28 +659,28 @@ if isfield(restraints,'DEER'),
                     [mi,pT] = min(abs(Tvec-restraints.DEER(k).T));
                     if mi > eps,
                         add_msg_board('Warning: No library exactly fits the specified labelling temperature.');
-                    end;
+                    end
                     libname = id2tag(pT,rotamer_libraries(kr).files);
                     NO = get_relative_label(libname);
                     restraints.DEER(k).NO_rel2 = NO;
                     restraints.DEER(k).type2 = 0;
-                end;
-            end;
+                end
+            end
             for kr = 1:length(ligand_libraries),
                 if strcmpi(ligand_libraries(kr).label,label2) || strcmpi(ligand_libraries(kr).tc,label2),
                     Tvec = ligand_libraries(kr).T;
                     [mi,pT] = min(abs(Tvec-restraints.DEER(k).T));
                     if mi > eps,
                         add_msg_board('Warning: No library exactly fits the specified labelling temperature.');
-                    end;
+                    end
                     libname = id2tag(pT,ligand_libraries(kr).files);
                     spin = get_relative_bilabel(libname,ligand_libraries(kr).V_ksi);
                     restraints.DEER(k).NO_rel2 = spin;
                     restraints.DEER(k).type2 = 0;
-                end;
-            end;
-        end;
-    end;
+                end
+            end
+        end
+    end
     labels = get_labels(llist,label,T,handles);
     for k = 1:length(restraints.DEER),
         clabel = restraints.DEER(k).label;
@@ -693,71 +693,71 @@ if isfield(restraints,'DEER'),
                 restrain=[];
                 cancelled = true;
                 return;
-            end;
+            end
             NO1 = restraints.DEER(k).NO_rel1;
             NO2 = restraints.DEER(k).NO_rel2;
             if resa < resb,
                 exch = resa; resa = resb; resb = exch;
                 exch = NO1; NO1 = NO2; NO2 = exch;
-            end;
+            end
             if restraints.DEER(k).r ~= 0,
                 [restrain,number] = mk_internal_restraint(restrain,NO1,NO2,resa,resb,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number,clabel,cT);
             else
                 [monitor,number_monitor] = mk_internal_restraint(monitor,NO1,NO2,resa,resb,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number_monitor,clabel,cT);
                 number_monitor = number_monitor + 1;
-            end;
-        end;
+            end
+        end
         if restraints.DEER(k).type1 == 1 && restraints.DEER(k).type2 ==0, % beacon restraint, first residue beacon
             indices = restraints.DEER(k).indices1;
             resb = separate_address(restraints.DEER(k).adr1);
             for kl = 1:length(labels),
                 if sum(abs(indices-labels(kl).indices)) == 0,
                     xyz_beacon = labels(kl).xyz;
-                end;
-            end;
+                end
+            end
             res_loop = separate_address(restraints.DEER(k).adr2);
             if isempty(res_loop),
                 add_msg_board(sprintf('ERROR: Residue address %s is invalid.',restraints.DEER(k).adr2)); 
                 restrain=[];
                 cancelled = true;
                 return;
-            end;
+            end
             NO = restraints.DEER(k).NO_rel2;
             if restraints.DEER(k).r ~= 0,
                 [restrain,number] = mk_beacon_restraint(restrain,NO,res_loop,xyz_beacon,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number,clabel,cT,indices,resb);
             else
                 [monitor,number_monitor] = mk_beacon_restraint(monitor,NO,res_loop,xyz_beacon,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number_monitor,clabel,cT,indices,resb);
                 number_monitor = number_monitor + 1;
-            end;
-        end;
+            end
+        end
         if restraints.DEER(k).type1 == 0 && restraints.DEER(k).type2 == 1, % beacon restraint, second residue beacon
             indices = restraints.DEER(k).indices2;
             resb = separate_address(restraints.DEER(k).adr2);
             for kl = 1:length(labels),
                 if sum(abs(indices-labels(kl).indices)) == 0,
                     xyz_beacon = labels(kl).xyz;
-                end;
-            end;
+                end
+            end
             res_loop = separate_address(restraints.DEER(k).adr1);
             if isempty(res_loop),
                 add_msg_board(sprintf('ERROR: Residue address %s is invalid.',restraints.DEER(k).adr1)); 
                 restrain=[];
                 cancelled = true;
                 return;
-            end;
+            end
             NO = restraints.DEER(k).NO_rel1;
             if restraints.DEER(k).r ~= 0,
                [restrain,number] = mk_beacon_restraint(restrain,NO,res_loop,xyz_beacon,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number,clabel,cT,indices,resb);
             else
                [monitor,number_monitor] = mk_beacon_restraint(monitor,NO,res_loop,xyz_beacon,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number_monitor,clabel,cT,indices,resb);
                 number_monitor = number_monitor + 1;
-            end;
-        end;
+            end
+        end
         if restraints.DEER(k).type1 == 1 && restraints.DEER(k).type2 == 1, % nonsensical restraint inside defined structure
             add_msg_board(sprintf('Warning: Restraint between residues %s and %s inside defined structure will be ignored.',restraints.DEER(k).adr1,restraints.DEER(k).adr2)); 
-        end;
-    end;
-end;
+        end
+    end
+end
 
 if isfield(restraints,'depth'),
     for k = 1:length(restraints.depth),
@@ -772,27 +772,27 @@ if isfield(restraints,'depth'),
                     [mi,pT] = min(abs(Tvec-restraints.depth(k).T));
                     if mi > eps,
                         add_msg_board('Warning: No library exactly fits the specified labelling temperature.');
-                    end;
+                    end
                     libname = id2tag(pT,rotamer_libraries(kr).files);
                     NO = get_relative_label(libname);
-                end;
-            end;
-        end;
+                end
+            end
+        end
         res = separate_address(restraints.depth(k).adr);
         if isempty(res),
             add_msg_board(sprintf('ERROR: Residue address %s is invalid.',restraints.depth(k).adr)); 
             restrain=[];
             cancelled = true;
             return;
-        end;
+        end
         if restraints.depth(k).r ~= 0,
             [restrain,number] = mk_depth_restraint(restrain,NO,res,restraints.depth(k).r,restraints.depth(k).sigr,res1,number,clabel,cT);
         else
             [monitor,number_monitor] = mk_depth_restraint(monitor,NO,res,restraints.depth(k).r,restraints.depth(k).sigr,res1,number_monitor,clabel,cT);
             number_monitor = number_monitor + 1;
-        end;
-    end;
-end;
+        end
+    end
+end
 
 if isfield(restraints,'oligomer'),
     for k = 1:length(restraints.oligomer),
@@ -807,40 +807,40 @@ if isfield(restraints,'oligomer'),
                     [mi,pT] = min(abs(Tvec-restraints.oligomer(k).T));
                     if mi > eps,
                         add_msg_board('Warning: No library exactly fits the specified labelling temperature.');
-                    end;
+                    end
                     libname = id2tag(pT,rotamer_libraries(kr).files);
                     NO = get_relative_label(libname);
-                end;
-            end;
+                end
+            end
             for kr = 1:length(ligand_libraries),
                 if strcmpi(ligand_libraries(kr).label,restraints.oligomer(k).label) || strcmpi(ligand_libraries(kr).tc,restraints.oligomer(k).label),
                     libname = id2tag(1,ligand_libraries(kr).files);
                     NO = get_relative_bilabel(libname,ligand_libraries(kr).V_ksi);
-                end;
-            end;
-        end;
+                end
+            end
+        end
         res = separate_address(restraints.oligomer(k).adr);
         if isempty(res),
             add_msg_board(sprintf('ERROR: Residue address %s is invalid.',restraints.oligomer(k).adr)); 
             restrain=[];
             cancelled = true;
             return;
-        end;
+        end
         if restraints.oligomer(k).r ~= 0,
             [restrain,number] = mk_oligomer_restraint(restrain,NO,res,restraints.oligomer(k).multi,restraints.oligomer(k).r,restraints.oligomer(k).sigr,res1,number,clabel,cT);
         else
             [monitor,number_monitor] = mk_oligomer_restraint(monitor,NO,res,restraints.oligomer(k).multi,restraints.oligomer(k).r,restraints.oligomer(k).sigr,res1,number_monitor,clabel,cT);
             number_monitor = number_monitor + 1;
-        end;
-    end;
-end;
+        end
+    end
+end
 
 if isfield(restraints,'cispeptides'),
     for k = 1:length(restraints.cispeptides),
         kr = restraints.cispeptides(k) - res1 + 1;
         restrain(kr).cis = 1;
-    end;
-end;
+    end
+end
 
 if isfield(restraints,'aprop'),
     for k = 1:length(restraints.aprop),
@@ -850,11 +850,11 @@ if isfield(restraints,'aprop'),
             restrain=[];
             cancelled = true;
             return;
-        end;
+        end
         kr = res - res1 + 1;
         restrain(kr).aprop = restraints.aprop(k).prop;
-    end;
-end;
+    end
+end
 
 if isfield(restraints,'bprop'),
     for k = 1:length(restraints.bprop),
@@ -864,11 +864,11 @@ if isfield(restraints,'bprop'),
             restrain=[];
             cancelled = true;
             return;
-        end;
+        end
         kr = res - res1 + 1;
         restrain(kr).bprop = restraints.bprop(k).prop;
-    end;
-end;
+    end
+end
 
 if isfield(restraints,'pprop'),
     for k = 1:length(restraints.pprop),
@@ -878,11 +878,11 @@ if isfield(restraints,'pprop'),
             restrain=[];
             cancelled = true;
             return;
-        end;
+        end
         kr = res - res1 + 1;
         restrain(kr).pprop = restraints.pprop(k).prop;
-    end;
-end;
+    end
+end
 
 if isfield(restraints,'helices'),
     for k = 1:length(restraints.helices),
@@ -894,19 +894,19 @@ if isfield(restraints,'helices'),
             restrain=[];
             cancelled = true;
             return;
-        end;
+        end
         for ks = 1:length(restraints.sequence),
             off1 = ks - 1 + res1 - ha;
             off2 = he - (ks - 1 + res1);
             if off1 >=0 && off2 >=0,
                 restrain(ks).secondary = 1;
-            end;
+            end
             if off1 >=2 && off2 >=2,
                 restrain(ks).secondary = 3;
-            end;
-        end;
-    end;
-end;
+            end
+        end
+    end
+end
 
 if isfield(restraints,'strands'),
     for k = 1:length(restraints.strands),
@@ -918,16 +918,16 @@ if isfield(restraints,'strands'),
             restrain=[];
             cancelled = true;
             return;
-        end;
+        end
         for ks = 1:length(restraints.sequence),
             off1 = ks - 1 + res1 - ha;
             off2 = he - (ks - 1 + res1);
             if off1 >=0 && off2 >=0,
                 restrain(ks).secondary = 2;
-            end;
-        end;
-    end;
-end;
+            end
+        end
+    end
+end
 
 % --- Executes on button press in pushbutton_run.
 function pushbutton_run_Callback(hObject, eventdata, handles)
@@ -935,6 +935,7 @@ function pushbutton_run_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+global model
 global general
 global Ramachandran
 global residue_defs
@@ -950,21 +951,21 @@ restraints = handles.restraints;
 restrain = handles.restrain;
 
 secvec = zeros(1,length(restrain));
-for k = 1:length(restrain),
+for k = 1:length(restrain)
     secvec(k) = restrain(k).secondary;
-end;
+end
 
-if ~isempty(restraints.Na_indices),
+if ~isempty(restraints.Na_indices)
     Nanchor_res = restraints.Na_indices(4);
 else
     Nanchor_res = [];
-end;
+end
 
-if ~isempty(restraints.Ca_indices),
+if ~isempty(restraints.Ca_indices)
     Canchor_res = restraints.Ca_indices(4);
 else
     Canchor_res = [];
-end;
+end
 
 % Make auxiliary restraints by triangle bound smoothing
 % find all beacon residues
@@ -979,9 +980,9 @@ for k = 1:length(restrain),
             beacons(bpoi) = res;
             bref(bpoi,1) = k;
             bref(bpoi,2) = kr;
-        end;
-    end;
-end;
+        end
+    end
+end
 ni = length(restrain);
 vert = ni + bpoi;
 beacons = beacons(1:bpoi);
@@ -1001,8 +1002,8 @@ for k = 1:length(restrain),
             upper_bounds(b,k) = rmean + 2*sigr;
             missing(k,b) = 0;
             missing(b,k) = 0;
-        end;
-    end;
+        end
+    end
     for kr = 1: length(restrain(k).r_intern),
         if strcmp(restrain(k).r_intern(kr).type,'Gaussian'),
             b = restrain(k).r_intern(kr).site;
@@ -1014,55 +1015,13 @@ for k = 1:length(restrain),
             upper_bounds(b,k) = rmean + 2*sigr;
             missing(k,b) = 0;
             missing(b,k) = 0;
-        end;
-    end;
-end;
+        end
+    end
+end
 [~,~,err] = triangle_bound_smoothing(lower_bounds,upper_bounds);
 if err,
     return;
-end;
-
-% % diagnostics for bound smoothing
-% for k1 = 1:vert-1,
-%     for k2 = k1+1:vert,
-%         if abs(lb(k1,k2) - lower_bounds(k1,k2)) > eps,
-%             if missing(k1,k2),
-%                 tag = 'new lower bound';
-%             else
-%                 tag = 'changed lower bound';
-%             end;
-%             if lb(k1,k2) > 0.5,
-%                 outchann = 2;
-%             else
-%                 outchann = 1;
-%             end;
-%             fprintf(outchann,'%s (%i,%i): %4.2f nm',tag,k1,k2,lb(k1,k2));
-%             if missing(k1,k2),
-%                 fprintf(outchann,' versus %4.2f nm\n',lower_bounds(k1,k2));
-%             else
-%                 fprintf(outchann,'\n');
-%             end;
-%         end;
-%         if abs(ub(k1,k2) - upper_bounds(k1,k2)) > eps,
-%             if missing(k1,k2),
-%                 tag = 'new upper bound';
-%             else
-%                 tag = 'changed lower bound';
-%             end;
-%             if ub(k1,k2) < 20,
-%                 outchann = 2;
-%             else
-%                 outchann = 1;
-%             end;
-%             fprintf(outchann,'%s (%i,%i): %4.2f nm',tag,k1,k2,ub(k1,k2));
-%             if missing(k1,k2),
-%                 fprintf(outchann,' versus %4.2f nm\n',upper_bounds(k1,k2));
-%             else
-%                 fprintf(1,'\n');
-%             end;
-%         end;
-%     end;
-% end;
+end
 
 if auxiliary,
     for k1 = 1:vert-1,
@@ -1074,16 +1033,16 @@ if auxiliary,
                         setbound = true;
                     else
                         setbound = false;
-                    end;
-                end;
-            end;
+                    end
+                end
+            end
             if abs(ub(k1,k2) - upper_bounds(k1,k2)) > eps,
                 if missing(k1,k2),
                     if ub(k1,k2) < 150,
                         setbound = true;
-                    end;
-                end;
-            end;
+                    end
+                end
+            end
             if setbound,
                 if k2 > ni,
                     fprintf(1,'Setting auxiliary beacon restraint:');
@@ -1094,7 +1053,7 @@ if auxiliary,
                     else
                         label_type =  restrain(k).r_intern(1).label_type;
                         label_T =  restrain(k).r_intern(1).label_T;
-                    end;
+                    end
                     b = k2-ni;
                     kb = bref(b,1);
                     krb = bref(b,2);
@@ -1117,7 +1076,7 @@ if auxiliary,
                     else
                         label_type =  restrain(k).r_beacon(1).label_type;
                         label_T =  restrain(k).r_beacon(1).label_T;
-                    end;
+                    end
                     restrain(k).r_intern(kr).site = k2;
                     restrain(k).r_intern(kr).label_type = label_type;
                     restrain(k).r_intern(kr).label_T = label_T;
@@ -1127,11 +1086,11 @@ if auxiliary,
                     restrain(k).r_intern(kr).par2 = -ub(k1,k2);
                     resa = restraints.res1 + k1 - 1;
                     fprintf(1,'(%i,%i): [%4.2f,%4.2f] Å\n',resa,restrain(k).r_beacon(kr).resb,lb(k1,k2),ub(k1,k2));
-                end;
-            end;
-        end;
-    end;
-end;
+                end
+            end
+        end
+    end
+end
 
 min_approach = handles.min_approach;
 
@@ -1139,7 +1098,7 @@ directory = general.tmp_files;
 curr_dir = get(handles.checkbox_save_cdir,'Value');
 if curr_dir,
     directory = pwd;
-end;
+end
 
 display_it = get(handles.checkbox_display,'Value');
 display_terminus = get(handles.checkbox_display_terminus,'Value');
@@ -1155,10 +1114,10 @@ elseif isfield(handles.restraints,'seed')
     else
         rng(handles.restraints.seed);
         add_msg_board(sprintf('Random number seed value of %i is set.',handles.restraints.seed));
-    end;
+    end
 else
     rng('shuffle'); % initialize random number generator to be able to obtain different ensembles in subsequent runs
-end;
+end
 
 pmodel = handles.p_model;
 pthr = exp(-erfinv(pmodel)^2);
@@ -1181,7 +1140,7 @@ if Rama_secondary,
     load([general.Ramachandran 'Ramachandran']);
 else
     load([general.Ramachandran 'Ramachandran_disordered']);
-end;
+end
 
 closed_loop = false;
 free_standing = false;
@@ -1195,7 +1154,7 @@ if isempty(restraints.anchorN) && ~isempty(restraints.anchorC), % reverse model
 %     if isempty(restraints.anchorC), % no anchor, currently not implemented
 %         add_msg_board('ERROR: Domain modelling without anchor residues is not yet implemented. No action.');
 %         return;
-%     end;
+%     end
     sequence = [sequence restraints.Cseq(1)];
 elseif ~isempty(restraints.anchorN) % loop anchored at N terminus
     reverse = false;
@@ -1209,9 +1168,9 @@ elseif ~isempty(restraints.anchorN) % loop anchored at N terminus
                 add_msg_board('Warning: N-terminal and C-terminal anchors are in different chains or chain models.');
                 add_msg_board('Loop models cannot be attached.');
                 attach_it = false;
-            end;
-        end;
-    end;
+            end
+        end
+    end
 else % free-standing loop
     reverse = false;
     closed_loop = false;
@@ -1219,15 +1178,15 @@ else % free-standing loop
     template_indices = [];
     if attach_it,
         add_msg_board('Warning: No anchor residues defined. Loop is not attached, but models are collected into a single structure.');
-    end;
+    end
 %     attach_it = false;
-end;
+end
 
 if attach_it && ~free_standing, % make template copies in current structure
     for modnum = 2:max_models,
         copy_structure(template_indices(1),'+mod',[],modnum,template_indices(1));
-    end;
-end;
+    end
+end
 
 
 res1 = restraints.res1;
@@ -1236,26 +1195,26 @@ terminus = resend;
 N_terminus = res1;
 if reverse,
     terminus = res1;
-end;
+end
 
 if ~isempty(restraints.anchorN),
     display_start = res1-1;
 else
     display_start = res1;
-end;
+end
 
 if ~isempty(restraints.anchorC),
     display_end = resend+1;
 else
     display_end = resend;
-end;
+end
 
 if ~free_standing,
     adr=mk_address(restraints.template);
     handles.fname_bas = strcat(adr,'_loop');
 else
     handles.fname_bas = 'free_loop';
-end;
+end
 
 fname = sprintf('%s_%i_%i',handles.fname_bas,res1,resend);
 
@@ -1267,10 +1226,10 @@ if ~free_standing,
     [msg,prot_coor] = get_structure(restraints.template,'xyz');
     if msg.error,
         add_msg_board('ERROR: Coordinates of template structure could not be retrieved.');
-    end;
+    end
 else
     prot_coor = [];
-end;
+end
 
 success = 0;
 err_count=zeros(1,11);
@@ -1288,17 +1247,20 @@ rax = get_distribution;
 for k = 1:handles.n_restraints,
     distributions{k} = zeros(1,length(rax));
     restraint_distr{k} = zeros(1,length(rax));
-end;
+end
 for k = 1:handles.n_monitor,
     monitor_distr{k} = zeros(1,length(rax));
-end;
+end
 for k = 1:handles.n_restraints + handles.n_monitor,
     handles.exp_distr{k} = [];
     handles.exp_r{k} = [];
-end;
+end
 
 fullname = fullfile(handles.save_path,sprintf('%s_%s.log',handles.save_name,datestr(now,30)));
 fid_report = fopen(fullname,'wt');
+
+mname_stub = fullfile(handles.save_path,handles.save_name);
+add_msg_board(sprintf('Saving models to %s_m#.pdb\n',mname_stub));
 
 p_coor = cell(parnum);
 p_restrain = cell(parnum);
@@ -1317,7 +1279,7 @@ n_restraints = handles.n_restraints;
 rescodes = zeros(1,length(sequence));
 for k = 1:length(sequence),
     rescodes(k) = strfind(residue_defs.single_letter_code,sequence(k));
-end;
+end
 
 Rama_res.me = Ramachandran.me;
 Rama_res.ephi = Ramachandran.ephi;
@@ -1333,14 +1295,14 @@ while kMC <= ntrials,
         else
             [coor,errcode,restrain1,cumprob,kres] = mk_loop_model(sequence, p_anchorN, p_anchorC, p_anchorNp, p_anchorCn, prot_coor, restrain, Rama_res, rescodes, min_prob, n_restraints);
             kres = kres-1;
-        end;
+        end
         p_coor{kp} = coor; 
         p_errcode(kp) = errcode;
         p_restrain{kp} = restrain1;
         p_cumprob(kp) = cumprob;
         p_kres(kp) = kres;
-    end;
-    for kp = 1:parnum,
+    end
+    for kp = 1:parnum
         kMC = kMC + 1;
         coor = p_coor{kp};
         errcode = p_errcode(kp);
@@ -1349,75 +1311,80 @@ while kMC <= ntrials,
         kres = p_kres(kp);
 %         for k = 1:length(restrain),
 %             restrain(k).secondary = secvec(k);
-%         end;
+%         end
         res_stat(kres) = res_stat(kres)+1;
         runtime = toc;
-        if errcode == -1,
+        if errcode == -1
             Ram_fixed = Ram_fixed + 1;
             errcode = 0;
-        end;
-        if errcode == -4,
+        end
+        if errcode == -4
             Ram_fixed = Ram_fixed + 1;
             Ram_fix_clash = Ram_fix_clash + 1;
             errcode = 4;
-        end;
-        if handles.n_restraints == 0,
+        end
+        if handles.n_restraints == 0
             p_model = 1;
         else
             p_model = erf(sqrt(-log(cumprob)/handles.n_restraints));
-        end;
+        end
         err_count(errcode+1) = err_count(errcode+1) + 1;
 
-        if ~errcode,
+        if ~errcode
             tpm = runtime/err_count(1);
             set(handles.text_time_per_model,'String',sprintf('%8.1f',tpm));
             success = success + 1;
-            if success == 1,
+            if success == 1
                 bb0 = coor;
             elseif  isempty(restraints.anchorN) && isempty(restraints.anchorC),
                 [rms,coor] = rmsd_superimpose(bb0,coor);
                 add_msg_board(sprintf('Model superimposes onto first model with rmsd of %4.1f Å',rms));
-            end;
+            end
             loopname = write_pdb_backbone(coor,restraints.sequence,fname,success,res1,directory);
-            [pclash,iclash] = check_decorated_loop(loopname,prot_coor,res1,resend,min_approach,directory);
             [pmodel,status,result] = make_SCWRL4_sidegroups(loopname,directory);
     %         fprintf(1,'Model %s: ',pmodel);
     %         if ~status,
     %             fprintf(1,'successful.\n');
     %         else
     %             fprintf(1,'Error in sidegroup creation.\n');
-    %         end;
+    %         end
             [pclash,iclash] = check_decorated_loop(pmodel,prot_coor,res1,resend,min_approach,directory);
 
-            if pclash,
+            if pclash
     %             fprintf(1,'Loop with sidegroups clashes with protein\n');
                 err_count(10) = err_count(10) + 1;
                 success = success - 1;
-            elseif iclash,
+            elseif iclash
     %             fprintf(1,'Loop with sidegroups clashes with itself\n');
                 err_count(11) = err_count(11) + 1;
                 success = success - 1; 
             else
                 all_p_model(success) = p_model;
                 if attach_it,
-                    if free_standing && success == 1,
+                    if free_standing && success == 1
                         [msg,snum]=add_pdb(pmodel);
                         template_indices = [snum 1 1];
                         model_indices = template_indices;
-                        for modnum = 2:max_models,
+                        for modnum = 2:max_models
                             copy_structure(template_indices(1),'+mod',[],modnum,template_indices(1));
-                        end;
+                        end
                     else
                         structure=rd_pdb(pmodel);
                         model_indices = template_indices;
                         model_indices(3) = success;
-                        if free_standing,
+                        if free_standing
                             replace_model(model_indices,structure);
                         else
                             insert_residues(res1,resend,structure,model_indices,Nanchor_res,Canchor_res);
-                        end;
-                    end;
-                    if display_it,
+                        end
+                        if isfield(model,'selected')
+                            model = rmfield(model,'selected');
+                        end
+                        model.selected{1} = model_indices;
+                        mname = sprintf('%s_m%i',mname_stub,success);
+                        wr_pdb_selected(mname,'DENS');
+                    end
+                    if display_it
                         command=sprintf('show {%i}%i-%i coil',success,display_start,display_end);
                         hMain.store_undo=false;
                         cmd(hMain,command);
@@ -1427,7 +1394,7 @@ while kMC <= ntrials,
                         command=sprintf('transparency {%i}%i-%i %6.3f',success,display_start,display_end,p_model);
                         hMain.store_undo=false;
                         cmd(hMain,command);
-                    end;
+                    end
                     if display_terminus,
                         command=sprintf('show {%i}%i.CA space-filling',success,terminus);
                         hMain.store_undo=false;
@@ -1448,8 +1415,8 @@ while kMC <= ntrials,
                             command=sprintf('transparency {%i}%i.CA %6.3f',success,N_terminus,p_model);
                             hMain.store_undo=false;
                             cmd(hMain,command);      
-                        end;
-                    end;
+                        end
+                    end
                     [distributions,restraint_distr,descriptors,monitor_distr,monitor_descr] = mk_report_distributions(fid_report,model_indices,restrain1,handles.monitor,p_model,distributions,restraint_distr,descriptors,monitor_distr,monitor_descr,res1);
                 elseif display_it || display_terminus,               
                     [msg,snum]=add_pdb(pmodel);
@@ -1467,7 +1434,7 @@ while kMC <= ntrials,
                             command=sprintf('color [%i] crimson',snum);
                             hMain.store_undo=false;
                             cmd(hMain,command);
-                        end;
+                        end
                         if display_terminus,
                             command=sprintf('show [%i]%i.CA space-filling',snum,terminus);
                             hMain.store_undo=false;
@@ -1482,15 +1449,15 @@ while kMC <= ntrials,
                                 command=sprintf('color [%i]%i.CA darkgreen',snum,N_terminus);
                                 hMain.store_undo=false;
                                 cmd(hMain,command);
-                            end;
-                        end;
+                            end
+                        end
                         command=sprintf('transparency [%i] %6.3f',snum,p_model);
                         hMain.store_undo=false;
                         cmd(hMain,command);
-                    end;
-                end;
-            end;
-        end;
+                    end
+                end
+            end
+        end
         if mod(kMC,disp_update) == 0,
             ftr = (1 - kMC/ntrials)*max_seconds;
             fti = max_seconds - runtime;
@@ -1501,22 +1468,22 @@ while kMC <= ntrials,
             if minutes == 60,
                 hours = hours + 1;
                 minutes = 0;
-            end;
+            end
             time_left = sprintf('%i h %i min estimated run time to completion',hours,minutes); 
             set(handles.text_time_left,'String',time_left);
             axes(handles.axes_success_length);
             success_distr = (1-success/kMC)*res_stat/sum(res_stat);
             if reverse,
                 success_distr = fliplr(success_distr);
-            end;
+            end
             normalize = 1- cumsum(success_distr);
             normalize(normalize==0)=1;
             for ks = 2:length(success_distr),
                 success_distr(ks) = success_distr(ks)/normalize(ks-1);
-            end;
+            end
             if reverse,
                 success_distr = fliplr(success_distr);
-            end;
+            end
             plot(resax,success_distr);
             set(gca,'FontSize',8);
             xlabel('Residue');
@@ -1533,24 +1500,24 @@ while kMC <= ntrials,
             if closed_loop,
                 set(handles.text_loop_closure_failure,'String',sprintf('%5.2f',100*err_count(2)/kMC));
                 set(handles.text_Rama_mismatch,'String',sprintf('%5.2f',100*err_count(4)/kMC));
-            end;
+            end
             drawnow;
-        end;
+        end
         if success >= max_models,
             break
-        end;
-    end;
+        end
+    end
     if success >= max_models,
         break
-    end;
+    end
 %     if mod(kMC,10000)
 %         fprintf(1,'%6.3f ms per trial\n',1000*runtime/kMC);
 %     end
     if runtime >= max_seconds,
         add_msg_board('Warning: Ensemble generation stopped as maximum allotted time was exceeded.');
         break
-    end;
-end;
+    end
+end
 
 runtime = toc;
 hours = floor(runtime/3600);
@@ -1571,7 +1538,7 @@ fprintf(fid_report,'%5.2f%% of the backbone models lead to sidegroup clashes wit
 if closed_loop,
     fprintf('%5.2f%% of all trials lead to loops that could not be closed.\n',100*err_count(2)/kMC);
     fprintf('%5.2f%% of all trials lead to loops for which the link Ramachandran angles could not be fixed.\n',100*err_count(4)/kMC);
-end;
+end
 
 hours = floor(max_seconds/3600);
 minutes = round((max_seconds-3600*floor(max_seconds/3600))/60);
@@ -1583,7 +1550,7 @@ fprintf(fid_report,'The number of Gaussian-type restraints was %i.\n',handles.n_
 Rama_type = 'without';
 if Rama_secondary,
     Rama_type = 'with';
-end;
+end
 fprintf(fid_report,'Ramachandran statistics %s secondary structure elements was used.\n\n',Rama_type);
 
 hours = floor(runtime/3600);
@@ -1595,24 +1562,24 @@ if success == max_models,
 else
     if attach_it && exist('model_indices','var'),
         delete_empty_models(model_indices(1),success);
-    end;
+    end
     set(handles.text_time_left,'ForegroundColor',[0.80 0.50 0]);    
-end;
+end
 
 
 handles.resax = resax;
 success_distr = (1-success/kMC)*res_stat/sum(res_stat);
 if reverse,
     success_distr = fliplr(success_distr);
-end;
+end
 normalize = 1- cumsum(success_distr);
 normalize(normalize==0)=1;
 for ks = 2:length(success_distr),
     success_distr(ks) = success_distr(ks)/normalize(ks-1);
-end;
+end
 if reverse,
     success_distr = fliplr(success_distr);
-end;
+end
 handles.rax = 10*rax;
 
 handles.success_distr = success_distr;
@@ -1625,7 +1592,7 @@ if handles.n_restraints > 0 || handles.n_monitor > 0,
     handles.plot_nr = 1;
 else
     handles.plot_nr = 0;
-end;
+end
 handles.copy = false; 
 handles.snum_vec = snum_vec;
 
@@ -1643,7 +1610,7 @@ update_plot(handles);
 
 if kMC == ntrials,
     add_msg_board('Warning: Ensemble generation stopped as maximum allotted number of Monte Carlo trials was exceeded.');
-end;
+end
 set(handles.text_percent_time,'String',sprintf('%5.2f',100*runtime/max_seconds));
 set(handles.text_max_trials,'String',sprintf('%5.2f',100*kMC/ntrials));
 set(handles.text_success,'String',sprintf('%i',success));
@@ -1656,15 +1623,15 @@ set(handles.text_sidegroup_clashes_protein,'String',sprintf('%5.2f',100*err_coun
 if closed_loop,
     set(handles.text_loop_closure_failure,'String',sprintf('%5.2f',100*err_count(2)/kMC));
     set(handles.text_Rama_mismatch,'String',sprintf('%5.2f',100*err_count(4)/kMC));
-end;
+end
 drawnow;
 if attach_it && success > 0,
     consolidate_chain(template_indices(1:2));
-end;
+end
 
 if attach_it,
     set(handles.pushbutton_run,'Enable','off');
-end;
+end
 
 set(gcf,'Pointer','arrow');
 drawnow;
@@ -1680,7 +1647,7 @@ if isfield(model,'sites'),
     labels=label_information(model.sites);
 else
     labels=[];
-end;
+end
 
 % check whether sites are already labelled and whether all restraint sites
 % do exist
@@ -1689,8 +1656,8 @@ for k=1:length(labels),
     cindices=labels(k).indices;
     if ~isempty(cindices),
         lindices(k,:)=cindices;
-    end;
-end;
+    end
+end
 poi=0;
 to_do_list{1}=' ';
 for k=1:length(llist),
@@ -1699,27 +1666,27 @@ for k=1:length(llist),
     if isempty(ind1),
         add_msg_board(sprintf('ERROR: Constraint %i has first label at site %s',k,adr1));
         add_msg_board(sprintf('This site does not exist in current structure %s',mk_address(1)));
-    end;
+    end
     found=false;
     for l=1:length(labels),
         diff=ind1-lindices(l,:);
         if sum(abs(diff))==0,
             found=true;
-        end;
-    end;
+        end
+    end
     if ~found,
         for l=1:length(to_do_list),
             if strcmp(adr1,to_do_list{l}),
                 found=true;
-            end;
-        end;
+            end
+        end
         if ~found,
             poi=poi+1;
             to_do_list{poi}=adr1;
             add_msg_board(sprintf('Rotamers for label at site %s will be generated.',adr1));
-        end;
-    end;
-end;
+        end
+    end
+end
 
 for k=1:length(to_do_list),
     if ~strcmp(to_do_list{k},' '),
@@ -1727,14 +1694,14 @@ for k=1:length(to_do_list),
         hMain.store_undo=false;
         hMain.dynamic_rotamers=false;
         cmd(hMain,command);
-    end;
-end;
+    end
+end
 
 if isfield(model,'sites'),
     labels = label_information(model.sites);
 else
     labels = cell(0);
-end;
+end
 
 function NO = get_relative_label(libname)
 
@@ -1747,7 +1714,7 @@ if isfield(rot_lib.usefull_atoms,'midNO')
     for k = 1:length(rot_lib.library),
         coor = rot_lib.library(k).ecoor;
         NO = NO + pops(k)*(coor(midNO(1),2:4) + coor(midNO(2),2:4))/2;
-    end;
+    end
 elseif isfield(rot_lib,'spin_density')
     NO = zeros(1,3);
     for k = 1:length(rot_lib.library),
@@ -1755,7 +1722,7 @@ elseif isfield(rot_lib,'spin_density')
         coor = coor(rot_lib.spin_density(:,1),2:4);
         coor = rot_lib.spin_density(:,2)'*coor;
         NO = NO + pops(k)*coor;
-    end;
+    end
 end
 NO = NO/(sum(pops));
 
@@ -1778,7 +1745,7 @@ for k = 1:length(ligand_lib.library)
     int_en = V_ksi*(1-cos(ksi))/2;
     pops(k) = exp(-int_en/(gas_un*T));
     all_coor(k,:) = sdp*ligand_lib.library(k).ecoor(spin_density(:,1),2:4);
-end;
+end
 spin_coor = pops*all_coor;
 spin_coor = spin_coor/(sum(pops));
 
@@ -1802,9 +1769,9 @@ for k0=1:length(sites),
             z=sum(NOpos(:,3).*NOpos(:,4));
             labels(poi).xyz=[x y z];
             labels(poi).rmsd=NOpos_rmsd(NOpos);
-        end;
-    end;
-end;
+        end
+    end
+end
 
 function [rmsd,xyz]=NOpos_rmsd(NOall)
 % in nm(!)
@@ -1838,30 +1805,30 @@ for k = 1:length(cadr)
     poi1 = strfind(adr,']');
     if ~isempty(poi1),
         poi = poi1;
-    end;
+    end
     poi1 = strfind(adr,')');
     if ~isempty(poi1),
         poi = poi1;
-    end;
+    end
     poi1 = strfind(adr,'}');
     if ~isempty(poi1),
         poi = poi1;
-    end;
+    end
     if poi > 0,
         chain_model = adr(1:poi);
     else
         chain_model = '';
-    end;
+    end
     resstr = adr(poi+1:end);
     cres = str2double(resstr);
     if isnan(cres),
         res = [];
         return
-    end;
+    end
     if cres - floor(cres) > eps,
         res = [];
         return
-    end;
+    end
     res(k) = cres;
 end
 
@@ -1888,7 +1855,7 @@ else
     restrain(k).r_beacon(kr).type = 'bounds';
     restrain(k).r_beacon(kr).par1 = -rmean*scale_units;
     restrain(k).r_beacon(kr).par2 = -sigr*scale_units;
-end;
+end
 
 function [restrain,number] = mk_internal_restraint(restrain,NO1,NO2,resa,resb,rmean,sigr,res1,number,label,T)
 
@@ -1903,7 +1870,7 @@ if resa < resb, % restraint must be stored at the later site
     exch = NO1;
     NO1 = NO2;
     NO2 = exch;
-end;
+end
 k = resa - res1 + 1;
 k2 = resb - res1 + 1;
 kr = length(restrain(k).r_intern)+1;
@@ -1922,7 +1889,7 @@ else
     restrain(k).r_intern(kr).type = 'bounds';
     restrain(k).r_intern(kr).par1 = -rmean*scale_units;
     restrain(k).r_intern(kr).par2 = -sigr*scale_units;
-end;
+end
 
 function [restrain,number] = mk_depth_restraint(restrain,NO,res,rmean,sigr,res1,number,label,T)
 
@@ -1937,7 +1904,7 @@ if ~isempty(NO),
     restrain(k).depth(kr).site = 'label';
 else
     restrain(k).depth(kr).site = 'CA';
-end;
+end
 if rmean > 0 && sigr > 0,
     restrain(k).depth(kr).type = 'Gaussian';
     restrain(k).depth(kr).par1 = rmean*scale_units;
@@ -1947,7 +1914,7 @@ else
     restrain(k).depth(kr).type = 'bounds';
     restrain(k).depth(kr).par1 = -rmean*scale_units;
     restrain(k).depth(kr).par2 = -sigr*scale_units;
-end;
+end
 
 function [restrain,number] = mk_oligomer_restraint(restrain,NO,res,n,rmean,sigr,res1,number,label,T)
 
@@ -1963,7 +1930,7 @@ if ~isempty(NO),
     restrain(k).oligomer(kr).site = 'label';
 else
     restrain(k).oligomer(kr).site = 'CA';
-end;
+end
 if rmean > 0 && sigr > 0,
     restrain(k).oligomer(kr).type = 'Gaussian';
     restrain(k).oligomer(kr).par1 = rmean*scale_units;
@@ -1973,7 +1940,7 @@ else
     restrain(k).oligomer(kr).type = 'bounds';
     restrain(k).oligomer(kr).par1 = -rmean*scale_units;
     restrain(k).oligomer(kr).par2 = -sigr*scale_units;
-end;
+end
 restrain(k).oligomer(kr).n = n;
 
 
@@ -2306,7 +2273,7 @@ mnum = template_indices(3);
 
 if ~isempty(Nanchor_res),
     model.structures{snum}(cnum).residues{mnum}.info(Nanchor_res).terminal = 0;
-end;
+end
 
 Bmax=max(model.info{snum}.B_range);
 
@@ -2330,18 +2297,18 @@ for k=1:length(newresidues),
         if structure(1).residues{1}.info(kk).number == rnum0,
             rnum=kk;
             break;
-        end;
-    end;
+        end
+    end
     if rnum==0,
         add_msg_board(sprintf('Warning: Residue %i not found in modelled loop',rnum0));
         continue;
-    end;
+    end
     tag=structure(1).residues{1}.info(rnum).name;
     id=tag2id(tag,upper(residue_defs.restags),residue_defs.single_letter_code);
     sequence(rnum0)=id;
     if mnum==1 && isfield(model.structures{snum}(cnum),'seqexist'),
         model.structures{snum}(cnum).seqexist(rnum0)=1;
-    end;
+    end
     nr=nr+1;
     rpoi=rpoi+1;
     newrnum(rpoi)=nr;
@@ -2351,7 +2318,7 @@ for k=1:length(newresidues),
     pointers=structure(1).residues{1}.info(rnum).atom_numbers;
     if isempty(Canchor_res) && k == length(newresidues),
         model.structures{snum}(cnum).residues{mnum}.info(nr).terminal = 1;
-    end;
+    end
     for anum=1:length(pointers), % loop over atoms
         pointer=structure(1).residues{1}.info(rnum).atom_numbers{anum};
         [loc,n]=size(pointer);
@@ -2363,7 +2330,7 @@ for k=1:length(newresidues),
             newxyz(ma,:)=structure(1).xyz{1}(poi,:);
             newBfac(ma)=2*Bmax;
             newBtens(ma,:)=structure(1).Btensor{1}(poi,:);
-        end;
+        end
         model.structures{snum}(cnum).residues{mnum}.info(nr).atom_numbers{anum}=pointer;
         model.structures{snum}(cnum).residues{mnum}.info(nr).name=tag;
         model.structures{snum}(cnum).residues{mnum}.info(nr).type=structure(1).residues{1}.info(rnum).type;
@@ -2375,8 +2342,8 @@ for k=1:length(newresidues),
         model.structures{snum}(cnum).residues{mnum}.info(nr).elements=structure(1).residues{1}.info(rnum).elements;
         model.structures{snum}(cnum).residues{mnum}.info(nr).location_tags=structure(1).residues{1}.info(rnum).location_tags;
         model.structures{snum}(cnum).residues{mnum}.info(nr).insertion_code=structure(1).residues{1}.info(rnum).insertion_code;
-    end;
-end;
+    end
+end
 newiso=newiso(1:ma,:);
 newxyz=newxyz(1:ma,:);
 newBfac=newBfac(1:ma);
@@ -2386,7 +2353,7 @@ if mnum==1,
     model.structures{snum}(cnum).sequence=sequence;
     model.structures{snum}(cnum).isotopes=newiso;
     model.structures{snum}(cnum).conn=[model.structures{snum}(cnum).conn; zeros(ma-ma0,maxconn)];
-end;
+end
 
 model.structures{snum}(cnum).xyz{mnum}=newxyz;
 model.structures{snum}(cnum).Bfactor{mnum}=newBfac;
@@ -2399,15 +2366,15 @@ for k=1:length(newrnum),
         model.structures{snum}(cnum)=mk_internal_bonds(model.structures{snum}(cnum),newrnum(k),residue_defs);
     else
         disp('Aber Hallo!');
-    end;
-end;
+    end
+end
 
 % sort residues by number
 info=model.structures{snum}(cnum).residues{mnum}.info;
 numbers=length(info);
 for k=1:length(info),
     numbers(k)=info(k).number;
-end;
+end
 info0=info;
 [sorted,oldnumbers]=sort(numbers);
 tags=':';
@@ -2415,7 +2382,7 @@ for k=1:length(oldnumbers),
     info(k)=info0(oldnumbers(k));
     tag=id2tag(oldnumbers(k),model.structures{snum}(cnum).residues{mnum}.residue_tags);
     tags=[tags tag ':'];
-end;
+end
 model.structures{snum}(cnum).residues{mnum}.residue_tags=tags;
 model.structures{snum}(cnum).residues{mnum}.info=info;
 
@@ -2475,9 +2442,9 @@ for k = 1:length(restrain),
                 else
                     fprintf(fid_report,'Beacon restraint [%5.2f, %5.2f] Å to residue %i violated at <r> = %5.2f\n',...
                         restrain(k).r_beacon(kr).par1,restrain(k).r_beacon(kr).par2,restrain(k).r_beacon(kr).resb,rmean);
-                end;
-        end;
-    end;
+                end
+        end
+    end
 
     for kr = 1:length(monitor(k).r_beacon),
         sep = strfind(monitor(k).r_beacon(kr).label_type,'|');
@@ -2498,7 +2465,7 @@ for k = 1:length(restrain),
         monitor_distr{mdispoi} = monitor_distr{mdispoi} + p_model*sim_distr;
         monitor_descr{mdispoi} = sprintf('Beacon monitor %i-%i with <r_{sim}> = %5.2f',resnum,monitor(k).r_beacon(kr).resb,rmean);
         fprintf(fid_report,'Monitored distance to residue %i is <r> = %5.2f\n',monitor(k).r_beacon(kr).resb,rmean);
-    end;
+    end
 
     for kr = 1:length(restrain(k).r_intern),
         r2adr = sprintf('%s%i',adr,restrain(k).r_intern(kr).resb);
@@ -2545,9 +2512,9 @@ for k = 1:length(restrain),
                 else
                     fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] Å to residue %i violated at <r> = %5.2f\n',...
                         restrain(k).r_intern(kr).par1,restrain(k).r_intern(kr).par2,restrain(k).r_intern(kr).resb,rmean);
-                end;
-        end;
-    end;
+                end
+        end
+    end
     
     for kr = 1:length(monitor(k).r_intern),
         r2adr = sprintf('%s%i',adr,monitor(k).r_intern(kr).resb);
@@ -2570,7 +2537,7 @@ for k = 1:length(restrain),
         monitor_distr{mdispoi} = monitor_distr{mdispoi} + p_model*sim_distr;
         monitor_descr{mdispoi} = sprintf('Internal restraint %i-%i',resnum,monitor(k).r_intern(kr).resb);
         fprintf(fid_report,'Monitored distance to residue %i is <r> = %5.2f\n',monitor(k).r_intern(kr).resb,rmean);
-    end;
+    end
 
     for kr = 1:length(restrain(k).depth),
         NO_pos = get_NO_pos(rindices,restrain(k).depth(kr).label_type,restrain(k).depth(kr).label_T);
@@ -2604,9 +2571,9 @@ for k = 1:length(restrain),
                 else
                     fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] Å violated at <r> = %5.2f\n',...
                         restrain(k).depth(kr).par1,restrain(k).depth(kr).par2,rmean);
-                end;
-        end;
-    end;
+                end
+        end
+    end
 
     for kr = 1:length(monitor(k).depth),
         NO_pos = get_NO_pos(rindices,monitor(k).depth(kr).label_type,monitor(k).depth(kr).label_T);
@@ -2618,7 +2585,7 @@ for k = 1:length(restrain),
         monitor_distr{mdispoi} = monitor_distr{mdispoi} + p_model*sim_distr;
         monitor_descr{mdispoi} = sprintf('Monitored depth %i is <r_{sim}> = %5.2f',resnum,rmean);
         fprintf(fid_report,'Monitored depth is <r> = %5.2f\n',rmean);
-    end;
+    end
 
     for kr = 1:length(restrain(k).oligomer),
         NO_pos = get_NO_pos(rindices,restrain(k).oligomer(kr).label_type,restrain(k).oligomer(kr).label_T);
@@ -2651,9 +2618,9 @@ for k = 1:length(restrain),
                 else
                     fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] Å violated at <r> = %5.2f\n',...
                         restrain(k).oligomer(kr).par1,restrain(k).oligomer(kr).par2,rmean);
-                end;
-        end;
-    end;
+                end
+        end
+    end
 
     for kr = 1:length(monitor(k).oligomer),
         NO_pos = get_NO_pos(rindices,monitor(k).oligomer(kr).label_type,monitor(k).oligomer(kr).label_T);
@@ -2665,9 +2632,9 @@ for k = 1:length(restrain),
         monitor_distr{mdispoi} = monitor_distr{mdispoi} + p_model*sim_distr;
         monitor_descr{mdispoi} = sprintf('Monitored oligomer distance %i (n = %i) is <r_{sim}> = %5.2f',resnum,monitor(k).oligomer(kr).n,rmean);
         fprintf(fid_report,'Monitored oligomer distance is <r> = %5.2f\n',rmean);
-    end;
+    end
 
-end;
+end
 
 function [distributions,restraint_distr,descriptors,monitor_distr,monitor_descr] = mk_report_distributions_free(fid_report,indices,restrain,monitor,p_model,distributions,restraint_distr,descriptors,monitor_distr,monitor_descr,res1)
 
@@ -2723,9 +2690,9 @@ for k = 1:length(restrain),
                 else
                     fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] Å to residue %i violated at <r> = %5.2f\n',...
                         restrain(k).r_intern(kr).par1,restrain(k).r_intern(kr).par2,restrain(k).r_intern(kr).resb,rmean);
-                end;
-        end;
-    end;
+                end
+        end
+    end
     
     for kr = 1:length(monitor(k).r_intern),
         r2adr = sprintf('%s%i',adr,monitor(k).r_intern(kr).resb);
@@ -2740,7 +2707,7 @@ for k = 1:length(restrain),
         monitor_distr{mdispoi} = monitor_distr{mdispoi} + p_model*sim_distr;
         monitor_descr{mdispoi} = sprintf('Internal restraint %i-%i with <r_{exp}> = %5.2f and <r_{sim}> = %5.2f',resnum,restrain(k).r_intern(kr).resb,restrain(k).r_intern(kr).par1,rmean);
         fprintf(fid_report,'Monitored distance to residue %i is <r> = %5.2f\n',monitor(k).r_intern(kr).resb,rmean);
-    end;
+    end
 
     for kr = 1:length(restrain(k).depth),
         NO_pos = get_NO_pos(rindices,restrain(k).depth(kr).label_type,restrain(k).depth(kr).label_T);
@@ -2774,9 +2741,9 @@ for k = 1:length(restrain),
                 else
                     fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] Å violated at <r> = %5.2f\n',...
                         restrain(k).depth(kr).par1,restrain(k).depth(kr).par2,rmean);
-                end;
-        end;
-    end;
+                end
+        end
+    end
 
     for kr = 1:length(monitor(k).depth),
         NO_pos = get_NO_pos(rindices,monitor(k).depth(kr).label_type,monitor(k).depth(kr).label_T);
@@ -2788,7 +2755,7 @@ for k = 1:length(restrain),
         monitor_distr{mdispoi} = monitor_distr{mdispoi} + p_model*sim_distr;
         monitor_descr{mdispoi} = sprintf('Monitored depth %i is <r_{sim}> = %5.2f',resnum,rmean);
         fprintf(fid_report,'Monitored depth is <r> = %5.2f\n',rmean);
-    end;
+    end
 
     for kr = 1:length(restrain(k).oligomer),
         NO_pos = get_NO_pos(rindices,restrain(k).oligomer(kr).label_type,restrain(k).oligomer(kr).label_T);
@@ -2821,9 +2788,9 @@ for k = 1:length(restrain),
                 else
                     fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] Å violated at <r> = %5.2f\n',...
                         restrain(k).oligomer(kr).par1,restrain(k).oligomer(kr).par2,rmean);
-                end;
-        end;
-    end;
+                end
+        end
+    end
 
     for kr = 1:length(monitor(k).oligomer),
         NO_pos = get_NO_pos(rindices,monitor(k).oligomer(kr).label_type,monitor(k).oligomer(kr).label_T);
@@ -2835,9 +2802,9 @@ for k = 1:length(restrain),
         monitor_distr{mdispoi} = monitor_distr{mdispoi} + p_model*sim_distr;
         monitor_descr{mdispoi} = sprintf('Monitored oligomer distance %i (n = %i) is <r_{sim}> = %5.2f',resnum,monitor(k).oligomer(kr).n,rmean);
         fprintf(fid_report,'Monitored oligomer distance is <r> = %5.2f\n',rmean);
-    end;
+    end
 
-end;
+end
 
 
 function NO_pos = get_NO_pos(indices,label,T)
@@ -2851,7 +2818,7 @@ if strcmpi(label,'CA'),
     [~,xyz] = get_object(adr,'coor');
     NO_pos = [xyz 1];
     return
-end;
+end
 
 NO_pos = [];
 if isfield(model,'sites'),
@@ -2863,13 +2830,13 @@ if isfield(model,'sites'),
                     if strcmpi(label,label_defs.residues(id).short_name) || strcmpi(label,label_defs.residues(id).tc),
                         if T == model.sites{k0}(k1).residue(k).T,
                             NO_pos=model.sites{k0}(k1).residue(k).NOpos;
-                        end;
-                    end;
-                end;
-            end;
-        end;
-    end;
-end;
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
 
 if isempty(NO_pos),
     adr = mk_address(indices);
@@ -2877,7 +2844,7 @@ if isempty(NO_pos),
     hMain.store_undo=false;
     hMain.dynamic_rotamers=false;
     cmd(hMain,command);
-end;
+end
 
 for k0=1:length(model.sites),
     for k1=1:length(model.sites{k0}),
@@ -2887,12 +2854,12 @@ for k0=1:length(model.sites),
                 if strcmpi(label,label_defs.residues(id).short_name) ||  strcmpi(label,label_defs.residues(id).tc)
                     if T == model.sites{k0}(k1).residue(k).T,
                         NO_pos=model.sites{k0}(k1).residue(k).NOpos;
-                    end;
-                end;
-            end;
-        end;
-    end;
-end;
+                    end
+                end
+            end
+        end
+    end
+end
 
 
 % --- Executes on button press in pushbutton_copy.
@@ -2915,7 +2882,7 @@ if handles.plot_nr < handles.n_restraints + handles.n_monitor,
     update_plot(handles);
 else
     add_msg_board('Warning: This was the last plot available.');
-end;
+end
 
 % --- Executes on button press in pushbutton_backward.
 function pushbutton_backward_Callback(hObject, eventdata, handles)
@@ -2928,7 +2895,7 @@ if handles.plot_nr > 0,
     update_plot(handles);
 else
     add_msg_board('Warning: Use forward (>) button to access distribution plots.');
-end;
+end
 
 function update_plot(handles)
 
@@ -2938,7 +2905,7 @@ if handles.copy,
 else
     axes(handles.axes_success_length);
     cla;
-end;
+end
 sc = 1;
 if handles.plot_nr == 0,
     plot(handles.resax,handles.success_distr,'k');
@@ -2969,10 +2936,10 @@ else
     ylabel('Probability density');
     title(handles.monitor_descr{handles.plot_nr-handles.n_restraints});
     set(handles.text_axes_title,'String','Distance distribution in the ensemble');
-end;
+end
 if handles.plot_nr > 0 && ~isempty(handles.exp_distr{handles.plot_nr}) && ~isempty(handles.exp_r{handles.plot_nr}),
     plot(handles.exp_r{handles.plot_nr},sc*handles.exp_distr{handles.plot_nr}/max(handles.exp_distr{handles.plot_nr}),'b');
-end;
+end
 guidata(handles.text_axes_title,handles);
 
 
@@ -2988,7 +2955,7 @@ if handles.plot_nr > 0,
     handles.exp_r{handles.plot_nr} = 10*handles.rexp;
 else
     add_msg_board('Warning: Distance distribution cannot be loaded for this plot.');
-end;
+end
 update_plot(handles)
 guidata(hObject,handles);
 
@@ -3000,25 +2967,25 @@ chains=length(model.structures{snum});
 for cnum=1:chains,
     for k=1:success,
         atoms{k} = model.structures{snum}(cnum).atoms{k};
-    end;
+    end
     model.structures{snum}(cnum).atoms = atoms;
     for k=1:success,
         residues{k} = model.structures{snum}(cnum).residues{k};
-    end;
+    end
     model.structures{snum}(cnum).residues = residues;    
     for k=1:success,
         xyz{k} = model.structures{snum}(cnum).xyz{k};
-    end;
+    end
     model.structures{snum}(cnum).xyz = xyz;
     for k=1:success,
         Bfactor{k} = model.structures{snum}(cnum).Bfactor{k};
-    end;
+    end
     model.structures{snum}(cnum).Bfactor = Bfactor;
     for k=1:success,
         Btensor{k} = model.structures{snum}(cnum).Btensor{k};
-    end;
+    end
     model.structures{snum}(cnum).Btensor = Btensor;
-end;
+end
 
 function replace_model(indices,structure)
 
@@ -3058,7 +3025,7 @@ else
     comment = ['% ' handles.monitor_descr{handles.plot_nr-handles.n_restraints}];
     suggestion = sprintf('monitored_distribution_%i.dat',handles.plot_nr);
     save_data(data,comment,suggestion);
-end;
+end
 guidata(handles.pushbutton_save,handles);
 
 function save_data(data,comment,suggestion)
@@ -3072,7 +3039,7 @@ cd(general.DEER_files);
 if isequal(fname,0) || isequal(pname,0),
     add_msg_board('Saving of distance distribution and restraint canceled by user.');
     return;
-end;
+end
 reset_user_paths(pname);
 general.DEER_files=pname;
 
@@ -3086,9 +3053,9 @@ for k = 1:m,
             fprintf(wfid,'\t');
         else
             fprintf(wfid,'\n');
-        end;
-    end;
-end;
+        end
+    end
+end
     
 fclose(wfid);
 

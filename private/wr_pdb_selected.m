@@ -98,7 +98,7 @@ if ~single_model
     models = models(1:mpoi);
 else
     models = 1;
-end;
+end
 
 % initialize checksum values
 
@@ -115,7 +115,7 @@ numSeq=0;
 
 
 % append proper extension, if extension is missing
-if ~contains(fname,'.'), fname=strcat(fname,'.pdb'); end;
+if ~contains(fname,'.'), fname=strcat(fname,'.pdb'); end
 
 % generate header line
 header=sprintf('HEADER    CHIMERA BY MMM SELECTION');
@@ -135,20 +135,20 @@ if fid==-1,
     message.error=1;
     message.text='File could not be written';
     return;
-end;
+end
 
 fprintf(fid,'%s\n',header);
 for k=1:cpoi, % loop over all title lines
     cadr = mk_address(chain_indices(k,:));
     fprintf(fid,'TITLE     CHAIN %s IS %s\n',cassign(k),cadr);
-end;
+end
 fprintf(fid,'REMARK   4\n%s\n',format);
 fprintf(fid,'REMARK   5\n%s\n',origin);
-if exist('score','var')
+if exist('score','var') && ~isempty(score)
     fprintf(fid,'REMARK   6\nREMARK   6 SCORE OF THE MODEL %5.2f\n',score);
-end;
+end
 % write SEQRES records
-for k = sortpoi,
+for k = sortpoi
     seqline=0;
     snum = chain_indices(k,1);
     cnum = chain_indices(k,2);
@@ -185,11 +185,11 @@ for kc = sortpoi
             fprintf(fid,'%s  ',model.structures{snum}(cnum).mutations(k).original);
             if isfield(model.structures{snum}(cnum).mutations(k),'comment'),
                 fprintf(fid,'%s',model.structures{snum}(cnum).mutations(k).comment);
-            end;
+            end
             fprintf(fid,'\n');
-        end;
-    end;
-end;
+        end
+    end
+end
 
 % write HET records
 for kc = sortpoi,
@@ -204,12 +204,12 @@ for kc = sortpoi,
             fprintf(fid,'%5i   ',model.structures{snum}(cnum).het(k).hetrecs);
             if isfield(model.structures{snum}(cnum).het(k),'descriptor'),
                 fprintf(fid,'%s',model.structures{snum}(cnum).het(k).descriptor);
-            end;
+            end
             fprintf(fid,'\n');
             numHet=numHet+1;
-        end;
-    end;
-end;
+        end
+    end
+end
 
 % write helix records
 helices=0;
@@ -225,9 +225,9 @@ for kc = sortpoi,
                 hclass=model.structures{snum}(cnum).helix_defs{k}.class;
             else
                 hclass=1; % default alpha-helix
-            end;
+            end
             htag=model.structures{snum}(cnum).helix_defs{k}.name;
-            if length(htag)>3, htag=htag(1:3); end;
+            if length(htag)>3, htag=htag(1:3); end
             fprintf(fid,'HELIX  %3i %3s ',helices,htag);
             numHelix=numHelix+1;
             start_res=model.structures{snum}(cnum).helix_defs{k}.range(1);
@@ -239,8 +239,8 @@ for kc = sortpoi,
             while isempty(end_id) && end_res>1,
                 cr_tag=sprintf('%i',end_res);
                 end_id=tag2id(cr_tag,model.structures{snum}(cnum).residues{1}.residue_tags);
-                if isempty(end_id), end_res=end_res-1; end;
-            end;
+                if isempty(end_id), end_res=end_res-1; end
+            end
             if ~isempty(end_id),
                 end_name=model.structures{snum}(cnum).residues{1}.info(end_id).name; 
                 fprintf(fid,'%3s %s %4i  %3s %s %4i ',start_name,cid,start_res,end_name,cid,end_res);
@@ -249,24 +249,24 @@ for kc = sortpoi,
                     comment=comment(1:29);
                 else
                     comment=fillstr(comment,29);
-                end;
+                end
                 fprintf(fid,'%2i %s %5i\n',hclass,comment,end_res-start_res+1);
-            end;
-        end;
+            end
+        end
     elseif model.structures{snum}(cnum).helices>0 % input PDB defined helix records
         hnum=model.structures{snum}(cnum).helices;
         for k=1:hnum,
             helices=helices+1;
             hclass=model.structures{snum}(cnum).helix(k).class;
             htag=model.structures{snum}(cnum).helix(k).name;
-            if length(htag)>3, htag=htag(1:3); end;
+            if length(htag)>3, htag=htag(1:3); end
             fprintf(fid,'HELIX  %3i %3s ',helices,htag);
             numHelix=numHelix+1;
             start_res=model.structures{snum}(cnum).helix(k).start;
             cr_tag=sprintf('%i',start_res);
             start_id=tag2id(cr_tag,model.structures{snum}(cnum).residues{1}.residue_tags);
             start_name=model.structures{snum}(cnum).residues{1}.info(start_id).name; 
-            end_res=model.structures{snum}(cnum).helix(k).end;
+            end_res=model.structures{snum}(cnum).helix(k).end
             cr_tag=sprintf('%i',end_res);
             end_id=tag2id(cr_tag,model.structures{snum}(cnum).residues{1}.residue_tags);
             end_name=model.structures{snum}(cnum).residues{1}.info(end_id).name; 
@@ -276,11 +276,11 @@ for kc = sortpoi,
                 comment=comment(1:29);
             else
                 comment=fillstr(comment,29);
-            end;
+            end
             fprintf(fid,'%2i %s %5i\n',hclass,comment,end_res-start_res+1);
-        end;
-    end;
-end;
+        end
+    end
+end
 
 % write sheet (strand) records
 strands=0;
@@ -293,7 +293,7 @@ for kc = sortpoi,
         for k=1:shnum,
             strands=strands+1;
             stag=model.structures{snum}(cnum).sheet_defs{k}.name;
-            if length(stag)>3, stag=stag(1:3); end;
+            if length(stag)>3, stag=stag(1:3); end
             fprintf(fid,'SHEET  %3i %3s 1 ',strands,stag);
             numSheet=numSheet+1;
             start_res=model.structures{snum}(cnum).sheet_defs{k}.range(1);
@@ -305,13 +305,13 @@ for kc = sortpoi,
             end_id=tag2id(cr_tag,model.structures{snum}(cnum).residues{1}.residue_tags);
             end_name=model.structures{snum}(cnum).residues{1}.info(end_id).name; 
             fprintf(fid,'%3s %s%4i  %3s %s%4i  0\n',start_name,cid,start_res,end_name,cid,end_res);
-        end;
+        end
     elseif model.structures{snum}(cnum).strands>0 % input PDB defined sheet records
         shnum=model.structures{snum}(cnum).strands;
         for k=1:shnum,
             strands=strands+1;
             stag=model.structures{snum}(cnum).strand(k).name;
-            if length(stag)>3, stag=stag(1:3); end;
+            if length(stag)>3, stag=stag(1:3); end
             fprintf(fid,'SHEET  %3i %3s 1 ',strands,stag);
             numSheet=numSheet+1;
             start_res=model.structures{snum}(cnum).strand(k).start;
@@ -319,24 +319,24 @@ for kc = sortpoi,
             cr_tag=sprintf('%i',start_res);
             start_id=tag2id(cr_tag,model.structures{snum}(cnum).residues{1}.residue_tags);
             start_name=model.structures{snum}(cnum).residues{1}.info(start_id).name; 
-            end_res=model.structures{snum}(cnum).strand(k).end;
+            end_res=model.structures{snum}(cnum).strand(k).end
             cid2=char(model.structures{snum}(cnum).strand(k).e_c);
             cr_tag=sprintf('%i',end_res);
             end_id=tag2id(cr_tag,model.structures{snum}(cnum).residues{1}.residue_tags);
             end_name=model.structures{snum}(cnum).residues{1}.info(end_id).name; 
             fprintf(fid,'%3s %s%4i  %3s %s%4i  0\n',start_name,cid1,start_res,end_name,cid2,end_res);
-        end;
-    end;
-end;
+        end
+    end
+end
 
 % write ATOM and HETATM records
 
 
-for km = 1:length(models),
+for km = 1:length(models)
     atnum=0; % initialize atom serial number
-    if length(models)>1,
+    if length(models)>1
         fprintf(fid,'MODEL     %4i\n',km);
-    end;
+    end
     for kloc = 1:flocations
         if indices(kloc,3) == models(km) || single_model
             PDBpoi = PDBpoi + 1;
@@ -357,29 +357,29 @@ for km = 1:length(models),
             rid0=id2tag(rnum,model.structures{snum}(cnum).residues{mnum}.residue_tags);
             if double(rid0(end))<double('0') || double(rid0(end))>double('9'),
                 rid(end)=rid0(end);
-            end;
+            end
             if model.structures{snum}(cnum).residues{mnum}.info(rnum).hetflag,
                 tline='HETATM';
                 hetflag=1;
             else
                 tline='ATOM  ';
                 hetflag=0;
-            end;
+            end
             if isfield(model.structures{snum}(cnum).residues{mnum}.info(rnum),'location_tags')
                 ltags=model.structures{snum}(cnum).residues{mnum}.info(rnum).location_tags;
             else
                 ltags=': :';
-            end;
+            end
             pointer=model.structures{snum}(cnum).residues{mnum}.info(rnum).atom_numbers{anum};
             atag=id2tag(anum,model.structures{snum}(cnum).residues{mnum}.info(rnum).atom_tags);
             elnum=model.structures{snum}(cnum).residues{mnum}.info(rnum).elements(anum);
             element=upper(id2tag(elnum,chemistry.element_tags));
             if length(element)<2 && length(atag)<4,
                 atag=[' ' atag];
-            end;
+            end
             if length(atag)<4,
                 atag=fillstr(atag,4);
-            end;
+            end
             [~,n]=size(pointer);
             poi=pointer(lnum,1); % actual coordinate set number
             ltag='';
@@ -388,8 +388,8 @@ for km = 1:length(models),
                 ltag=id2tag(pointer(lnum,3),ltags);
             else
                 occupancy=1.00;
-            end;
-            if isempty(ltag), ltag=' '; end;
+            end
+            if isempty(ltag), ltag=' '; end
             xyz=model.structures{snum}(cnum).xyz{mnum}(poi,:);
             Bfactor=model.structures{snum}(cnum).Bfactor{mnum}(poi);
             atnum=atnum+1;
@@ -400,24 +400,24 @@ for km = 1:length(models),
                 Btensor=model.structures{snum}(cnum).Btensor{mnum}(poi,:);
                 fprintf(fid,'ANISOU%5i %4s%s%3s %s%4s %7i%7i%7i%7i%7i%7i',atnum,atag,ltag,rtag,cid,rid,Btensor);
                 fprintf(fid,'      %2s\n',element);
-            end;
+            end
             mismatch = false;
             if kloc == flocations
                 mismatch = true;
             elseif sum(abs(indices(kloc,1:3)-indices(kloc+1,1:3))) > 0
                 mismatch = true;
-            end;
+            end
             if mismatch
                 atnum=atnum+1;
                 fprintf(fid,'TER   %5i      %3s %s%4s\n',atnum,rtag,cid,rid);
                 numTer=numTer+1;
-            end;
-        end;
-    end;
+            end
+        end
+    end
     if length(models)>1,
         fprintf(fid,'ENDMDL\n');
-    end;
-end;
+    end
+end
 
 
 % write MASTER record

@@ -278,6 +278,9 @@ while 1
                 case 'MODELS'
                     mode=0;
                     restraints.models = str2double(char(args(3))); 
+                case 'PROTEIN'
+                    mode=0;
+                    restraints.protein = char(args(3)); 
                 case 'SANS'
                     mode=5;
                     SANS_poi = SANS_poi + 1;
@@ -305,6 +308,7 @@ while 1
                     restraints.pflex(pflex_poi).Nanchor = char(args(5));
                     restraints.pflex(pflex_poi).Canchor = char(args(6));
                     restraints.pflex(pflex_poi).models = 20; % default setting
+                    restraints.pflex(pflex_poi).time = 1; % default setting
                     restraints.pflex(pflex_poi).prob = 0.5; % default setting
                     pflex_DEER_poi = 0;
                     pflex_oligomer_poi = 0;
@@ -712,6 +716,9 @@ while 1
                                 if length(args) > 2
                                     restraints.pflex(pflex_poi).prob = str2double(char(args(3)));
                                 end
+                                submode = 0;
+                            case ':TIME'
+                                restraints.pflex(pflex_poi).time = str2double((char(args(2))));
                                 submode = 0;
                             case ':DEER'
                                 pflex_label1 = char(args(2));

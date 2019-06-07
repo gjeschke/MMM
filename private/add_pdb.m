@@ -5,9 +5,10 @@ function [message,snum]=add_pdb(fname,idCode)
 % identifier, if present, is defined as a synonym for the structure
 % if no model exists, a new model is created
 %
-% fname         input file name
+% fname         input file name or chain variable
 % idCode        optional PDB-like identifier code, is read from input file
-%               if not given
+%               if not given, if fname stands for a chain variable, iDCode
+%               is the info structure 
 % message       error message structure with fields
 %               .error 0: no error, 1: PDB file does not exist, 2: PDB file
 %               corrupted

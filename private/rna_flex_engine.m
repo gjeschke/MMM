@@ -217,7 +217,8 @@ while modnum < ensemble && runtime < 3600*maxtime && ~failure
             model_indices = template_indices;
             model_indices(3) = modnum;
             replace_model(model_indices,structure);
-        end;
+        end
+        delete(fname1);
     end
 end
 

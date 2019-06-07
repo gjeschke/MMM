@@ -31,24 +31,24 @@ if exist('handles','var')
     interactive = true;
 else
     interactive = false;
-end;
+end
 
 secvec = zeros(1,length(restrain));
-for k = 1:length(restrain),
+for k = 1:length(restrain)
     secvec(k) = restrain(k).secondary;
-end;
+end
 
 if ~isempty(restraints.Na_indices)
     Nanchor_res = restraints.Na_indices(4);
 else
     Nanchor_res = [];
-end;
+end
 
 if ~isempty(restraints.Ca_indices)
     Canchor_res = restraints.Ca_indices(4);
 else
     Canchor_res = [];
-end;
+end
 
 directory = general.tmp_files;
 
@@ -56,7 +56,7 @@ if options.deterministic
     rng(13);
 else
     rng('shuffle'); % initialize random number generator to be able to obtain different ensembles in subsequent runs
-end;
+end
 
 pmodel = restraints.prob;
 pthr = exp(-erfinv(pmodel)^2);
@@ -93,13 +93,13 @@ elseif ~isempty(restraints.Na_indices) % loop anchored at N terminus
     if ~isempty(restraints.anchorC) % closed loop
         sequence = [sequence restraints.Cseq];
         closed_loop = true;
-    end;
+    end
 else % free-standing loop
     reverse = false;
     closed_loop = false;
     free_standing = true;
     template_indices = [];
-end;
+end
 
 res1 = restraints.start;
 resend = restraints.end;
@@ -107,7 +107,7 @@ terminus = resend;
 N_terminus = res1;
 if reverse
     terminus = res1;
-end;
+end
 
 fname = sprintf('%s_r%i_f%i_%i_%i',options.fname_bas,options.rm,options.fd,res1,resend);
 
@@ -115,7 +115,7 @@ min_prob = pthr^options.n_restraints;
 
 if interactive
     add_msg_board(sprintf('Cumulative probability threshold for %i restraints is %6.4f.',options.n_restraints,min_prob));
-end;
+end
 
 if ~free_standing
     [msg,all_chain_coor] = get_object(options.template,'xyz');
@@ -126,7 +126,7 @@ if ~free_standing
         [m,~] = size(xyz);
         prot_coor(poi+1:poi+m,:) = xyz;
         poi = poi+m;
-    end;
+    end
     prot_coor = prot_coor(1:poi,:);
     if msg.error
         if interactive
@@ -134,10 +134,10 @@ if ~free_standing
             add_msg_board(msg);
         end
         return
-    end;
+    end
 else
     prot_coor = [];
-end;
+end
 
 success = 0;
 err_count=zeros(1,11);
@@ -154,10 +154,10 @@ rax = get_distribution;
 for k = 1:options.n_restraints
     distributions{k} = zeros(1,length(rax));
     restraint_distr{k} = zeros(1,length(rax));
-end;
+end
 for k = 1:options.n_monitor
     monitor_distr{k} = zeros(1,length(rax));
-end;
+end
 
 % fullname = fullfile(handles.save_path,sprintf('%s_%s.log',handles.save_name,datestr(now,30)));
 fullname = fullfile(handles.save_path,handles.report_name);
@@ -181,7 +181,7 @@ n_restraints = options.n_restraints;
 rescodes = zeros(1,length(sequence));
 for k = 1:length(sequence)
     rescodes(k) = strfind(residue_defs.single_letter_code,sequence(k));
-end;
+end
 
 Rama_res.me = Ramachandran.me;
 Rama_res.ephi = Ramachandran.ephi;
@@ -216,17 +216,17 @@ while kMC <= ntrials
         if errcode == -1
             Ram_fixed = Ram_fixed + 1;
             errcode = 0;
-        end;
+        end
         if errcode == -4
             Ram_fixed = Ram_fixed + 1;
             Ram_fix_clash = Ram_fix_clash + 1;
             errcode = 4;
-        end;
+        end
         if options.n_restraints == 0
             p_model = 1;
         else
             p_model = erf(sqrt(-log(cumprob)/options.n_restraints));
-        end;
+        end
         err_count(errcode+1) = err_count(errcode+1) + 1;
 
         if ~errcode
@@ -240,7 +240,7 @@ while kMC <= ntrials
                 if interactive
                     add_msg_board(sprintf('Model superimposes onto first model with rmsd of %4.1f Å',rms));
                 end
-            end;
+            end
             loopname = write_pdb_backbone(coor,restraints.sequence,fname,success,res1,directory);
             [pmodel,status,result] = make_SCWRL4_sidegroups(loopname,directory);
     
@@ -260,16 +260,16 @@ while kMC <= ntrials
                     model_indices = template_indices;
                     for modnum = 2:max_models
                         copy_structure(template_indices(1),'+mod',[],modnum,template_indices(1));
-                    end;
+                    end
                 else
                     structure = rd_pdb(pmodel);
                     model_indices = template_indices;
                     model_indices(3) = success;
                     replace_model(model_indices,structure);
-                end;
+                end
                 [distributions,restraint_distr,descriptors,monitor_distr,monitor_descr] = mk_report_distributions(fid_report,model_indices,restrain1,options.monitor,p_model,distributions,restraint_distr,descriptors,monitor_distr,monitor_descr,res1);
             end
-        end;
+        end
         if mod(kMC,disp_update) == 0
             ftr = (1 - kMC/ntrials)*max_seconds;
             fti = max_seconds - runtime;
@@ -280,20 +280,20 @@ while kMC <= ntrials
             if minutes == 60
                 hours = hours + 1;
                 minutes = 0;
-            end;
+            end
             time_left = sprintf('%i h %i min estimated run time to completion',hours,minutes); 
             success_distr = (1-success/kMC)*res_stat/sum(res_stat);
             if reverse
                 success_distr = fliplr(success_distr);
-            end;
+            end
             normalize = 1- cumsum(success_distr);
             normalize(normalize==0)=1;
             for ks = 2:length(success_distr)
                 success_distr(ks) = success_distr(ks)/normalize(ks-1);
-            end;
+            end
             if reverse
                 success_distr = fliplr(success_distr);
-            end;
+            end
             if interactive
                 set(handles.text_time_left,'String',time_left);
                 axes(handles.axes_multi_plot);
@@ -313,26 +313,26 @@ while kMC <= ntrials
                 if closed_loop,
                     set(handles.text_SANS_fail,'String',sprintf('%5.2f',100*err_count(2)/kMC));
                     set(handles.text_SAXS_fail,'String',sprintf('%5.2f',100*err_count(4)/kMC));
-                end;
+                end
                 handles.text_time_per_model.String = sprintf('%4.0f',runtime/success);
             end
             drawnow;
-        end;
+        end
         if success >= max_models,
             break
-        end;
-    end;
+        end
+    end
     if success >= max_models,
         break
-    end;
+    end
 %     if mod(kMC,10000)
 %         fprintf(1,'%6.3f ms per trial\n',1000*runtime/kMC);
 %     end
     if runtime >= max_seconds,
         add_msg_board('Warning: Ensemble generation stopped as maximum allotted time was exceeded.');
         break
-    end;
-end;
+    end
+end
 
 if success > max_models
     success = max_models;
@@ -342,15 +342,15 @@ diagnostics.resax = resax;
 success_distr = (1-success/kMC)*res_stat/sum(res_stat);
 if reverse,
     success_distr = fliplr(success_distr);
-end;
+end
 normalize = 1- cumsum(success_distr);
 normalize(normalize==0)=1;
 for ks = 2:length(success_distr),
     success_distr(ks) = success_distr(ks)/normalize(ks-1);
-end;
+end
 if reverse,
     success_distr = fliplr(success_distr);
-end;
+end
 diagnostics.rax = 10*rax;
 
 diagnostics.success_distr = success_distr;
@@ -377,7 +377,7 @@ diagnostics.snum = snum;
 
 if kMC == ntrials,
     fprintf(fid_report,'Warning: Ensemble generation stopped as maximum allotted number of Monte Carlo trials was exceeded.\n');
-end;
+end
 hours = floor(runtime/3600);
 minutes = floor((runtime-3600*hours)/60);
 seconds = round(runtime - 3600*hours - 60*minutes);
@@ -387,7 +387,7 @@ if success > 0
     fprintf(fid_report,'Models were stored in structure %i and in PDB files starting with %s.\n',diagnostics.snum,fname);
 else
     fprintf(fid_report,'No model found within %i h %i min %i s\n',hours,minutes,seconds);
-end;
+end
 fprintf(fid_report,'%5.2f%% of allowed number of trials was used.\n',100*kMC/ntrials);
 fprintf(fid_report,'%i backbone models were generated.\n',err_count(1));
 fprintf(fid_report,'%5.2f%% of all trials failed by restraint violation.\n',100*err_count(6)/kMC);
@@ -398,7 +398,7 @@ fprintf(fid_report,'%5.2f%% of all backbones failed by sidechain clashes with ri
 if closed_loop,
     fprintf(fid_report,'%5.2f%% of all trials did not reach terminal anchor residue.\n',100*err_count(2)/kMC);
     fprintf(fid_report,'%5.2f%% of all trials failed Ramachandran angles at terminal anchor.\n',100*err_count(4)/kMC);
-end;
+end
 
 if options.n_restraints > 0
     fprintf(fid_report,'--- Distribution shifts and overlaps ---\n\n');
@@ -406,7 +406,7 @@ if options.n_restraints > 0
     for kd = 1:options.n_restraints,
         [overlap,shift] = get_overlap(diagnostics.rax,diagnostics.distributions{kd},diagnostics.restraint_distr{kd});
         fprintf(fid_report,'%5.2f\t%5.3f\n',shift,overlap);
-    end;
+    end
 end
 fclose(fid_report);
 
@@ -414,7 +414,7 @@ if interactive
 
     if kMC == ntrials,
         add_msg_board('Warning: Ensemble generation stopped as maximum allotted number of Monte Carlo trials was exceeded.');
-    end;
+    end
     set(handles.text_percent_time,'String',sprintf('%5.2f',100*runtime/max_seconds));
     set(handles.text_max_trials,'String',sprintf('%5.2f',100*kMC/ntrials));
     set(handles.text_success,'String',sprintf('%i',success));
@@ -427,7 +427,7 @@ if interactive
     if closed_loop,
         set(handles.text_SANS_fail,'String',sprintf('%5.2f',100*err_count(2)/kMC));
         set(handles.text_SAXS_fail,'String',sprintf('%5.2f',100*err_count(4)/kMC));
-    end;
+    end
     handles.text_time_per_model.String = sprintf('%4.0f',runtime/success);
 end
 drawnow;
@@ -455,7 +455,7 @@ for k = 1:length(sequence),
     fprintf(wfile,'%s%3i%s%s%6i%12.3f%8.3f%8.3f  1.00  0.00           C\n','ATOM    ',4*k-2,'  CA  ',residue,k+res1-1,CA(1),CA(2),CA(3));
     fprintf(wfile,'%s%3i%s%s%6i%12.3f%8.3f%8.3f  1.00  0.00           C\n','ATOM    ',4*k-1,'  C   ',residue,k+res1-1,C(1),C(2),C(3));
     fprintf(wfile,'%s%3i%s%s%6i%12.3f%8.3f%8.3f  1.00  0.00           O\n','ATOM    ',4*k,'  O   ',residue,k+res1-1,O(1),O(2),O(3));
-end;
+end
 fclose(wfile);
 
 cd(my_dir);
@@ -488,7 +488,7 @@ cd(directory);
 
 if ~exist('min_approach','var'),
     min_approach = 2.00; % ### should be 2.0
-end;
+end
 
 approach_prot = -1;
 approach_loop = -1;
@@ -501,7 +501,7 @@ if fid==-1,
     add_msg_board(sprintf('Warning: Loop structure PDB file %s missing. Rejected.',loopname));
     cd(my_dir);
     return;
-end;
+end
 poi = 0;
 while 1
     tline = fgetl(fid);
@@ -516,11 +516,11 @@ while 1
                     l_res_assign(poi) = resnum;
                     valstr = [tline(31:38) ' ' tline(39:46) ' ' tline(47:54)];
                     loop_coor(poi,:) = str2num(valstr);
-                end;
-            end;
-        end;
-    end;
-end;
+                end
+            end
+        end
+    end
+end
 fclose(fid);
 
 cd(my_dir);
@@ -546,8 +546,8 @@ if m2 > 0,
        pclash = 1;
        cd(my_dir);
        return
-    end;
-end;
+    end
+end
 
 min_dist = 1e6;
 % test for minimum distance within loop
@@ -557,15 +557,15 @@ for k1 = 1:poi-1,
             approach = norm(loop_coor(k1,:) - loop_coor(k2,:));
             if approach < min_dist,
                 min_dist = approach;
-            end;
-        end;
-    end;
-end;
+            end
+        end
+    end
+end
 approach_loop = min_dist;
 if min_dist < min_approach,
 %     fprintf(2,'Minimum distance of two heavy atoms in loop with sidegroups is: %6.2f Å\n',min_dist);
     iclash = 1;
-end;
+end
 
 function delete_empty_models(snum,success)
 
@@ -575,25 +575,25 @@ chains=length(model.structures{snum});
 for cnum=1:chains,
     for k=1:success,
         atoms{k} = model.structures{snum}(cnum).atoms{k};
-    end;
+    end
     model.structures{snum}(cnum).atoms = atoms;
     for k=1:success,
         residues{k} = model.structures{snum}(cnum).residues{k};
-    end;
+    end
     model.structures{snum}(cnum).residues = residues;    
     for k=1:success,
         xyz{k} = model.structures{snum}(cnum).xyz{k};
-    end;
+    end
     model.structures{snum}(cnum).xyz = xyz;
     for k=1:success,
         Bfactor{k} = model.structures{snum}(cnum).Bfactor{k};
-    end;
+    end
     model.structures{snum}(cnum).Bfactor = Bfactor;
     for k=1:success,
         Btensor{k} = model.structures{snum}(cnum).Btensor{k};
-    end;
+    end
     model.structures{snum}(cnum).Btensor = Btensor;
-end;
+end
 
 function replace_model(indices,structure)
 
@@ -639,7 +639,7 @@ for k = 1:length(restrain),
     radr = sprintf('%s%i',adr,resnum);
     if rpr(k) > 0 % make section for a residue only if it has restraints or potential restraints to be monitored
         fprintf(fid_report,'\nResidue %i\n\n',resnum);
-    end;
+    end
     rindices = resolve_address(radr);
     for kr = 1:length(restrain(k).r_beacon),
         NO_pos1 = get_NO_pos(rindices,restrain(k).r_beacon(kr).label1,298);
@@ -675,9 +675,9 @@ for k = 1:length(restrain),
                 else
                     fprintf(fid_report,'Beacon restraint [%5.2f, %5.2f] Å to residue %s violated at <r> = %5.2f\n',...
                         restrain(k).r_beacon(kr).par1,restrain(k).r_beacon(kr).par2,restrain(k).r_beacon(kr).resb,rmean);
-                end;
-        end;
-    end;
+                end
+        end
+    end
 
     for kr = 1:length(monitor(k).r_beacon),
         NO_pos1 = get_NO_pos(rindices,monitor(k).r_beacon(kr).label1,298);
@@ -690,7 +690,7 @@ for k = 1:length(restrain),
         monitor_distr{mdispoi} = monitor_distr{mdispoi} + p_model*sim_distr;
         monitor_descr{mdispoi} = sprintf('Beacon monitor %i-%s with <r_{sim}> = %5.2f',resnum,monitor(k).r_beacon(kr).resb,rmean);
         fprintf(fid_report,'Monitored distance to residue %s is <r> = %5.2f\n',monitor(k).r_beacon(kr).resb,rmean);
-    end;
+    end
 
     for kr = 1:length(restrain(k).r_intern),
         r2adr = sprintf('%s%i',adr,restrain(k).r_intern(kr).resb);
@@ -729,9 +729,9 @@ for k = 1:length(restrain),
                 else
                     fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] Å to residue %s violated at <r> = %5.2f\n',...
                         restrain(k).r_intern(kr).par1,restrain(k).r_intern(kr).par2,restrain(k).r_intern(kr).resb,rmean);
-                end;
-        end;
-    end;
+                end
+        end
+    end
     
     for kr = 1:length(monitor(k).r_intern),
         r2adr = sprintf('%s%i',adr,monitor(k).r_intern(kr).resb);
@@ -746,7 +746,7 @@ for k = 1:length(restrain),
         monitor_distr{mdispoi} = monitor_distr{mdispoi} + p_model*sim_distr;
         monitor_descr{mdispoi} = sprintf('Internal restraint %i-%i',resnum,restrain(k).r_intern(kr).resb);
         fprintf(fid_report,'Monitored distance to residue %i is <r> = %5.2f\n',monitor(k).r_intern(kr).resb,rmean);
-    end;
+    end
 
     for kr = 1:length(restrain(k).depth),
         NO_pos = get_NO_pos(rindices,restrain(k).depth(kr).label,298);
@@ -780,9 +780,9 @@ for k = 1:length(restrain),
                 else
                     fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] Å violated at <r> = %5.2f\n',...
                         restrain(k).depth(kr).par1,restrain(k).depth(kr).par2,rmean);
-                end;
-        end;
-    end;
+                end
+        end
+    end
 
     for kr = 1:length(monitor(k).depth),
         NO_pos = get_NO_pos(rindices,monitor(k).depth(kr).label,298);
@@ -794,7 +794,7 @@ for k = 1:length(restrain),
         monitor_distr{mdispoi} = monitor_distr{mdispoi} + p_model*sim_distr;
         monitor_descr{mdispoi} = sprintf('Monitored depth %i is <r_{sim}> = %5.2f',resnum,rmean);
         fprintf(fid_report,'Monitored depth is <r> = %5.2f\n',rmean);
-    end;
+    end
 
     for kr = 1:length(restrain(k).oligomer),
         NO_pos = get_NO_pos(rindices,restrain(k).oligomer(kr).label,298);
@@ -827,9 +827,9 @@ for k = 1:length(restrain),
                 else
                     fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] Å violated at <r> = %5.2f\n',...
                         restrain(k).oligomer(kr).par1,restrain(k).oligomer(kr).par2,rmean);
-                end;
-        end;
-    end;
+                end
+        end
+    end
 
     for kr = 1:length(monitor(k).oligomer),
         NO_pos = get_NO_pos(rindices,monitor(k).oligomer(kr).label,298);
@@ -841,9 +841,9 @@ for k = 1:length(restrain),
         monitor_distr{mdispoi} = monitor_distr{mdispoi} + p_model*sim_distr;
         monitor_descr{mdispoi} = sprintf('Monitored oligomer distance %i (n = %i) is <r_{sim}> = %5.2f',resnum,monitor(k).oligomer(kr).n,rmean);
         fprintf(fid_report,'Monitored oligomer distance is <r> = %5.2f\n',rmean);
-    end;
+    end
 
-end;
+end
 
 function NO_pos = get_NO_pos(indices,label,T)
 
@@ -856,7 +856,7 @@ if strcmpi(label,'CA'),
     [~,xyz] = get_object(adr,'coor');
     NO_pos = [xyz 1];
     return
-end;
+end
 
 NO_pos = [];
 if isfield(model,'sites'),
@@ -868,13 +868,13 @@ if isfield(model,'sites'),
                     if strcmpi(label,label_defs.residues(id).short_name),
                         if T == model.sites{k0}(k1).residue(k).T,
                             NO_pos=model.sites{k0}(k1).residue(k).NOpos;
-                        end;
-                    end;
-                end;
-            end;
-        end;
-    end;
-end;
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
 
 if isempty(NO_pos),
     adr = mk_address(indices);
@@ -882,7 +882,7 @@ if isempty(NO_pos),
     hMain.store_undo=false;
     hMain.dynamic_rotamers=false;
     cmd(hMain,command);
-end;
+end
 
 for k0=1:length(model.sites),
     for k1=1:length(model.sites{k0}),
@@ -892,12 +892,12 @@ for k0=1:length(model.sites),
                 if strcmpi(label,label_defs.residues(id).short_name),
                     if T == model.sites{k0}(k1).residue(k).T,
                         NO_pos=model.sites{k0}(k1).residue(k).NOpos;
-                    end;
-                end;
-            end;
-        end;
-    end;
-end;
+                    end
+                end
+            end
+        end
+    end
+end
 
 
 function [overlap,shift] = get_overlap(rax,distr1,distr2)

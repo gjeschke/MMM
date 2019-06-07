@@ -81,7 +81,7 @@ if ~exist('model','var') || ~isfield(model,'current_structure'),
     adr = '[none]';
 else
     adr=mk_address(model.current_structure);
-end;
+end
 
 set(handles.fig_rigi_flex,'Name',sprintf('RigiFlex structure model based on rigid bodies %s',adr));
 
@@ -260,7 +260,6 @@ function pushbutton_run_Callback(hObject, eventdata, handles)
 global general
 global model
 
-test_mode = true;
 % handles.progress = 1; % ### debugging
 
 switch handles.progress
@@ -312,9 +311,6 @@ switch handles.progress
             result_name = fullfile(pathstr,strcat(basname,'_rigi_diagnostics.mat'));
             handles.options = options;
             distributions = mk_report_distributions(report_name,handles,options);
-            if test_mode
-                test_109_500(basname,handles);
-            end
             handles.distributions = distributions;
             restraints = handles.restraints;
             save(result_name,'diagnostics','options','restraints','distributions','report_name');
@@ -431,7 +427,7 @@ switch handles.progress
                     for kr = 1:length(handles.restraints.rb)                       
                         for kc = 1:length(handles.restraints.rb(kr).chains)
                             if min(abs(rna_chains-handles.restraints.rb(kr).chains(kc))) ~= 0
-                                adr_rep = mk_address([snum handles.restraints.rb(kr).chains(kc) km]);
+                                % adr_rep = mk_address([snum handles.restraints.rb(kr).chains(kc) km]);
           %                      fprintf(1,'Replacing coordinates of %s\n',adr_rep);
                                 model.structures{snum}(handles.restraints.rb(kr).chains(kc)).xyz{km} = ...
                                     affine_coor_set(model.structures{snum}(handles.restraints.rb(kr).chains(kc)).xyz{km},adj_transmats{kr});
@@ -472,7 +468,7 @@ switch handles.progress
                     handles.text_success.String = sprintf('%i',km);
                     rba = [handles.diagnostics.snum,km];
                     model.current_structure = handles.diagnostics.snum;
-                    [secdefs,RNA,ensemble,msg] = process_rna_domain_restraints(handles.restraints,rba);
+                    [secdefs,RNA] = process_rna_domain_restraints(handles.restraints,rba);
                     parts = length(handles.restraints.RNA_tags) + length(secdefs);
                     pindices = ones(parts,3);
                     for sec = 0:length(secdefs)
@@ -491,7 +487,7 @@ switch handles.progress
                             [m,~] = size(xyz);
                             environ(poi+1:poi+m,:) = xyz;
                             poi = poi+m;
-                            [stag,ctag,mnum] = mk_address_parts(cmind);
+                            stag = mk_address_parts(cmind);
                             for kr = env_sel(kc,1)+1:env_sel(kc,2)-1
                                 [~,xyz] = get_residue([cmind,kr],'xyz_heavy');
                                 [m,~] = size(xyz);
@@ -546,7 +542,9 @@ switch handles.progress
                             fprintf(link_fid,'%8i%6i\n',rba_solutions(km,1),rba_solutions(km,2));
                             fclose(link_fid);
                             add_msg_board('Fitting SAXS restraints');
-                            model = rmfield(model,'selected');
+                            if isfield(model,'selected')
+                                model = rmfield(model,'selected');
+                            end
                             model.selected{1} = [handles.diagnostics.snum,1,km];
                             model.selected{2} = [handles.diagnostics.snum,3,km];
                             model.selected{3} = [handles.diagnostics.snum,5,km];
@@ -577,9 +575,32 @@ switch handles.progress
         handles.RNA_link_success = success_vec;
         handles = mk_RNA_report_distributions(report_fid,handles);
         fclose(report_fid);
-        model = rmfield(model,'selected');
+        if isfield(model,'selected')
+            model = rmfield(model,'selected');
+        end
+        new_cindices = zeros(1,num_ch+1);
+        ncp = 0;
+        for kc = 1:num_ch
+            [~,ctag] = mk_address_parts([handles.diagnostics.snum,kc]);
+            isRNA = false;
+            for krna = 1:length(handles.restraints.RNA_tags)
+                if strcmpi(['(' ctag ')'],handles.restraints.RNA_tags{krna})
+                    isRNA = true;
+                end
+            end
+            if ~isRNA
+                ncp = ncp + 1;
+                new_cindices(ncp) = kc;
+            end
+        end
+        new_cindices(ncp+1) = num_ch + 1;
+        new_cindices = new_cindices(1:ncp+1);
+        handles.new_cindices = new_cindices;
+        if isfield(model,'selected')
+            model = rmfield(model,'selected');
+        end
         spoi = 0;
-        for kc = [1 3 5 8]
+        for kc = new_cindices
             for km = 1:length(success_vec)
                 if success_vec(km)
                     spoi = spoi + 1;
@@ -588,7 +609,7 @@ switch handles.progress
             end
         end
         fname = fullfile(pathstr,strcat(basname,'_RNA.pdb'));
-        message = wr_pdb_selected(fname,PDBid);
+        message = wr_pdb_selected(fname,handles.restraints.newID);
         if message.error
             diagnostics.unsaved = true;
             if interactive
@@ -605,22 +626,15 @@ switch handles.progress
         guidata(hObject,handles);
 
     case 2 % Flex
-        solutions_given = false;
-        
-        if isfield(handles.restraints,'solutions') && ~isempty(handles.restraints.solutions)
-            solutions_given = true;
-            poi = strfind(handles.restraints.solutions,'.dat');
-            if isempty(poi)
-                soln_name = strcat(handles.restraints.solutions,'.dat');
-            else
-                soln_name = handles.restraints.solutions;
-            end
-            solutions = load(soln_name);
-            rba_solutions = round(solutions);
+        if isfield(handles.restraints,'protein')
+            pctag = handles.restraints.protein(2);
+        else
+            pctag = 'X';
         end
+        snum = handles.diagnostics.snum;
+        num_ch = length(model.structures{handles.diagnostics.snum});
+        to_be_saved = zeros(handles.diagnostics.success,num_ch+1);
         [pathstr,basname] = fileparts(handles.options.fname);
-        linkable_name = fullfile(pathstr,strcat(basname,'_peptide_linkable.dat'));
-        curated_name = fullfile(pathstr,strcat(basname,'_peptide_curated.dat'));
 
         options.min_approach = 1.2;
         options.deterministic = handles.checkbox_std_seed.Value;
@@ -632,14 +646,27 @@ switch handles.progress
         fidr = fopen(handles.report_name,'wt');
         fprintf(fidr,'--- Generation of flexible peptide termini and linkers for rigid-body model %s ---\n',handles.basname);
         fclose(fidr);
-        all_flex_models = zeros(handles.diagnostics.success,length(handles.restraints.pflex)+length(handles.restraints.rflex));
-        all_flex_model_times = zeros(handles.diagnostics.success,length(handles.restraints.pflex)+length(handles.restraints.rflex));
+        all_flex_models = zeros(handles.diagnostics.success,length(handles.restraints.pflex));
+        all_flex_model_times = zeros(handles.diagnostics.success,length(handles.restraints.pflex));
         model.current_structure = handles.diagnostics.snum;
         adr = mk_address(model.current_structure);
         if isfield(handles,'RNA_link_success')
             comp_mask = handles.RNA_link_success;
         else
             comp_mask = ones(1,handles.diagnostics.success);
+        end
+        flex_success = zeros(handles.diagnostics.success,length(handles.restraints.pflex));
+        stag = mk_address_parts(handles.diagnostics.snum);
+        connected_chains = zeros(length(handles.restraints.pflex),2);
+        for kp = 1:length(handles.restraints.pflex)
+            Nchain = handles.restraints.pflex(kp).Nanchor(1:3);
+            Nadr = sprintf('[%s]%s',stag,Nchain);
+            Nind = resolve_address(Nadr);
+            Cchain = handles.restraints.pflex(kp).Canchor(1:3);
+            Cadr = sprintf('[%s]%s',stag,Cchain);
+            Cind = resolve_address(Cadr);
+            connected_chains(kp,1) = Nind(2);
+            connected_chains(kp,2) = Cind(2);
         end
         for km = 1:handles.diagnostics.success % loop over rigid-body models
             options.max_trials = handles.max_trials;
@@ -660,6 +687,9 @@ switch handles.progress
                 drawnow
                 model.current_structure = handles.diagnostics.snum; % make the result of rigid-body arrangement the current structure
                 [restrain,restraints,monitor,cancelled,number,number_monitor] = process_domain_restraints(handles.restraints.pflex(kp),km);
+                options.max_time = handles.restraints.pflex(kp).time;
+                set(handles.edit_max_time,'String',sprintf('%5.2f',options.max_time));
+                drawnow
                 if cancelled
                     add_msg_board(sprintf('ERROR: Restraint processing failed for flexible domain %i in model %i',kp,kp));
                     options.max_trials = -1;
@@ -674,11 +704,9 @@ switch handles.progress
                 if flex_diagnostics.success == 0
                     add_msg_board(sprintf('Warning: No models found for flexible domain %i in rigid-body arrangement %i',kp,km));
                     fprintf(fidr,'Modelling of flexible domain %i in rigid-body arrangement %i failed after %i s\n',kp,km,flex_diagnostics.runtime);
-                    if kp < length(handles.restraints.pflex)
-                        add_msg_board('Skipping remaining flexible sections in this rigid-body arrangement');
-                        fprintf(fidr,'Skipping remaining flexible sections in this rigid-body arrangement\n');
-                        options.max_trials = -1;
-                    end
+                    options.max_trials = -1;
+                else
+                    flex_success(km,kp) = 1;
                 end
                 all_flex_models(km,kp) = flex_diagnostics.snum;
                 all_flex_model_times(km,kp) = flex_diagnostics.time_per_model;
@@ -688,114 +716,75 @@ switch handles.progress
                 drawnow
                 set(gcf,'Pointer','arrow');
             end
-            if flex_diagnostics.success
-                if solutions_given
-                    link_fid = fopen(linkable_name,'at');
-                    fprintf(link_fid,'%8i%6i\n',rba_solutions(km,1),rba_solutions(km,2));
-                    fclose(link_fid);
-                    add_msg_board('Fitting SAXS restraints');
-                    model = rmfield(model,'selected');
-                    model.selected{1} = [handles.diagnostics.snum,1,km];
-                    model.selected{2} = [handles.diagnostics.snum,3,km];
-                    model.selected{3} = [handles.diagnostics.snum,5,km];
-                    model.selected{4} = [handles.diagnostics.snum,8,km];
-                    pdbfile = sprintf('t_%i',round(10000*rand));
-                    to_be_deleted = 't*.*';
-                    wr_pdb_selected(pdbfile,'SAXS');
-                    SAXS_curve = load_SAXS_curve('1-4s-Buffer.dat');
-                    SAXS_options.sm = 10*max(SAXS_curve(:,1));
-                    [chi2,~,~,result] = fit_SAXS_by_crysol('1-4s-Buffer.dat',pdbfile,SAXS_options);
-                    if isempty(chi2) || isnan(chi2)
-                        SAXS_chi_0 = 1e6;
-                        fprintf(2,'Warning: SAXS fitting failed\n');
-                        fprintf(2,'%s',result);
-                    else
-                        fprintf(1,'SAXS curve fitted with chi^2 of %6.3f\n',chi2);
-                        SAXS_chi_0 = chi2;
+            linked_model = 0;
+            RNA = num_ch+1;
+            chains = zeros(1,num_ch+1);
+            ncp = 0;
+            for kc = 1:num_ch
+                [~,ctag] = mk_address_parts([handles.diagnostics.snum,kc]);
+                isRNA = false;
+                for krna = 1:length(handles.restraints.RNA_tags)
+                    if strcmpi(['(' ctag ')'],handles.restraints.RNA_tags{krna})
+                        isRNA = true;
                     end
-                    delete(to_be_deleted);
-                    for kp = 1:length(handles.restraints.pflex)
-                        model.selected{4+kp} = [all_flex_models(km,kp),1,1];
-                    end
-                    pdbfile = sprintf('t_%i',round(10000*rand));
-                    to_be_deleted = 't*.*';
-                    wr_pdb_selected(pdbfile,'SAXS');
-                    SAXS_curve = load_SAXS_curve('1-4s-Buffer.dat');
-                    SAXS_options.sm = 10*max(SAXS_curve(:,1));              
-                    [chi2,~,~,result] = fit_SAXS_by_crysol('1-4s-Buffer.dat',pdbfile,SAXS_options);
-                    if isempty(chi2) || isnan(chi2)
-                        SAXS_chi = 1e6;
-                        fprintf(2,'Warning: SAXS fitting failed\n');
-                        fprintf(2,'%s',result);
-                    else
-                        fprintf(1,'SAXS curve fitted with chi^2 of %6.3f\n',chi2);
-                        SAXS_chi = chi2;
-                    end
-                    delete(to_be_deleted);
-                    add_msg_board('Fitting SANS restraints');
-                    model = rmfield(model,'selected');
-                    model.selected{1} = [handles.diagnostics.snum,1,km];
-                    model.selected{2} = [handles.diagnostics.snum,3,km];
-                    model.selected{3} = [handles.diagnostics.snum,5,km];
-                    pdbfile = sprintf('t_%i',round(10000*rand));
-                    to_be_deleted = 't*.*';
-                    wr_pdb_selected(pdbfile,'SANS');
-                    [chi2,~,~,result] = fit_SANS_by_cryson('1-4sD2O_66_1p2m_atsas.dat',pdbfile,'ill_1p2m.res');
-                    if isempty(chi2) || isnan(chi2)
-                        SANS_chi_1p2_0 = 1e6;
-                        fprintf(2,'Warning: SANS fitting failed\n');
-                        fprintf(2,'%s',result);
-                    else
-                        fprintf(1,'SANS curve fitted with chi^2 of %6.3f\n',chi2);
-                        SANS_chi_1p2_0 = chi2;
-                    end
-                    [chi2,~,~,result] = fit_SANS_by_cryson('1-4sD2O_66_4m_atsas.dat',pdbfile,'ill_4m.res');
-                    if isempty(chi2) || isnan(chi2)
-                        SANS_chi_4_0 = 1e6;
-                        fprintf(2,'Warning: SANS fitting failed\n');
-                        fprintf(2,'%s',result);
-                    else
-                        fprintf(1,'SANS curve fitted with chi^2 of %6.3f\n',chi2);
-                        SANS_chi_4_0 = chi2;
-                    end
-                    delete(to_be_deleted);
-                    for kp = 1:length(handles.restraints.pflex)
-                        model.selected{3+kp} = [all_flex_models(km,kp),1,1];
-                    end
-                    pdbfile = sprintf('t_%i',round(10000*rand));
-                    to_be_deleted = 't*.*';
-                    wr_pdb_selected(pdbfile,'SANS');
-                    [chi2,~,~,result] = fit_SANS_by_cryson('1-4sD2O_66_1p2m_atsas.dat',pdbfile,'ill_1p2m.res');
-                    if isempty(chi2) || isnan(chi2)
-                        SANS_chi_1p2 = 1e6;
-                        fprintf(2,'Warning: SANS fitting failed\n');
-                        fprintf(2,'%s',result);
-                    else
-                        fprintf(1,'SANS curve fitted with chi^2 of %6.3f\n',chi2);
-                        SANS_chi_1p2 = chi2;
-                    end
-                    [chi2,~,~,result] = fit_SANS_by_cryson('1-4sD2O_66_4m_atsas.dat',pdbfile,'ill_4m.res');
-                    if isempty(chi2) || isnan(chi2)
-                        SANS_chi_4 = 1e6;
-                        fprintf(2,'Warning: SANS fitting failed\n');
-                        fprintf(2,'%s',result);
-                    else
-                        fprintf(1,'SANS curve fitted with chi^2 of %6.3f\n',chi2);
-                        SANS_chi_4 = chi2;
-                    end
-                    delete(to_be_deleted);
-                    curated_fid = fopen(curated_name,'at');
-                    fprintf(curated_fid,'%8i%6i%8.3f%8.3f%8.3f%8.3f%8.3f%8.3f%8.3f%8.3f\n',rba_solutions(km,1),rba_solutions(km,2),...
-                        handles.diagnostics.final_chi2_SANS(km),(SANS_chi_1p2+SANS_chi_4)/2,...
-                        SANS_chi_1p2_0,SANS_chi_1p2,...
-                        SANS_chi_4_0,SANS_chi_4,...
-                        SAXS_chi_0,SAXS_chi);
-                    fclose(curated_fid);
                 end
+                if ~isRNA
+                    ncp = ncp + 1;
+                    chains(ncp) = kc;
+                end
+            end
+            save_it = prod(flex_success(km,:));
+            for kp = 1:length(handles.restraints.pflex)
+                if flex_success(km,kp)
+                    for kc = 1:num_ch
+                        if chains(kc) == connected_chains(kp,1) || chains(kc) == connected_chains(kp,2)
+                            chains(kc) = 0;
+                        end
+                    end
+                    linked_model = all_flex_models(km,kp); 
+                end
+            end
+            if save_it
+                cch = 0;
+                found = true;
+                indices = cell(1,100);
+                while found
+                    cch = cch + 1;
+                    ctag = id2tag(cch,handles.restraints.peptide_tags{1});
+                    if isempty(ctag)
+                        found = false;
+                        cch = cch - 1;
+                    else
+                        [cind,msg] = resolve_address(sprintf('[%s](%s)',stag,ctag));
+                        if ~isempty(cind) && ~msg.error % this is a rigid-body peptide chain
+                            indices{cch} = [snum cind(2) km];
+                        else
+                            flexnum = str2double(ctag);
+                            secstruct = all_flex_models(km,flexnum);
+                            indices{cch} = [secstruct 1 1];
+                        end
+                    end
+                end
+                indices = indices(1:cch);
+                chain = combine_chains(indices,pctag);
+                info = set_info(chain,linked_model);
+                [~,linked_model] = add_pdb(chain,info);
+                to_be_saved(km,1) = linked_model;
+                to_be_saved(km,2) = RNA;
+                if isfield(model,'selected')
+                    model = rmfield(model,'selected');
+                end
+                model.selected{1} = [linked_model 1 1];
+                model.selected{2} = [handles.diagnostics.snum handles.new_cindices(end) km];
+                fmname = sprintf('%s_m%i_flex.pdb',basname,km);
+                fname = fullfile(pathstr,fmname);
+                wr_pdb_selected(fname,handles.restraints.newID,[],true);
             end
         end
         handles.all_flex_models = all_flex_models;
         handles.all_flex_model_times = all_flex_model_times;
+        handles.flex_success = flex_success;
+        handles.flex_saved = to_be_saved; 
         handles.progress = 3;
         add_msg_board('Flex step completed.');
         if isfield(handles.restraints,'build_time')
@@ -1032,23 +1021,23 @@ end
 fprintf(fid_report,'Parallelization granularity: %i\n',options.granularity);
 fprintf(fid_report,'\n%i models were generated.\n',handles.diagnostics.success);
 
-if ~isempty(handles.restraints.SANS)
-    fprintf(fid_report,'--- SANS fit results ---\n');
-    for km = 1:handles.diagnostics.success
-        fprintf(fid_report,'Model %i, SANS chi^2 = %4.2f',km,handles.diagnostics.final_chi2_SANS(km));
-        if length(handles.restraints.SANS) > 1
-            fprintf(fid_report,'(');
-            for ks = 1:length(handles.restraints.SANS)
-                fprintf(fid_report,'%4.2f',handles.diagnostics.chi_SANS(ks,km));
-                if ks < length(handles.restraints.SANS)
-                    fprintf(fid_report,', ');
-                end
-            end
-            fprintf(fid_report,')');
-        end
-        fprintf(fid_report,'\n');
-    end
-end
+% if ~isempty(handles.restraints.SANS)
+%     fprintf(fid_report,'--- SANS fit results ---\n');
+%     for km = 1:handles.diagnostics.success
+%         fprintf(fid_report,'Model %i, SANS chi^2 = %4.2f',km,handles.diagnostics.final_chi2_SANS(km));
+%         if length(handles.restraints.SANS) > 1
+%             fprintf(fid_report,'(');
+%             for ks = 1:length(handles.restraints.SANS)
+%                 fprintf(fid_report,'%4.2f',handles.diagnostics.chi_SANS(ks,km));
+%                 if ks < length(handles.restraints.SANS)
+%                     fprintf(fid_report,', ');
+%                 end
+%             end
+%             fprintf(fid_report,')');
+%         end
+%         fprintf(fid_report,'\n');
+%     end
+% end
 poi = 0;
 restraints = handles.restraints;
 is_core_restraint = zeros(1,length(restraints.DEER));
@@ -1384,34 +1373,34 @@ if ~copy_mode
     set(gca,'XTickLabelMode','auto');
     cla
 end;
-if handles.radiobutton_SANS_fit.Value
-    hold on;
-    for ks = 1:length(handles.restraints.SANS)
-        fit = handles.diagnostics.SANS_curves{ks,cm};
-        plot(fit(:,1),fit(:,2));
-        plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
-    end;
-    title(sprintf('SANS fit for model %i (chi^2 = %4.2f)',cm,handles.diagnostics.final_chi2_SANS(cm)));
-end
-if handles.radiobutton_SANS_chi2.Value
-    hold on;
-    [ms,nm] = size(handles.diagnostics.chi_SANS);
-    for kl = 1:ms
-        plot(handles.diagnostics.chi_SANS(kl,:),'.');
-    end
-    plot(sum(handles.diagnostics.chi_SANS)/ms,'Color',[0.25,0.25,0.25]);
-    plot([1,nm],[handles.SANS_threshold,handles.SANS_threshold],'Color',[0.75,0,0]);
-    title('SANS fulfillment');
-end
-if handles.radiobutton_SAXS_fit.Value
-    hold on;
-    for ks = 1:length(handles.restraints.SAXS)
-        fit = handles.diagnostics.SAXS_curves{ks,cm};
-        plot(fit(:,1),fit(:,2));
-        plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
-    end;
-    title(sprintf('SAXS fit for model %i (chi^2 = %4.2f)',cm,handles.diagnostics.final_chi2_SAXS(cm)));
-end
+% if handles.radiobutton_SANS_fit.Value
+%     hold on;
+%     for ks = 1:length(handles.restraints.SANS)
+%         fit = handles.diagnostics.SANS_curves{ks,cm};
+%         plot(fit(:,1),fit(:,2));
+%         plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
+%     end;
+%     title(sprintf('SANS fit for model %i (chi^2 = %4.2f)',cm,handles.diagnostics.final_chi2_SANS(cm)));
+% end
+% if handles.radiobutton_SANS_chi2.Value
+%     hold on;
+%     [ms,nm] = size(handles.diagnostics.chi_SANS);
+%     for kl = 1:ms
+%         plot(handles.diagnostics.chi_SANS(kl,:),'.');
+%     end
+%     plot(sum(handles.diagnostics.chi_SANS)/ms,'Color',[0.25,0.25,0.25]);
+%     plot([1,nm],[handles.SANS_threshold,handles.SANS_threshold],'Color',[0.75,0,0]);
+%     title('SANS fulfillment');
+% end
+% if handles.radiobutton_SAXS_fit.Value
+%     hold on;
+%     for ks = 1:length(handles.restraints.SAXS)
+%         fit = handles.diagnostics.SAXS_curves{ks,cm};
+%         plot(fit(:,1),fit(:,2));
+%         plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
+%     end;
+%     title(sprintf('SAXS fit for model %i (chi^2 = %4.2f)',cm,handles.diagnostics.final_chi2_SAXS(cm)));
+% end
 if handles.radiobutton_crosslinks.Value
     hold on;
     xlink_fulfill = handles.diagnostics.xlink_fulfill;
@@ -1828,7 +1817,7 @@ if ~isfield(restraints,'sequence')
     restrain=[];
     cancelled = true;
     return;
-end;
+end
 
 for k = 1:length(restraints.sequence)
     restrain(k).secondary = 0;
@@ -1838,7 +1827,7 @@ for k = 1:length(restraints.sequence)
     restrain(k).r_intern = [];
     restrain(k).oligomer = [];
     restrain(k).depth = [];
-end;
+end
 
 monitor = restrain;
 
@@ -1855,8 +1844,8 @@ else
         restrain=[];
         cancelled = true;
         return;
-    end;
-end;
+    end
+end
 
 restraints.res1 = res1;
 restraints.rese = rese;
@@ -1875,7 +1864,7 @@ if isfield(restraints,'DEER')
                 restrain=[];
                 cancelled = true;
                 return;
-            end;
+            end
             poi = poi + 1;
             restraints.DEER(k).type1 = 1;
             indices(3) = modnum;
@@ -1889,14 +1878,14 @@ if isfield(restraints,'DEER')
                     [mi,pT] = min(abs(Tvec-298));
                     if mi > eps
                         add_msg_board('Warning: No library exactly fits the specified labelling temperature.');
-                    end;
+                    end
                     libname = id2tag(pT,rotamer_libraries(kr).files);
                     NO = get_relative_label(libname);
                     restraints.DEER(k).NO_rel1 = NO;
                     restraints.DEER(k).type1 = 0;
-                end;
-            end;
-        end;
+                end
+            end
+        end
         [indices,message]=resolve_address(restraints.DEER(k).adr2);
         if message.error ~= 2 && message.error ~= 13 % this site exists and is thus a beacon
             if message.error
@@ -1906,7 +1895,7 @@ if isfield(restraints,'DEER')
                 restrain=[];
                 cancelled = true;
                 return;
-            end;
+            end
             poi = poi + 1;
             restraints.DEER(k).type2 = 1;
             indices(3) = modnum;
@@ -1920,15 +1909,15 @@ if isfield(restraints,'DEER')
                     [mi,pT] = min(abs(Tvec-298));
                     if mi > eps
                         add_msg_board('Warning: No library exactly fits the specified labelling temperature.');
-                    end;
+                    end
                     libname = id2tag(pT,rotamer_libraries(kr).files);
                     NO = get_relative_label(libname);
                     restraints.DEER(k).NO_rel2 = NO;
                     restraints.DEER(k).type2 = 0;
-                end;
-            end;
-        end;
-    end;
+                end
+            end
+        end
+    end
     labels = get_labels(llist,label);
     for k = 1:length(restraints.DEER)
         clabel1 = restraints.DEER(k).label1;
@@ -1941,71 +1930,71 @@ if isfield(restraints,'DEER')
                 restrain=[];
                 cancelled = true;
                 return;
-            end;
+            end
             NO1 = restraints.DEER(k).NO_rel1;
             NO2 = restraints.DEER(k).NO_rel2;
             if resa < resb
                 exch = resa; resa = resb; resb = exch;
                 exch = NO1; NO1 = NO2; NO2 = exch;
-            end;
+            end
             if restraints.DEER(k).r ~= 0
                 [restrain,number] = mk_internal_restraint(restrain,NO1,NO2,resa,resb,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number,clabel1,clabel2);
             else
                 [monitor,number_monitor] = mk_internal_restraint(monitor,NO1,NO2,resa,resb,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number_monitor,clabel1,clabel2);
                 number_monitor = number_monitor + 1;
-            end;
-        end;
+            end
+        end
         if restraints.DEER(k).type1 == 1 && restraints.DEER(k).type2 ==0 % beacon restraint, first residue beacon
             indices = restraints.DEER(k).indices1;
             adr1 = mk_address(indices);
             for kl = 1:length(labels)
                 if sum(abs(indices-labels(kl).indices)) == 0
                     xyz_beacon = labels(kl).xyz;
-                end;
-            end;
+                end
+            end
             res_loop = correct_section_address(restraints.DEER(k).adr2);
             if isempty(res_loop)
                 add_msg_board(sprintf('ERROR: Residue address %s inside domain is invalid.',restraints.DEER(k).adr2)); 
                 restrain=[];
                 cancelled = true;
                 return;
-            end;
+            end
             NO = restraints.DEER(k).NO_rel2;
             if restraints.DEER(k).r ~= 0
                 [restrain,number] = mk_beacon_restraint(restrain,NO,res_loop,xyz_beacon,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number,clabel1,clabel2,indices,adr1);
             else
                 [monitor,number_monitor] = mk_beacon_restraint(monitor,NO,res_loop,xyz_beacon,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number_monitor,clabel1,clabel2,indices,adr1);
                 number_monitor = number_monitor + 1;
-            end;
-        end;
+            end
+        end
         if restraints.DEER(k).type1 == 0 && restraints.DEER(k).type2 == 1 % beacon restraint, second residue beacon
             indices = restraints.DEER(k).indices2;
             adr2 = mk_address(indices);
             for kl = 1:length(labels)
                 if sum(abs(indices-labels(kl).indices)) == 0
                     xyz_beacon = labels(kl).xyz;
-                end;
-            end;
+                end
+            end
             res_loop = correct_section_address(restraints.DEER(k).adr1);
             if isempty(res_loop)
                 add_msg_board(sprintf('ERROR: Residue address %s inside domain is invalid.',restraints.DEER(k).adr1)); 
                 restrain=[];
                 cancelled = true;
                 return;
-            end;
+            end
             NO = restraints.DEER(k).NO_rel1;
             if restraints.DEER(k).r ~= 0
                [restrain,number] = mk_beacon_restraint(restrain,NO,res_loop,xyz_beacon,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number,clabel1,clabel2,indices,adr2);
             else
                [monitor,number_monitor] = mk_beacon_restraint(monitor,NO,res_loop,xyz_beacon,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number_monitor,clabel1,clabel2,indices,adr2);
                 number_monitor = number_monitor + 1;
-            end;
-        end;
+            end
+        end
         if restraints.DEER(k).type1 == 1 && restraints.DEER(k).type2 == 1 % nonsensical restraint inside defined structure
             add_msg_board(sprintf('Warning: Restraint between residues %s and %s inside rigid bodies will be ignored.',restraints.DEER(k).adr1,restraints.DEER(k).adr2)); 
-        end;
-    end;
-end;
+        end
+    end
+end
 
 if isfield(restraints,'depth')
     for k = 1:length(restraints.depth)
@@ -2019,27 +2008,27 @@ if isfield(restraints,'depth')
                     [mi,pT] = min(abs(Tvec-298));
                     if mi > eps
                         add_msg_board('Warning: No library exactly fits the specified labelling temperature.');
-                    end;
+                    end
                     libname = id2tag(pT,rotamer_libraries(kr).files);
                     NO = get_relative_label(libname);
-                end;
-            end;
-        end;
+                end
+            end
+        end
         res = restraints.depth(k).num;
         if isempty(res) || isnan(res)
             add_msg_board(sprintf('ERROR: Residue number %i inside domain is invalid.',res)); 
             restrain=[];
             cancelled = true;
             return;
-        end;
+        end
         if restraints.depth(k).z ~= 0
             [restrain,number] = mk_depth_restraint(restrain,NO,res,restraints.depth(k).z,restraints.depth(k).sigz,res1,number,clabel);
         else
             [monitor,number_monitor] = mk_depth_restraint(monitor,NO,res,restraints.depth(k).z,restraints.depth(k).sigz,res1,number_monitor,clabel);
             number_monitor = number_monitor + 1;
-        end;
-    end;
-end;
+        end
+    end
+end
 
 if isfield(restraints,'oligomer')
     for k = 1:length(restraints.oligomer)
@@ -2053,34 +2042,34 @@ if isfield(restraints,'oligomer')
                     [mi,pT] = min(abs(Tvec-298));
                     if mi > eps
                         add_msg_board('Warning: No library exactly fits the specified labelling temperature.');
-                    end;
+                    end
                     libname = id2tag(pT,rotamer_libraries(kr).files);
                     NO = get_relative_label(libname);
-                end;
-            end;
-        end;
+                end
+            end
+        end
         res = restraints.oligomer(k).num;
         if isempty(res) || isnan(res)
             add_msg_board(sprintf('ERROR: Residue number %i is invalid in oligomer restraint.',res)); 
             restrain=[];
             cancelled = true;
             return;
-        end;
+        end
         if restraints.oligomer(k).r ~= 0
             [restrain,number] = mk_oligomer_restraint(restrain,NO,res,restraints.oligomer(k).mult,restraints.oligomer(k).r,restraints.oligomer(k).sigr,res1,number,clabel);
         else
             [monitor,number_monitor] = mk_oligomer_restraint(monitor,NO,res,restraints.oligomer(k).mult,restraints.oligomer(k).r,restraints.oligomer(k).sigr,res1,number_monitor,clabel);
             number_monitor = number_monitor + 1;
-        end;
-    end;
-end;
+        end
+    end
+end
 
 if isfield(restraints,'cispeptides')
     for k = 1:length(restraints.cispeptides)
         kr = restraints.cispeptides(k) - res1 + 1;
         restrain(kr).cis = 1;
-    end;
-end;
+    end
+end
 
 if isfield(restraints,'aprop')
     for k = 1:length(restraints.aprop)
@@ -2090,11 +2079,11 @@ if isfield(restraints,'aprop')
             restrain=[];
             cancelled = true;
             return;
-        end;
+        end
         kr = res - res1 + 1;
         restrain(kr).aprop = restraints.aprop(k).prop;
-    end;
-end;
+    end
+end
 
 if isfield(restraints,'bprop')
     for k = 1:length(restraints.bprop)
@@ -2104,11 +2093,11 @@ if isfield(restraints,'bprop')
             restrain=[];
             cancelled = true;
             return;
-        end;
+        end
         kr = res - res1 + 1;
         restrain(kr).bprop = restraints.bprop(k).prop;
-    end;
-end;
+    end
+end
 
 if isfield(restraints,'pprop')
     for k = 1:length(restraints.pprop)
@@ -2118,11 +2107,11 @@ if isfield(restraints,'pprop')
             restrain=[];
             cancelled = true;
             return;
-        end;
+        end
         kr = res - res1 + 1;
         restrain(kr).pprop = restraints.pprop(k).prop;
-    end;
-end;
+    end
+end
 
 if isfield(restraints,'helices')
     for k = 1:length(restraints.helices)
@@ -2133,19 +2122,19 @@ if isfield(restraints,'helices')
             restrain=[];
             cancelled = true;
             return;
-        end;
+        end
         for ks = 1:length(restraints.sequence)
             off1 = ks - 1 + res1 - ha;
             off2 = he - (ks - 1 + res1);
             if off1 >=0 && off2 >=0
                 restrain(ks).secondary = 1;
-            end;
+            end
             if off1 >=2 && off2 >=2
                 restrain(ks).secondary = 3;
-            end;
-        end;
-    end;
-end;
+            end
+        end
+    end
+end
 
 if isfield(restraints,'strands')
     for k = 1:length(restraints.strands)
@@ -2156,16 +2145,16 @@ if isfield(restraints,'strands')
             restrain=[];
             cancelled = true;
             return;
-        end;
+        end
         for ks = 1:length(restraints.sequence)
             off1 = ks - 1 + res1 - ha;
             off2 = he - (ks - 1 + res1);
             if off1 >=0 && off2 >=0
                 restrain(ks).secondary = 2;
-            end;
-        end;
-    end;
-end;
+            end
+        end
+    end
+end
 
 % anchor residue information
 
@@ -2181,7 +2170,7 @@ if isfield(restraints,'Nanchor') && ~strcmp(restraints.Nanchor,'*')
         restrain=[];
         cancelled = true;
         return
-    end;
+    end
     Nname = model.structures{indices(1)}(indices(2)).residues{indices(3)}.info(indices(4)).name;
     id = tag2id(Nname,upper(residue_defs.restags));
     N_slc = residue_defs.single_letter_code(id);
@@ -2201,7 +2190,7 @@ if isfield(restraints,'Nanchor') && ~strcmp(restraints.Nanchor,'*')
         return
     else
         anchorNp(1,:) = coor;
-    end;
+    end
     [msg,coor] = get_object(sprintf('%s.CA',restraints.Nanchor_p),'coor');
     if msg.error
         add_msg_board(sprintf('ERROR: For residue %s before N-terminal anchor CA atom does not exist.',restraints.Nanchor_p));
@@ -2211,7 +2200,7 @@ if isfield(restraints,'Nanchor') && ~strcmp(restraints.Nanchor,'*')
         return
     else
         anchorNp(2,:) = coor;
-    end;
+    end
     [msg,coor] = get_object(sprintf('%s.C',restraints.Nanchor_p),'coor');
     if msg.error
         add_msg_board(sprintf('ERROR: For residue %s before N-terminal anchor C atom does not exist.',restraints.Nanchor_p));
@@ -2221,7 +2210,7 @@ if isfield(restraints,'Nanchor') && ~strcmp(restraints.Nanchor,'*')
         return
     else
         anchorNp(3,:) = coor;
-    end;
+    end
     [msg,coor] = get_object(sprintf('%s.O',restraints.Nanchor_p),'coor');
     if msg.error
         add_msg_board(sprintf('ERROR: For residue %s before N-terminal anchor O atom does not exist.',restraints.Nanchor_p));
@@ -2231,7 +2220,7 @@ if isfield(restraints,'Nanchor') && ~strcmp(restraints.Nanchor,'*')
         return
     else
         anchorNp(4,:) = coor;
-    end;
+    end
     anchorN = zeros(4,3);
     [msg,coor] = get_object(sprintf('%s.N',restraints.Nanchor),'coor');
     if msg.error
@@ -2242,7 +2231,7 @@ if isfield(restraints,'Nanchor') && ~strcmp(restraints.Nanchor,'*')
         return
     else
         anchorN(1,:) = coor;
-    end;
+    end
     [msg,coor] = get_object(sprintf('%s.CA',restraints.Nanchor),'coor');
     if msg.error
         add_msg_board(sprintf('ERROR: For N-terminal anchor residue %s CA atom does not exist.',restraints.Nanchor));
@@ -2252,7 +2241,7 @@ if isfield(restraints,'Nanchor') && ~strcmp(restraints.Nanchor,'*')
         return
     else
         anchorN(2,:) = coor;
-    end;
+    end
     [msg,coor] = get_object(sprintf('%s.C',restraints.Nanchor),'coor');
     if msg.error
         add_msg_board(sprintf('ERROR: For N-terminal anchor residue %s C atom does not exist.',restraints.Nanchor));
@@ -2262,7 +2251,7 @@ if isfield(restraints,'Nanchor') && ~strcmp(restraints.Nanchor,'*')
         return
     else
         anchorN(3,:) = coor;
-    end;
+    end
     [msg,coor] = get_object(sprintf('%s.O',restraints.Nanchor),'coor');
     if msg.error
         add_msg_board(sprintf('ERROR: For N-terminal anchor residue %s O atom does not exist.',restraints.Nanchor));
@@ -2272,7 +2261,7 @@ if isfield(restraints,'Nanchor') && ~strcmp(restraints.Nanchor,'*')
         return
     else
         anchorN(4,:) = coor;
-    end;
+    end
     restraints.anchorN = anchorN;
     restraints.anchorNp = anchorNp;
     restraints.Nseq = [Np_slc N_slc];
@@ -2280,7 +2269,7 @@ else
     restraints.anchorN = [];
     restraints.anchorNp = [];
     restraints.Nseq = '';
-end;
+end
 Ca_indices = [];
 if isfield(restraints,'Canchor') && ~strcmp(restraints.Canchor,'*')
     [indices,message] = resolve_address(restraints.Canchor);
@@ -2293,7 +2282,7 @@ if isfield(restraints,'Canchor') && ~strcmp(restraints.Canchor,'*')
         restrain=[];
         cancelled = true;
         return
-    end;
+    end
     Cname = model.structures{indices(1)}(indices(2)).residues{indices(3)}.info(indices(4)).name;
     id = tag2id(Cname,upper(residue_defs.restags));
     C_slc = residue_defs.single_letter_code(id);
@@ -2313,7 +2302,7 @@ if isfield(restraints,'Canchor') && ~strcmp(restraints.Canchor,'*')
         return
     else
         anchorCn(1,:) = coor;
-    end;
+    end
     [msg,coor] = get_object(sprintf('%s.CA',restraints.Canchor_n),'coor');
     if msg.error
         add_msg_board(sprintf('ERROR: For residue %s after C-terminal anchor CA atom does not exist.',restraints.Canchor_n));
@@ -2323,7 +2312,7 @@ if isfield(restraints,'Canchor') && ~strcmp(restraints.Canchor,'*')
         return
     else
         anchorCn(2,:) = coor;
-    end;
+    end
     [msg,coor] = get_object(sprintf('%s.C',restraints.Canchor_n),'coor');
     if msg.error
         add_msg_board(sprintf('ERROR: For residue %s after C-terminal anchor C atom does not exist.',restraints.Canchor_n));
@@ -2333,7 +2322,7 @@ if isfield(restraints,'Canchor') && ~strcmp(restraints.Canchor,'*')
         return
     else
         anchorCn(3,:) = coor;
-    end;
+    end
     [msg,coor] = get_object(sprintf('%s.O',restraints.Canchor_n),'coor');
     if msg.error
         add_msg_board(sprintf('ERROR: For residue %s after C-terminal anchor O atom does not exist.',restraints.Canchor_n));
@@ -2343,7 +2332,7 @@ if isfield(restraints,'Canchor') && ~strcmp(restraints.Canchor,'*')
         return
     else
         anchorCn(4,:) = coor;
-    end;
+    end
     anchorC = zeros(4,3);
     [msg,coor] = get_object(sprintf('%s.N',restraints.Canchor),'coor');
     if msg.error
@@ -2354,9 +2343,9 @@ if isfield(restraints,'Canchor') && ~strcmp(restraints.Canchor,'*')
         return
     else
         anchorC(1,:) = coor;
-    end;
+    end
     [msg,coor] = get_object(sprintf('%s.CA',restraints.Canchor),'coor');
-    if msg.error,
+    if msg.error
         add_msg_board(sprintf('ERROR: For C-terminal anchor residue %s CA atom does not exist.',restraints.Canchor));
         add_msg_board(message.text);
         restrain=[];
@@ -2364,9 +2353,9 @@ if isfield(restraints,'Canchor') && ~strcmp(restraints.Canchor,'*')
         return
     else
         anchorC(2,:) = coor;
-    end;
+    end
     [msg,coor] = get_object(sprintf('%s.C',restraints.Canchor),'coor');
-    if msg.error,
+    if msg.error
         add_msg_board(sprintf('ERROR: For C-terminal anchor residue %s C atom does not exist.',restraints.Canchor));
         add_msg_board(message.text);
         restrain=[];
@@ -2374,9 +2363,9 @@ if isfield(restraints,'Canchor') && ~strcmp(restraints.Canchor,'*')
         return
     else
         anchorC(3,:) = coor;
-    end;
+    end
     [msg,coor] = get_object(sprintf('%s.O',restraints.Canchor),'coor');
-    if msg.error,
+    if msg.error
         add_msg_board(sprintf('ERROR: For C-terminal anchor residue %s O atom does not exist.',restraints.Canchor));
         add_msg_board(message.text);
         restrain=[];
@@ -2384,7 +2373,7 @@ if isfield(restraints,'Canchor') && ~strcmp(restraints.Canchor,'*')
        return
     else
         anchorC(4,:) = coor;
-    end;
+    end
     restraints.anchorC = anchorC;
     restraints.anchorCn = anchorCn;
     restraints.Cseq = [C_slc Cn_slc];
@@ -2392,7 +2381,7 @@ else
     restraints.anchorC = [];
     restraints.anchorCn = [];
     restraints.Cseq = '';
-end;
+end
 restraints.Na_indices = Na_indices;
 restraints.Ca_indices = Ca_indices;
 
@@ -2521,14 +2510,14 @@ if adr(1) == '#'
     resstr = adr(2:end);
 else
     resstr = adr;
-end;
+end
 res = str2double(resstr);
-if isnan(res),
+if isnan(res)
     res = [];
-end;
-if res - floor(res) > eps,
+end
+if res - floor(res) > eps
     res = [];
-end;
+end
 
 function [restrain,number] = mk_beacon_restraint(restrain,NO,res_loop,xyz_beacon,rmean,sigr,res1,number,label1,label2,bindices,resb)
 
@@ -2865,34 +2854,33 @@ curve = curve(1:nl-1,:);
 %curve(:,1) = curve(:,1);
 fclose(fid);
 
-function test_109_500(bas_name,handles)
 
-report_name = sprintf('%s_109_500.dat',bas_name);
-data_name = sprintf('%s_109_500_data.mat',bas_name);
-fid_report = fopen(report_name,'wt');
-overlaps = zeros(1,handles.diagnostics.success);
+function info = set_info(chain,snum)
 
-all_distr = zeros(handles.diagnostics.success,301);
-for km = 1:handles.diagnostics.success
-    adr1 = sprintf('[PTB1](A){%i}109',km);
-    adr2 = sprintf('[PTB1](E){%i}500',km);
-    ind1 = resolve_address(adr1);
-    ind2 = resolve_address(adr2);
-    NO_pos1 = get_NO_pos(ind1,'MTSL',298);
-    NO_pos2 = get_NO_pos(ind2,'MTSL',298);
-    [rax,sim_distr] = get_distribution(NO_pos1,NO_pos2,0.05);
-    res_distr = (rax-77.5).^2/(2*7.8^2);
-    res_distr = exp(-res_distr);
-    res_distr = res_distr/sum(res_distr);
-    overlap = sum(min([res_distr;sim_distr]));
-    overlaps(km) = overlap;
-    fprintf(fid_report,'%i\t%5.3f\n',km,overlap);
-    all_distr(km,:) = sim_distr;
-    sum_distr= sum_distr + sim_distr*handles.diagnostics.probabilities(km);
-end
-sum_distr = sum_distr/sum(handles.diagnostics.probabilities);
- 
-fclose(fid_report);
-
-save(data_name,'rax','sum_distr','all_distr','res_distr','overlaps');
-
+info.idCode = sprintf('X%i',100+snum);
+info.class = 'MMM model';
+info.depDate = date;
+info.title = 'RigiFlex model';
+info.chain_tags = ':A:';
+info.chain_ids = 1;
+info.center = [0,0,0];
+info.B_range = [0,20];
+info.authors = 'MMM';
+info.molecule = 'chimera';
+info.organism = 'Dragon musculus';
+info.remarks = [4 5 6];
+info.SSbonds = [];
+info.Modeller_obj = [];
+info.Modeller_sid = [];
+info.rotamers = false;
+info.missing = {};
+info.site_tags = ':';
+info.sites = [];
+info.keywords = '';
+info.metal = [];
+info.resolution = [];
+info.references = [];
+info.insertions = [];
+info.alternate = false;
+info.atoms = chain.atoms{1};
+info.residues = length(chain.residues{1});
