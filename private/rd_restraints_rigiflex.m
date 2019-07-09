@@ -290,6 +290,11 @@ while 1
                     else
                         restraints.SANS(SANS_poi).illres = ''; 
                     end
+                    if length(args) > 4
+                        restraints.SANS(SANS_poi).D2O = str2double(char(args(4))); 
+                    else
+                        restraints.SANS(SANS_poi).D2O = 0; 
+                    end
                 case 'SAXS'
                     mode=6;
                     SAXS_poi = SAXS_poi + 1;
@@ -438,7 +443,9 @@ while 1
                     RNA_oligomer_poi = 0;
                     RNA_bind_poi = 0;
                     RNA_stem_poi = 0;
-               case 'END'
+                case 'RIGIFLEX'
+                    mode = 0;
+                case 'END'
                     mode=-1;
                 otherwise
                     mode=0;

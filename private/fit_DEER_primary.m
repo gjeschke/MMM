@@ -116,6 +116,9 @@ end
 constraints = zeros(3,2);
 if length(options.kdec) == 2
     constraints(1,:) = options.kdec;
+    if isnan(constraints(1,2))
+        constraints(1,2) = 1e6;
+    end
 else
     constraints(1,1) = 0;
     constraints(1,2) = 1e6;

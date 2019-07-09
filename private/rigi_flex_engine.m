@@ -24,17 +24,25 @@ trial_echo = false;
 
 solutions_given = false;
 solutions = [];
+processed = [];
 
 if isfield(restraints,'solutions') && ~isempty(restraints.solutions)
     solutions_given = true;
     poi = strfind(restraints.solutions,'.dat');
     if isempty(poi)
-        soln_name = strcat(restraints.solutions,'.dat');
+        soln_name = strcat(restraints.solutions,'_solutions.dat');
+        proc_name = strcat(restraints.solutions,'_processed.dat');
     else
         soln_name = restraints.solutions;
     end
     solutions = load(soln_name);
     solutions = round(solutions);
+    if exist(proc_name,'file')
+        processed = load(proc_name);
+        processed = round(processed);
+    else
+        processed = [];
+    end
 end
 
 skip_mode = true;
@@ -301,11 +309,6 @@ for kl = 1:length(xlinks)
     end
 end
 
-final_chi2_SANS = zeros(1,maxmodels);
-final_chi2_SAXS = zeros(1,maxmodels);
-SANS_curves = cell(length(restraints.SANS),maxmodels);
-SAXS_curves = cell(length(restraints.SAXS),maxmodels);
-probabilities = zeros(1,maxmodels);
 transmats = cell(1,3);
 
 runtime = 0;
@@ -313,12 +316,11 @@ worst_res = 0;
 parblocks = 0; % ### 0
 bask = parblocks*options.granularity;
 if options.exhaustive
-    maxmodels = 200; % 200;
-    maxtime = 600; % ### uncomment for production runs
+    maxtime = 100*maxtime; 
 end
 tic,
 
-% maxmodels = 1; % ### comment out for production runs
+probabilities = zeros(1,maxmodels);
 
 [pathstr,basname] = fileparts(fname);
 solutionname = fullfile(pathstr,strcat(basname,'_solutions.dat'));
@@ -360,14 +362,23 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
     parfor kt = 1:options.granularity % ### parfor
         if solutions_given
             [msoln,nsoln] = size(solutions);
+            [mproc,~] = size(processed);
             ksoln = zeros(1,msoln);
             psoln = 0;
             skip = true;
             for kbp = 1:msoln
                 if parblocks == solutions(kbp,1) && kt == solutions(kbp,2)
-                    psoln = psoln + 1;
-                    ksoln(psoln) = kbp;
-                    skip = false;
+                    to_be_processed = true;
+                    for kbpp = 1:mproc
+                        if parblocks == processed(kbpp,1) && kt == processed(kbpp,2)
+                            to_be_processed = false;
+                        end
+                    end
+                    if to_be_processed
+                        psoln = psoln + 1;
+                        ksoln(psoln) = kbp;
+                        skip = false;
+                    end
                 end
             end
             if skip
@@ -1185,6 +1196,11 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                         fclose(fid);
                         if restraints.search
                             success = success -1;
+                        end
+                        if solutions_given
+                            fid = fopen(proc_name,'at');
+                            fprintf(fid,'%8i%6i\n',parblocks,k-bask);
+                            fclose(fid);
                         end
                     end
                 end

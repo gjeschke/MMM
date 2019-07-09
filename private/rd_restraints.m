@@ -5,6 +5,7 @@ function restraints=rd_restraints(fname)
 % restraints are returned in a structure whose fields correspond to
 % different restraint types
 %
+%
 % currently implemented types are:
 %
 % DEER      distance between two labelled sites
@@ -15,10 +16,10 @@ default_helix_mindist=0.65; % default value for the closest approach of two heli
 restraints=[];
 
 fid=fopen(fname);
-if fid==-1,
+if fid==-1
     add_msg_board('ERROR: Constraint file does not exist');
     return;
-end;
+end
 
 clear restraints
 restraints.ensemble=1;
@@ -50,19 +51,19 @@ scale_units=1;
 while 1
     tline = fgetl(fid);
     if ~ischar(tline) || mode<0, break, end
-    if ~isempty(tline),
+    if ~isempty(tline)
         k = strfind(tline,'%'); % remove comments
-        if ~isempty(k),
-            if k(1)>1,
+        if ~isempty(k)
+            if k(1)>1
                 tline = tline(1:k(1)-1);
             else
                 tline = '%';
-            end;
-        end;
+            end
+        end
         myline = textscan(tline,'%s');
         % fprintf(1,'%s\n',tline);
         args=myline{1};
-        if strcmp(char(args(1)),'#'),
+        if strcmp(char(args(1)),'#')
             switch upper(char(args(2)))
                 case 'PATH'
                     mode = 0;
@@ -76,60 +77,60 @@ while 1
                     mode=0;
                     pdbid=strtok(char(args(3)),':');
                     restraints.PDB=pdbid; % to conform to old format
-                    for k=3:length(args),
+                    for k=3:length(args)
                         [pdbid,chains]=strtok(char(args(k)),':');
                         restraints.template(k-2).pdbid=pdbid;
-                        if length(chains)>1,
+                        if length(chains)>1
                             nonsense=textscan(chains(2:end),'%s','Delimiter',',');
                             chains=nonsense{1};
                             chaintags=':';
-                            for kk=1:length(chains),
+                            for kk=1:length(chains)
                                 chaintags=[chaintags char(chains(kk)) ':'];
-                            end;
+                            end
                             restraints.template(k-2).chaintags=chaintags;
                         else
                             restraints.template(k-2).chaintags='';
-                        end;
-                    end;
+                        end
+                    end
                 case {'ALIGN','ALIGNMENT'}
                     mode=0;
                     restraints.alignment=char(args(3));
                 case 'BUNDLE'
                     mode=0;
                     bundle=zeros(1,length(args)-2);
-                    for k=3:length(args),
+                    for k=3:length(args)
                         bundle(k-2)=str2double(char(args(k)));
-                    end;
+                    end
                     restraints.bundle=bundle;
                 case 'CHAINS'
                     mode=0;
                     chains=':';
-                    for k=3:length(args),
+                    for k=3:length(args)
                         nonsense=textscan(char(args(k)),'%s','Delimiter',',');
                         chainlist=nonsense{1};
-                        for kk=1:length(chainlist),
+                        for kk=1:length(chainlist)
                             chains=[chains char(chainlist(kk)) ':'];
-                        end;
-                    end;
+                        end
+                    end
                     restraints.chains=chains;
                 case 'ENSEMBLE'
                     mode=0;
                     restraints.ensemble=str2double(char(args(3)));
-                    if length(args)>3,
+                    if length(args)>3
                         restraints.uncertainty=scale_units*str2double(char(args(4)));
                         restraints.rescale = scale_units;
                     else
                         restraints.uncertainty=0;
-                    end;
-                    if length(args)>4,
+                    end
+                    if length(args)>4
                         if strcmpi(char(args(5)),'all')
                             restraints.exclude=false;
                         else
                             restraints.exclude=true;
-                        end;
+                        end
                     else
                         restraints.exclude=true;
-                    end;
+                    end
                 case 'CANCHOR'
                     mode=0;
                     restraints.Canchor=char(args(3));
@@ -161,103 +162,103 @@ while 1
                     multiplicity = str2double(char(args(3)));
                     label=char(args(4));
                     [label_std,label_type] = check_label(label);
-                    if length(args)>4,
+                    if length(args)>4
                         T=char(args(5));
                     else
                         T = '298';
-                    end;
+                    end
                 case 'DEPTH'
                     mode=12;
                     label=char(args(3));
-                    if length(args)>4,
+                    if length(args)>4
                         T=char(args(5));
                     else
                         T = '298';
-                    end;
+                    end
                 case 'CISPEPTIDE'
                     cpp  = 0;
                     cispeptides = zeros(1,1000);
-                    for k=3:length(args),
+                    for k=3:length(args)
                         cpp = cpp + 1;
                         cispeptides(cpp)=str2double(char(args(k)));
-                    end;
+                    end
                     restraints.cispeptides = cispeptides(1:cpp);
                 case 'OUTPUT'
                     restraints.output='';
-                    if length(args)>2,
+                    if length(args)>2
                         restraints.output=char(args(3));
-                    end;
+                    end
                 case 'DIRECT'
                     mode=2;
                 case 'LOCATE'
                     mode=8;
-                    if length(args)>2,
+                    if length(args)>2
                         tag=char(args(3));
                     else
                         tag='loc';
-                    end;
-                    if length(args)>3,
+                    end
+                    if length(args)>3
                         probability=str2double(char(args(4)));
                     else
                         probability=0.5;
-                    end;
-                    if length(args)>4,
+                    end
+                    if length(args)>4
                         label=char(args(5));
                     else
                         label='MTSL';
-                    end;
-                    if length(args) > 5,
+                    end
+                    if length(args) > 5
                         T=char(args(6));
                     else
                         T='298';
-                    end;
-                    if length(args)>6,
+                    end
+                    if length(args)>6
                         display_mode=char(args(7));
                     else
                         display_mode='none';
-                    end;
+                    end
                case 'NETWORK'
                     mode=9;
-                    if length(args)>2,
+                    if length(args)>2
                         pid=char(args(3));
                     else
                         pid='DGM1';
-                    end;
-                    if length(args)>3,
+                    end
+                    if length(args)>3
                         probability=str2double(char(args(4)));
                     else
                         probability=0.5;
-                    end;
-                    if length(args)>4,
+                    end
+                    if length(args)>4
                         label=char(args(5));
                     else
                         label='MTSL';
-                    end;
-                    if length(args) > 5,
+                    end
+                    if length(args) > 5
                         T=char(args(6));
                     else
                         T='298';
-                    end;
-                    if length(args)>6,
+                    end
+                    if length(args)>6
                         display_mode=char(args(7));
                     else
                         display_mode='constraints';
-                    end;
+                    end
                 case 'REALIGN'
                     mode=3;
-                    if length(args)>2,
+                    if length(args)>2
                         restraints.align_threshold=char(args(3));
                     else
                         restraints.align_threshold=0;
-                    end;
+                    end
                     restraints.realign=true;
                 case 'REFERENCE'
                     mode=10;
                 case 'HELICES'
                     mode=4;
-                    if length(args)>2, % minimum helix axes distance is provided
+                    if length(args)>2 % minimum helix axes distance is provided
                         restraints.helix_mindist=scale_units*str2double(char(args(3)));
-                    end;
+                    end
                 case 'SEED'
                     mode=0;
                     restraints.seed = round(str2double(char(args(3))));
@@ -299,7 +300,7 @@ while 1
                         otherwise
                             add_msg_board('Warning: Unknown unit identifier. Reverting to nanometers.');
                             scale_units=1;
-                    end;
+                    end
                 case 'LOWER'
                     mode=0;
                     restraints.lower = scale_units*str2double(char(args(3)));
@@ -310,19 +311,19 @@ while 1
                     mode=0;
                     restraints.Cn=str2double(char(args(3)));
                     restraints.ref_chain=char(args(4));
-                    for k=5:length(args),
+                    for k=5:length(args)
                         restraints.chain_copies{k-4}=char(args(k));
-                    end;
+                    end
                 case 'PARALLEL'
                     mode=0;
-                    for k=3:length(args),
+                    for k=3:length(args)
                         restraints.parallel(k-2)=str2double(char(args(k)));
-                    end;
+                    end
                 case 'PERPENDICULAR'
                     mode=0;
-                    for k=3:length(args),
+                    for k=3:length(args)
                         restraints.perpendicular(k-2)=str2double(char(args(k)));
-                    end;
+                    end
                 case 'EXTEND'
                     mode=0;
                     restraints.initial_model=char(args(3)); 
@@ -344,8 +345,8 @@ while 1
                 otherwise
                     mode=0;
                     add_msg_board('Warning: Unknown restraint mode');
-            end;
-        elseif mode>0 && ~strncmp(strtrim(char(args(1))),'%',1),
+            end
+        elseif mode>0 && ~strncmp(strtrim(char(args(1))),'%',1)
             switch mode
                 case 1
                     DEER_poi=DEER_poi+1;
@@ -407,11 +408,11 @@ while 1
                     cvec(2)=str2double(char(args(3)));
                     cvec(3)=str2double(char(args(4)));
                     restraints.displace(disp_poi).vec=cvec;
-                    if ~strcmpi(weights,'uniform') && length(args)>=5,
+                    if ~strcmpi(weights,'uniform') && length(args)>=5
                         restraints.displace(disp_poi).weight=str2double(char(args(5)));
                     else
                         restraints.displace(disp_poi).weight=1;
-                    end;
+                    end
                 case 8 % localization
                     locate_poi=locate_poi+1;
                     restraints.locate(locate_poi).display_mode=display_mode;
@@ -422,12 +423,12 @@ while 1
                     restraints.locate(locate_poi).sigr=scale_units*str2double(char(args(3)));
                     restraints.locate(locate_poi).label = label;
                     restraints.locate(locate_poi).T=str2double(T);
-                    if length(args)>3,
+                    if length(args)>3
                         restraints.locate(locate_poi).file=char(args(4));
                         restraints.locate(locate_poi).fulldistr=true;
                     else
                         restraints.locate(locate_poi).fulldistr=false;
-                    end;
+                    end
                 case 9 % network
                     network_poi=network_poi+1;
                     restraints.network(network_poi).pid=pid;
@@ -439,12 +440,12 @@ while 1
                     restraints.network(network_poi).r=scale_units*str2double(char(args(3)));
                     restraints.network(network_poi).sigr=scale_units*str2double(char(args(4)));
                     restraints.network(network_poi).display_mode=display_mode;
-                    if length(args)>4,
+                    if length(args)>4
                         restraints.network(network_poi).file=char(args(5));
                         restraints.network(network_poi).fulldistr=true;
                     else
                         restraints.network(network_poi).fulldistr=false;
-                    end;
+                    end
                 case 10 % reference
                     ref_poi=ref_poi+1;
                     restraints.reference(ref_poi).tag=char(args(1));
@@ -452,11 +453,11 @@ while 1
                     y = str2double(char(args(3)));
                     z = str2double(char(args(4)));
                     restraints.reference(ref_poi).xyz = [x,y,z];
-                    if length(args) > 4,
+                    if length(args) > 4
                         restraints.reference(ref_poi).rmsd = str2double(char(args(5)));
                     else
                         restraints.reference(ref_poi).rmsd = 0;
-                    end;
+                    end
                 case 11 % oligomer
                     oligo_poi=oligo_poi+1;
                     restraints.oligomer(oligo_poi).label=label_std;
@@ -492,10 +493,10 @@ while 1
                     pprop_poi = pprop_poi+1;
                     restraints.pprop(pprop_poi).adr=char(args(1));
                     restraints.pprop(pprop_poi).prop=str2double(char(args(2)));
-            end;
-        end;
-    end;
-end;
+            end
+        end
+    end
+end
 
 fclose(fid);
 
@@ -514,7 +515,7 @@ for k = 1:length(rotamer_libraries)
     if strcmpi(label,rotamer_libraries(k).label) || strcmpi(label,rotamer_libraries(k).tc)
         label_std = rotamer_libraries(k).tc;
         type = 1;
-    end;
+    end
 end
 
 if isempty(label_std)
@@ -522,6 +523,6 @@ if isempty(label_std)
         if strcmpi(label,ligand_libraries(k).label) || strcmpi(label,ligand_libraries(k).tc)
             label_std = ligand_libraries(k).tc;
             type = 2;
-        end;
+        end
     end
 end

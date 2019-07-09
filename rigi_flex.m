@@ -244,6 +244,11 @@ handles.text_xlinks_required.String = sprintf('(%i restraints)',ceil(handles.xli
 handles.edit_max_time.String = sprintf('%5.2f',handles.max_time);
 
 handles.restraints = restraints;
+if isfield(restraints,'solutions') && ~isempty(restraints.solutions)
+    handles.pushbutton_run.String = 'Run RigiFlex';
+else
+    handles.pushbutton_run.String = 'Run Rigi';
+end
 set(handles.pushbutton_run,'Enable','on');
 set(handles.pushbutton_restraints,'Enable','off');
 set(hfig,'Pointer','arrow');
@@ -260,465 +265,325 @@ function pushbutton_run_Callback(hObject, eventdata, handles)
 global general
 global model
 
-% handles.progress = 1; % ### debugging
+if isfield(handles.restraints,'solutions') && ~isempty(handles.restraints.solutions)
+    last_step = 2;
+else
+    last_step = 0;
+end
 
-switch handles.progress
+for runstep = 0:last_step
+    handles.progress = runstep;
     
-    case 0 % Rigi
-        options.granularity = 10000;
-        options.max_trials = handles.max_trials;
-        options.max_time = handles.max_time;
-        options.deterministic = handles.checkbox_std_seed.Value;
-        options.SANS_threshold = handles.SANS_threshold;
-        options.SAXS_threshold = handles.SAXS_threshold;
-        options.xlink_threshold = handles.xlink_threshold;
-        options.xlink_percentage = handles.xlink_percentage;
-        options.display_SANS_fit = handles.radiobutton_SANS_fit.Value;
-        options.display_SANS_chi2 = handles.radiobutton_SANS_chi2.Value;
-        options.display_SAXS_fit = handles.radiobutton_SAXS_fit.Value;
-        options.display_xlinks = handles.radiobutton_crosslinks.Value;
-        options.exhaustive = handles.checkbox_exhaustive.Value;
-        
-        [filename, pathname] = uiputfile([handles.restraints.newID '.pdb'], 'Save final model as PDB');
-        if isequal(filename,0) || isequal(pathname,0)
-            add_msg_board('RigiFlex modelling cancelled by user');
-            return
-        else
-            reset_user_paths(pathname);
-            general.pdb_files=pathname;
-            fname = fullfile(pathname, filename);
-            options.fname = fname;
-        end
-        
-        set(gcf,'Pointer','watch');
-        handles.text_time_left.String = 'Started.';
-        handles.text_time_left.ForegroundColor = [0,0,180]/256;
-        drawnow
-        snum0 = model.current_structure;
-        handles.template_snum = snum0;
-        diagnostics = rigi_flex_engine(handles.restraints,options,handles);
-        handles.diagnostics = diagnostics;
-        fprintf(1,'Maximum runtime         : %4.1f h\n',options.max_time);
-        fprintf(1,'Used runtime            : %4.1f h\n',handles.diagnostics.runtime/3600);
-        fprintf(1,'Maximum number of trials: %i\n',options.max_trials);
-        fprintf(1,'Used number of trials   : %i\n',handles.diagnostics.trials);
-        if diagnostics.success
-            add_msg_board('Rigi step successfully completed.');
-            handles.text_time_per_model.String = sprintf('%12.1f',diagnostics.runtime/diagnostics.success);
-            [pathstr,basname] = fileparts(options.fname);
-            handles.basname = basname;
-            report_name = fullfile(pathstr,strcat(basname,'_rigi_report.txt'));
-            result_name = fullfile(pathstr,strcat(basname,'_rigi_diagnostics.mat'));
-            handles.options = options;
-            distributions = mk_report_distributions(report_name,handles,options);
-            handles.distributions = distributions;
-            restraints = handles.restraints;
-            save(result_name,'diagnostics','options','restraints','distributions','report_name');
-            handles.pushbutton_save.Enable =  'on';
-            handles.pushbutton_run.String = 'Run Flex';
-            handles.radiobutton_DEER.Enable =  'on';
-            if isfield(handles.restraints,'RNA') && isfield(handles.restraints.RNA,'bind')
-                handles.pushbutton_run.String = 'RNA links';
-                handles.progress = 1;
+    switch handles.progress
+
+        case 0 % Rigi
+            options.granularity = 10000;
+            options.max_trials = handles.max_trials;
+            options.max_time = handles.max_time;
+            options.deterministic = handles.checkbox_std_seed.Value;
+            options.SANS_threshold = handles.SANS_threshold;
+            options.SAXS_threshold = handles.SAXS_threshold;
+            options.xlink_threshold = handles.xlink_threshold;
+            options.xlink_percentage = handles.xlink_percentage;
+            options.display_SANS_fit = handles.radiobutton_SANS_fit.Value;
+            options.display_SANS_chi2 = handles.radiobutton_SANS_chi2.Value;
+            options.display_SAXS_fit = handles.radiobutton_SAXS_fit.Value;
+            options.display_xlinks = handles.radiobutton_crosslinks.Value;
+            options.exhaustive = handles.checkbox_exhaustive.Value;
+
+            [filename, pathname] = uiputfile([handles.restraints.newID '.pdb'], 'Save final model as PDB');
+            if isequal(filename,0) || isequal(pathname,0)
+                add_msg_board('RigiFlex modelling cancelled by user');
+                return
             else
+                reset_user_paths(pathname);
+                general.pdb_files=pathname;
+                fname = fullfile(pathname, filename);
+                options.fname = fname;
+            end
+
+            set(gcf,'Pointer','watch');
+            handles.text_time_left.String = 'Started.';
+            handles.text_time_left.ForegroundColor = [0,0,180]/256;
+            drawnow
+            snum0 = model.current_structure;
+            handles.template_snum = snum0;
+            diagnostics = rigi_flex_engine(handles.restraints,options,handles);
+            handles.diagnostics = diagnostics;
+            fprintf(1,'Maximum runtime         : %4.1f h\n',options.max_time);
+            fprintf(1,'Used runtime            : %4.1f h\n',handles.diagnostics.runtime/3600);
+            fprintf(1,'Maximum number of trials: %i\n',options.max_trials);
+            fprintf(1,'Used number of trials   : %i\n',handles.diagnostics.trials);
+            if diagnostics.success
+                add_msg_board('Rigi step successfully completed.');
+                handles.text_time_per_model.String = sprintf('%12.1f',diagnostics.runtime/diagnostics.success);
+                [pathstr,basname] = fileparts(options.fname);
+                handles.basname = basname;
+                report_name = fullfile(pathstr,strcat(basname,'_rigi_report.txt'));
+                result_name = fullfile(pathstr,strcat(basname,'_rigi_diagnostics.mat'));
+                handles.options = options;
+                distributions = mk_report_distributions(report_name,handles,options);
+                handles.distributions = distributions;
+                restraints = handles.restraints;
+                save(result_name,'diagnostics','options','restraints','distributions','report_name');
+                handles.pushbutton_save.Enable =  'on';
                 handles.pushbutton_run.String = 'Run Flex';
-                handles.progress = 2;
-                if isfield(handles.restraints,'flex_time')
-                    handles.max_time = handles.restraints.flex_time;
-                    handles.edit_max_time.String = sprintf('%5.2f',handles.max_time);
+                handles.radiobutton_DEER.Enable =  'on';
+                if isfield(handles.restraints,'RNA') && isfield(handles.restraints.RNA,'bind')
+                    handles.pushbutton_run.String = 'RNA links';
+                    handles.progress = 1;
+                else
+                    handles.pushbutton_run.String = 'Run Flex';
+                    handles.progress = 2;
+                    if isfield(handles.restraints,'flex_time')
+                        handles.max_time = handles.restraints.flex_time;
+                        handles.edit_max_time.String = sprintf('%5.2f',handles.max_time);
+                    end
                 end
-            end
-        else
-            add_msg_board('RigiFlex modeling run failed.');
-            handles.text_time_per_model.String = 'n.a.';
-        end
-        
-        
-        handles.text_success.String = sprintf('%i',diagnostics.success);
-        handles.text_time_left.String = 'Completed.';
-        handles.text_time_left.ForegroundColor = [0,127,0]/256;
-        
-        update_plot(handles);
-        
-        set(gcf,'Pointer','arrow');
-        
-        guidata(hObject,handles);
-        
-    case 1 % RNA Flex
-        solutions_given = false;
-        
-        if isfield(handles.restraints,'solutions') && ~isempty(handles.restraints.solutions)
-            solutions_given = true;
-            poi = strfind(handles.restraints.solutions,'.dat');
-            if isempty(poi)
-                soln_name = strcat(handles.restraints.solutions,'.dat');
             else
-                soln_name = handles.restraints.solutions;
+                add_msg_board('RigiFlex modeling run failed.');
+                handles.text_time_per_model.String = 'n.a.';
             end
+
+
+            handles.text_success.String = sprintf('%i',diagnostics.success);
+            handles.text_time_left.String = 'Completed.';
+            handles.text_time_left.ForegroundColor = [0,127,0]/256;
+
+            update_plot(handles);
+
+            set(gcf,'Pointer','arrow');
+
+            guidata(hObject,handles);
+
+        case 1 % RNA Flex
+            [pathstr,basname] = fileparts(handles.options.fname);
+            solutions_given = true;
+            soln_name = strcat(basname,'_solutions.dat');
+            soln_name = fullfile(pathstr,soln_name);
             solutions = load(soln_name);
             rba_solutions = round(solutions);
-        end
-        stag = mk_address_parts(handles.diagnostics.snum);
-        [pathstr,basname] = fileparts(handles.options.fname);
-        report_name = fullfile(pathstr,strcat(basname,'_RNA_link_report.txt'));
-        linkable_name = fullfile(pathstr,strcat(basname,'_RNA_linkable.dat'));
-        curated_name = fullfile(pathstr,strcat(basname,'_RNA_curated.dat'));
-        [solutions,trafo,stemlibs,dvecs] = fit_stemloop_combinations(handles.restraints,handles.template_snum,handles.diagnostics.snum,report_name);
-        % assign the stemloops to rigid bodies, needed for RBA adjustment
-        rb_assign = zeros(1,length(stemlibs));
-        rna_chains = zeros(1,length(stemlibs));
-        for klib = 1:length(stemlibs)
-            slindi = resolve_address(sprintf('%s%s',stag,stemlibs{klib}.chaintag));
-            rna_chains(klib) = slindi(2);
-            for kr = 1:length(handles.restraints.rb)
-                for kcc = 1:length(handles.restraints.rb(kr).chains)
-                    if slindi(2) == handles.restraints.rb(kr).chains(kcc)
-                        rb_assign(klib) = kr;
+            stag = mk_address_parts(handles.diagnostics.snum);
+            [pathstr,basname] = fileparts(handles.options.fname);
+            report_name = fullfile(pathstr,strcat(basname,'_RNA_link_report.txt'));
+            linkable_name = fullfile(pathstr,strcat(basname,'_RNA_linkable.dat'));
+            curated_name = fullfile(pathstr,strcat(basname,'_RNA_curated.dat'));
+            [solutions,trafo,stemlibs,dvecs] = fit_stemloop_combinations(handles.restraints,handles.template_snum,handles.diagnostics.snum,report_name);
+            % assign the stemloops to rigid bodies, needed for RBA adjustment
+            rb_assign = zeros(1,length(stemlibs));
+            rna_chains = zeros(1,length(stemlibs));
+            for klib = 1:length(stemlibs)
+                slindi = resolve_address(sprintf('%s%s',stag,stemlibs{klib}.chaintag));
+                rna_chains(klib) = slindi(2);
+                for kr = 1:length(handles.restraints.rb)
+                    for kcc = 1:length(handles.restraints.rb(kr).chains)
+                        if slindi(2) == handles.restraints.rb(kr).chains(kcc)
+                            rb_assign(klib) = kr;
+                        end
                     end
                 end
             end
-        end
-        report_fid = fopen(report_name,'at');
-        % handles.diagnostics.snum = 2; % ### only for debugging
-        handles = set_progress_interface(handles);
-        handles.pushbutton_run.String = 'RNA links';
-        set(gcf,'Pointer','watch');
-        handles.text_time_left.String = 'Started.';
-        handles.text_time_left.ForegroundColor = [0,0,180]/256;
-        rba = [handles.diagnostics.snum,1];
-        secdefs = process_rna_domain_restraints(handles.restraints,rba);
-        RNA_linkers = zeros(handles.diagnostics.success,length(secdefs));
-        RNA_linker_time = zeros(handles.diagnostics.success,length(secdefs));
-        if isfield(handles.restraints,'RNA') && isfield(handles.restraints.RNA,'bind')
-            num_ch = length(model.structures{handles.diagnostics.snum});
-            initflag = true;
-            chain_indices = zeros(1,length(handles.restraints.stemlibs));
-            for ksl = 1:length(handles.restraints.stemlibs)
-                ind = resolve_address(sprintf('[%s]%s',stag,handles.restraints.stemlibs{ksl}.chaintag));
-                chain_indices(ksl) = ind(2);
-            end
-            success_vec = zeros(1,handles.diagnostics.success);
-            initialize_model = true;
-            for km = 1:handles.diagnostics.success % loop over rigid-body models
-                csoln = solutions(solutions(:,1)==km,:);
-                stretch = csoln(:,5);
-                [stretch,strpoi] = sort(stretch);
-                csoln = csoln(strpoi,:);
-                success = false;
-                kcombi = 0;
-                snum = handles.diagnostics.snum;
-                while ~isempty(stretch) && ~success && kcombi < length(stretch) && kcombi < 1
-                    kcombi = kcombi + 1;
-                    ccombi = csoln(kcombi,2:4);
-                    % make adjustment transformation matrices
-                    adj_transmats = cell(1,length(handles.restraints.rb));
-                    for kr = 1:length(handles.restraints.rb)
-                        adj_transmats{kr} = eye(4);
-                    end
-                    for kr = 2:3
-                        baspoi6 = (kr-2)*6;
-                        dtrans = 10*dvecs(km,baspoi6+1:baspoi6+3);
-                        % fprintf(1,'Translation(%i): (%3.1f, %3.1f, %3.1f) Å\n',kr,dtrans);
-                        deuler = dvecs(km,baspoi6+4:baspoi6+6);
-                        % fprintf(1,'Rotation(%i)   : (%3.1f, %3.1f, %3.1f)°\n',kr,180*deuler/pi);
-                        adj_transmats{rb_assign(kr)} = transrot2affine(dtrans,deuler);
-                    end
-                    % apply adjustment of RBA
-                    for kr = 1:length(handles.restraints.rb)                       
-                        for kc = 1:length(handles.restraints.rb(kr).chains)
-                            if min(abs(rna_chains-handles.restraints.rb(kr).chains(kc))) ~= 0
-                                % adr_rep = mk_address([snum handles.restraints.rb(kr).chains(kc) km]);
-          %                      fprintf(1,'Replacing coordinates of %s\n',adr_rep);
-                                model.structures{snum}(handles.restraints.rb(kr).chains(kc)).xyz{km} = ...
-                                    affine_coor_set(model.structures{snum}(handles.restraints.rb(kr).chains(kc)).xyz{km},adj_transmats{kr});
-                            end
+            report_fid = fopen(report_name,'at');
+            % handles.diagnostics.snum = 2; % ### only for debugging
+            handles = set_progress_interface(handles);
+            handles.pushbutton_run.String = 'RNA links';
+            set(gcf,'Pointer','watch');
+            handles.text_time_left.String = 'Started.';
+            handles.text_time_left.ForegroundColor = [0,0,180]/256;
+            rba = [handles.diagnostics.snum,1];
+            secdefs = process_rna_domain_restraints(handles.restraints,rba);
+            RNA_linkers = zeros(handles.diagnostics.success,length(secdefs));
+            RNA_linker_time = zeros(handles.diagnostics.success,length(secdefs));
+            if isfield(handles.restraints,'RNA') && isfield(handles.restraints.RNA,'bind')
+                num_ch = length(model.structures{handles.diagnostics.snum});
+                initflag = true;
+                chain_indices = zeros(1,length(handles.restraints.stemlibs));
+                for ksl = 1:length(handles.restraints.stemlibs)
+                    ind = resolve_address(sprintf('[%s]%s',stag,handles.restraints.stemlibs{ksl}.chaintag));
+                    chain_indices(ksl) = ind(2);
+                end
+                success_vec = zeros(1,handles.diagnostics.success);
+                initialize_model = true;
+                for km = 1:handles.diagnostics.success % loop over rigid-body models
+                    csoln = solutions(solutions(:,1)==km,:);
+                    stretch = csoln(:,5);
+                    [stretch,strpoi] = sort(stretch);
+                    csoln = csoln(strpoi,:);
+                    success = false;
+                    kcombi = 0;
+                    snum = handles.diagnostics.snum;
+                    while ~isempty(stretch) && ~success && kcombi < length(stretch) && kcombi < 1
+                        kcombi = kcombi + 1;
+                        ccombi = csoln(kcombi,2:4);
+                        % make adjustment transformation matrices
+                        adj_transmats = cell(1,length(handles.restraints.rb));
+                        for kr = 1:length(handles.restraints.rb)
+                            adj_transmats{kr} = eye(4);
                         end
-                    end
-                    % replace binding motifs by stemloops from library if stemloop
-                    % libraries are tested
-                    for klib = 1:length(stemlibs)
-                        chain_coor = stemlibs{klib}.chains{ccombi(klib)}.xyz{1};
-                        chain_coor = affine_coor_set(chain_coor,trafo{km,klib});
-                        if initialize_model
-                            fields = fieldnames(model.structures{snum}(chain_indices(klib)));
-                            for kfield = 1:length(fields)
-                                if isfield(stemlibs{klib}.chains{ccombi(klib)},fields{kfield})
-                                    model.structures{snum}(chain_indices(klib)).(fields{kfield}) = stemlibs{klib}.chains{ccombi(klib)}.(fields{kfield});
+                        for kr = 2:3
+                            baspoi6 = (kr-2)*6;
+                            dtrans = 10*dvecs(km,baspoi6+1:baspoi6+3);
+                            % fprintf(1,'Translation(%i): (%3.1f, %3.1f, %3.1f) Å\n',kr,dtrans);
+                            deuler = dvecs(km,baspoi6+4:baspoi6+6);
+                            % fprintf(1,'Rotation(%i)   : (%3.1f, %3.1f, %3.1f)°\n',kr,180*deuler/pi);
+                            adj_transmats{rb_assign(kr)} = transrot2affine(dtrans,deuler);
+                        end
+                        % apply adjustment of RBA
+                        for kr = 1:length(handles.restraints.rb)                       
+                            for kc = 1:length(handles.restraints.rb(kr).chains)
+                                if min(abs(rna_chains-handles.restraints.rb(kr).chains(kc))) ~= 0
+                                    % adr_rep = mk_address([snum handles.restraints.rb(kr).chains(kc) km]);
+              %                      fprintf(1,'Replacing coordinates of %s\n',adr_rep);
+                                    model.structures{snum}(handles.restraints.rb(kr).chains(kc)).xyz{km} = ...
+                                        affine_coor_set(model.structures{snum}(handles.restraints.rb(kr).chains(kc)).xyz{km},adj_transmats{kr});
                                 end
                             end
                         end
-                        model.structures{snum}(chain_indices(klib)).xyz{km} = chain_coor;
-                        model.structures{snum}(chain_indices(klib)).residues{km} = stemlibs{klib}.chains{ccombi(klib)}.residues{1};
-                        model.structures{snum}(chain_indices(klib)).Bfactor{km} = stemlibs{klib}.chains{ccombi(klib)}.Bfactor{1};
-                        model.structures{snum}(chain_indices(klib)).Btensor{km} = stemlibs{klib}.chains{ccombi(klib)}.Btensor{1};
-                        model.structures{snum}(chain_indices(klib)).atoms{km} = stemlibs{klib}.chains{ccombi(klib)}.atoms{1};
-                        model.structures{snum}(chain_indices(klib)).isotopes = stemlibs{klib}.chains{ccombi(klib)}.isotopes;
-                    end
-                    initialize_model = false;
-                    env_sel = zeros(num_ch,2);
-                    for kb = 1:length(handles.restraints.RNA.bind)
-                        adra = sprintf('[%s]%s',stag,handles.restraints.RNA.bind(kb).anchora);
-                        inda = resolve_address(adra);
-                        adre = sprintf('[%s]%s',stag,handles.restraints.RNA.bind(kb).anchora);
-                        inde = resolve_address(adre);
-                        env_sel(inda(2),1) = inda(4);
-                        env_sel(inda(2),2) = inde(4);
-                    end
+                        % replace binding motifs by stemloops from library if stemloop
+                        % libraries are tested
+                        for klib = 1:length(stemlibs)
+                            chain_coor = stemlibs{klib}.chains{ccombi(klib)}.xyz{1};
+                            chain_coor = affine_coor_set(chain_coor,trafo{km,klib});
+                            if initialize_model
+                                fields = fieldnames(model.structures{snum}(chain_indices(klib)));
+                                for kfield = 1:length(fields)
+                                    if isfield(stemlibs{klib}.chains{ccombi(klib)},fields{kfield})
+                                        model.structures{snum}(chain_indices(klib)).(fields{kfield}) = stemlibs{klib}.chains{ccombi(klib)}.(fields{kfield});
+                                    end
+                                end
+                            end
+                            model.structures{snum}(chain_indices(klib)).xyz{km} = chain_coor;
+                            model.structures{snum}(chain_indices(klib)).residues{km} = stemlibs{klib}.chains{ccombi(klib)}.residues{1};
+                            model.structures{snum}(chain_indices(klib)).Bfactor{km} = stemlibs{klib}.chains{ccombi(klib)}.Bfactor{1};
+                            model.structures{snum}(chain_indices(klib)).Btensor{km} = stemlibs{klib}.chains{ccombi(klib)}.Btensor{1};
+                            model.structures{snum}(chain_indices(klib)).atoms{km} = stemlibs{klib}.chains{ccombi(klib)}.atoms{1};
+                            model.structures{snum}(chain_indices(klib)).isotopes = stemlibs{klib}.chains{ccombi(klib)}.isotopes;
+                        end
+                        initialize_model = false;
+                        env_sel = zeros(num_ch,2);
+                        for kb = 1:length(handles.restraints.RNA.bind)
+                            adra = sprintf('[%s]%s',stag,handles.restraints.RNA.bind(kb).anchora);
+                            inda = resolve_address(adra);
+                            adre = sprintf('[%s]%s',stag,handles.restraints.RNA.bind(kb).anchora);
+                            inde = resolve_address(adre);
+                            env_sel(inda(2),1) = inda(4);
+                            env_sel(inda(2),2) = inde(4);
+                        end
 
-                    handles.text_success.String = sprintf('%i',km);
-                    rba = [handles.diagnostics.snum,km];
-                    model.current_structure = handles.diagnostics.snum;
-                    [secdefs,RNA] = process_rna_domain_restraints(handles.restraints,rba);
-                    parts = length(handles.restraints.RNA_tags) + length(secdefs);
-                    pindices = ones(parts,3);
-                    for sec = 0:length(secdefs)
-                        indpart = resolve_address(sprintf('%s%s',stag,handles.restraints.RNA_tags{sec+1}));
-                        pindices(2*sec+1,1:2) = indpart;
-                        pindices(2*sec+1,3) = km;
-                    end
-                    % Make environment coordinates
-                    maxatoms = 50000;
-                    environ = zeros(maxatoms,3);
-                    poi = 0;
-                    for kc = 1:num_ch
-                        cmind = [handles.diagnostics.snum,kc,km];
-                        if env_sel(kc,1) == 0
-                            [~,xyz] = get_chain_model(cmind,'xyz_heavy');
-                            [m,~] = size(xyz);
-                            environ(poi+1:poi+m,:) = xyz;
-                            poi = poi+m;
-                            stag = mk_address_parts(cmind);
-                            for kr = env_sel(kc,1)+1:env_sel(kc,2)-1
-                                [~,xyz] = get_residue([cmind,kr],'xyz_heavy');
+                        handles.text_success.String = sprintf('%i',km);
+                        rba = [handles.diagnostics.snum,km];
+                        model.current_structure = handles.diagnostics.snum;
+                        [secdefs,RNA] = process_rna_domain_restraints(handles.restraints,rba);
+                        parts = length(handles.restraints.RNA_tags) + length(secdefs);
+                        pindices = ones(parts,3);
+                        for sec = 0:length(secdefs)
+                            indpart = resolve_address(sprintf('%s%s',stag,handles.restraints.RNA_tags{sec+1}));
+                            pindices(2*sec+1,1:2) = indpart;
+                            pindices(2*sec+1,3) = km;
+                        end
+                        % Make environment coordinates
+                        maxatoms = 50000;
+                        environ = zeros(maxatoms,3);
+                        poi = 0;
+                        for kc = 1:num_ch
+                            cmind = [handles.diagnostics.snum,kc,km];
+                            if env_sel(kc,1) == 0
+                                [~,xyz] = get_chain_model(cmind,'xyz_heavy');
                                 [m,~] = size(xyz);
                                 environ(poi+1:poi+m,:) = xyz;
                                 poi = poi+m;
+                                stag = mk_address_parts(cmind);
+                                for kr = env_sel(kc,1)+1:env_sel(kc,2)-1
+                                    [~,xyz] = get_residue([cmind,kr],'xyz_heavy');
+                                    [m,~] = size(xyz);
+                                    environ(poi+1:poi+m,:) = xyz;
+                                    poi = poi+m;
+                                end
                             end
                         end
-                    end
-                    environ = environ(1:poi,:);
-                    ensemble = 1; % for this application of rna_flex_engine, ensemble must be 1
-                    maxtime = handles.restraints.RNA.maxtime;
-                    full_connect = true;
-                    for sec = 1:length(secdefs)
-                        handles.text_dmg_fail.String = sprintf('%i',sec);
-                        handles.text_auxiliary_fail.String = sprintf('%5.2f',0);
-                        handles.text_core_fail.String = sprintf('%5.2f',0);
-                        drawnow
-                        diagnostics = rna_flex_engine(handles,secdefs(sec),RNA,environ,ensemble,maxtime,[km,sec]);
-                        fprintf(report_fid,'Rigid body arrangement %i, section %i\n',km,sec);
-                        if ~isempty(diagnostics.snum)
-                            fprintf(1,'RNA model stored in structure %i\n',diagnostics.snum);
-                            RNA_linkers(km,sec) = diagnostics.snum;
-                            RNA_linker_time(km,sec) = diagnostics.time_per_model;
-                            pindices(2*sec,1) = diagnostics.snum;
-                            fprintf(report_fid,'Successful modelling (structure %i) with %i models and %5.1f s/model\n\n',diagnostics.snum,diagnostics.success,diagnostics.time_per_model);
-                        else
-                            fprintf(1,'RNA modelling failed for section %i in RBA %i\n',sec,km);
-                            fprintf(report_fid,'Modelling of RNA for RBA %i failed. Remaining RNA sections (if any) are skipped.\n\n',km);
-                            full_connect = false;
-                            break
-                        end
-                    end
-                    if full_connect
-                        fprintf(report_fid,'Modelling of RNA for RBA %i succeeded.\n\n',km);
-                        nindices = [handles.diagnostics.snum,num_ch+1,km];
-                        chain_tag = handles.restraints.RNA.chain_id;
-                        poia = strfind(chain_tag,'(');
-                        if isempty(poia)
-                            poia = 0;
-                        end
-                        poie = strfind(chain_tag,')');
-                        if isempty(poie)
-                            poie = length(chain_tag)+1;
-                        end
-                        chain_tag = chain_tag(poia+1:poie-1);
-                        stitch_chain(pindices,nindices,chain_tag,initflag);
-                        initflag = false;
-                        success_vec(km) = 1;
-                        success = true;
-                        if solutions_given
-                            link_fid = fopen(linkable_name,'at');
-                            fprintf(link_fid,'%8i%6i\n',rba_solutions(km,1),rba_solutions(km,2));
-                            fclose(link_fid);
-                            add_msg_board('Fitting SAXS restraints');
-                            if isfield(model,'selected')
-                                model = rmfield(model,'selected');
-                            end
-                            model.selected{1} = [handles.diagnostics.snum,1,km];
-                            model.selected{2} = [handles.diagnostics.snum,3,km];
-                            model.selected{3} = [handles.diagnostics.snum,5,km];
-                            model.selected{4} = [handles.diagnostics.snum,8,km];
-                            pdbfile = sprintf('t_%i',round(10000*rand));
-                            to_be_deleted = 't*.*';
-                            wr_pdb_selected(pdbfile,'SAXS');
-                            SAXS_curve = load_SAXS_curve('1-4s-Buffer.dat');
-                            SAXS_options.sm = 10*max(SAXS_curve(:,1));
-                            [chi2,~,~,result] = fit_SAXS_by_crysol('1-4s-Buffer.dat',pdbfile,SAXS_options);
-                            if isempty(chi2) || isnan(chi2)
-                                SAXS_chi = 1e6;
-                                fprintf(2,'Warning: SAXS fitting failed\n');
-                                fprintf(2,'%s',result);
+                        environ = environ(1:poi,:);
+                        ensemble = 1; % for this application of rna_flex_engine, ensemble must be 1
+                        maxtime = handles.restraints.RNA.maxtime;
+                        full_connect = true;
+                        for sec = 1:length(secdefs)
+                            handles.text_dmg_fail.String = sprintf('%i',sec);
+                            handles.text_auxiliary_fail.String = sprintf('%5.2f',0);
+                            handles.text_core_fail.String = sprintf('%5.2f',0);
+                            drawnow
+                            diagnostics = rna_flex_engine(handles,secdefs(sec),RNA,environ,ensemble,maxtime,[km,sec]);
+                            fprintf(report_fid,'Rigid body arrangement %i, section %i\n',km,sec);
+                            if ~isempty(diagnostics.snum)
+                                fprintf(1,'RNA model stored in structure %i\n',diagnostics.snum);
+                                RNA_linkers(km,sec) = diagnostics.snum;
+                                RNA_linker_time(km,sec) = diagnostics.time_per_model;
+                                pindices(2*sec,1) = diagnostics.snum;
+                                fprintf(report_fid,'Successful modelling (structure %i) with %i models and %5.1f s/model\n\n',diagnostics.snum,diagnostics.success,diagnostics.time_per_model);
                             else
-                                fprintf(1,'SAXS curve fitted with chi^2 of %6.3f\n',chi2);
-                                SAXS_chi = chi2;
+                                fprintf(1,'RNA modelling failed for section %i in RBA %i\n',sec,km);
+                                fprintf(report_fid,'Modelling of RNA for RBA %i failed. Remaining RNA sections (if any) are skipped.\n\n',km);
+                                full_connect = false;
+                                break
                             end
-                            delete(to_be_deleted);
-                            curated_fid = fopen(curated_name,'at');
-                            fprintf(curated_fid,'%8i%6i%8.3f\n',rba_solutions(km,1),rba_solutions(km,2),SAXS_chi);
-                            fclose(curated_fid);
+                        end
+                        if full_connect
+                            fprintf(report_fid,'Modelling of RNA for RBA %i succeeded.\n\n',km);
+                            nindices = [handles.diagnostics.snum,num_ch+1,km];
+                            chain_tag = handles.restraints.RNA.chain_id;
+                            poia = strfind(chain_tag,'(');
+                            if isempty(poia)
+                                poia = 0;
+                            end
+                            poie = strfind(chain_tag,')');
+                            if isempty(poie)
+                                poie = length(chain_tag)+1;
+                            end
+                            chain_tag = chain_tag(poia+1:poie-1);
+                            stitch_chain(pindices,nindices,chain_tag,initflag);
+                            initflag = false;
+                            success_vec(km) = 1;
+                            success = true;
+                            if solutions_given
+                                link_fid = fopen(linkable_name,'at');
+                                fprintf(link_fid,'%8i%6i\n',rba_solutions(km,1),rba_solutions(km,2));
+                                fclose(link_fid);
+                                add_msg_board('Fitting SAXS restraints');
+                                if isfield(model,'selected')
+                                    model = rmfield(model,'selected');
+                                end
+                                model.selected{1} = [handles.diagnostics.snum,1,km];
+                                model.selected{2} = [handles.diagnostics.snum,3,km];
+                                model.selected{3} = [handles.diagnostics.snum,5,km];
+                                model.selected{4} = [handles.diagnostics.snum,8,km];
+                                pdbfile = sprintf('t_%i',round(10000*rand));
+                                to_be_deleted = 't*.*';
+                                wr_pdb_selected(pdbfile,'SAXS');
+                                SAXS_curve = load_SAXS_curve('1-4s-Buffer.dat');
+                                SAXS_options.sm = 10*max(SAXS_curve(:,1));
+                                [chi2,~,~,result] = fit_SAXS_by_crysol('1-4s-Buffer.dat',pdbfile,SAXS_options);
+                                if isempty(chi2) || isnan(chi2)
+                                    SAXS_chi = 1e6;
+                                    fprintf(2,'Warning: SAXS fitting failed\n');
+                                    fprintf(2,'%s',result);
+                                else
+                                    fprintf(1,'SAXS curve fitted with chi^2 of %6.3f\n',chi2);
+                                    SAXS_chi = chi2;
+                                end
+                                delete(to_be_deleted);
+                                curated_fid = fopen(curated_name,'at');
+                                fprintf(curated_fid,'%8i%6i%8.3f\n',rba_solutions(km,1),rba_solutions(km,2),SAXS_chi);
+                                fclose(curated_fid);
+                            end
                         end
                     end
                 end
             end
-        end
-        handles.RNA_link_success = success_vec;
-        handles = mk_RNA_report_distributions(report_fid,handles);
-        fclose(report_fid);
-        if isfield(model,'selected')
-            model = rmfield(model,'selected');
-        end
-        new_cindices = zeros(1,num_ch+1);
-        ncp = 0;
-        for kc = 1:num_ch
-            [~,ctag] = mk_address_parts([handles.diagnostics.snum,kc]);
-            isRNA = false;
-            for krna = 1:length(handles.restraints.RNA_tags)
-                if strcmpi(['(' ctag ')'],handles.restraints.RNA_tags{krna})
-                    isRNA = true;
-                end
+            handles.RNA_link_success = success_vec;
+            handles = mk_RNA_report_distributions(report_fid,handles);
+            fclose(report_fid);
+            if isfield(model,'selected')
+                model = rmfield(model,'selected');
             end
-            if ~isRNA
-                ncp = ncp + 1;
-                new_cindices(ncp) = kc;
-            end
-        end
-        new_cindices(ncp+1) = num_ch + 1;
-        new_cindices = new_cindices(1:ncp+1);
-        handles.new_cindices = new_cindices;
-        if isfield(model,'selected')
-            model = rmfield(model,'selected');
-        end
-        spoi = 0;
-        for kc = new_cindices
-            for km = 1:length(success_vec)
-                if success_vec(km)
-                    spoi = spoi + 1;
-                    model.selected{spoi} = [snum kc km];
-                end
-            end
-        end
-        fname = fullfile(pathstr,strcat(basname,'_RNA.pdb'));
-        message = wr_pdb_selected(fname,handles.restraints.newID);
-        if message.error
-            diagnostics.unsaved = true;
-            if interactive
-                add_msg_board(sprintf(2,'Warning: Model could not be automatically saved. %s\n',message.text));
-            end
-        else
-            diagnostics.unsaved = false;
-        end
-        handles.text_time_left.String = 'Completed.';
-        handles.text_time_left.ForegroundColor = [0,127,0]/256;
-        set(gcf,'Pointer','arrow');
-        handles.progress = 2;
-        handles.pushbutton_run.String = 'Flex Peptide';
-        guidata(hObject,handles);
-
-    case 2 % Flex
-        if isfield(handles.restraints,'protein')
-            pctag = handles.restraints.protein(2);
-        else
-            pctag = 'X';
-        end
-        snum = handles.diagnostics.snum;
-        num_ch = length(model.structures{handles.diagnostics.snum});
-        to_be_saved = zeros(handles.diagnostics.success,num_ch+1);
-        [pathstr,basname] = fileparts(handles.options.fname);
-
-        options.min_approach = 1.2;
-        options.deterministic = handles.checkbox_std_seed.Value;
-        options.max_trials = handles.max_trials;
-        options.max_time = handles.max_time;
-        options.fname_bas = handles.basname;
-        %     report_name = fullfile(pathstr,strcat(handles.basname,'_report.txt'));
-        handles.report_name = strcat(handles.basname,'_flex_report.txt');
-        fidr = fopen(handles.report_name,'wt');
-        fprintf(fidr,'--- Generation of flexible peptide termini and linkers for rigid-body model %s ---\n',handles.basname);
-        fclose(fidr);
-        all_flex_models = zeros(handles.diagnostics.success,length(handles.restraints.pflex));
-        all_flex_model_times = zeros(handles.diagnostics.success,length(handles.restraints.pflex));
-        model.current_structure = handles.diagnostics.snum;
-        adr = mk_address(model.current_structure);
-        if isfield(handles,'RNA_link_success')
-            comp_mask = handles.RNA_link_success;
-        else
-            comp_mask = ones(1,handles.diagnostics.success);
-        end
-        flex_success = zeros(handles.diagnostics.success,length(handles.restraints.pflex));
-        stag = mk_address_parts(handles.diagnostics.snum);
-        connected_chains = zeros(length(handles.restraints.pflex),2);
-        for kp = 1:length(handles.restraints.pflex)
-            Nchain = handles.restraints.pflex(kp).Nanchor(1:3);
-            Nadr = sprintf('[%s]%s',stag,Nchain);
-            Nind = resolve_address(Nadr);
-            Cchain = handles.restraints.pflex(kp).Canchor(1:3);
-            Cadr = sprintf('[%s]%s',stag,Cchain);
-            Cind = resolve_address(Cadr);
-            connected_chains(kp,1) = Nind(2);
-            connected_chains(kp,2) = Cind(2);
-        end
-        for km = 1:handles.diagnostics.success % loop over rigid-body models
-            options.max_trials = handles.max_trials;
-            options.rm = km;
-            options.template = sprintf('%s(:){%i}',adr,km);
-            if ~comp_mask(km)
-                add_msg_board(sprintf('Warning: No RNA connection in rigid-body arrangement %i',km));
-                add_msg_board('Skipping computation of flexible peptide sections in this rigid-body arrangement');
-                options.max_trials = -1;
-            end
-            for kp = 1:length(handles.restraints.pflex) % loop over flexible peptide segments
-                options.fd = kp;
-                handles.uipanel_runtime.Title = sprintf('Flexible peptide section %i in rigid-body arrangment %i',kp,km);
-                handles = set_progress_interface(handles);
-                set(gcf,'Pointer','watch');
-                handles.text_time_left.String = 'Started.';
-                handles.text_time_left.ForegroundColor = [0,0,180]/256;
-                drawnow
-                model.current_structure = handles.diagnostics.snum; % make the result of rigid-body arrangement the current structure
-                [restrain,restraints,monitor,cancelled,number,number_monitor] = process_domain_restraints(handles.restraints.pflex(kp),km);
-                options.max_time = handles.restraints.pflex(kp).time;
-                set(handles.edit_max_time,'String',sprintf('%5.2f',options.max_time));
-                drawnow
-                if cancelled
-                    add_msg_board(sprintf('ERROR: Restraint processing failed for flexible domain %i in model %i',kp,kp));
-                    options.max_trials = -1;
-                end
-                options.n_restraints = number;
-                options.n_monitor = number_monitor;
-                options.monitor = monitor;
-                fidr = fopen(handles.report_name,'at');
-                fprintf(fidr,'\n### Flexible peptide section %i in rigid-body arrangment %i ###\n',kp,km);
-                fclose(fidr);
-                flex_diagnostics = flex_engine(restraints,restrain,options,handles);
-                if flex_diagnostics.success == 0
-                    add_msg_board(sprintf('Warning: No models found for flexible domain %i in rigid-body arrangement %i',kp,km));
-                    fprintf(fidr,'Modelling of flexible domain %i in rigid-body arrangement %i failed after %i s\n',kp,km,flex_diagnostics.runtime);
-                    options.max_trials = -1;
-                else
-                    flex_success(km,kp) = 1;
-                end
-                all_flex_models(km,kp) = flex_diagnostics.snum;
-                all_flex_model_times(km,kp) = flex_diagnostics.time_per_model;
-                handles.flex_diagnostics{km,kp} = flex_diagnostics;
-                handles.text_time_left.String = 'Completed.';
-                handles.text_time_left.ForegroundColor = [0,127,0]/256;
-                drawnow
-                set(gcf,'Pointer','arrow');
-            end
-            linked_model = 0;
-            RNA = num_ch+1;
-            chains = zeros(1,num_ch+1);
+            new_cindices = zeros(1,num_ch+1);
             ncp = 0;
             for kc = 1:num_ch
                 [~,ctag] = mk_address_parts([handles.diagnostics.snum,kc]);
@@ -730,102 +595,219 @@ switch handles.progress
                 end
                 if ~isRNA
                     ncp = ncp + 1;
-                    chains(ncp) = kc;
+                    new_cindices(ncp) = kc;
                 end
             end
-            save_it = prod(flex_success(km,:));
+            new_cindices(ncp+1) = num_ch + 1;
+            new_cindices = new_cindices(1:ncp+1);
+            handles.new_cindices = new_cindices;
+            if isfield(model,'selected')
+                model = rmfield(model,'selected');
+            end
+            spoi = 0;
+            for kc = new_cindices
+                for km = 1:length(success_vec)
+                    if success_vec(km)
+                        spoi = spoi + 1;
+                        model.selected{spoi} = [snum kc km];
+                    end
+                end
+            end
+            fname = fullfile(pathstr,strcat(basname,'_RNA.pdb'));
+            message = wr_pdb_selected(fname,handles.restraints.newID);
+            if message.error
+                diagnostics.unsaved = true;
+                if interactive
+                    add_msg_board(sprintf(2,'Warning: Model could not be automatically saved. %s\n',message.text));
+                end
+            else
+                diagnostics.unsaved = false;
+            end
+            handles.text_time_left.String = 'Completed.';
+            handles.text_time_left.ForegroundColor = [0,127,0]/256;
+            set(gcf,'Pointer','arrow');
+            handles.progress = 2;
+            handles.pushbutton_run.String = 'Flex Peptide';
+            guidata(hObject,handles);
+
+        case 2 % Flex
+            if isfield(handles.restraints,'protein')
+                pctag = handles.restraints.protein(2);
+            else
+                pctag = 'X';
+            end
+            snum = handles.diagnostics.snum;
+            num_ch = length(model.structures{handles.diagnostics.snum});
+            to_be_saved = zeros(handles.diagnostics.success,num_ch+1);
+            if isfield(handles.restraints,'solutions') && ~isempty(handles.restraints.solutions)
+                list_name = sprintf('%s_model_list.dat',handles.restraints.solutions);
+            else
+            [pathstr,basname] = fileparts(handles.options.fname);
+                list_name = sprintf('%s_model_list.dat',basname);
+                list_name = fullfile(pathstr,list_name);
+            end
+
+            options.min_approach = 1.2;
+            options.deterministic = handles.checkbox_std_seed.Value;
+            options.max_trials = handles.max_trials;
+            options.max_time = handles.max_time;
+            options.fname_bas = handles.basname;
+            %     report_name = fullfile(pathstr,strcat(handles.basname,'_report.txt'));
+            handles.report_name = strcat(handles.basname,'_flex_report.txt');
+            fidr = fopen(handles.report_name,'wt');
+            fprintf(fidr,'--- Generation of flexible peptide termini and linkers for rigid-body model %s ---\n',handles.basname);
+            fclose(fidr);
+            all_flex_models = zeros(handles.diagnostics.success,length(handles.restraints.pflex));
+            all_flex_model_times = zeros(handles.diagnostics.success,length(handles.restraints.pflex));
+            model.current_structure = handles.diagnostics.snum;
+            adr = mk_address(model.current_structure);
+            if isfield(handles,'RNA_link_success')
+                comp_mask = handles.RNA_link_success;
+            else
+                comp_mask = ones(1,handles.diagnostics.success);
+            end
+            flex_success = zeros(handles.diagnostics.success,length(handles.restraints.pflex));
+            stag = mk_address_parts(handles.diagnostics.snum);
+            connected_chains = zeros(length(handles.restraints.pflex),2);
             for kp = 1:length(handles.restraints.pflex)
-                if flex_success(km,kp)
-                    for kc = 1:num_ch
-                        if chains(kc) == connected_chains(kp,1) || chains(kc) == connected_chains(kp,2)
-                            chains(kc) = 0;
-                        end
-                    end
-                    linked_model = all_flex_models(km,kp); 
-                end
+                Nchain = handles.restraints.pflex(kp).Nanchor(1:3);
+                Nadr = sprintf('[%s]%s',stag,Nchain);
+                Nind = resolve_address(Nadr);
+                Cchain = handles.restraints.pflex(kp).Canchor(1:3);
+                Cadr = sprintf('[%s]%s',stag,Cchain);
+                Cind = resolve_address(Cadr);
+                connected_chains(kp,1) = Nind(2);
+                connected_chains(kp,2) = Cind(2);
             end
-            if save_it
-                cch = 0;
-                found = true;
-                indices = cell(1,100);
-                while found
-                    cch = cch + 1;
-                    ctag = id2tag(cch,handles.restraints.peptide_tags{1});
-                    if isempty(ctag)
-                        found = false;
-                        cch = cch - 1;
+            for km = 1:handles.diagnostics.success % loop over rigid-body models
+                options.max_trials = handles.max_trials;
+                options.rm = km;
+                options.template = sprintf('%s(:){%i}',adr,km);
+                if ~comp_mask(km)
+                    add_msg_board(sprintf('Warning: No RNA connection in rigid-body arrangement %i',km));
+                    add_msg_board('Skipping computation of flexible peptide sections in this rigid-body arrangement');
+                    options.max_trials = -1;
+                end
+                for kp = 1:length(handles.restraints.pflex) % loop over flexible peptide segments
+                    options.fd = kp;
+                    handles.uipanel_runtime.Title = sprintf('Flexible peptide section %i in rigid-body arrangment %i',kp,km);
+                    handles = set_progress_interface(handles);
+                    set(gcf,'Pointer','watch');
+                    handles.text_time_left.String = 'Started.';
+                    handles.text_time_left.ForegroundColor = [0,0,180]/256;
+                    drawnow
+                    model.current_structure = handles.diagnostics.snum; % make the result of rigid-body arrangement the current structure
+                    [restrain,restraints,monitor,cancelled,number,number_monitor] = process_domain_restraints(handles.restraints.pflex(kp),km);
+                    options.max_time = handles.restraints.pflex(kp).time;
+                    set(handles.edit_max_time,'String',sprintf('%5.2f',options.max_time));
+                    drawnow
+                    if cancelled
+                        add_msg_board(sprintf('ERROR: Restraint processing failed for flexible domain %i in model %i',kp,kp));
+                        options.max_trials = -1;
+                    end
+                    options.n_restraints = number;
+                    options.n_monitor = number_monitor;
+                    options.monitor = monitor;
+                    fidr = fopen(handles.report_name,'at');
+                    fprintf(fidr,'\n### Flexible peptide section %i in rigid-body arrangment %i ###\n',kp,km);
+                    fclose(fidr);
+                    flex_diagnostics = flex_engine(restraints,restrain,options,handles);
+                    if flex_diagnostics.success == 0
+                        add_msg_board(sprintf('Warning: No models found for flexible domain %i in rigid-body arrangement %i',kp,km));
+                        fprintf(fidr,'Modelling of flexible domain %i in rigid-body arrangement %i failed after %i s\n',kp,km,flex_diagnostics.runtime);
+                        options.max_trials = -1;
                     else
-                        [cind,msg] = resolve_address(sprintf('[%s](%s)',stag,ctag));
-                        if ~isempty(cind) && ~msg.error % this is a rigid-body peptide chain
-                            indices{cch} = [snum cind(2) km];
-                        else
-                            flexnum = str2double(ctag);
-                            secstruct = all_flex_models(km,flexnum);
-                            indices{cch} = [secstruct 1 1];
+                        flex_success(km,kp) = 1;
+                    end
+                    all_flex_models(km,kp) = flex_diagnostics.snum;
+                    all_flex_model_times(km,kp) = flex_diagnostics.time_per_model;
+                    handles.flex_diagnostics{km,kp} = flex_diagnostics;
+                    handles.text_time_left.String = 'Completed.';
+                    handles.text_time_left.ForegroundColor = [0,127,0]/256;
+                    drawnow
+                    set(gcf,'Pointer','arrow');
+                end
+                linked_model = 0;
+                RNA = num_ch+1;
+                chains = zeros(1,num_ch+1);
+                ncp = 0;
+                for kc = 1:num_ch
+                    [~,ctag] = mk_address_parts([handles.diagnostics.snum,kc]);
+                    isRNA = false;
+                    for krna = 1:length(handles.restraints.RNA_tags)
+                        if strcmpi(['(' ctag ')'],handles.restraints.RNA_tags{krna})
+                            isRNA = true;
                         end
                     end
+                    if ~isRNA
+                        ncp = ncp + 1;
+                        chains(ncp) = kc;
+                    end
                 end
-                indices = indices(1:cch);
-                chain = combine_chains(indices,pctag);
-                info = set_info(chain,linked_model);
-                [~,linked_model] = add_pdb(chain,info);
-                to_be_saved(km,1) = linked_model;
-                to_be_saved(km,2) = RNA;
-                if isfield(model,'selected')
-                    model = rmfield(model,'selected');
+                save_it = prod(flex_success(km,:));
+                for kp = 1:length(handles.restraints.pflex)
+                    if flex_success(km,kp)
+                        for kc = 1:num_ch
+                            if chains(kc) == connected_chains(kp,1) || chains(kc) == connected_chains(kp,2)
+                                chains(kc) = 0;
+                            end
+                        end
+                        linked_model = all_flex_models(km,kp); 
+                    end
                 end
-                model.selected{1} = [linked_model 1 1];
-                model.selected{2} = [handles.diagnostics.snum handles.new_cindices(end) km];
-                fmname = sprintf('%s_m%i_flex.pdb',basname,km);
-                fname = fullfile(pathstr,fmname);
-                wr_pdb_selected(fname,handles.restraints.newID,[],true);
+                if save_it
+                    cch = 0;
+                    found = true;
+                    indices = cell(1,100);
+                    while found
+                        cch = cch + 1;
+                        ctag = id2tag(cch,handles.restraints.peptide_tags{1});
+                        if isempty(ctag)
+                            found = false;
+                            cch = cch - 1;
+                        else
+                            [cind,msg] = resolve_address(sprintf('[%s](%s)',stag,ctag));
+                            if ~isempty(cind) && ~msg.error % this is a rigid-body peptide chain
+                                indices{cch} = [snum cind(2) km];
+                            else
+                                flexnum = str2double(ctag);
+                                secstruct = all_flex_models(km,flexnum);
+                                indices{cch} = [secstruct 1 1];
+                            end
+                        end
+                    end
+                    indices = indices(1:cch);
+                    chain = combine_chains(indices,pctag);
+                    info = set_info(chain,linked_model);
+                    [~,linked_model] = add_pdb(chain,info);
+                    to_be_saved(km,1) = linked_model;
+                    to_be_saved(km,2) = RNA;
+                    if isfield(model,'selected')
+                        model = rmfield(model,'selected');
+                    end
+                    model.selected{1} = [linked_model 1 1];
+                    model.selected{2} = [handles.diagnostics.snum handles.new_cindices(end) km];
+                    fmname = sprintf('%s_m%i_flex.pdb',handles.basname,km);
+                    wr_pdb_selected(fmname,handles.restraints.newID,[],true);
+                    fid_list = fopen(list_name,'at');
+                    fprintf(fid_list,'%s\n',fmname);
+                    fclose(fid_list);
+                end
             end
-        end
-        handles.all_flex_models = all_flex_models;
-        handles.all_flex_model_times = all_flex_model_times;
-        handles.flex_success = flex_success;
-        handles.flex_saved = to_be_saved; 
-        handles.progress = 3;
-        add_msg_board('Flex step completed.');
-        if isfield(handles.restraints,'build_time')
-            handles.max_time = handles.restraints.build_time;
-            handles.edit_max_time.String = sprintf('%5.2f',handles.max_time);
-        end
-        handles.pushbutton_run.String = 'Run assembler';
-        guidata(hObject,handles);
-        return
-
-    case 3 % assembler
-
-        all_flex_models = handles.all_flex_models;
-        restraints = handles.restraints;
-        all_flex_models = all_flex_models(:,1:length(restraints.pflex)); % ### restricted to peptide segments
-        options.max_time = handles.max_time;
-        options.fname_bas = handles.basname;
-        options.display_SANS_fit = handles.radiobutton_SANS_fit.Value;
-        options.display_SANS_chi2 = handles.radiobutton_SANS_chi2.Value;
-        options.display_SAXS_fit = handles.radiobutton_SAXS_fit.Value;
-        options.display_xlinks = handles.radiobutton_crosslinks.Value;
-        model.current_structure = handles.diagnostics.snum; % make rigid-body arrangement the current structure
-        handles.uipanel_runtime.Title = 'Assembling rigid-body arrangements and flexible sections';
-        handles = set_progress_interface(handles);
-        set(gcf,'Pointer','watch');
-        handles.text_time_left.String = 'Started.';
-        handles.text_time_left.ForegroundColor = [0,0,180]/256;
-        drawnow
-        assembler_diagnostics = assembler(all_flex_models,restraints,options,handles);
-        handles.assembler_diagnostics = assembler_diagnostics;
-        handles.text_time_left.String = 'Completed.';
-        handles.text_time_left.ForegroundColor = [0,127,0]/256;
-        set(gcf,'Pointer','arrow');
-        if assembler_diagnostics.success
-            handles.progress = 4;
-            add_msg_board('Model assembled.');
-            handles.pushbutton_run.String = 'Finished';
-            handles.pushbutton_run.Enable = 'Off';
-        end;
-        guidata(hObject,handles);
-        return
+            handles.all_flex_models = all_flex_models;
+            handles.all_flex_model_times = all_flex_model_times;
+            handles.flex_success = flex_success;
+            handles.flex_saved = to_be_saved; 
+            handles.progress = 3;
+            add_msg_board('Flex step completed.');
+            if isfield(handles.restraints,'build_time')
+                handles.max_time = handles.restraints.build_time;
+                handles.edit_max_time.String = sprintf('%5.2f',handles.max_time);
+            end
+            handles.pushbutton_run.String = 'Run assembler';
+            guidata(hObject,handles);
+            return
+    end
 end
 
 function edit_max_time_Callback(hObject, eventdata, handles)
