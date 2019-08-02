@@ -38,7 +38,7 @@ if isempty(call_count)
     call_count = 0;
 end
 
-data = all_fits_SAS{k};
+data = all_fits_SAS{1};
 [~,n] = size(data);
 
 fom_SAS = fit_multi_SAS(v,all_fits_SAS);
@@ -48,16 +48,16 @@ fom = (fom_SAS/normalize.SAS + fom_DEER/normalize.DEER)/2 - 1;
 
 if exist('opt','var')
     if mod(call_count,update_number) == 0
-        call_count = 0;
         axis(opt.plot_axes);
         cla; hold on;
         plot(1:opt.old_ensemble_size,v(1:opt.old_ensemble_size),'o','Color',[0,0.6,0]);
-        plot(opt.old_ensemble_size+1:length(v),v(opt.old_ensemble_size+1:n-3),'.','Color',[0,0.6,0]);
-        opt.text_DEER_fom = sprintf('%5.3f',fom_DEER);
-        opt.text_SAS_fom = sprintf('%5.3f',fom_SAS);
-        opt.text_loss = sprintf('%5.3f',fom);
+        plot(opt.old_ensemble_size+1:n-3,v(opt.old_ensemble_size+1:n-3),'.','Color',[0,0.6,0]);
+        opt.text_DEER_fom.String = sprintf('%5.3f',fom_DEER);
+        opt.text_SAS_fom.String = sprintf('%5.3f',fom_SAS);
+        opt.text_loss.String = sprintf('%5.3f',fom);
         coeff = v(v > opt.threshold*max(v));
-        opt.text_ensemble_size = length(coeff);
+        opt.text_ensemble_size.String = sprintf('%i',length(coeff));
+        opt.text_iteration_counter.String = sprintf('%i',call_count/1000);
         drawnow
     end
     call_count = call_count + 1;

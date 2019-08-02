@@ -40,14 +40,14 @@ end
 
 if exist('opt','var')
     if mod(call_count,update_number) == 0
-        call_count = 0;
         axis(opt.plot_axes);
         cla; hold on;
         plot(1:opt.old_ensemble_size,v(1:opt.old_ensemble_size),'o','Color',[0,0,0.75]);
-        plot(opt.old_ensemble_size+1:length(v),v(opt.old_ensemble_size+1:n-3),'.','Color',[0,0,0.75]);
-        opt.text_SAS_fom0 = sprintf('%5.3f',fom);
+        plot(opt.old_ensemble_size+1:n-3,v(opt.old_ensemble_size+1:n-3),'.','Color',[0,0,0.75]);
+        opt.text_SAS_fom0.String = sprintf('%5.3f',fom);
         coeff = v(v > opt.threshold*max(v));
-        opt.text_SAS_size = length(coeff);
+        opt.text_SAS_size.String = sprintf('%i',length(coeff));
+        opt.text_iteration_counter.String = sprintf('%i',call_count/1000);
         drawnow
     end
     call_count = call_count + 1;

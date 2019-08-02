@@ -116,6 +116,7 @@ restraints.RNA = [];
 restraints.max_time = [];
 restraints.solutions = '';
 restraints.solution_mode = '';
+restraints.substitute = [];
 
 DEER_poi=0;
 rb_poi=0;
@@ -127,6 +128,7 @@ pflex_poi = 0;
 rflex_poi = 0;
 RNA_poi = 0;
 max_chain = 0;
+subspoi = 0;
 
 label_adr = ':';
 label_types = ':';
@@ -291,7 +293,7 @@ while 1
                         restraints.SANS(SANS_poi).illres = ''; 
                     end
                     if length(args) > 4
-                        restraints.SANS(SANS_poi).D2O = str2double(char(args(4))); 
+                        restraints.SANS(SANS_poi).D2O = str2double(char(args(5))); 
                     else
                         restraints.SANS(SANS_poi).D2O = 0; 
                     end
@@ -443,6 +445,8 @@ while 1
                     RNA_oligomer_poi = 0;
                     RNA_bind_poi = 0;
                     RNA_stem_poi = 0;
+                case 'SUBSTITUTE'
+                    mode=12;
                 case 'RIGIFLEX'
                     mode = 0;
                 case 'END'
@@ -941,6 +945,11 @@ while 1
                                 restraints.RNA(RNA_poi).stems(RNA_stem_poi).lib = char(args(5));
                         end
                     end
+                        case 12 % SUBSTITUTE
+                            subspoi = subspoi + 1;
+                            for karg = 1:length(args)
+                                restraints.substitute(subspoi).chains{karg} = char(args(karg));
+                            end
             end
         end
     end

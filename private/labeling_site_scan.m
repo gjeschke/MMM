@@ -249,7 +249,30 @@ else
                 add_msg_board(sprintf('Scanning %i residues in chain model %s',mmm,adr));
             end;
             scanned=scanned+mmm;
-            load(libraries{k});
+            if exist(libraries{k},'file')
+                load(libraries{k});
+            else
+                button = questdlg('Rotamer library download may take long. Do you want to proceed?','Download missing library from server','OK','Cancel','OK');
+                if strcmp(button,'OK')
+                    rotlib_dir = [general.rootdir filesep 'rotamer_libraries'];
+                    add_msg_board(sprintf('Downloading %s...',libraries{k}));
+                    drawnow
+                    download_url = get_download_url(libraries{k});
+                    if isempty(download_url)
+                        add_msg_board('ERROR: Library not available and download URL not found');
+                        msg.error=11;
+                        msg.text='No library.';
+                        return
+                    end
+                    unzip(download_url,rotlib_dir);
+                    load(libraries{k});
+                else
+                    add_msg_board('ERROR: Library not available and download cancelled');
+                    msg.error=10;
+                    msg.text='No library.';
+                    return
+                end
+            end
             calc_positions=rotamer_populations(cindices,rot_lib,T(k),false,stat_file,PDB_path,libraries{k});
             new_labels=new_labels+length(calc_positions);
             sites(k).residue=calc_positions;
@@ -334,3 +357,17 @@ zmean=sum(NOall(:,3).*pop);
 dz=(NOall(:,3)-zmean);
 nNO=length(dz);
 rmsd=sqrt(0.005/3+nNO*sum(dz.^2.*pop)/(nNO-1))/10; % divided by 10 for Å -> nm
+
+function download_url = get_download_url(libname)
+
+global rotamer_libraries
+
+download_url = '';
+
+for k = 1:length(rotamer_libraries)
+    poi = tag2id(libname,rotamer_libraries(k).files);
+    if ~isempty(poi)
+        download_url = rotamer_libraries(k).download{poi};
+        break
+    end
+end

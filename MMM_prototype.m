@@ -22,7 +22,7 @@ function varargout = MMM_prototype(varargin)
 
 % Edit the above text to modify the response to help MMM_prototype
 
-% Last Modified by GUIDE v2.5 06-Apr-2019 10:13:55
+% Last Modified by GUIDE v2.5 11-Jul-2019 07:42:05
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -6481,4 +6481,13 @@ function menu_jobs_test6_Callback(hObject, eventdata, handles)
 
 fname = 'PTB1_ultimate_final_rigiflex';
 PTBP1_ensemble_maker(fname);
+guidata(hObject,handles);
+
+
+% --------------------------------------------------------------------
+function menu_ensemble_fit_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_ensemble_fit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+ensemble_fit;
 guidata(hObject,handles);

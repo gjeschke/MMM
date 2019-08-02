@@ -67,11 +67,11 @@ set(handles.pushbutton_help,'CData',cdata);
 handles.edited=0;
 handles.read_only=0;
 
-if ~isempty(hMain.report_file),
+if ~isempty(hMain.report_file)
     handles.open_file=hMain.report_file;
     handles=load_file(handles);
     hMain.report_file='';
-end;
+end
 
 hMain.auxiliary=[hMain.auxiliary hObject];
 
