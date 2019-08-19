@@ -1374,7 +1374,7 @@ for k = 2:kend,
                 case 'Gaussian'
                     restrain(k-1).oligomer(kr).p = ...
                         exp(-((r-restrain(k-1).oligomer(kr).par1)/restrain(k-1).oligomer(kr).par2)^2);
-                    p_oligomer = p_oligomer * restrain(k).oligomer(kr).p;
+                    p_oligomer = p_oligomer * restrain(k-1).oligomer(kr).p;
                      
                 case 'bounds'
                     if r >= restrain(k-1).oligomer(kr).par1 && ...
