@@ -888,7 +888,7 @@ while k<ngap+1 && failed < maxattempts,
                 case 'Gaussian'
                     restrain(k-1).oligomer(kr).p = ...
                         exp(-((r-restrain(k-1).oligomer(kr).par1)/restrain(k-1).oligomer(kr).par2)^2);
-                    p_oligomer = p_oligomer * restrain(k).oligomer(kr).p;
+                    p_oligomer = p_oligomer * restrain(k-1).oligomer(kr).p;
                     tested_restraints = tested_restraints + 1;
                     updated = true;                    
                 case 'bounds'
@@ -898,7 +898,7 @@ while k<ngap+1 && failed < maxattempts,
                         p_oligomer = 0;
                     end;                        
                 otherwise
-                    error('MMM:mk_loop_model_reverse:unknownRestraintType','Restraint type %s not known',restrain(k).oligomer(kr).type);
+                    error('MMM:mk_loop_model_reverse:unknownRestraintType','Restraint type %s not known',restrain(k-1).oligomer(kr).type);
             end;
         end;
         p_model = p_oligomer*p_model;
@@ -925,7 +925,7 @@ while k<ngap+1 && failed < maxattempts,
                 case 'label'
                     z = abs(restrain(k-1).xyz(3));
                 otherwise
-                    error('MMM:mk_loop_model_reverse:unknownRestraintModifier','Depth restraint site %s not known',restrain(k).depth(kr).site);
+                    error('MMM:mk_loop_model_reverse:unknownRestraintModifier','Depth restraint site %s not known',restrain(k-1).depth(kr).site);
             end;
             switch restrain(k-1).depth.type
                 case 'Gaussian'
@@ -943,7 +943,7 @@ while k<ngap+1 && failed < maxattempts,
                         p_depth = 0;
                     end;                        
                 otherwise
-                    error('MMM:mk_loop_model_reverse:unknownRestraintType','Restraint type %s not known',restrain(k).depth(kr).type);
+                    error('MMM:mk_loop_model_reverse:unknownRestraintType','Restraint type %s not known',restrain(k-1).depth(kr).type);
             end;
         end;
         p_model = p_depth*p_model;
@@ -1383,7 +1383,7 @@ for k = 2:kend,
                         p_oligomer = 1;
                     end;                        
                 otherwise
-                    error('MMM:mk_loop_model_reverse:unknownRestraintType','Restraint type %s not known',restrain(k).oligomer(kr).type);
+                    error('MMM:mk_loop_model_reverse:unknownRestraintType','Restraint type %s not known',restrain(k-1).oligomer(kr).type);
             end;
         end;
         p_model = p_oligomer*p_model;
@@ -1399,7 +1399,7 @@ for k = 2:kend,
                 case 'label'
                     z = abs(restrain(k-1).xyz(3));
                 otherwise
-                    error('MMM:mk_loop_model_reverse:unknownRestraintModifier','Depth restraint site %s not known',restrain(k).depth(kr).site);
+                    error('MMM:mk_loop_model_reverse:unknownRestraintModifier','Depth restraint site %s not known',restrain(k-1).depth(kr).site);
             end;
             switch restrain(k-1).depth.type
                 case 'Gaussian'
@@ -1415,7 +1415,7 @@ for k = 2:kend,
                         p_depth = 0;
                     end;                        
                 otherwise
-                    error('MMM:mk_loop_model_reverse:unknownRestraintType','Restraint type %s not known',restrain(k).depth(kr).type);
+                    error('MMM:mk_loop_model_reverse:unknownRestraintType','Restraint type %s not known',restrain(k-1).depth(kr).type);
             end;
         end;
         p_model = p_depth*p_model;

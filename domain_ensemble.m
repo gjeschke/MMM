@@ -1288,9 +1288,9 @@ Rama_res.allowed_P = Ramachandran.allowed_P;
 Rama_res.allowed_G = Ramachandran.allowed_G;
 Rama_res.allowed_gen = Ramachandran.allowed_gen;
 
-while kMC <= ntrials,
-    parfor kp = 1:parnum, % parfor
-        if reverse,
+while kMC <= ntrials
+    parfor kp = 1:parnum % parfor
+        if reverse
             [coor,errcode,restrain1,cumprob,kres] = mk_loop_model_reverse(sequence, p_anchorC, p_anchorCn, prot_coor, restrain, Rama_res, rescodes, min_prob,n_restraints);
         else
             [coor,errcode,restrain1,cumprob,kres] = mk_loop_model(sequence, p_anchorN, p_anchorC, p_anchorNp, p_anchorCn, prot_coor, restrain, Rama_res, rescodes, min_prob, n_restraints);
