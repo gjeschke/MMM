@@ -8,23 +8,15 @@ function diagnostics = rigi_flex_engine(restraints,options,handles)
 % handles       handles to the RigiFlex GUI, can be missing for modelling
 %               on a remote server
 %
-% G. Jeschke, 20.4.2017
+% G. Jeschke, 6.9.2019
 
 global model
-
-stemloop_mode = false;
-trial_echo = false;
-
-
-% restraints.stemlibs = {};
-% restraints.stemloop_rlinks.rba = [];
-% restraints.stemloop_rlinks.coor1 = [];
-% restraints.stemloop_rlinks.coor2 = [];
-% restraints.stemloop_rlinks.lib = [];
 
 solutions_given = false;
 solutions = [];
 processed = [];
+soln_count = 0;
+reference_geometry = cell(1,50000);
 
 if isfield(restraints,'solutions') && ~isempty(restraints.solutions)
     solutions_given = true;
@@ -94,9 +86,6 @@ max_extension = 180; % maximum distance between any two reference points [Å]
 clash_threshold = 1.5*forgive; % a uniform van-der-Waals radius of 1.5 Å is assumed for heavy atoms
 clash_fail = 10000; %500; % maximum value of the clash cost function in testing for the unrefined model
 
-% delete or keep SANS output fit files
-delete_SANS = 'all'; % can be 'all', 'poor', or 'none', any other choice is interpreted as 'none' 
-delete_SAXS = 'all'; % can be 'all', 'poor', or 'none', any other choice is interpreted as 'none' 
 
 if isfield(restraints,'newID') && ~isempty(restraints.newID)
     PDBid = restraints.newID;
@@ -111,17 +100,9 @@ pthr = exp(-erfinv(pmodel)^2);
 trials = options.max_trials;
 maxtime = options.max_time;
 
-SANS_threshold = options.SANS_threshold; 
-SAXS_threshold = options.SAXS_threshold;
 xlink_threshold = options.xlink_threshold;
 xlink_percentage = options.xlink_percentage;
 fname = options.fname;
-
-if options.deterministic
-    rng(13);
-else
-    rng('shuffle'); % initialize random number generator to be able to obtain different ensembles in subsequent runs
-end
 
 snum = resolve_address(sprintf('[%s]',PDBid));
 
@@ -174,6 +155,8 @@ for kr = 1:length(restraints.rb)
     heavy_coor{kr} = coor_r(1:crpoi,:);
 end
 
+hulls(length(heavy_coor)).vertices = 0;
+hulls(length(heavy_coor)).faces = 0;
 % convert coordinates to convex hulls
 for rba = 1:length(heavy_coor)
     faces = convhulln(heavy_coor{rba});
@@ -229,11 +212,11 @@ switch err
         add_msg_board('Successful bound smoothing with experimental restraints.');
     case 1
         add_ms_board('ERROR: Some distance restraints are inconsistent.');
-        success = -1;
+        diagnostics.success = -1;
         return
     otherwise
         ad_msg_board('Unspecified error in bound smoothing.');
-        success = -1;
+        diagnostics.success = -1;
         return
 end
 
@@ -253,12 +236,6 @@ saxs_fail = 0;
 success = 0;
 sans_poi = 0;
 
-if isfield(restraints,'SANS')
-    chi_SANS = zeros(length(restraints.SANS),50000);
-end
-if isfield(restraints,'SAXS')
-    chi_SAXS = zeros(length(restraints.SAXS),50000);
-end
 if isfield(restraints,'xlinks')
     xlink_fulfill = zeros(length(restraints.xlinks),50000);
 end
@@ -280,7 +257,6 @@ for klib = 1:length(stemlibs)
     sl_atoms = sl_atoms + msla;
 end
 [naux,~] = size(auxiliary);
-refines = 0;
 [ncore,~] = size(core);
 
 sl_lib_len = zeros(1,length(restraints.stemlibs));
@@ -325,6 +301,7 @@ probabilities = zeros(1,maxmodels);
 [pathstr,basname] = fileparts(fname);
 solutionname = fullfile(pathstr,strcat(basname,'_solutions.dat'));
 repname = fullfile(pathstr,strcat(basname,'_stemloops.dat'));
+geometryname = fullfile(pathstr,strcat(basname,'_geometry.mat'));
 fid = fopen(solutionname,'wt');
 fprintf(fid,'%pblock trial  combi % at granularity %i\n',options.granularity);
 fclose(fid);
@@ -402,7 +379,6 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                 fprintf(1,'\n');
             end
         end
-        m0 = 0;
         fulfill = true;
         if bask + kt <= prod(intervals)
             fractions = get_restraint_fractions(bask+kt,intervals,digitbase);
@@ -538,404 +514,27 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                             fulfill = false;
                         end
                     end
-                    if fulfill && stemloop_mode % check for stemloop linker restraints
-                        libind = cell(1,length(sl_lib_len));
-                        for lib = 1:length(sl_lib_len)
-                            libind{lib} = 1:sl_lib_len(lib);
-                        end
-                        slr = length(sl_links);
-                        atransmat = tmats{kt};
-                        libpairs = zeros(slr,2);
-                        for sl = 1:slr
-                            libpairs(sl,:) = sl_links(sl).lib;
-                            baspoi4 = 4*(sl_links(sl).rba(1)-1);
-                            transmat1 = atransmat(baspoi4+1:baspoi4+4,:);
-                            if sl_links(sl).lib(1)~= 0
-                                coor1 = sl_links(sl).coor1(libind{sl_links(sl).lib(1)},:);
-                            else
-                                coor1 = sl_links(sl).coor1;
-                            end
-                            coor1b = affine_coor_set(coor1,transmat1);
-                            baspoi4 = 4*(sl_links(sl).rba(2)-1);
-                            transmat2 = atransmat(baspoi4+1:baspoi4+4,:);
-                            if sl_links(sl).lib(2) ~= 0
-                                coor2 = sl_links(sl).coor2(libind{sl_links(sl).lib(2)},:);
-                            else
-                                coor2 = sl_links(sl).coor2;
-                            end
-                            coor2b = affine_coor_set(coor2,transmat2);
-                            [m1,~] = size(coor1b);
-                            [m2,~] = size(coor2b);
-                            a2 = repmat(sum(coor1b.^2,2),1,m2);
-                            b2 = repmat(sum(coor2b.^2,2),1,m1).';
-                            pair_dist = sqrt(abs(a2 + b2 - 2*coor1b*coor2b.'));
-                            [ind1,ind2] = find(pair_dist <= sl_links(sl).maxr + cres);
-                            %                                 if ~isempty(ind1) && ~isempty(ind2)
-                            %                                     for k = 1:length(ind1), fprintf(1,'Link(%i), Combi(%i,%i): %4.2f Å\n',sl,ind1(k),ind2(k),pair_dist(ind1(k),ind2(k))); end;
-                            %                                 end
-                            if sl_links(sl).lib(1) ~= 0
-                                oldind1 = libind{sl_links(sl).lib(1)};
-                                newind1 = oldind1(ind1);
-                                libind{sl_links(sl).lib(1)} = newind1;
-                                for osl = 1:sl-1
-                                    if libpairs(osl,1) == sl_links(sl).lib(1)
-                                        if libpairs(osl,2) ~= 0
-                                            oldind3 = libind{libpairs(osl,2)};
-                                            newind3 = oldind3(ind1);
-                                            libind{libpairs(osl,2)} = newind3;
-                                        end
-                                    end
-                                    if libpairs(osl,2) == sl_links(sl).lib(1)
-                                        if libpairs(osl,1) ~= 0
-                                            oldind3 = libind{libpairs(osl,1)};
-                                            newind3 = oldind3(ind1);
-                                            libind{libpairs(osl,1)} = newind3;
-                                        end
-                                    end
-                                end
-                            else
-                                newind1 = ind1;
-                            end
-                            if sl_links(sl).lib(2) ~= 0
-                                oldind2 = libind{sl_links(sl).lib(2)};
-                                newind2 = oldind2(ind2);
-                                libind{sl_links(sl).lib(2)} = newind2;
-                                for osl = 1:sl-1
-                                    if libpairs(osl,1) == sl_links(sl).lib(2)
-                                        if libpairs(osl,2) ~= 0
-                                            oldind3 = libind{libpairs(osl,2)};
-                                            newind3 = oldind3(ind2);
-                                            libind{libpairs(osl,2)} = newind3;
-                                        end
-                                    end
-                                    if libpairs(osl,2) == sl_links(sl).lib(2)
-                                        if libpairs(osl,1) ~= 0
-                                            oldind3 = libind{libpairs(osl,1)};
-                                            newind3 = oldind3(ind2);
-                                            libind{libpairs(osl,1)} = newind3;
-                                        end
-                                    end
-                                end
-                            else
-                                newind2 = ind2;
-                            end
-                            if isempty(newind1) || isempty(newind2)
-                                stem_vec(kt) = 1;
-                                fulfill = false;
-                                break
-                            end
-                        end
-                        if fulfill && ~isempty(libind)
-                            ind1 = unique(libind{1});
-                            ind1 = 1; % ### this is a hack ###
-                            libind{1} = ind1;
-                            m0 = length(ind1);
-                            combinations = zeros(m0,length(stemlibs));
-                            combinations(:,1) = ind1';
-                            for sl = 2:length(stemlibs)
-                                ind = unique(libind{sl});
-                                libind{sl} = ind;
-                                m = length(ind);
-                                combinations = repmat(combinations,m,1);
-                                for sc = 1:m
-                                    bas = (sc-1)*m0;
-                                    combinations(bas+1:bas+m0,sl) = ind(sc)*ones(m0,1);
-                                end
-                                m0 = m0*m;
-                            end
-                        end
-                    end
-                    if fulfill && stemloop_mode && ~isempty(sl_DEER) % check for stemloop label restraints
-                        libpairs = zeros(length(sl_DEER),2);
-                        for sld = 1:length(sl_DEER)
-                            libpairs(sld,:) = sl_DEER(sld).stemlib;
-                            baspoi4 = 4*(sl_DEER(sld).rba(1)-1);
-                            transmat1 = atransmat(baspoi4+1:baspoi4+4,:);
-                            baspoi4 = 4*(sl_DEER(sld).rba(2)-1);
-                            transmat2 = atransmat(baspoi4+1:baspoi4+4,:);
-                            if sl_DEER(sld).stemlib(1) == 0
-                                ind1 = 1;
-                                coor1 = sl_DEER(sld).coor1;
-                            else
-                                ind1 = libind{sl_DEER(sld).stemlib(1)};
-                                coor1 = sl_DEER(sld).coor1(ind1,:);
-                            end
-                            if sl_DEER(sld).stemlib(2) == 0
-                                ind2 = 1;
-                                coor2 = sl_DEER(sld).coor2;
-                            else
-                                ind2 = libind{sl_DEER(sld).stemlib(2)};
-                                coor2 = sl_DEER(sld).coor2(ind2,:);
-                            end
-                            coor1b = affine_coor_set(coor1,transmat1);
-                            coor2b = affine_coor_set(coor2,transmat2);
-                            [m1,~] = size(coor1b);
-                            [m2,~] = size(coor2b);
-                            a2 = repmat(sum(coor1b.^2,2),1,m2);
-                            b2 = repmat(sum(coor2b.^2,2),1,m1).';
-                            pair_dist = sqrt(abs(a2 + b2 - 2*coor1b*coor2b.'));
-                            minr = sl_DEER(sld).r - sqrt(sl_DEER(sld).sigr^2+cres^2);
-                            maxr = sl_DEER(sld).r + sqrt(sl_DEER(sld).sigr^2+cres^2);
-                            [nind1,nind2] = find(pair_dist >= minr & pair_dist <= maxr);
-                            %                                 nind1 = unique(nind1);
-                            %                                 nind2 = unique(nind2);
-                            if sl_DEER(sld).stemlib(1) ~= 0
-                                oldind1 = libind{sl_DEER(sld).stemlib(1)};
-                                newind1 = oldind1(nind1);
-                                libind{sl_DEER(sld).stemlib(1)} = newind1;
-                                for osl = 1:sld-1
-                                    if libpairs(osl,1) == sl_DEER(sld).stemlib(1)
-                                        if libpairs(osl,2) ~= 0
-                                            oldind3 = libind{libpairs(osl,2)};
-                                            newind3 = oldind3(nind1);
-                                            libind{libpairs(osl,2)} = newind3;
-                                        end
-                                    end
-                                    if libpairs(osl,2) == sl_DEER(sld).stemlib(1)
-                                        if libpairs(osl,1) ~= 0
-                                            oldind3 = libind{libpairs(osl,1)};
-                                            newind3 = oldind3(nind1);
-                                            libind{libpairs(osl,1)} = newind3;
-                                        end
-                                    end
-                                end
-                            else
-                                newind1 = nind1;
-                            end
-                            if sl_DEER(sld).stemlib(2) ~= 0
-                                oldind2 = libind{sl_DEER(sld).stemlib(2)};
-                                newind2 = oldind2(nind2);
-                                libind{sl_DEER(sld).stemlib(2)} = newind2;
-                                for osl = 1:sld-1
-                                    if libpairs(osl,1) == sl_DEER(sld).stemlib(2)
-                                        if libpairs(osl,2) ~= 0
-                                            oldind3 = libind{libpairs(osl,2)};
-                                            newind3 = oldind3(nind2);
-                                            libind{libpairs(osl,2)} = newind3;
-                                        end
-                                    end
-                                    if libpairs(osl,2) == sl_DEER(sld).stemlib(2)
-                                        if libpairs(osl,1) ~= 0
-                                            oldind3 = libind{libpairs(osl,1)};
-                                            newind3 = oldind3(nind2);
-                                            libind{libpairs(osl,1)} = newind3;
-                                        end
-                                    end
-                                end
-                            else
-                                newind2 = nind2;
-                            end
-                            if isempty(newind1) || isempty(newind2)
-                                fulfill = false;
-                                stem2_vec(kt) = 1;
-                                break
-                            end
-                        end
-                        if fulfill
-                            ind1 = unique(libind{1});
-                            libind{1} = ind1;
-                            m0 = length(ind1);
-                            combinations = zeros(m0,length(stemlibs));
-                            combinations(:,1) = ind1';
-                            for sl = 2:length(stemlibs)
-                                ind = unique(libind{sl});
-                                libind{sl} = ind;
-                                m = length(ind);
-                                combinations = repmat(combinations,m,1);
-                                for sc = 1:m
-                                    bas = (sc-1)*m0;
-                                    combinations(bas+1:bas+m0,sl) = ind(sc)*ones(m0,1);
-                                end
-                                m0 = m0*m;
-                            end
-                        end
-                    end
                     if fulfill
                         atransmat = tmats{kt};
-                        if ~isempty(stemlibs) && stemloop_mode
-                            % add stemloop anchors and label coordinates to
-                            % points and restraints to auxiliary and links,
-                            % if necessary
-                            points1 = cell(1,length(rb));
-                            kr_poi0 = zeros(1,length(rb));
-                            for kr = 1:length(rb)
-                                [mrp,~] = size(points{kr});
-                                points1{kr} = zeros(mrp + add_rb_points(kr),3);
-                                kr_poi0(kr) = mrp;
-                                points1{kr}(1:mrp,:) = points{kr};
-                            end
-                            naux1 = naux + length(sl_DEER);
-                            auxiliary1 = zeros(naux1,6);
-                            auxiliary1(1:naux,:) = auxiliary;
-                            links1 = links;
-                            min_cost = 1e6;
-                            csuccess = 0;
-                            atransmat0 = atransmat;
-                            batransmat = atransmat;
-                            berrvec = zeros(1,5);
-                            berrvec(3) = 1;
-                            bmprob = 0;
-                            bxld = [];
-                            ref_indices = zeros(1,4);
-                            if solutions_given
-                                fprintf(1,'Trial %i.%i: Up to %i combination(s) will be tested\n',parblocks,kt,m0);
-                            end
-                            kcvec = 1:m0;
-                            scramble = rand(1,m0);
-                            [~,scrambler] = sort(scramble);
-                            kcvec = kcvec(scrambler);
-                            refineable = zeros(1,m0);
-                            for kcombi = kcvec
-                                if solutions_given && nsoln > 2
-                                    valid = false;
-                                    for kksoln = 1: length(ksoln)
-                                        if sum(abs(combinations(kcombi,1:nsoln-2) - solutions(ksoln(kksoln),3:nsoln))) == 0
-                                            valid = true;
-                                        end
-                                    end
-                                    if ~valid
-                                        continue
-                                    end
-                                end
-                                kr_poi = kr_poi0;
-                                auxpoi = naux;
-                                linkpoi = length(links);
-                                for kl = 1:length(sl_DEER)
-                                    rba1 = sl_DEER(kl).rba(1);
-                                    rba2 = sl_DEER(kl).rba(2);
-                                    sl1 = sl_DEER(kl).stemlib(1);
-                                    if sl1 ~= 0
-                                        sl1 = combinations(kcombi,sl_DEER(kl).stemlib(1));
-                                        coor1 = sl_DEER(kl).coor1(sl1,:);
-                                    else
-                                        coor1 = sl_DEER(kl).coor1;
-                                    end
-                                    sl2 = sl_DEER(kl).stemlib(2);
-                                    if sl2 ~= 0
-                                        sl2 = combinations(kcombi,sl_DEER(kl).stemlib(2));
-                                        coor2 = sl_DEER(kl).coor2(sl2,:);
-                                    else
-                                        coor2 = sl_DEER(kl).coor2;
-                                    end
-                                    auxpoi = auxpoi + 1;
-                                    auxiliary1(auxpoi,1) = rba1;
-                                    kr_poi(rba1) = kr_poi(rba1) + 1;
-                                    points1{rba1}(kr_poi(rba1),:) = coor1;
-                                    auxiliary1(auxpoi,2) = kr_poi(rba1);
-                                    auxiliary1(auxpoi,3) = rba2;
-                                    kr_poi(rba2) = kr_poi(rba2) + 1;
-                                    points1{rba2}(kr_poi(rba2),:) = coor2;
-                                    auxiliary1(auxpoi,4) = kr_poi(rba2);
-                                    auxiliary1(auxpoi,5) = sl_DEER(kl).r;
-                                    auxiliary1(auxpoi,6) = sl_DEER(kl).sigr;
-                                end
-                                for kl = 1:length(sl_links)
-                                    rba1 = sl_links(kl).rba(1);
-                                    rba2 = sl_links(kl).rba(2);
-                                    sl1 = sl_links(kl).lib(1);
-                                    if sl1 ~= 0
-                                        sl1 = combinations(kcombi,sl_links(kl).lib(1));
-                                        coor1 = sl_links(kl).coor1(sl1,:);
-                                    else
-                                        coor1 = sl_links(kl).coor1;
-                                    end
-                                    sl2 = sl_links(kl).lib(2);
-                                    if sl2 ~= 0
-                                        sl2 = combinations(kcombi,sl_links(kl).lib(2));
-                                        coor2 = sl_links(kl).coor2(sl2,:);
-                                    else
-                                        coor2 = sl_links(kl).coor2;
-                                    end
-                                    linkpoi = linkpoi + 1;
-                                    ref_indices(1) = rba1;
-                                    ref_indices(3) = rba2;
-                                    kr_poi(rba1) = kr_poi(rba1) + 1;
-                                    points1{rba1}(kr_poi(rba1),:) = coor1;
-                                    ref_indices(2) = kr_poi(rba1);
-                                    kr_poi(rba2) = kr_poi(rba2) + 1;
-                                    points1{rba2}(kr_poi(rba2),:) = coor2;
-                                    ref_indices(4) = kr_poi(rba2);
-                                    links1(linkpoi).ref_indices = ref_indices;
-                                    links1(linkpoi).maxr = sl_links(kl).maxr;
-                                end
-                                % the first refinement is performed without
-                                % testing for clashes, as this is much faster
-                                % fprintf(1,'Refining #%i (%i,%i,%i)\n',kcombi,combinations(kcombi,:));
-                                [atransmat,errvec] = ...
-                                    refine_rba(rb,atransmat0,points1,pthr,naux1,auxiliary1,ncore,core,links1,1e6,heavy_coor,xlink_percentage,xlinks,stemlibs,combinations(kcombi,:));
-                                if ~sum(errvec)
-                                    fprintf(1,'R%i.%i: Secondary refining (%i,%i,%i)\n',parblocks,kt,combinations(kcombi,:));
-                                    [atransmat,errvec,mprob,xld,cost] = ...
-                                        refine_rba_fast(rb,atransmat,points1,pthr,naux1,auxiliary1,ncore,core,links1,clash_threshold,heavy_coor,xlink_percentage,xlinks,stemlibs,combinations(kcombi,:));
-                                    if ~sum(errvec)
-                                        fprintf(1,'R%i.%i: Successfully fitted (%i,%i,%i)\n',parblocks,kt,combinations(kcombi,:));
-                                        refineable(kcombi) = 1;
-                                        if cost < min_cost
-                                            bcombi = kcombi;
-                                        end
-                                        batransmat = atransmat;
-                                        berrvec = errvec;
-                                        bmprob = mprob;
-                                        bxld = xld;
-                                        csuccess = csuccess + 1;
-                                        if skip_mode
-                                            break
-                                        end
-                                    else
-                                        % fprintf(1,'(%i,%i,%i) Initial SL clash score: %8.1f Cost: %8.1f (R%i.%i)\n',combinations(kcombi,:),sl_clash_scores(kcombi),cost,parblocks,kt);
-                                    end
-                                end
-                            end
-                            atransmat = batransmat;
-                            errvec = berrvec;
-                            mprob = bmprob;
-                            xld = bxld;
-                            if csuccess > 0
-                                scombi(kt,:) = combinations(bcombi,:);
-                                if ~skip_mode
-                                    all_s_combi{kt} = combinations(refineable~=0,:);
-                                end
-                                % fprintf(1,'R%i.%i: combination (%i, %i, %i) was successfully refined\n',parblocks,kt,scombi(kt,:));
-                            end
-                            if csuccess > 1 && ~isempty(combinations) && skip_mode
-                                fprintf(2,'R%i.%i: %i combinations were successfully refined, but only (%i, %i, %i) is kept\n',parblocks,kt,csuccess,scombi(kt,:));
-                            end
-                            tmats{kt} = atransmat;
-                            xlink_distances{kt} = xld;
-                            model_prob(kt) = mprob;
-                            aerr_vec(kt) = errvec(1);
-                            rerr_vec(kt) = errvec(2);
-                            lerr_vec(kt) = errvec(3);
-                            cerr_vec(kt) = errvec(4);
-                            xerr_vec(kt) = errvec(5);
-                        else % treatment in the absence of stemlibs or if stemloop_mode is false
-                            % the first refinement is performed without
-                            % testing for clashes, as this is much faster
-                            if solutions_given && trial_echo
-                                fprintf(1,'Trial %i.%i: Model will be refined\n',parblocks,kt);
-                            end
-                            atransmat0 = atransmat;
+                        % the first refinement is performed without
+                        % testing for clashes, as this is much faster
+                        fprintf(1,'Refining T%i.%i\n',parblocks,kt);
+                        atransmat0 = atransmat;
+                        [atransmat,errvec,mprob,xld] = ...
+                            refine_rba(rb,atransmat0,points,pthr,naux,auxiliary,ncore,core,links,1e6,heavy_coor,xlink_percentage,xlinks);
+                        if ~sum(errvec)
+                            fprintf(1,'Secondary refining T%i.%i\n',parblocks,kt);
                             [atransmat,errvec,mprob,xld] = ...
-                                refine_rba(rb,atransmat0,points,pthr,naux,auxiliary,ncore,core,links,1e6,heavy_coor,xlink_percentage,xlinks);
-                            if ~sum(errvec)
-                                if solutions_given && trial_echo
-                                    fprintf(1,'Trial %i.%i: Model will be refined with clash score\n',parblocks,kt);
-                                end
-                                [atransmat,errvec,mprob,xld,cost,costs] = ...
-                                    refine_rba_fast(rb,atransmat,points,pthr,naux,auxiliary,ncore,core,links,clash_threshold,heavy_coor,xlink_percentage,xlinks);
-                                if trial_echo
-                                    fprintf(1,'Total cost: %5.2f. aux. %5.2f; core %5.2f; links %5.2f; clash %5.2f; stem %5.2f\n',cost,costs.aux,costs.core,costs.link,costs.clash,costs.stem);
-                                end
-                            end
-                            tmats{kt} = atransmat;
-                            xlink_distances{kt} = xld;
-                            model_prob(kt) = mprob;
-                            aerr_vec(kt) = errvec(1);
-                            rerr_vec(kt) = errvec(2);
-                            lerr_vec(kt) = errvec(3);
-                            cerr_vec(kt) = errvec(4);
-                            xerr_vec(kt) = errvec(5);
+                                refine_rba_fast(rb,atransmat,points,pthr,naux,auxiliary,ncore,core,links,clash_threshold,heavy_coor,xlink_percentage,xlinks);
                         end
+                        tmats{kt} = atransmat;
+                        xlink_distances{kt} = xld;
+                        model_prob(kt) = mprob;
+                        aerr_vec(kt) = errvec(1);
+                        rerr_vec(kt) = errvec(2);
+                        lerr_vec(kt) = errvec(3);
+                        cerr_vec(kt) = errvec(4);
+                        xerr_vec(kt) = errvec(5);
                     end
                 end
             end
@@ -980,27 +579,6 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                 ccombi = all_combi(kcombi,:);
                 probabilities(success) = model_prob(k-bask)^(1/(naux+ncore));
                 tmstd = [];
-                if stemloop_mode
-                    % replace binding motifs by stemloops from library if stemmloop
-                    % libraries are tested
-                    for klib = 1:length(stemlibs)
-                        for kr = 1:length(restraints.rb)
-                            for kcc = 1:length(restraints.rb(kr).chains)
-                                if stemlibs{klib}.cind(2) == restraints.rb(kr).chains(kcc)
-                                    chain_coor{kr,kcc} = stemlibs{klib}.chains{ccombi(klib)}.xyz{1};
-                                    if success == 1
-                                        fields = fieldnames(model.structures{snum}(restraints.rb(kr).chains(kcc)));
-                                        for kfield = 1:length(fields)
-                                            if isfield(stemlibs{klib}.chains{ccombi(klib)},fields{kfield})
-                                                model.structures{snum}(restraints.rb(kr).chains(kcc)).(fields{kfield}) = stemlibs{klib}.chains{ccombi(klib)}.(fields{kfield});
-                                            end
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
                 t_chain_coor = chain_coor;
                 for kr = 1:length(restraints.rb)
                     for kc = 1:length(restraints.rb(kr).chains)
@@ -1028,19 +606,9 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                         end
                     end
                 end
-                % now it should be compared to SANS or SAXS restraints,
-                % if any
-                if solutions_given
-                    if isempty(ccombi) || sum(ccombi) == 0
-                        fprintf(1,'Trial %i.%i is compared with SAS fits\n',parblocks,k-bask);
-                    else
-                        fprintf(1,'Trial %i.%i: Combination (%i,%i,%i) is compared with SAS fits\n',parblocks,k-bask,ccombi(:));
-                    end
-                end
-                SANS_chi = 0;
-                fulfill = true;
+                sfulfill = true;
                 % now compare stemloop restraints
-                if ~stemloop_mode && ~isempty(restraints.stemlibs) && fulfill
+                if ~isempty(restraints.stemlibs)
                     modnum.block = parblocks;
                     modnum.num = k-bask;
                     modnum.model = success;
@@ -1048,145 +616,11 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                     if isempty(sl_solutions)
                         success = success - 1;
                         stem_fail = stem_fail + 1;
-                        fulfill = false;
+                        sfulfill = false;
                     end
                 end
-                if fulfill
-%                     if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
-%                         to_be_deleted = '';
-%                         sans_vec = -ones(2,1);
-%                         for ks = 1:length(restraints.SANS)
-%                             model = rmfield(model,'selected');
-%                             ksel = 0;
-%                             for kc = 1:length(restraints.SANS(ks).chains)
-%                                 if restraints.SANS(ks).chains(kc) > 0
-%                                     ksel = ksel + 1;
-%                                     model.selected{ksel} = [snum restraints.SANS(ks).chains(kc) success];
-%                                 end
-%                             end
-%                             pdbfile = sprintf('t%i_%i',k,ks);
-%                             to_be_deleted = sprintf('t%i_*.*',k);
-%                             wr_pdb_selected(pdbfile,'SANS');
-%                             [chi2,~,~,result,fit] = fit_SANS_by_cryson(restraints.SANS(ks).data,pdbfile,restraints.SANS(ks).illres);
-%                             if isempty(chi2) || isnan(chi2)
-%                                 SANS_chi = 1e6;
-%                                 if interactive
-%                                     fprintf(2,'Warning: SANS fitting failed in trial %i:\n',k);
-%                                     fprintf(2,'%s',result);
-%                                     if success > 0
-%                                         success = success - 1;
-%                                     end
-%                                     fulfill = false;
-%                                 end
-%                             else
-%                                 SANS_curves{ks,success} = fit;
-%                                 sans_vec(ks) = chi2;
-%                                 SANS_chi = SANS_chi + chi2;
-%                             end
-%                         end
-%                         if min(sans_vec) > 0
-%                             sans_poi = sans_poi + 1;
-%                             chi_SANS(:,sans_poi) = sans_vec;
-%                             xlink_fulfill(:,sans_poi) = xlink_distances{k-bask};
-%                         end
-%                         chi2 = SANS_chi/length(restraints.SANS);
-%                         if chi2 > SANS_threshold && fulfill
-%                             if interactive
-%                                 fprintf(1,'SANS chi^2 of %4.2f exceeded threshold of %4.2f in trial %i.\n',chi2,SANS_threshold,k);
-%                             end
-%                             success = success - 1;
-%                             sans_fail = sans_fail + 1;
-%                             fulfill = false;
-%                             if strcmp(delete_SANS,'all') || strcmp(delete_SANS,'poor')
-%                                 delete(strcat(to_be_deleted,'*.*'));
-%                             end
-%                         else
-%                             if strcmp(delete_SANS,'all') && ~isempty(to_be_deleted)
-%                                 delete(strcat(to_be_deleted,'*.*'));
-%                             end
-%                             final_chi2_SANS(success) = chi2;
-%                             if interactive && options.display_SANS_fit
-%                                 % update multi plot axes
-%                                 axes(handles.axes_multi_plot);
-%                                 cla;
-%                                 hold on;
-%                                 for ks = 1:length(restraints.SANS)
-%                                     fit = SANS_curves{ks,success};
-%                                     plot(fit(:,1),fit(:,2));
-%                                     plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
-%                                 end
-%                                 title(sprintf('SANS fit for model %i (chi^2 = %4.2f, p = %4.2f)',success,final_chi2_SANS(success),probabilities(success)));
-%                                 drawnow
-%                             end
-%                         end
-%                     else
-%                         sans_poi = sans_poi + 1;
-%                         xlink_fulfill(:,sans_poi) = xlink_distances{k-bask};
-%                     end
-%                     SAXS_chi = 0;
-%                     if isfield(restraints,'SAXS') && fulfill
-%                         to_be_deleted = '';
-%                         for ks = 1:length(restraints.SAXS)
-%                             model = rmfield(model,'selected');
-%                             ksel = 0;
-%                             for kc = 1:length(restraints.SAXS(ks).chains)
-%                                 if restraints.SAXS(ks).chains(kc) > 0
-%                                     ksel = ksel + 1;
-%                                     model.selected{ksel} = [snum restraints.SAXS(ks).chains(kc) success];
-%                                 end
-%                             end
-%                             pdbfile = sprintf('tx%i_%i',k,ks);
-%                             to_be_deleted = sprintf('tx%i_*.*',k);
-%                             wr_pdb_selected(pdbfile,'SAXS');
-%                             SAXS_options.sm = 10*restraints.SAXS(ks).sm;
-%                             [chi2,~,~,result,fit] = fit_SAXS_by_crysol(restraints.SAXS(ks).data,pdbfile,SAXS_options);
-%                             if isnan(chi2)
-%                                 chi2 = 1e6;
-%                             end
-%                             if isempty(chi2)
-%                                 if interactive
-%                                     fprintf(2,'Warning: SAXS fitting failed in trial %i:\n',k);
-%                                     fprintf(2,'%s',result);
-%                                 end
-%                                 delete(strcat(pdbfile,'*.*'));
-%                                 success = success - 1;
-%                                 fulfill = false;
-%                                 saxs_fail = saxs_fail + 1;
-%                             else
-%                                 chi_SAXS(ks,success) = chi2;
-%                                 SAXS_curves{ks,success} = fit;
-%                                 SAXS_chi = SAXS_chi + chi2;
-%                             end
-%                         end
-%                         chi2 = SAXS_chi/length(restraints.SAXS);
-%                         if chi2 > SAXS_threshold
-%                             success = success - 1;
-%                             saxs_fail = saxs_fail + 1;
-%                             fulfill = false;
-%                             if strcmp(delete_SAXS,'all') || strcmp(delete_SAXS,'poor')
-%                                 delete(strcat(to_be_deleted,'*.*'));
-%                             end
-%                         elseif ~isempty(chi2)
-%                             final_chi2_SAXS(success) = chi2;
-%                             if interactive && options.display_SAXS_fit
-%                                 % update multi plot axes
-%                                 axes(handles.axes_multi_plot);
-%                                 cla;
-%                                 hold on;
-%                                 for ks = 1:length(restraints.SAXS)
-%                                     fit = SAXS_curves{ks,success};
-%                                     plot(fit(:,1),fit(:,2));
-%                                     plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
-%                                 end
-%                                 title(sprintf('SAXS fit for model %i (chi^2 = %4.2f, p = %4.2f)',success,final_chi2_SAXS(success),probabilities(success)));
-%                                 drawnow
-%                             end
-%                             if strcmp(delete_SAXS,'all') && ~isempty(to_be_deleted)
-%                                 delete(strcat(to_be_deleted,'*.*'));
-%                             end
-%                         end
-%                     end
-                    if fulfill
+                if sfulfill
+                    if sfulfill
                         fid = fopen(solutionname,'at');
                         if ~isempty(ccombi) && sum(ccombi) > 0
                             fprintf(fid,'%8i%6i%6i%6i%6i\n',parblocks,k-bask,ccombi(:));
@@ -1194,6 +628,12 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                             fprintf(fid,'%8i%6i\n',parblocks,k-bask);
                         end
                         fclose(fid);
+                        soln_count = soln_count + 1;
+                        t_points = cell(1,length(rb));
+                        for kr = 1:length(rb)
+                             t_points{kr} = affine_coor_set(points{kr},transmats{kr});
+                        end
+                        reference_geometry{soln_count} = t_points;
                         if restraints.search
                             success = success -1;
                         end
@@ -1205,7 +645,7 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                     end
                 end
             end
-            if ~skip_mode && fulfill
+            if ~skip_mode && sfulfill
                 fid = fopen(combinationname,'at');
                 all_combi = all_s_combi{k-bask};
                 [ncombi,~] = size(all_combi);
@@ -1221,17 +661,6 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
     runtime=toc;
     if interactive
         % update multi plot axes
-%         if options.display_SANS_chi2
-%             axes(handles.axes_multi_plot);
-%             cla;
-%             hold on;
-%             for kl = 1:length(restraints.SANS)
-%                 plot(chi_SANS(kl,1:sans_poi),'.');
-%             end
-%             plot(sum(chi_SANS(:,1:sans_poi))/sans_poi,'k');
-%             plot([1,sans_poi],[SANS_threshold,SANS_threshold],':','Color',[0.75,0,0]);
-%             title('SANS fulfillment');
-%         end
         if options.display_xlinks
             axes(handles.axes_multi_plot);
             cla;
@@ -1286,6 +715,8 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
         drawnow
     end
 end
+reference_geometry = reference_geometry(1:soln_count);
+save(geometryname,reference_geometry);
 toc,
 
 if success > maxmodels
@@ -1302,81 +733,10 @@ diagnostics.label_fail = label_fail;
 diagnostics.link_fail = link_fail;
 diagnostics.clash_err = clash_err;
 diagnostics.xlink_fail = xlink_fail;
-% diagnostics.sans_fail = sans_fail;
-% diagnostics.saxs_fail = saxs_fail;
 diagnostics.success = success;
 diagnostics.probabilities = probabilities(1:success);
 diagnostics.snum = snum;
 diagnostics.resolution = worst_res;
 diagnostics.exhaustive = options.exhaustive;
 diagnostics.exhaustive_completed = bask >= trials;
-
-
-% if isfield(restraints, 'SANS')
-%     [~,n] = size(SANS_curves);
-%     if n >= success
-%         diagnostics.final_chi2_SANS = final_chi2_SANS(1:success);
-%         diagnostics.SANS_curves = SANS_curves(:,1:success);
-%         diagnostics.chi_SANS = chi_SANS(:,1:sans_poi);
-%         diagnostics.xlink_fulfill = xlink_fulfill(:,1:sans_poi);
-%     else
-%         diagnostics.SANS_curves = [];
-%         diagnostics.final_chi2_SANS = [];
-%         diagnostics.chi_SANS = [];
-%         diagnostics.xlink_fulfill = [];
-%     end
-% end
-% 
-% if isfield(restraints, 'SAXS')
-%     [~,n] = size(SAXS_curves);
-%     if n >= success
-%         diagnostics.SAXS_curves = SAXS_curves(:,1:success);
-%         diagnostics.final_chi2_SAXS = final_chi2_SAXS(1:success);
-%     end
-% end
-
-return % ###
-
-if success > 0
-    model = rmfield(model,'selected');
-    spoi = 0;
-    for kc = 1:7
-        for km = 1:success
-            spoi = spoi + 1;
-            model.selected{spoi} = [snum kc km];
-        end
-    end
-    message = wr_pdb_selected(fname,PDBid);
-    if message.error 
-        diagnostics.unsaved = true;
-        if interactive
-            add_msg_board(sprintf(2,'Warning: Model could not be automatically saved. %s\n',message.text));
-        end
-    else
-        diagnostics.unsaved = false;
-    end
-    scriptname = fullfile(pathstr,strcat(basname,'.mmm'));
-    fid = fopen(scriptname,'wt');
-    for kr = 1:length(restraints.rb)
-        for kc = 1:length(restraints.rb(kr).chains)
-            [~,ctag] = mk_address_parts([snum,restraints.rb(kr).chains(kc)]);
-            fprintf(fid,'show [%s](%s){:} ribbon\n',PDBid,ctag);
-            if isfield(restraints,'color')
-                fprintf(fid,'color [%s](%s){:} %s\n',PDBid,ctag,restraints.color{restraints.rb(kr).chains(kc)});
-            end
-        end
-    end
-%     prob = 1./(final_chi2_SANS.^2+final_chi2_SAXS.^2);
-%     prob_norm = 2*max(prob); 
-    for km = 1:success        
-        % alpha = prob(km)/prob_norm;
-%         if isnan(alpha)
-%             alpha = 0.5;
-%         end;
-        alpha = probabilities(km);
-        fprintf(fid,'transparency [%s](:){%i} %5.3f\n',PDBid,km,alpha);
-    end
-    fclose(fid);
-end
-
 

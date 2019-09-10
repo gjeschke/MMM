@@ -1,10 +1,10 @@
-function [resaxis,s,npN,npC,meanct,uncert,msg] = analyze_local_order(indices,options)
-% [resaxis,s,npN,npC,meanct,uncert,msg] = analyze_local_order(indices,options)
+function [resaxis,s,np5p,np3p,meanct,uncert,msg] = analyze_local_order_RNA(indices,options)
+% [resaxis,s,np5p,np3p,meanct,uncert,msg] = analyze_local_order(indices,options)
 %
-% Compute local order parameters for a peptide chain
+% Compute local order parameters for an RNA chain
 %
-% all residues that have an atom of type CA are considered amino acids, all
-% amino acid residues must also have atoms of type N and C
+% all residues that have an atom of type 4' are considered nucleotides, all
+% nucleotides must also have atoms of type 5' and 3'
 %
 % indices   array (1,2) of structure and chain index
 % options   further processing options, defaults to no further processing,
@@ -13,18 +13,18 @@ function [resaxis,s,npN,npC,meanct,uncert,msg] = analyze_local_order(indices,opt
 %                           residue with maximal local order parameter
 % resaxis   residue number axis
 % s         vector of local order parameters with range [0,1] for all 
-%           residues, NaN, if undefined for this residue
-% npN       vector of persistence numbers towards N terminus for all 
-%           residues, NaN, if undefined for this residue
-% npC       vector of persistence numbers towards C terminus for all 
-%           residues, NaN, if undefined for this residue
+%           residues, NaN, if undefined for this nucleotide
+% np5p      vector of persistence numbers towards 5' end for all 
+%           nucleotides, NaN, if undefined for this nucleotide
+% np3p      vector of persistence numbers towards 3' end for all 
+%           nucleotides, NaN, if undefined for this nucleotide
 % meanct    ensemble mean of cos(theta_n) for all residues
 % uncert    uncertainty estimate (error bar) for s
 % msg       error message with fields
 %           msg.error   error code, 0 for no error
 %           msg.text    error message text
 %
-% G. Jeschke, 6.1.2019
+% G. Jeschke, 10.9.2019
 
 global model
 
@@ -42,8 +42,8 @@ models = length(model.structures{snum}(cnum).residues);
 residues = length(model.structures{snum}(cnum).residues{1}.info);
     
 s = nan(1,residues);
-npN = nan(1,residues);
-npC = nan(1,residues);
+np5p = nan(1,residues);
+np3p = nan(1,residues);
 uncert = nan(2,residues);
 
 if models < 2 % if there is only one conformation, local order parameters are undefined
@@ -54,23 +54,23 @@ end
 
 aa = zeros(1,residues);
 resaxis = zeros(1,residues);
-CA_traces = cell(1,models);
-CA_traces_LF = cell(1,models);
+C4p_traces = cell(1,models);
+C4p_traces_LF = cell(1,models);
 
 rng(13);
 selection = rand(1,models);
-% extract Calpha traces
+% extract C4' traces
 for mnum=1:models
     aapoi = 0;
-    curr_CA_trace = zeros(residues,3);
+    curr_C4p_trace = zeros(residues,3);
     for rnum=1:residues
         adr = mk_address([snum,cnum,mnum,rnum]);
-        indCA = resolve_address([adr '.CA']);
-        [~,coorCA] = get_object(indCA,'coor');
-        if isempty(coorCA)
+        indC4p = resolve_address([adr '.C4''']);
+        [~,coorC4p] = get_object(indC4p,'coor');
+        if isempty(coorC4p)
             continue;
         end
-        aapoi = aapoi + 1; % if the Calpha atom is present, the residue is considered an amino acid
+        aapoi = aapoi + 1; % if the C4' atom is present, the residue is considered a nucleotide
         if mnum == 1
             aa(aapoi) = rnum;
             resaxis(aapoi) = model.structures{snum}(cnum).residues{mnum}.info(rnum).number;
@@ -80,17 +80,17 @@ for mnum=1:models
                 msg.text = 'Residue mismatch between conformations';
             end
         end
-        curr_CA_trace(aapoi,:) = coorCA;
+        curr_C4p_trace(aapoi,:) = coorC4p;
     end
-    curr_CA_trace = curr_CA_trace(1:aapoi,:);
-    CA_traces{mnum} = curr_CA_trace;
+    curr_C4p_trace = curr_C4p_trace(1:aapoi,:);
+    C4p_traces{mnum} = curr_C4p_trace;
 end
 aa = aa(1:aapoi);
 resaxis = resaxis(1:aapoi);
 s = s(1:aapoi);
 uncert = uncert(:,1:aapoi);
-npN = npN(1:aapoi);
-npC = npC(1:aapoi);
+np5p = np5p(1:aapoi);
+np3p = np3p(1:aapoi);
 
 
 % make order parameters
@@ -98,49 +98,49 @@ meanct = zeros(aapoi);
 for ii = 1:aapoi
     part1 = 0;
     part2 = 0;
-    mean_CA_t1 = zeros(size(curr_CA_trace));
-    mean_CA_t2 = zeros(size(curr_CA_trace));
+    mean_C4p_t1 = zeros(size(curr_C4p_trace));
+    mean_C4p_t2 = zeros(size(curr_C4p_trace));
     rnum = aa(ii);
     % transform to CA traces to their local frames and compute mean CA
     % trace
     for mnum = 1:models
-        curr_CA_trace = CA_traces{mnum};
-        coorCA = curr_CA_trace(ii,:);
+        curr_C4p_trace = C4p_traces{mnum};
+        coorC4p = curr_C4p_trace(ii,:);
         adr = mk_address([snum,cnum,mnum,rnum]);
-        indN = resolve_address([adr '.N']);
-        [~,coorN] = get_object(indN,'coor');
-        if isempty(coorN)
+        indC5p = resolve_address([adr '.C5''']);
+        [~,coorC5p] = get_object(indC5p,'coor');
+        if isempty(coorC5p)
             msg.error = 3;
-            msg.text = sprintf('No N atom for residue %s',adr);
+            msg.text = sprintf('No C5'' atom for residue %s',adr);
             return
         end
-        indC = resolve_address([adr '.C']);
-        [~,coorC] = get_object(indC,'coor');
-        if isempty(coorC)
+        indC3p = resolve_address([adr '.C3''']);
+        [~,coorC3p] = get_object(indC3p,'coor');
+        if isempty(coorC3p)
             msg.error = 4;
-            msg.text = sprintf('No C atom for residue %s',adr);
+            msg.text = sprintf('No C3'' atom for residue %s',adr);
             return
         end
-        coor0 = [coorN;coorCA;coorC];
+        coor0 = [coorC5p;coorC4p;coorC3p];
         transmat = get_trafo(coor0);
-        curr_CA_trace = affine_trafo_coor(curr_CA_trace,transmat);
-        CA_traces_LF{mnum} = curr_CA_trace;
+        curr_C4p_trace = affine_trafo_coor(curr_C4p_trace,transmat);
+        C4p_traces_LF{mnum} = curr_C4p_trace;
         if mnum == 1
-            mean_CA_trace = curr_CA_trace;
+            mean_C4p_trace = curr_C4p_trace;
         else
-            mean_CA_trace = mean_CA_trace + curr_CA_trace;
+            mean_C4p_trace = mean_C4p_trace + curr_C4p_trace;
         end
         if selection(mnum) < 0.5
-            mean_CA_t1 = mean_CA_t1 + curr_CA_trace;
+            mean_C4p_t1 = mean_C4p_t1 + curr_C4p_trace;
             part1 = part1 + 1;
         else
-            mean_CA_t2 = mean_CA_t2 + curr_CA_trace;
+            mean_C4p_t2 = mean_C4p_t2 + curr_C4p_trace;
             part2 = part2 + 1;            
         end
     end
-    mean_CA_trace = mean_CA_trace/models;
-    mean_CA_t1 = mean_CA_t1/part1;
-    mean_CA_t2 = mean_CA_t2/part2;
+    mean_C4p_trace = mean_C4p_trace/models;
+    mean_C4p_t1 = mean_C4p_t1/part1;
+    mean_C4p_t2 = mean_C4p_t2/part2;
     % compute the ensemble average of the cos theta_n
     mean_ctheta = zeros(1,aapoi);
     mean_ctheta_p1 = zeros(1,aapoi);
@@ -148,12 +148,12 @@ for ii = 1:aapoi
     naxis = zeros(1,aapoi);
     for k = 1:aapoi
         naxis(k) = k - ii;
-        r_mean = mean_CA_trace(k,:);
-        r_mean_p1 = mean_CA_t1(k,:);
-        r_mean_p2 = mean_CA_t2(k,:);
+        r_mean = mean_C4p_trace(k,:);
+        r_mean_p1 = mean_C4p_t1(k,:);
+        r_mean_p2 = mean_C4p_t2(k,:);
         for mnum = 1:models
-            curr_CA_trace = CA_traces_LF{mnum};
-            r_curr = curr_CA_trace(k,:);
+            curr_C4p_trace = C4p_traces_LF{mnum};
+            r_curr = curr_C4p_trace(k,:);
             if k == ii
                 ctheta = 1;
                 cth_p1 = 1;
@@ -193,7 +193,7 @@ for ii = 1:aapoi
         end
     end
     if ~failed
-        npN(ii) = n;
+        np5p(ii) = n;
     end
     n = 0;
     failed = true;
@@ -204,7 +204,7 @@ for ii = 1:aapoi
         end
     end
     if ~failed
-        npC(ii) = n;
+        np3p(ii) = n;
     end
 end
 
@@ -218,24 +218,24 @@ if options.superimpose
 end
 
 for mnum = 1:models
-    curr_CA_trace = CA_traces{mnum};
-    coorCA = curr_CA_trace(ii,:);
+    curr_C4p_trace = C4p_traces{mnum};
+    coorC4p = curr_C4p_trace(ii,:);
     adr = mk_address([snum,cnum,mnum,rnum]);
-    indN = resolve_address([adr '.N']);
-    [~,coorN] = get_object(indN,'coor');
-    if isempty(coorN)
+    indC5p = resolve_address([adr '.C5''']);
+    [~,coorC5p] = get_object(indC5p,'coor');
+    if isempty(coorC5p)
         msg.error = 3;
-        msg.text = sprintf('No N atom for residue %s',adr);
+        msg.text = sprintf('No C5'' atom for residue %s',adr);
         return
     end
-    indC = resolve_address([adr '.C']);
-    [~,coorC] = get_object(indC,'coor');
-    if isempty(coorC)
+    indC3p = resolve_address([adr '.C3''']);
+    [~,coorC3p] = get_object(indC3p,'coor');
+    if isempty(coorC3p)
         msg.error = 4;
-        msg.text = sprintf('No C atom for residue %s',adr);
+        msg.text = sprintf('No C3'' atom for residue %s',adr);
         return
     end
-    coor0 = [coorN;coorCA;coorC];
+    coor0 = [coorC5p;coorC4p;coorC3p];
     transmat = get_trafo(coor0);
     coor = model.structures{snum}(cnum).xyz{mnum};
     model.structures{snum}(cnum).xyz{mnum} = affine_trafo_coor(coor,transmat);

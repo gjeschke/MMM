@@ -546,32 +546,6 @@ for runstep = 0:last_step
                                 link_fid = fopen(linkable_name,'at');
                                 fprintf(link_fid,'%8i%6i\n',rba_solutions(km,1),rba_solutions(km,2));
                                 fclose(link_fid);
-                                add_msg_board('Fitting SAXS restraints');
-                                if isfield(model,'selected')
-                                    model = rmfield(model,'selected');
-                                end
-                                model.selected{1} = [handles.diagnostics.snum,1,km];
-                                model.selected{2} = [handles.diagnostics.snum,3,km];
-                                model.selected{3} = [handles.diagnostics.snum,5,km];
-                                model.selected{4} = [handles.diagnostics.snum,8,km];
-                                pdbfile = sprintf('t_%i',round(10000*rand));
-                                to_be_deleted = 't*.*';
-                                wr_pdb_selected(pdbfile,'SAXS');
-                                SAXS_curve = load_SAXS_curve('1-4s-Buffer.dat');
-                                SAXS_options.sm = 10*max(SAXS_curve(:,1));
-                                [chi2,~,~,result] = fit_SAXS_by_crysol('1-4s-Buffer.dat',pdbfile,SAXS_options);
-                                if isempty(chi2) || isnan(chi2)
-                                    SAXS_chi = 1e6;
-                                    fprintf(2,'Warning: SAXS fitting failed\n');
-                                    fprintf(2,'%s',result);
-                                else
-                                    fprintf(1,'SAXS curve fitted with chi^2 of %6.3f\n',chi2);
-                                    SAXS_chi = chi2;
-                                end
-                                delete(to_be_deleted);
-                                curated_fid = fopen(curated_name,'at');
-                                fprintf(curated_fid,'%8i%6i%8.3f\n',rba_solutions(km,1),rba_solutions(km,2),SAXS_chi);
-                                fclose(curated_fid);
                             end
                         end
                     end
@@ -580,9 +554,6 @@ for runstep = 0:last_step
             handles.RNA_link_success = success_vec;
             handles = mk_RNA_report_distributions(report_fid,handles);
             fclose(report_fid);
-            if isfield(model,'selected')
-                model = rmfield(model,'selected');
-            end
             new_cindices = zeros(1,num_ch+1);
             ncp = 0;
             for kc = 1:num_ch

@@ -179,23 +179,23 @@ tag=['motion:' tofit '_to_' template];
 id_target=tag2id(tofit,model.structure_tags,model.structure_ids);
 
 ensemble_mode = get(handles.checkbox_ensemble_mode,'Value');
-if ensemble_mode,
+if ensemble_mode
     num_models = length(model.structures{id_target}(1).xyz);
     template0 = template;
-    for k = 1:num_models,
+    for k = 1:num_models
         [transmat,template,target]=find_magic_fit(handles,template0,tofit,mode,selected,aligned,whole,k);
         matrices{k} = transmat;
-    end;
+    end
 else
     [matrices,template,target]=find_magic_fit(handles,template,tofit,mode,selected,aligned,whole);
-end;
+end
 
-if get(handles.checkbox_motion,'Value') && get(handles.radiobutton_CA,'Value'), 
-    if isfield(model,'motion'),
+if get(handles.checkbox_motion,'Value') && get(handles.radiobutton_CA,'Value') 
+    if isfield(model,'motion')
         k=length(model.motion)+1;
     else
         k=1;
-    end;
+    end
     [m,n]=size(template);
     model.motion(k).tag=tag;
     model.motion(k).color=[0.47,0.53,0.60];

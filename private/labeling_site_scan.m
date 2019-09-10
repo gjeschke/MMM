@@ -249,7 +249,7 @@ else
                 add_msg_board(sprintf('Scanning %i residues in chain model %s',mmm,adr));
             end;
             scanned=scanned+mmm;
-            if exist(libraries{k},'file')
+            if exist([libraries{k} '.mat'],'file')
                 load(libraries{k});
             else
                 button = questdlg('Rotamer library download may take long. Do you want to proceed?','Download missing library from server','OK','Cancel','OK');

@@ -89,17 +89,17 @@ for k = 1:DEER.core+DEER.flex
         n_DEER = n_DEER + 1;
     end
     adr1 = DEER.all_adr1{k};
-    if adr1(2) == 'B'
+    if adr1(2) == 'A'
         adr1 = sprintf('P%s',adr1(4:end));
     end
-    if adr1(2) == 'A'
+    if adr1(2) == 'B'
         adr1 = sprintf('R%s',adr1(4:end));
     end
     adr2 = DEER.all_adr2{k};
-    if adr2(2) == 'B'
+    if adr2(2) == 'A'
         adr2 = sprintf('P%s',adr2(4:end));
     end
-    if adr2(2) == 'A'
+    if adr2(2) == 'B'
         adr2 = sprintf('R%s',adr2(4:end));
     end
     if DEER.all_flags(k)
@@ -160,8 +160,8 @@ end
 
 fid = fopen(options.script_file,'wt');
 fprintf(fid,'show [%s] ribbon\n',options.pdb_ID);
-fprintf(fid,'color [%s](A){:} grey\n',options.pdb_ID);
-fprintf(fid,'colorscheme [%s](B){:} sequence\n',options.pdb_ID);
+fprintf(fid,'color [%s](B){:} grey\n',options.pdb_ID);
+fprintf(fid,'colorscheme [%s](A){:} sequence\n',options.pdb_ID);
 
 for km = 1:length(populations)
     alpha = populations(km)/max(populations);

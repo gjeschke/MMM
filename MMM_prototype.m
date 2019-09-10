@@ -6398,31 +6398,8 @@ function menu_jobs_test2_Callback(hObject, ~, handles)
 % loop_assembler_PTB1(fname);
 % mk_quality_check_yasara;
 
-% model_name = 'PTB1_f37_R73_3717_m1_y';
+analyze_all_conformers('PTBP1_valid_conformers.dat');
 
-
-list_file = 'PTBP1_cyana_with_109_500_scores.dat';
-% restraint_file = 'PTBP1_restraints_190208.dat';
-restraint_file = 'PTBP1_restraints_cyana_new.dat';
-yasara_numbers = [1,3,6,9,14,15,25,28,29,30,32,42,47,59,61,67,69,80,89];
-for k = 1:length(yasara_numbers)
-    model_name = sprintf('PTB1_cyana_%i_y',yasara_numbers(k));
-    fprintf(1,'Processing %s...\n',model_name);
-    PTBP1_quality_check_CYANA(model_name,restraint_file,list_file);
-    fprintf(1,'Completed.\n');
-end
-for k = 1:100
-    if min(abs(yasara_numbers-k)) > 0
-        model_name = sprintf('PTB1_cyana_%i_corr',k);
-        fprintf(1,'Processing %s...\n',model_name);
-        PTBP1_quality_check_CYANA(model_name,restraint_file,list_file);
-        fprintf(1,'Completed.\n');
-    end
-end
-% model_name = 'PTB1_cyana_12_y';
-fprintf(1,'Processing %s...\n',model_name);
-PTBP1_quality_check_CYANA(model_name,restraint_file,list_file);
-fprintf(1,'Completed.\n');
 
 guidata(hObject,handles);
 
@@ -6479,8 +6456,29 @@ function menu_jobs_test6_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-fname = 'PTB1_ultimate_final_rigiflex';
-PTBP1_ensemble_maker(fname);
+
+global general
+
+my_path=pwd;
+cd(general.restraint_files);
+
+[fname,pname]=uigetfile('*.dat','Load restraints from file');
+if isequal(fname,0) || isequal(pname,0)
+    add_msg_board('Restraint loading cancelled by user');
+    return
+else
+    cd(pname);
+    general.restraint_files=pname;
+    [~,name] = fileparts(fname);
+    handles.save_path = pname;
+    handles.save_name = name;
+    
+    hfig=gcf;
+    set(hfig,'Pointer','watch');
+    prepare_rigid_bodies(fname);
+    set(hfig,'Pointer','arrow');
+end
+cd(my_path);
 guidata(hObject,handles);
 
 

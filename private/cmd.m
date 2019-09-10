@@ -1584,19 +1584,19 @@ function handles=plot_cmd(handles,args)
 
 global graph_settings
 
-if isempty(args) || isempty(strtrim(args)),
-    add_msg_board('Usage: plot adr1 adr2 [[width] color');
+if isempty(args) || isempty(strtrim(args))
+    add_msg_board('Usage: plot adr1 adr2 [[width] color]');
     add_msg_board('Only atom or location addresses are allowed.');
     return
-end;
+end
 
 command = sprintf('plot %s',args);
 [handles,veto]=cmd_history(handles,command);
-if veto,
+if veto
     msg=sprintf('Command was vetoed by user.');
 else
     msg=sprintf('Command should be executed.');
-end;
+end
 
 myargs=textscan(args,'%s');
 adr1=char(myargs{1}(1));
@@ -1604,38 +1604,50 @@ adr2=char(myargs{1}(2));
 [msg1,coor1] = get_object(adr1,'coor');
 [msg2,coor2] = get_object(adr2,'coor');
 
-if msg1.error,
+if msg1.error
     add_msg_board(msg1.text);
     return;
-end;
-if msg2.error,
+end
+if msg2.error
     add_msg_board(msg1.text);
     return;
-end;
+end
 
-if length(myargs{1})>2,
+if length(myargs{1})>2
     lwidth=str2double(char(myargs{1}(3)));
 else
     add_msg_board('Linewidth argument missing. Default is 6.');
     lwidth = 6;
-end;
+end
 
-if length(myargs{1})>3,
-    colname=char(myargs{1}(4));
-    colind=tag2id(colname,graph_settings.color_tags);
-    if ~isempty(colind),
-        rgb=graph_settings.colors(colind,:);
+if length(myargs{1})>3
+    if length(myargs{1})>4
+        rgb = zeros(1,3);
+        for k = 1:3
+            rgb(k) = str2double(char(myargs{1}(3+k)));
+        end
     else
-        add_msg_board('Warning: This SVG color does not exist. Defaulting to darkgreen.');
-        rgb=[0,0.39,0];
-    end;
+        colname=char(myargs{1}(4));
+        colind=tag2id(colname,graph_settings.color_tags);
+        if ~isempty(colind)
+            rgb=graph_settings.colors(colind,:);
+        else
+            add_msg_board('Warning: This SVG color does not exist. Defaulting to darkgreen.');
+            rgb=[0,0.39,0];
+        end
+    end
 else
     add_msg_board('Color argument missing. Default is darkgreen.');
     rgb = [0,0.39,0];
-end;
+end
+
+linestyle ='-';
+if length(myargs{1})>6
+    linestyle = char(myargs{1}(7));
+end
 
 axes(handles.axes_model);
-plot3([coor1(1),coor2(1)],[coor1(2),coor2(2)],[coor1(3),coor2(3)],'LineWidth',lwidth,'Color',rgb);
+plot3([coor1(1),coor2(1)],[coor1(2),coor2(2)],[coor1(3),coor2(3)],'LineStyle',linestyle,'LineWidth',lwidth,'Color',rgb);
 
 
 function handles=show(handles,args)
@@ -3975,7 +3987,7 @@ undo_cmd='noundo';
 
 if isempty(args) || isempty(strtrim(args))
     add_msg_board('Usage: locorder adr');
-    add_msg_board('''adr'' must be a peptide chain address');
+    add_msg_board('''adr'' must be a peptide or nucleic acid chain address');
     return
 end
 
@@ -3992,19 +4004,32 @@ end
 if n ~= 2
     add_msg_board('ERROR: For local order analysis, a chain address must be given.');
     add_msg_board('Usage: locorder adr');
-    add_msg_board('''adr'' must be a peptide chain address');
+    add_msg_board('''adr'' must be a peptide or nucleic acid chain address');
     return
 end
 
 snum = indices(1);
 cnum = indices(2);
 
-if length(model.structures{snum}(cnum).residues) < 2
-    add_msg_board('Warning: Not an ensemble structure. Aborting.');
+if model.structures{snum}(cnum).seqtype == 2
+    nucac = true;
+elseif model.structures{snum}(cnum).seqtype == 1
+    nucac = false;
+else
+    add_msg_board('ERROR: Chain is neither a peptide nor a nucleic acid chain. Aborting.');
     return
 end
 
-[resaxis,s,npN,npC,meanct,uncert,msg] = analyze_local_order(indices);
+if length(model.structures{snum}(cnum).residues) < 2
+    add_msg_board('ERROR: Not an ensemble structure. Aborting.');
+    return
+end
+
+if nucac
+    [resaxis,s,npN,npC,meanct,uncert,msg] = analyze_local_order_RNA(indices);
+else
+    [resaxis,s,npN,npC,meanct,uncert,msg] = analyze_local_order(indices);
+end
 
 if msg.error
     add_msg_board(sprintf('ERROR (locorder): %s',msg.text)); 
@@ -4024,7 +4049,11 @@ plot(resaxis,npN,'.','Color',[0,0,0.75],'MarkerSize',14);
 plot(resaxis,npC,'.','Color',[0.75,0,0],'MarkerSize',14);
 xlabel('Residue number');
 ylabel('n_p');
-title(sprintf('Shape persistence numbers n_{p,N} and n_{p,C} for chain %s',adr));
+if nucac
+    title(sprintf('Shape persistence numbers n_{p,C5''} and n_{p,C3''} for chain %s',adr));
+else
+    title(sprintf('Shape persistence numbers n_{p,N} and n_{p,C} for chain %s',adr));
+end
 
 fname = sprintf('ensemble_local_order_%s.mat',adr);
 save(fname,'resaxis','s','npN','npC','meanct','uncert');
