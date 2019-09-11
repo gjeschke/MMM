@@ -224,7 +224,7 @@ else
     adr=mk_address(model.current_structure);
     set(handles.fig_rigi_flex,'Name',sprintf('RigiFlex structure model based on rigid bodies %s',adr));
     
-    handles = analyze_exhaustive(handles,restraints);
+    [handles,restraints] = analyze_exhaustive(handles,restraints);
      
 end
 
@@ -329,7 +329,7 @@ for runstep = 0:last_step
                 handles.pushbutton_save.Enable =  'on';
                 handles.pushbutton_run.String = 'Run Flex';
                 handles.radiobutton_DEER.Enable =  'on';
-                if isfield(handles.restraints,'RNA') && isfield(handles.restraints.RNA,'bind')
+                if isfield(handles.restraints,'RNA') && isfield(handles.restraints.RNA,'bind') && ~isempty(handles.restraints.RNA.bind)
                     handles.pushbutton_run.String = 'RNA links';
                     handles.progress = 1;
                 else
@@ -792,7 +792,8 @@ function edit_max_time_Callback(hObject, eventdata, handles)
 [v,handles]=edit_update_MMM(handles,hObject,0.05,1000,2,'%5.2f',0);
 handles.max_time = v;
 if isfield(handles,'restraints')
-    handles = analyze_exhaustive(handles,handles.restraints);
+    [handles,restraints] = analyze_exhaustive(handles,handles.restraints);
+    handles.restraints = restraints;
 else
     handles.text_exhaustive_resolution.String = sprintf('n.a.');
     handles.edit_max_trials.String = sprintf('%i',handles.max_trials);
@@ -848,8 +849,12 @@ function edit_max_trials_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of edit_max_trials as text
 %        str2double(get(hObject,'String')) returns contents of edit_max_trials as a double
 
-[v,handles]=edit_update_MMM(handles,hObject,100000,100000000000,5000000000,'%i',1);
+[v,handles]=edit_update_MMM(handles,hObject,1000,100000000000,5000000000,'%i',1);
 handles.max_trials = v;
+if isfield(handles,'restraints')
+    [handles,restraints] = analyze_exhaustive(handles,handles.restraints);
+    handles.restraints = restraints;
+end
 guidata(hObject,handles);
 
 
@@ -2652,14 +2657,15 @@ function checkbox_exhaustive_Callback(hObject, eventdata, handles)
 % Hint: get(hObject,'Value') returns toggle state of checkbox_exhaustive
 
 if isfield(handles,'restraints')
-    handles = analyze_exhaustive(handles,handles.restraints);
+    [handles,restraints] = analyze_exhaustive(handles,handles.restraints);
+    handles.restraints = restraints;
 else
     handles.text_exhaustive_resolution.String = sprintf('n.a.');
     handles.edit_max_trials.String = sprintf('%i',handles.max_trials);
 end
 guidata(hObject,handles);
 
-function handles = analyze_exhaustive(handles,restraints)
+function [handles,restraints] = analyze_exhaustive(handles,restraints)
 
 tph = 1000000; % trials per hour, to be replaced with machine-specific value
 target_resolution = 3; % lowest resolution to be considered sensible with spin labels
@@ -2681,7 +2687,17 @@ for k1 = 1:m-1
     end
 end
 ntrials = get_restraint_resolution(restraints.lb,restraints.ub,target_resolution);
+res = target_resolution;
+if restraints.maxtrials > 0
+    while ntrials > restraints.maxtrials
+        target_resolution = target_resolution + 0.1;
+        [ntrials,res] = get_restraint_resolution(restraints.lb,restraints.ub,target_resolution);
+    end
+end
 trials = tph*handles.max_time;
+if trials > handles.max_trials
+    trials = handles.max_trials;
+end
 while ntrials > trials
     target_resolution = target_resolution + 0.1;
     [ntrials,res] = get_restraint_resolution(restraints.lb,restraints.ub,target_resolution);
@@ -2689,6 +2705,7 @@ end
 handles.text_exhaustive_resolution.String = sprintf('%4.1f',res);
 if handles.checkbox_exhaustive.Value
     handles.edit_max_trials.String = sprintf('%i',ntrials);
+    restraints.maxtrials = ntrials;
 else
     handles.edit_max_trials.String = sprintf('%i',handles.max_trials);
 end

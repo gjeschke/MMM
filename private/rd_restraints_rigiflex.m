@@ -13,6 +13,7 @@ function [restraints,failed] = rd_restraints_rigiflex(fname,unprocessed)
 %
 % currently implemented types are:
 %
+% MAXTRIALS maximum number of trials for exhaustive scan
 % RIGID     rigid-body and reference point definitions
 % DEER      distance distribution restraints between spin labels
 % ODEER     distance distribution restraints between two different spin labels
@@ -71,6 +72,7 @@ end
 clear restraints
 
 restraints.search = false;
+restraints.maxtrials = -1;
 restraints.ensemble = [];
 restraints.p_model = [];
 restraints.rb(1).chains = [];
@@ -100,11 +102,6 @@ restraints.xlinks(1).indices1 = [];
 restraints.xlinks(1).coor2 = [];
 restraints.xlinks(1).indices2 = [];
 
-% restraints.stemloop_links(1).rba = [];
-% restraints.stemloop_links(1).coor1 = [];
-% restraints.stemloop_links(1).coor2 = [];
-% restraints.stemloop_links(1).lib = [];
-% restraints.stemloop_links(1).max = [];
 restraints.stemloop_links = [];
 restraints.SL_DEER = [];
 restraints.SAXS = [];
@@ -161,6 +158,9 @@ while 1
                 case 'SEARCH'
                     mode=0;
                     restraints.search = true;
+                case 'MAXTRIALS'
+                    mode=0;
+                    restraints.maxtrials=str2double(char(args(3)));
                 case 'ENSEMBLE'
                     mode=0;
                     restraints.ensemble=str2double(char(args(3)));

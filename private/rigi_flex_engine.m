@@ -194,7 +194,13 @@ for k1 = 1:3*rbnum-1
 end
 
 if options.exhaustive
-    [trials,res,trial_pattern] = get_restraint_resolution(restraints.lb,restraints.ub,target_resolution);
+    trials = get_restraint_resolution(restraints.lb,restraints.ub,target_resolution);
+    if restraints.maxtrials > 0
+        while trials > restraints.maxtrials
+            target_resolution = target_resolution + 0.1;
+            [trials,res,trial_pattern] = get_restraint_resolution(restraints.lb,restraints.ub,target_resolution);
+        end
+    end
     target_trials = tph*maxtime;
     while trials > target_trials
         target_resolution = target_resolution + 0.1;
@@ -716,7 +722,7 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
     end
 end
 reference_geometry = reference_geometry(1:soln_count);
-save(geometryname,reference_geometry);
+save(geometryname,'reference_geometry');
 toc,
 
 if success > maxmodels

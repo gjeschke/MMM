@@ -22,7 +22,7 @@ function varargout = MMM_prototype(varargin)
 
 % Edit the above text to modify the response to help MMM_prototype
 
-% Last Modified by GUIDE v2.5 11-Jul-2019 07:42:05
+% Last Modified by GUIDE v2.5 11-Sep-2019 07:43:19
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -6456,29 +6456,7 @@ function menu_jobs_test6_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-
-global general
-
-my_path=pwd;
-cd(general.restraint_files);
-
-[fname,pname]=uigetfile('*.dat','Load restraints from file');
-if isequal(fname,0) || isequal(pname,0)
-    add_msg_board('Restraint loading cancelled by user');
-    return
-else
-    cd(pname);
-    general.restraint_files=pname;
-    [~,name] = fileparts(fname);
-    handles.save_path = pname;
-    handles.save_name = name;
-    
-    hfig=gcf;
-    set(hfig,'Pointer','watch');
-    prepare_rigid_bodies(fname);
-    set(hfig,'Pointer','arrow');
-end
-cd(my_path);
+check_atom_counts('PTBP1_yasara_conformers_final_ensemble.dat');
 guidata(hObject,handles);
 
 
@@ -6488,4 +6466,33 @@ function menu_ensemble_fit_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 ensemble_fit;
+guidata(hObject,handles);
+
+
+% --------------------------------------------------------------------
+function menu_utilities_fix_rigid_bodies_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_utilities_fix_rigid_bodies (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+global general
+
+
+my_path=pwd;
+cd(general.restraint_files);
+
+[fname,pname]=uigetfile('*.dat','Load restraints from file');
+if isequal(fname,0) || isequal(pname,0)
+    add_msg_board('Restraint loading cancelled by user');
+    return
+else
+    reset_user_paths(pname);
+    general.restraint_files=pname;
+    cd(pname);
+    hfig=gcf;
+    set(hfig,'Pointer','watch');
+    prepare_rigid_bodies(fname);
+    set(hfig,'Pointer','arrow');
+    cd(my_path);
+end
 guidata(hObject,handles);
