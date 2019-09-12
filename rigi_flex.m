@@ -670,6 +670,7 @@ for runstep = 0:last_step
                     model.current_structure = handles.diagnostics.snum; % make the result of rigid-body arrangement the current structure
                     [restrain,restraints,monitor,cancelled,number,number_monitor] = process_domain_restraints(handles.restraints.pflex(kp),km);
                     options.max_time = handles.restraints.pflex(kp).time;
+                    options.max_trials = 1e6;
                     set(handles.edit_max_time,'String',sprintf('%5.2f',options.max_time));
                     drawnow
                     if cancelled
@@ -757,7 +758,9 @@ for runstep = 0:last_step
                         model = rmfield(model,'selected');
                     end
                     model.selected{1} = [linked_model 1 1];
-                    model.selected{2} = [handles.diagnostics.snum handles.new_cindices(end) km];
+                    if isfield(handles.restraints,'RNA') && isfield(handles.restraints.RNA,'bind') && ~isempty(handles.restraints.RNA.bind)
+                        model.selected{2} = [handles.diagnostics.snum handles.new_cindices(end) km];
+                    end
                     fmname = sprintf('%s_m%i_flex.pdb',handles.basname,km);
                     wr_pdb_selected(fmname,handles.restraints.newID,[],true);
                     fid_list = fopen(list_name,'at');
