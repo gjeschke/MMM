@@ -267,12 +267,12 @@ global model
 
 if isfield(handles.restraints,'solutions') && ~isempty(handles.restraints.solutions)
     last_step = 2;
+    handles.progress = 0;
 else
     last_step = 0;
 end
 
-for runstep = 0:last_step
-    handles.progress = runstep;
+for runstep = 0:last_step   
     
     switch handles.progress
 
