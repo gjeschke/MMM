@@ -29,6 +29,8 @@ function [included,populations,bsl] = fit_ensemble(restraints,model_list,options
 % add_msg_board(sprintf('%i populations are at least 1%% of the maximum population\n',length(coeff))); 
 % return
 
+bsl = [];
+
 DEER_scores = zeros(1,length(model_list));
 SAS_scores = DEER_scores;
 
@@ -439,8 +441,8 @@ fits = fits(1:n_DEER);
 
 function [chi2_vec,fits,valid] = get_SAS(restraints)
 
-chi2_vec = zeros(1,3);
-fits = cell(1,3);
+chi2_vec = zeros(1,10);
+fits = cell(1,10);
 valid = true;
 
 n_SANS = 0;
@@ -452,6 +454,7 @@ if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
     end
 end
 
+n_SAXS = 0;
 if isfield(restraints,'SAXS') && ~isempty(restraints.SAXS)
     n_SAXS = length(restraints.SAXS);
     for ks = 1:n_SAXS
@@ -459,4 +462,8 @@ if isfield(restraints,'SAXS') && ~isempty(restraints.SAXS)
         chi2_vec(n_SANS+ks) = restraints.SAXS(ks).chi2;
     end
 end
+
+chi2_vec = chi2_vec(1:n_SANS+n_SAXS);
+fits = fits(1:n_SANS+n_SAXS);
+
 

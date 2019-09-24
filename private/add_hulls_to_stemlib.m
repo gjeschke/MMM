@@ -1,6 +1,6 @@
 function add_hulls_to_stemlib(libname)
 
-library = load(libname);
+load(libname,'library');
 for k = 1:length(library.chains)
     heavy_coor = eliminate_H(library.chains{k}.xyz{1},library.chains{k}.isotopes);
     faces = convhulln(heavy_coor);

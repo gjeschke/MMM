@@ -1,5 +1,5 @@
-function [defs,links,sites,failed] = rd_definition_stemloop_library(fname)
-% function [defs,links,sites,failed] = rd_definition_stemloop_library(fname)
+function [defs,links,sites,acceptance,failed] = rd_definition_stemloop_library(fname)
+% function [defs,links,sites,acceptance,failed] = rd_definition_stemloop_library(fname)
 %
 % reads definitions for an RNA stemloop library based on Rosetta (Rosie
 % FarFar) or other models
@@ -37,16 +37,23 @@ function [defs,links,sites,failed] = rd_definition_stemloop_library(fname)
 %   adr     address of the spin-labelled site
 %   label   label type
 %
-% fname     file name of the definition file
+% fname         file name of the definition file
 %
-% defs      definitions, array of structs
-% links     list of RNA-RNA links
-% sites     list of spin-labelled sites
-% failed    flag that indicates failure
+% defs          definitions, array of structs
+% links         list of RNA-RNA links
+% sites         list of spin-labelled sites
+% acceptance    fit agreement for binding motif that is considered
+%               acceptable, defaults to 2 Å
+% failed        flag that indicates failure
 %
 % G. Jeschke, 19.3.2018
 
 failed = true;
+
+defs = [];
+sites = [];
+links = [];
+acceptance = 2.0;
 
 fid=fopen(fname);
 if fid==-1
@@ -76,6 +83,8 @@ while 1
         args=myline{1};
         if strcmp(char(args(1)),'#')
             switch upper(char(args(2)))
+                case 'ACCEPTANCE'
+                    acceptance = str2double(char(args(3)));
                 case 'STEMLIB'
                     mode=1;
                     if defpoi > 0

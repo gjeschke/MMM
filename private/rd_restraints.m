@@ -140,7 +140,11 @@ while 1
                 case 'DEER'
                     mode=1;
                     label=char(args(3));
-                    T=char(args(4));
+                    if length(args) > 3
+                        T=char(args(4));
+                    else
+                        T= '298';
+                    end
                 case 'ODEER'
                     mode=16;
                     label1 = char(args(3));

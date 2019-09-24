@@ -1609,7 +1609,7 @@ if msg1.error
     return;
 end
 if msg2.error
-    add_msg_board(msg1.text);
+    add_msg_board(msg2.text);
     return;
 end
 

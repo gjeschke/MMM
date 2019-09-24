@@ -264,8 +264,17 @@ if isfield(restraints,'SAXS') && ~isempty(restraints.SAXS)
         to_be_deleted = 't*.*';
         wr_pdb_selected(pdbfile,'SAXS');
         SAXS_curve = load_SAXS_curve(restraints.SAXS(ks).data);
-        options.sm = 10*max(SAXS_curve(:,1));
+        if ~isempty(restraints.SAXS(ks).sm)
+            options.sm = restraints.SAXS(ks).sm;
+        elseif max(SAXS_curve(:,1)) < 1
+            options.sm = 10*max(SAXS_curve(:,1));
+        else
+            options.sm = max(SAXS_curve(:,1));
+        end
         smin = min(SAXS_curve(:,1));
+        if options.sm > 1
+            smin = smin/10;
+        end
         options.smin = smin;
         [chi2,~,~,result,fit] = fit_SAXS_by_crysol(restraints.SAXS(ks).data,pdbfile,options);
         if isempty(chi2) || isnan(chi2)

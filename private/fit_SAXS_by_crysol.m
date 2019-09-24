@@ -80,6 +80,14 @@ while 1
     nl=nl+1;
 end
 fit = fit(1:nl-1,:);
+poi = 1;
+for k = 1:nl-1
+    if fit(k,2) == 0 || fit(k,3) == 0
+        poi = k;
+    else
+        break
+    end
+end
 if ncol == 4 % remove error column from output of newer CRYSON
     if options.err
         fit = fit(:,[1 2 4 3]);
@@ -87,9 +95,6 @@ if ncol == 4 % remove error column from output of newer CRYSON
         fit = fit(:,[1 2 4]);
     end
 end
-if isfield(options,'smin') && ~isempty(options.smin)
-    [~,poi] = min(abs(fit(:,1)-options.smin));
-    fit = fit(poi:end,:);
-end
+fit = fit(poi+1:end,:);
 fclose(fid);
 

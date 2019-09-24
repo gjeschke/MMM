@@ -194,7 +194,7 @@ for k1 = 1:3*rbnum-1
 end
 
 if options.exhaustive
-    trials = get_restraint_resolution(restraints.lb,restraints.ub,target_resolution);
+    [trials,res,trial_pattern] = get_restraint_resolution(restraints.lb,restraints.ub,target_resolution);
     if restraints.maxtrials > 0
         while trials > restraints.maxtrials
             target_resolution = target_resolution + 0.1;

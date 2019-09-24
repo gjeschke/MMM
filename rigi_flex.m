@@ -357,6 +357,11 @@ for runstep = 0:last_step
             guidata(hObject,handles);
 
         case 1 % RNA Flex
+            if isempty(handles.restraints.pflex)
+                only_FlexRNA = true;
+            else
+                only_FlexRNA = false;
+            end
             [pathstr,basname] = fileparts(handles.options.fname);
             solutions_given = true;
             soln_name = strcat(basname,'_solutions.dat');
@@ -367,7 +372,6 @@ for runstep = 0:last_step
             [pathstr,basname] = fileparts(handles.options.fname);
             report_name = fullfile(pathstr,strcat(basname,'_RNA_link_report.txt'));
             linkable_name = fullfile(pathstr,strcat(basname,'_RNA_linkable.dat'));
-            curated_name = fullfile(pathstr,strcat(basname,'_RNA_curated.dat'));
             [solutions,trafo,stemlibs,dvecs] = fit_stemloop_combinations(handles.restraints,handles.template_snum,handles.diagnostics.snum,report_name);
             % assign the stemloops to rigid bodies, needed for RBA adjustment
             rb_assign = zeros(1,length(stemlibs));
@@ -406,7 +410,7 @@ for runstep = 0:last_step
                 initialize_model = true;
                 for km = 1:handles.diagnostics.success % loop over rigid-body models
                     csoln = solutions(solutions(:,1)==km,:);
-                    stretch = csoln(:,5);
+                    stretch = csoln(:,2);
                     [stretch,strpoi] = sort(stretch);
                     csoln = csoln(strpoi,:);
                     success = false;
@@ -414,19 +418,21 @@ for runstep = 0:last_step
                     snum = handles.diagnostics.snum;
                     while ~isempty(stretch) && ~success && kcombi < length(stretch) && kcombi < 1
                         kcombi = kcombi + 1;
-                        ccombi = csoln(kcombi,2:4);
+                        ccombi = csoln(kcombi,3:end);
                         % make adjustment transformation matrices
                         adj_transmats = cell(1,length(handles.restraints.rb));
                         for kr = 1:length(handles.restraints.rb)
                             adj_transmats{kr} = eye(4);
                         end
-                        for kr = 2:3
-                            baspoi6 = (kr-2)*6;
-                            dtrans = 10*dvecs(km,baspoi6+1:baspoi6+3);
-                            % fprintf(1,'Translation(%i): (%3.1f, %3.1f, %3.1f) Å\n',kr,dtrans);
-                            deuler = dvecs(km,baspoi6+4:baspoi6+6);
-                            % fprintf(1,'Rotation(%i)   : (%3.1f, %3.1f, %3.1f)°\n',kr,180*deuler/pi);
-                            adj_transmats{rb_assign(kr)} = transrot2affine(dtrans,deuler);
+                        for kr = 2:length(rb_assign)
+                            if rb_assign(kr) > 1
+                                baspoi6 = (rb_assign(kr)-2)*6;
+                                dtrans = 10*dvecs(km,baspoi6+1:baspoi6+3);
+                                % fprintf(1,'Translation(%i): (%3.1f, %3.1f, %3.1f) Å\n',kr,dtrans);
+                                deuler = dvecs(km,baspoi6+4:baspoi6+6);
+                                % fprintf(1,'Rotation(%i)   : (%3.1f, %3.1f, %3.1f)°\n',kr,180*deuler/pi);
+                                adj_transmats{rb_assign(kr)} = transrot2affine(dtrans,deuler);
+                            end
                         end
                         % apply adjustment of RBA
                         for kr = 1:length(handles.restraints.rb)                       
@@ -547,6 +553,41 @@ for runstep = 0:last_step
                                 fprintf(link_fid,'%8i%6i\n',rba_solutions(km,1),rba_solutions(km,2));
                                 fclose(link_fid);
                             end
+                            if only_FlexRNA % conformer should be saved, if it is already complete
+                                new_cindices = zeros(1,num_ch+1);
+                                ncp = 0;
+                                for kc = 1:num_ch
+                                    [~,ctag] = mk_address_parts([handles.diagnostics.snum,kc]);
+                                    isRNA = false;
+                                    for krna = 1:length(handles.restraints.RNA_tags)
+                                        if strcmpi(['(' ctag ')'],handles.restraints.RNA_tags{krna})
+                                            isRNA = true;
+                                        end
+                                    end
+                                    if ~isRNA
+                                        ncp = ncp + 1;
+                                        new_cindices(ncp) = kc;
+                                    end
+                                end
+                                new_cindices(ncp+1) = num_ch + 1;
+                                new_cindices = new_cindices(1:ncp+1);
+                                handles.new_cindices = new_cindices;
+                                if isfield(model,'selected')
+                                    model = rmfield(model,'selected');
+                                end
+                                spoi = 0;
+                                for kc = new_cindices
+                                    spoi = spoi + 1;
+                                    model.selected{spoi} = [snum kc km];
+                                end
+                                fmname = sprintf('%s_m%i_flex.pdb',handles.basname,km);
+                                message = wr_pdb_selected(fmname,handles.restraints.newID);
+                                if message.error
+                                    if interactive
+                                        add_msg_board(sprintf('Warning: Model %s_m%i could not be automatically saved. %s\n',handles.basname,km,message.text));
+                                    end
+                                end
+                            end
                         end
                     end
                 end
@@ -554,46 +595,46 @@ for runstep = 0:last_step
             handles.RNA_link_success = success_vec;
             handles = mk_RNA_report_distributions(report_fid,handles);
             fclose(report_fid);
-            new_cindices = zeros(1,num_ch+1);
-            ncp = 0;
-            for kc = 1:num_ch
-                [~,ctag] = mk_address_parts([handles.diagnostics.snum,kc]);
-                isRNA = false;
-                for krna = 1:length(handles.restraints.RNA_tags)
-                    if strcmpi(['(' ctag ')'],handles.restraints.RNA_tags{krna})
-                        isRNA = true;
-                    end
-                end
-                if ~isRNA
-                    ncp = ncp + 1;
-                    new_cindices(ncp) = kc;
-                end
-            end
-            new_cindices(ncp+1) = num_ch + 1;
-            new_cindices = new_cindices(1:ncp+1);
-            handles.new_cindices = new_cindices;
-            if isfield(model,'selected')
-                model = rmfield(model,'selected');
-            end
-            spoi = 0;
-            for kc = new_cindices
-                for km = 1:length(success_vec)
-                    if success_vec(km)
-                        spoi = spoi + 1;
-                        model.selected{spoi} = [snum kc km];
-                    end
-                end
-            end
-            fname = fullfile(pathstr,strcat(basname,'_RNA.pdb'));
-            message = wr_pdb_selected(fname,handles.restraints.newID);
-            if message.error
-                diagnostics.unsaved = true;
-                if interactive
-                    add_msg_board(sprintf(2,'Warning: Model could not be automatically saved. %s\n',message.text));
-                end
-            else
-                diagnostics.unsaved = false;
-            end
+%             new_cindices = zeros(1,num_ch+1);
+%             ncp = 0;
+%             for kc = 1:num_ch
+%                 [~,ctag] = mk_address_parts([handles.diagnostics.snum,kc]);
+%                 isRNA = false;
+%                 for krna = 1:length(handles.restraints.RNA_tags)
+%                     if strcmpi(['(' ctag ')'],handles.restraints.RNA_tags{krna})
+%                         isRNA = true;
+%                     end
+%                 end
+%                 if ~isRNA
+%                     ncp = ncp + 1;
+%                     new_cindices(ncp) = kc;
+%                 end
+%             end
+%             new_cindices(ncp+1) = num_ch + 1;
+%             new_cindices = new_cindices(1:ncp+1);
+%             handles.new_cindices = new_cindices;
+%             if isfield(model,'selected')
+%                 model = rmfield(model,'selected');
+%             end
+%             spoi = 0;
+%             for kc = new_cindices
+%                 for km = 1:length(success_vec)
+%                     if success_vec(km)
+%                         spoi = spoi + 1;
+%                         model.selected{spoi} = [snum kc km];
+%                     end
+%                 end
+%             end
+%             fname = fullfile(pathstr,strcat(basname,'_RNA.pdb'));
+%             message = wr_pdb_selected(fname,handles.restraints.newID);
+%             if message.error
+%                 diagnostics.unsaved = true;
+%                 if interactive
+%                     add_msg_board(sprintf(2,'Warning: Model could not be automatically saved. %s\n',message.text));
+%                 end
+%             else
+%                 diagnostics.unsaved = false;
+%             end
             handles.text_time_left.String = 'Completed.';
             handles.text_time_left.ForegroundColor = [0,127,0]/256;
             set(gcf,'Pointer','arrow');

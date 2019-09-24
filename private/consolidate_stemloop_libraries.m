@@ -19,6 +19,7 @@ for lib = 1:length(defs)
         end
     end
     spoi = 0;
+    labelsites = [];
     for site = 1:length(sites)
         poi = strfind(sites(site).adr,chaintag);
         if ~isempty(poi)
@@ -122,6 +123,15 @@ for k = 1:length(labelsites)
     library.labelsites(k).rmsd = library.labelsites(k).rmsd(1:success);
 end
 
+for k = 1:length(library.chains)
+    heavy_coor = eliminate_H(library.chains{k}.xyz{1},library.chains{k}.isotopes);
+    faces = convhulln(heavy_coor);
+    [na,~] = size(faces);
+    [kpa,ar] = reducepatch(faces,heavy_coor,na);
+    library.hulls(k).vertices = double(ar);
+    library.hulls(k).faces = kpa;
+end
+
 cd(mydir);
 
 function labels = label_information(sites)
@@ -162,3 +172,16 @@ dy=(NOall(:,2)-ymean);
 dz=(NOall(:,3)-zmean);
 nNO=length(dx);
 rmsd=sqrt(0.005+nNO*sum(dx.^2.*pop+dy.^2.*pop+dz.^2.*pop)/(nNO-1))/10; % divided by 10 for Å -> nm
+
+function coor = eliminate_H(coor0,isotopes)
+
+[m,~] = size(coor0);
+coor = zeros(m,3);
+poi = 0;
+for k = 1:m
+    if isotopes(k,1) ~= 1
+        poi = poi + 1;
+        coor(poi,:) = coor0(k,:);
+    end
+end
+coor = coor(1:poi,:);

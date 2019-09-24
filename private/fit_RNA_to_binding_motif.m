@@ -30,6 +30,10 @@ end
 
 if ~exist('options','var') || isempty(options)
     options.optimize = false;
+else
+    if isfield(options,'acceptance') && ~isempty(options.acceptance)
+        acceptance = options.acceptance;
+    end
 end
 
 [B,~] = size(motif);

@@ -4,6 +4,17 @@ global model
 
 DEER = [];
 
+
+fid = fopen(options.script_file,'wt');
+fprintf(fid,'show [%s] ribbon\n',options.pdb_ID);
+fprintf(fid,'color [%s](B){:} grey\n',options.pdb_ID);
+fprintf(fid,'colorscheme [%s](A){:} sequence\n',options.pdb_ID);
+
+for km = 1:length(populations)
+    alpha = populations(km)/max(populations);
+    fprintf(fid,'transparency [%s](:){%i} %5.3f\n',options.pdb_ID,km,alpha);
+end
+
 for km = 1:length(ensemble_list)
     fname = sprintf('%s_restraints.mat',ensemble_list{km});
     if exist(fname,'file')
@@ -89,35 +100,29 @@ for k = 1:DEER.core+DEER.flex
         n_DEER = n_DEER + 1;
     end
     adr1 = DEER.all_adr1{k};
-    if adr1(2) == 'A'
-        adr1 = sprintf('P%s',adr1(4:end));
-    end
-    if adr1(2) == 'B'
-        adr1 = sprintf('R%s',adr1(4:end));
-    end
     adr2 = DEER.all_adr2{k};
-    if adr2(2) == 'A'
-        adr2 = sprintf('P%s',adr2(4:end));
-    end
-    if adr2(2) == 'B'
-        adr2 = sprintf('R%s',adr2(4:end));
-    end
     if DEER.all_flags(k)
         ftype = 'fit';
         title(sprintf('%s-%s. o_{res}: %5.3f, o_{exp}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap,overlap_exp,DEER.mod_depths(k)));
+        colr = get_color(overlap);
+        fprintf(fid,'plot %s.CA %s.CA 6 %5.3f %5.3f %5.3f :\n',adr1,adr2,colr);
     else
         ftype = 'control';
         title(sprintf('%s-%s. o_{exp}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap_exp,DEER.mod_depths(k)));
+        colr = get_color(overlap_exp);
+        fprintf(fid,'plot %s.CA %s.CA 6 %5.3f %5.3f %5.3f :\n',adr1,adr2,colr);
     end
     axis(axis_vec);
     [texp,vexp,deer,bckg,param] = fit_DEER_primary(DEER.rax/10,DEER.all_distr(k,:),strcat('deer\',DEER.all_fnames{k}),options);
-    figure(1000+k); clf;
-    plot(texp,vexp,'k');
-    hold on;
-    plot(options.cutoff*[max(texp),max(texp)],[min(vexp),max(vexp)],'b');
-    plot(texp,deer,'Color',[0.75,0,0]);
-    plot(texp,bckg,'Color',[0,0.6,0]);
-    title(sprintf('%s: %s-%s. rmsd: %6.4f',ftype,adr1,adr2,param.rmsd));
+    if ~isempty(texp)
+        figure(1000+k); clf;
+        plot(texp,vexp,'k');
+        hold on;
+        plot(options.cutoff*[max(texp),max(texp)],[min(vexp),max(vexp)],'b');
+        plot(texp,deer,'Color',[0.75,0,0]);
+        plot(texp,bckg,'Color',[0,0.6,0]);
+        title(sprintf('%s: %s-%s. rmsd: %6.4f',ftype,adr1,adr2,param.rmsd));
+    end
 end
 
 score_DEER = 1 - score_DEER^(1/n_DEER);
@@ -140,7 +145,7 @@ for kf = 2:length(ensemble_list)
         add_msg_board(sprintf('ERROR: PDB file #%i (%s) could not be read (%s).',kf,ensemble_list{kf},msg.text));
         return
     end
-    for kc = 1:2
+    for kc = 1:length(model.structures{snum0})
         model.structures{snum0}(kc).atoms{kf} = model.structures{snumc}(kc).atoms{1};
         model.structures{snum0}(kc).residues{kf} =model.structures{snumc}(kc).residues{1};
         model.structures{snum0}(kc).xyz{kf} = model.structures{snumc}(kc).xyz{1};
@@ -158,15 +163,6 @@ else
     add_msg_board(sprintf('Structure file %s written',options.pdb_file));
 end
 
-fid = fopen(options.script_file,'wt');
-fprintf(fid,'show [%s] ribbon\n',options.pdb_ID);
-fprintf(fid,'color [%s](B){:} grey\n',options.pdb_ID);
-fprintf(fid,'colorscheme [%s](A){:} sequence\n',options.pdb_ID);
-
-for km = 1:length(populations)
-    alpha = populations(km)/max(populations);
-    fprintf(fid,'transparency [%s](:){%i} %5.3f\n',options.pdb_ID,km,alpha);
-end
 fclose(fid);
 
 
@@ -226,7 +222,9 @@ for k = 1:length(model_restraints.DEER)
         title(sprintf('%s-%s',model_restraints.DEER(k).adr1,model_restraints.DEER(k).adr2));
         plot(rax,populations(1)*distr,'Color',[0.2,0.2,1]);
         DEER.all_distr(k,:) = DEER.all_distr(k,:) + populations(km)*distr;
-        DEER.all_fnames{k} = model_restraints.DEER(k).file;
+        if isfield(model_restraints.DEER(k),'file')
+            DEER.all_fnames{k} = model_restraints.DEER(k).file;
+        end
         if model_restraints.DEER(k).r ~=0 &&  model_restraints.DEER(k).sigr ~=0
             DEER.all_flags(k) = 1;
             if 1.05*max(distr_sim) > axis_vec(4)
@@ -269,7 +267,9 @@ for kl = 1:length(model_restraints.pflex)
             plot(rax,distr_sim,'Color',[0,0.6,0]);
             plot(rax,populations(1)*distr,'Color',[0.2,0.2,1]);
             DEER.all_distr(pflex,:) = DEER.all_distr(pflex,:) + populations(km)*distr;
-            DEER.all_fnames{pflex} = model_restraints.pflex(kl).DEER(k).file;
+            if isfield(model_restraints.pflex(kl).DEER(k),'file')
+                DEER.all_fnames{pflex} = model_restraints.pflex(kl).DEER(k).file;
+            end
             if model_restraints.pflex(kl).DEER(k).r ~=0 &&  model_restraints.pflex(kl).DEER(k).sigr ~=0
                 DEER.all_flags(pflex) = 1;
                 if 1.05*max(distr_sim) > axis_vec(4)
@@ -365,3 +365,18 @@ if ~skip
     end
     plot([r3,r4],[-0.04*ma,-0.04*ma],'Color',[0.6,0,0],'LineWidth',4);
 end
+
+function rgb = get_color(overlap,limit)
+
+if ~exist('limit','var')
+    limit = 0.8;
+end
+sigdim = 0.4;
+red = [1 0 0];
+green = [0 1 0];
+if overlap > limit
+    overlap = limit;
+end
+dimit = exp(-(overlap-limit/2)^2/(2*sigdim^2));
+fulfill = overlap/limit;
+rgb = dimit*(fulfill*green + (1-fulfill)*red);
