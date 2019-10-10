@@ -13,6 +13,7 @@ end
 forgive = 0.8;
 clash_threshold = 1.5*forgive;
 fine_clash_thr = 2500;
+clash_fail = 10;
 
 
 link_nt = zeros(1,length(restraints.RNA.bind)-1);
@@ -105,7 +106,7 @@ for k = models % 1:nmod loop over all models
                     full_cost = full_cost + cost;
                 end
             end
-            if full_cost < 5*eps
+            if full_cost < clash_fail
                 vpoi(ksl) = vpoi(ksl) + 1;
                 valid_decoys(ksl,vpoi(ksl)) = kdecoy;
                 % fprintf(report,'Model %i, stemloop %c(%i) has clash cost %6.2f (%6.2f, %6.2f, %6.2f)\n',k,sls(ksl),kdecoy,full_cost,all_costs);

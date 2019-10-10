@@ -164,12 +164,12 @@ template=templates{get(handles.popupmenu_template,'Value')};
 tobefitted=get(handles.popupmenu_to_fit,'String');
 tofit=tobefitted{get(handles.popupmenu_to_fit,'Value')};
 mode=0;
-if get(handles.radiobutton_backbone,'Value'),
+if get(handles.radiobutton_backbone,'Value')
     mode=1;
-end;
-if get(handles.radiobutton_CA,'Value'),
+end
+if get(handles.radiobutton_CA,'Value')
     mode=2;
-end;
+end
 selected=get(handles.checkbox_selected,'Value');
 aligned=get(handles.checkbox_aligned_residues,'Value');
 whole=get(handles.checkbox_whole_structure,'Value');

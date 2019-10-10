@@ -595,50 +595,13 @@ for runstep = 0:last_step
             handles.RNA_link_success = success_vec;
             handles = mk_RNA_report_distributions(report_fid,handles);
             fclose(report_fid);
-%             new_cindices = zeros(1,num_ch+1);
-%             ncp = 0;
-%             for kc = 1:num_ch
-%                 [~,ctag] = mk_address_parts([handles.diagnostics.snum,kc]);
-%                 isRNA = false;
-%                 for krna = 1:length(handles.restraints.RNA_tags)
-%                     if strcmpi(['(' ctag ')'],handles.restraints.RNA_tags{krna})
-%                         isRNA = true;
-%                     end
-%                 end
-%                 if ~isRNA
-%                     ncp = ncp + 1;
-%                     new_cindices(ncp) = kc;
-%                 end
-%             end
-%             new_cindices(ncp+1) = num_ch + 1;
-%             new_cindices = new_cindices(1:ncp+1);
-%             handles.new_cindices = new_cindices;
-%             if isfield(model,'selected')
-%                 model = rmfield(model,'selected');
-%             end
-%             spoi = 0;
-%             for kc = new_cindices
-%                 for km = 1:length(success_vec)
-%                     if success_vec(km)
-%                         spoi = spoi + 1;
-%                         model.selected{spoi} = [snum kc km];
-%                     end
-%                 end
-%             end
-%             fname = fullfile(pathstr,strcat(basname,'_RNA.pdb'));
-%             message = wr_pdb_selected(fname,handles.restraints.newID);
-%             if message.error
-%                 diagnostics.unsaved = true;
-%                 if interactive
-%                     add_msg_board(sprintf(2,'Warning: Model could not be automatically saved. %s\n',message.text));
-%                 end
-%             else
-%                 diagnostics.unsaved = false;
-%             end
             handles.text_time_left.String = 'Completed.';
             handles.text_time_left.ForegroundColor = [0,127,0]/256;
             set(gcf,'Pointer','arrow');
             handles.progress = 2;
+            if only_FlexRNA
+                handles.progress = 3;
+            end
             handles.pushbutton_run.String = 'Flex Peptide';
             guidata(hObject,handles);
 
@@ -822,6 +785,8 @@ for runstep = 0:last_step
             handles.pushbutton_run.String = 'Run assembler';
             guidata(hObject,handles);
             return
+        otherwise
+            add_msg_board('Full RigiFlex run completed');
     end
 end
 

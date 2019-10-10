@@ -727,6 +727,25 @@ hfig=gcf;
 set(hfig,'Pointer','watch');
 
 mk_ensemble(handles.ensemble_list,handles.populations,handles.restraints,options);
+[~,snum] = add_pdb(options.pdb_file);
+stag = mk_address(snum);
+stag = stag(2:end-1);
+
+[sigma,pair_rmsd] = ensemble_comparison(stag,[],handles.populations,[],[],[],options);
+ermsd_str = sprintf('Ensemble rmsd is %5.2f Å',sigma);
+add_msg_board(ermsd_str);
+axes(handles.axes_populations);
+cla
+[n1,n2] = size(pair_rmsd{1});
+plot(1,1,'k.');
+plot(n1,n2,'k.');
+axis tight
+xlabel('Conformer number');
+ylabel('Conformer number');
+image(pair_rmsd{1},'CDataMapping','scaled');
+title(ermsd_str);
+colorbar;
+axis equal
 
 set(hfig,'Pointer','arrow');
 

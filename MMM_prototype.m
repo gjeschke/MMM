@@ -714,7 +714,7 @@ guidata(hObject,handles);
 
 
 % --------------------------------------------------------------------
-function menu_EPR_access_Callback(hObject, eventdata, handles)
+function menu_EPR_access_Callback(hObject, ~, handles)
 % hObject    handle to menu_EPR_access (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -5710,13 +5710,24 @@ function menu_jobs_test4_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-fname = 'PTB1_ultimate_final_rigiflex';
-% fname = 'PTBP1_cyana_ensemble';
-PTBP1_ensemble_SAS_fit(fname);
-PTBP1_ensemble_DEER_fit(fname);
-PTB1_SAS_DEER_fit(fname);
-PTBP1_ensemble_maker(fname);
+stag1 = 'MMM0';
+chains1 = 'BA';
+stag2 = 'MMM1';
+chains2 = 'AB';
+% pop1 = [0.016957,0.054164,0.123205,0.009972,0.042209,0.039926,0.042478,...
+%     0.050806,0.072700,0.061686,0.137443,0.031732,0.017225,0.094595,...
+%     0.075521,0.011047,0.091908,0.026426];
+pop1 = [0.067318,0.097607,0.152869,0.181209,0.042521,0.063776,0.105577,...
+    0.017723,0.055097,0.019849,0.073163,0.123290];
+pop1 = pop1/sum(pop1);
+pop2 = [0.026875,0.047059,0.019219,0.008430,0.074030,0.019567,0.038881,...
+    0.012606,0.075770,0.011214,0.012954,0.034357,0.043057,0.066896,...
+    0.002514,0.116661,0.005646,0.162946,0.178085,0.043231];
+pop2 = pop2/sum(pop2);
+options.mode = 'backbone';
+[sigma,pair_rmsd] = ensemble_comparison(stag1,chains1,pop1,stag2,chains2,pop2,options);
 guidata(hObject,handles);
+
 
 
 % --------------------------------------------------------------------
@@ -5725,12 +5736,18 @@ function menu_jobs_test5_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% PTBP1_quality_check_CYANA;
-% model_name = 'PTB1_f9_R23_8648_m1_y';
-model_name = 'PTB1_f44_R72_4963_m19_y';
-restraint_file = 'PTBP1_restraints_190208.dat';
-list_file = 'added_models.dat';
-PTBP1_quality_check(model_name,restraint_file,list_file);
+stag1 = 'MMM0';
+chains1 = 'A';
+stag2 = 'INTG';
+chains2 = 'A';
+pop1 = [0.090796,0.099188,0.122686,0.092954,0.122686,0.109618,0.014790,...
+    0.042663,0.025220,0.038287,0.028097,0.069097,0.104943,0.026179,...
+    0.006158,0.006638];
+pop2 = [1.00,0.012,0.011,0.68,0.063,0.223,0.094,0.415,0.040,0.133,0.284,...
+    0.087,0.432,0.183,0.039,0.440,0.125,0.440,0.165,0.038,0.100,0.014];
+pop2 = pop2/sum(pop2);
+options.mode = 'backbone';
+[sigma,pair_rmsd] = ensemble_comparison(stag1,chains1,pop1,stag2,chains2,pop2,options);
 guidata(hObject,handles);
 
 
@@ -5740,7 +5757,16 @@ function menu_jobs_test6_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-check_atom_counts('PTBP1_yasara_conformers_final_ensemble.dat');
+stag1 = 'MMM0';
+chains1 = 'ABCDEFG';
+stag2 = '2MF0';
+chains2 = 'CDABEFG';
+pop1 = [0.095439,0.094966,0.006039,0.096859,0.018338,0.062139,0.031488,...
+    0.023636,0.036029,0.047476,0.015594,0.017581,0.030589,0.005188,...
+    0.003107,0.063085,0.043029,0.058166,0.032717,0.074343,0.009256,...
+    0.029028,0.027230,0.034893,0.043786];
+options.mode = 'backbone';
+[sigma,pair_rmsd] = ensemble_comparison(stag1,chains1,pop1,stag2,chains2,[],options);
 guidata(hObject,handles);
 
 

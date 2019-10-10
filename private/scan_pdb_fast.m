@@ -23,7 +23,7 @@ while 1
     if ~ischar(tline), break, end
     if length(tline)>=6, % catches too short end line of MolProbity files
         record=tline(1:6);
-    elseif length(tline >=3) && strcmpi(tline(1:3),'END');
+    elseif length(tline) >=3 && strcmpi(tline(1:3),'END');
         record='END   ';
     end;
     switch record
