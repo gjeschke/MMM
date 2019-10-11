@@ -40,7 +40,8 @@ global hMain
 mydir = pwd;
 cd(name);
 
-RNA_list = dir('*.pdb');
+RNA_list = dir('F*.pdb');
+coor_list = dir('S*.pdb');
 
 ndecoys = length(RNA_list);
 
@@ -49,6 +50,7 @@ library.name = name;
 library.linksites = linksites;
 library.labelsites = labelsites;
 library.chains = cell(1,ndecoys);
+library.xyz_stem = cell(1,ndecoys);
 library.assignment = cell(1,ndecoys);
 for k = 1:length(linksites)
     library.linksites(k).coor = zeros(ndecoys,3);
@@ -110,6 +112,17 @@ for kd = 1:ndecoys
             end
         end
     end
+    [msg,snumc] = add_pdb(coor_list(kd).name);
+    if msg.error
+        add_msg_board(sprintf('Warning: Coordinate PDB file %s could not be read (%s). Aborting.',coor_list(kd).name,msg.text));
+        continue
+    end
+    [msg,hcoor] = get_chain_model([snumc,1,1],'xyz_heavy');
+    if msg.error
+        add_msg_board(sprintf('Warning: Heavy-atom coordinate %s could not be retrieved (%s). Aborting.',coor_list(kd).name,msg.text));
+        continue
+    end
+    library.xyz_stem{kd} = hcoor;
 end
 toc,
 
@@ -124,7 +137,7 @@ for k = 1:length(labelsites)
 end
 
 for k = 1:length(library.chains)
-    heavy_coor = eliminate_H(library.chains{k}.xyz{1},library.chains{k}.isotopes);
+    heavy_coor = library.xyz_stem{k};
     faces = convhulln(heavy_coor);
     [na,~] = size(faces);
     [kpa,ar] = reducepatch(faces,heavy_coor,na);

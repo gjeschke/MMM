@@ -184,6 +184,7 @@ for k = 1:length(nts)
 end
 
 fname = sprintf('F_%i',conformation+1);
+fname2 = sprintf('S_%i',conformation+1);
 rnacoor = model.structures{snum}(1).xyz{1};
 [msg,rcoor] = get_chain_model([snum 1 1],'rcoor');
 
@@ -285,4 +286,17 @@ if ~clash
     end
     pdbid = sprintf('RNA%s',ctag);
     wr_pdb_selected(fullfile(libdir,fname),pdbid);
+    % now write a structure without the binding motif
+    if isfield(model,'selected')
+        model = rmfield(model,'selected');
+    end
+    poi = 0;
+    for k = select_nt
+        if min(abs(nts-k-fit_options.offset)) ~= 0
+            selection(4) = k;
+            poi = poi + 1;
+            model.selected{poi} = selection;
+        end
+    end
+    wr_pdb_selected(fullfile(libdir,fname2),pdbid);
 end

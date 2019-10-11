@@ -1,6 +1,8 @@
-function [solutions,trafo,libs,dvecs] = fit_stemloop_combinations(restraints,snum0,snum,repname,modnum,options)
+function [solutions,trafo,libs,dvecs,best_combi] = fit_stemloop_combinations(restraints,snum0,snum,repname,modnum,options)
 
 global model
+
+best_combi = [];
 
 if ~exist('modnum','var')
     modnum = [];
@@ -14,7 +16,6 @@ forgive = 0.8;
 clash_threshold = 1.5*forgive;
 fine_clash_thr = 2500;
 clash_fail = 10;
-
 
 link_nt = zeros(1,length(restraints.RNA.bind)-1);
 for k = 2:length(restraints.RNA.bind)
@@ -82,7 +83,7 @@ for k = models % 1:nmod loop over all models
     for ksl = 1:length(libs)
         library = libs{ksl};
         for kdecoy = 1:length(library.chains)
-            xyz_sl = library.chains{kdecoy}.xyz{1};
+            xyz_sl = library.xyz_stem{kdecoy};
             hull_vert = library.hulls(kdecoy).vertices;
             transmat = trafo{k,ksl};
             xyz_sl = affine_trafo_coor(xyz_sl,transmat);
@@ -98,13 +99,10 @@ for k = models % 1:nmod loop over all models
                     xyz_rrm,xyz_sl,clash_threshold,fine_clash_thr);
                 all_costs(kc) = cost;
                 % all_costs1(kc) = cost1;
-                if kc ~= ksl % exclude clashes with the own RRM
-%                     cost2 = clash_cost(xyz_rrm,xyz_sl,clash_threshold);
-%                     if ~isempty(modnum)
-%                         fprintf(report,'M(%i)[T%i.%i]SL(%i) Conformer(%i) Hull cost: %5.1f, Fine cost: %5.1f\n',k,modnum.block,modnum.num,ksl,kdecoy,cost,cost2);
-%                     end
-                    full_cost = full_cost + cost;
-                end
+%                 if kc == ksl % exclude clashes with the own RRM
+%                     fprintf(own_clashes,'Own clash cost of SL%i: %5.1f\n',ksl,cost);
+%                 end
+                full_cost = full_cost + cost;
             end
             if full_cost < clash_fail
                 vpoi(ksl) = vpoi(ksl) + 1;
@@ -215,11 +213,6 @@ for k = models % 1:nmod loop over all models
                     stretch = stretch + (lnt-max_length_per_nt)^2;
                 end
             end
-            if stretch < min_stretch
-                min_stretch = stretch;
-                best_r = all_r;
-                best_combi = all_combis(:,kcombi).';
-            end
             valid_combi = true;
             for klink = 1:nlinks
                 if all_r(klink) > link_nt(klink)*thr_length_per_nt
@@ -227,6 +220,46 @@ for k = models % 1:nmod loop over all models
                 end
             end
             if valid_combi
+                failed = false;
+                for ksl1 = 1:length(libs)-1
+                    kdecoy1 = all_combis(ksl1,kcombi);
+                    xyz_sl1 = library.chains{kdecoy1}.xyz{1};
+                    hull_vert1 = library.hulls(kdecoy1).vertices;
+                    transmat1 = trafo{k,ksl1};
+                    xyz_sl1 = affine_trafo_coor(xyz_sl1,transmat1);
+                    hull_vert1 = affine_trafo_coor(hull_vert1,transmat1);
+                    for ksl2 = ksl1+1:length(libs)
+                        kdecoy2 = all_combis(ksl2,kcombi);
+                        xyz_sl2 = library.chains{kdecoy2}.xyz{1};
+                        hull_vert2 = library.hulls(kdecoy2).vertices;
+                        transmat2 = trafo{k,ksl2};
+                        xyz_sl2 = affine_trafo_coor(xyz_sl2,transmat2);
+                        hull_vert2 = affine_trafo_coor(hull_vert2,transmat2);
+                        cost = clash_cost_super_fast(hull_vert1,...
+                            library.hulls(kdecoy1).faces,...
+                            hull_vert2,library.hulls(kdecoy2).faces,...
+                            xyz_sl1,xyz_sl2,clash_threshold,fine_clash_thr);
+                        if cost > clash_fail
+                            failed = true;
+                        end
+                        if failed
+                            break
+                        end
+                    end
+                    if failed
+                        break
+                    end
+                end
+                if failed
+                    valid_combi = false;
+                end
+            end
+            if valid_combi
+                if stretch < min_stretch
+                    min_stretch = stretch;
+                    best_r = all_r;
+                    best_combi = all_combis(:,kcombi).';
+                end
                 spoi = spoi + 1;
                 valid_rbas(k) = 1;
                 solutions(spoi,1) = k;

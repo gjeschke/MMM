@@ -322,13 +322,18 @@ for runstep = 0:last_step
                 report_name = fullfile(pathstr,strcat(basname,'_rigi_report.txt'));
                 result_name = fullfile(pathstr,strcat(basname,'_rigi_diagnostics.mat'));
                 handles.options = options;
-                distributions = mk_report_distributions(report_name,handles,options);
-                handles.distributions = distributions;
+                if handles.restraints.rigi_distributions
+                    distributions = mk_report_distributions(report_name,handles,options);
+                    handles.distributions = distributions;
+                    handles.radiobutton_DEER.Enable =  'on';
+                else
+                    handles.distributions = [];
+                    distributions = [];
+                end
                 restraints = handles.restraints;
                 save(result_name,'diagnostics','options','restraints','distributions','report_name');
                 handles.pushbutton_save.Enable =  'on';
                 handles.pushbutton_run.String = 'Run Flex';
-                handles.radiobutton_DEER.Enable =  'on';
                 if isfield(handles.restraints,'RNA') && isfield(handles.restraints.RNA,'bind') && ~isempty(handles.restraints.RNA.bind)
                     handles.pushbutton_run.String = 'RNA links';
                     handles.progress = 1;
@@ -1300,24 +1305,24 @@ function pushbutton_model_back_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-if handles.curr_model > 1,
+if handles.curr_model > 1
     handles.curr_model = handles.curr_model - 1;
     handles.edit_current_model.String = sprintf('%i',handles.curr_model);
     update_plot(handles);
 else
     add_msg_board('Warning: Model number must be positive.');
-end;
+end
 guidata(hObject,handles);
 
 function update_plot(handles)
 
 if handles.progress < 1 
     return
-end;
+end
 
 if handles.diagnostics.success < 1 
     return
-end;
+end
 
 if handles.copy
     figure;
@@ -1327,47 +1332,21 @@ else
     axes(handles.axes_multi_plot);
     copy_mode = false;
     cla;
-end;
+end
 
 cm = handles.curr_model;
 cr = handles.curr_restraint;
 
 handles.text_model_probability.String = sprintf('%5.3f',handles.diagnostics.probabilities(cm));
-handles.text_restraint_type.String = handles.distributions(cr).type;
+if ~isempty(handles.distributions)
+    handles.text_restraint_type.String = handles.distributions(cr).type;
+end
 if ~copy_mode
     set(gca,'OuterPosition',handles.plot_position);
     set(gca,'XTickLabelRotation','default');
     set(gca,'XTickLabelMode','auto');
     cla
-end;
-% if handles.radiobutton_SANS_fit.Value
-%     hold on;
-%     for ks = 1:length(handles.restraints.SANS)
-%         fit = handles.diagnostics.SANS_curves{ks,cm};
-%         plot(fit(:,1),fit(:,2));
-%         plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
-%     end;
-%     title(sprintf('SANS fit for model %i (chi^2 = %4.2f)',cm,handles.diagnostics.final_chi2_SANS(cm)));
-% end
-% if handles.radiobutton_SANS_chi2.Value
-%     hold on;
-%     [ms,nm] = size(handles.diagnostics.chi_SANS);
-%     for kl = 1:ms
-%         plot(handles.diagnostics.chi_SANS(kl,:),'.');
-%     end
-%     plot(sum(handles.diagnostics.chi_SANS)/ms,'Color',[0.25,0.25,0.25]);
-%     plot([1,nm],[handles.SANS_threshold,handles.SANS_threshold],'Color',[0.75,0,0]);
-%     title('SANS fulfillment');
-% end
-% if handles.radiobutton_SAXS_fit.Value
-%     hold on;
-%     for ks = 1:length(handles.restraints.SAXS)
-%         fit = handles.diagnostics.SAXS_curves{ks,cm};
-%         plot(fit(:,1),fit(:,2));
-%         plot(fit(:,1),fit(:,3),'Color',[0.75,0,0]);
-%     end;
-%     title(sprintf('SAXS fit for model %i (chi^2 = %4.2f)',cm,handles.diagnostics.final_chi2_SAXS(cm)));
-% end
+end
 if handles.radiobutton_crosslinks.Value
     hold on;
     xlink_fulfill = handles.diagnostics.xlink_fulfill;
@@ -1408,7 +1387,7 @@ if handles.radiobutton_DEER.Value
         plot(info.rax,sim_distr,'Color',[0.75,0,0]);
         overlap = sum(min([info.sum_distr;sim_distr]));
         my_title = sprintf('%s, Fulfillment: %5.3f',my_title,overlap);
-    end;
+    end
     title(my_title);
 end
 

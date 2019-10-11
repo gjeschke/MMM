@@ -418,8 +418,20 @@ else
     switch rtype
         case 'GENERIC'
             restraints = rd_restraints(fullfile(pname,fname));
+            if isfield(restraints,'DEER') && ~isempty(restraints.DEER)
+                for k = 1:length(restraints.DEER)
+                    restraints.DEER(k).r = 10*restraints.DEER(k).r;
+                    restraints.DEER(k).sigr = 10*restraints.DEER(k).sigr;
+                end
+            end
         case 'FLEX'
             restraints = rd_restraints(fullfile(pname,fname));
+            if isfield(restraints,'DEER') && ~isempty(restraints.DEER)
+                for k = 1:length(restraints.DEER)
+                    restraints.DEER(k).r = 10*restraints.DEER(k).r;
+                    restraints.DEER(k).sigr = 10*restraints.DEER(k).sigr;
+                end
+            end
         case 'RIGIFLEX'
             restraints = rd_restraints_rigiflex(fullfile(pname,fname),unprocessed);
         otherwise

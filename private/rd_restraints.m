@@ -29,6 +29,8 @@ restraints.realign=false;
 restraints.target='';
 restraints.helix_mindist=default_helix_mindist;
 restraints.ref_chain='';
+restraints.SAXS = [];
+
 
 DEER_poi=0;
 direct_poi=0;
@@ -45,6 +47,7 @@ depth_poi=0;
 aprop_poi = 0;
 bprop_poi = 0;
 pprop_poi = 0;
+SAXS_poi = 0;
 mode=0;
 scale_units=1;
 
@@ -65,6 +68,10 @@ while 1
         args=myline{1};
         if strcmp(char(args(1)),'#')
             switch upper(char(args(2)))
+                case 'FLEX'
+                    mode = 0;
+                case 'GENERIC'
+                    mode = 0;
                 case 'PATH'
                     mode = 0;
                     datapath = char(args(3));
@@ -113,6 +120,15 @@ while 1
                         end
                     end
                     restraints.chains=chains;
+                case 'SAXS'
+                    SAXS_poi = SAXS_poi + 1;
+                    restraints.SAXS(SAXS_poi).data = char(args(3));
+                    if length(args) > 3
+                        restraints.SAXS(SAXS_poi).sm = str2double(char(args(4)));
+                    else
+                        restraints.SAXS(SAXS_poi).sm = [];
+                    end
+
                 case 'ENSEMBLE'
                     mode=0;
                     restraints.ensemble=str2double(char(args(3)));

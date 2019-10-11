@@ -114,6 +114,7 @@ restraints.max_time = [];
 restraints.solutions = '';
 restraints.solution_mode = '';
 restraints.substitute = [];
+restraints.rigi_distributions = false;
 
 DEER_poi=0;
 rb_poi=0;
@@ -158,6 +159,9 @@ while 1
                 case 'SEARCH'
                     mode=0;
                     restraints.search = true;
+                case 'RIGIDISTR'
+                    mode=0;
+                    restraints.rigi_distributions = true;
                 case 'MAXTRIALS'
                     mode=0;
                     restraints.maxtrials=str2double(char(args(3)));

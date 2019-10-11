@@ -618,7 +618,7 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                     modnum.block = parblocks;
                     modnum.num = k-bask;
                     modnum.model = success;
-                    sl_solutions = fit_stemloop_combinations(restraints,snum0,snum,repname,modnum);
+                    [sl_solutions,~,~,~,ccombi] = fit_stemloop_combinations(restraints,snum0,snum,repname,modnum);
                     if isempty(sl_solutions)
                         success = success - 1;
                         stem_fail = stem_fail + 1;
@@ -629,7 +629,11 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                     if sfulfill
                         fid = fopen(solutionname,'at');
                         if ~isempty(ccombi) && sum(ccombi) > 0
-                            fprintf(fid,'%8i%6i%6i%6i%6i\n',parblocks,k-bask,ccombi(:));
+                            fprintf(fid,'%8i%6i',parblocks,k-bask);
+                            for ksl = 1:length(ccombi)
+                                fprintf(fid,'%6i',ccombi(ksl));
+                            end
+                            fprintf(fid,'\n');
                         else
                             fprintf(fid,'%8i%6i\n',parblocks,k-bask);
                         end

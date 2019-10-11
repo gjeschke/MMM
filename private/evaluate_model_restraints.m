@@ -149,67 +149,68 @@ end
 
 % Evaluate DEER restraints in flexible linkers
 
-fprintf(fid,'\n>>> flexible peptide linkers\n\n');
-for kl = 1:length(restraints.pflex)
-    for k = 1:length(restraints.pflex(kl).DEER)
-        restraints.pflex(kl).DEER(k).adr1 = correct_address(restraints.pflex(kl).DEER(k).adr1,restraints);
-        restraints.pflex(kl).DEER(k).adr2 = correct_address(restraints.pflex(kl).DEER(k).adr2,restraints);
-        label = [restraints.pflex(kl).DEER(k).label1 '|' restraints.pflex(kl).DEER(k).label2];
-        [rax,distr] = mk_distance_distribution(restraints.pflex(kl).DEER(k).adr1,restraints.pflex(kl).DEER(k).adr2,label);
-        restraints.pflex(kl).DEER(k).rax = rax;
-        restraints.pflex(kl).DEER(k).distr = distr;
-        if isfield(restraints.pflex(kl).DEER(k),'file') && ~isempty(restraints.pflex(kl).DEER(k).file) && ~isempty(rax)
-            [texp,vexp,deer,bckg,param] = fit_DEER_primary(rax,distr,strcat('deer\',restraints.pflex(kl).DEER(k).file),options);
-            restraints.pflex(kl).DEER(k).texp = texp;
-            restraints.pflex(kl).DEER(k).vexp = vexp;
-            restraints.pflex(kl).DEER(k).deer = deer;
-            restraints.pflex(kl).DEER(k).bckg = bckg;
-            restraints.pflex(kl).DEER(k).param = param;
-            fprintf(fid,'%s-%s rmsd: %6.4f, mod. depth: %6.3f, kdec: %6.4f\n',...
+if isfield(restraints,'pflex') && ~isempty(restraints.pflex) && isfield(restraints.pflex,'DEER')
+    fprintf(fid,'\n>>> flexible peptide linkers\n\n');
+    for kl = 1:length(restraints.pflex)
+        for k = 1:length(restraints.pflex(kl).DEER)
+            restraints.pflex(kl).DEER(k).adr1 = correct_address(restraints.pflex(kl).DEER(k).adr1,restraints);
+            restraints.pflex(kl).DEER(k).adr2 = correct_address(restraints.pflex(kl).DEER(k).adr2,restraints);
+            label = [restraints.pflex(kl).DEER(k).label1 '|' restraints.pflex(kl).DEER(k).label2];
+            [rax,distr] = mk_distance_distribution(restraints.pflex(kl).DEER(k).adr1,restraints.pflex(kl).DEER(k).adr2,label);
+            restraints.pflex(kl).DEER(k).rax = rax;
+            restraints.pflex(kl).DEER(k).distr = distr;
+            if isfield(restraints.pflex(kl).DEER(k),'file') && ~isempty(restraints.pflex(kl).DEER(k).file) && ~isempty(rax)
+                [texp,vexp,deer,bckg,param] = fit_DEER_primary(rax,distr,strcat('deer\',restraints.pflex(kl).DEER(k).file),options);
+                restraints.pflex(kl).DEER(k).texp = texp;
+                restraints.pflex(kl).DEER(k).vexp = vexp;
+                restraints.pflex(kl).DEER(k).deer = deer;
+                restraints.pflex(kl).DEER(k).bckg = bckg;
+                restraints.pflex(kl).DEER(k).param = param;
+                fprintf(fid,'%s-%s rmsd: %6.4f, mod. depth: %6.3f, kdec: %6.4f\n',...
+                    restraints.pflex(kl).DEER(k).adr1,restraints.pflex(kl).DEER(k).adr2,...
+                    param.rmsd,param.depth,param.kdec);
+            else
+                restraints.pflex(kl).DEER(k).texp = [];
+                restraints.pflex(kl).DEER(k).vexp = [];
+                restraints.pflex(kl).DEER(k).deer = [];
+                restraints.pflex(kl).DEER(k).bckg = [];
+                restraints.pflex(kl).DEER(k).param = [];
+            end
+            if isempty(rax)
+                continue
+            end
+            rax = 10*rax;
+            restraints.pflex(kl).DEER(k).rax = rax;
+            restraints.pflex(kl).DEER(k).r_model = sum(restraints.pflex(kl).DEER(k).distr.*rax);
+            restraints.pflex(kl).DEER(k).sigr_model = sqrt(sum(restraints.pflex(kl).DEER(k).distr.*(rax-restraints.pflex(kl).DEER(k).r_model).^2));
+            fprintf(fid,'%s-%s requested: %4.1f (%4.1f) Å found: %4.1f (%4.1f) Å; ',...
                 restraints.pflex(kl).DEER(k).adr1,restraints.pflex(kl).DEER(k).adr2,...
-                param.rmsd,param.depth,param.kdec);
-        else
-            restraints.pflex(kl).DEER(k).texp = [];
-            restraints.pflex(kl).DEER(k).vexp = [];
-            restraints.pflex(kl).DEER(k).deer = [];
-            restraints.pflex(kl).DEER(k).bckg = [];
-            restraints.pflex(kl).DEER(k).param = [];
-        end
-        if isempty(rax)
-            continue
-        end
-        rax = 10*rax;
-        restraints.pflex(kl).DEER(k).rax = rax;
-        restraints.pflex(kl).DEER(k).r_model = sum(restraints.pflex(kl).DEER(k).distr.*rax);
-        restraints.pflex(kl).DEER(k).sigr_model = sqrt(sum(restraints.pflex(kl).DEER(k).distr.*(rax-restraints.pflex(kl).DEER(k).r_model).^2));
-        fprintf(fid,'%s-%s requested: %4.1f (%4.1f) Å found: %4.1f (%4.1f) Å; ',...
-            restraints.pflex(kl).DEER(k).adr1,restraints.pflex(kl).DEER(k).adr2,...
-            restraints.pflex(kl).DEER(k).r,restraints.pflex(kl).DEER(k).sigr,...
-            restraints.pflex(kl).DEER(k).r_model,restraints.pflex(kl).DEER(k).sigr_model);
-        argr = (restraints.pflex(kl).DEER(k).r-rax)/(sqrt(2)*restraints.pflex(kl).DEER(k).sigr);
-        distr_sim = exp(-argr.^2);
-        distr_sim = distr_sim/sum(distr_sim);
-        restraints.pflex(kl).DEER(k).overlap = sum(min([distr_sim;distr]));
-        if ~isnan(restraints.DEER(k).overlap)
-            score_DEER = score_DEER*restraints.DEER(k).overlap;
-            n_DEER = n_DEER + 1;
-        end
-        fprintf(fid,'Overlap: %5.3f\n',restraints.pflex(kl).DEER(k).overlap);
-        if isfield(restraints.pflex(kl).DEER(k),'file') && ~isempty(restraints.pflex(kl).DEER(k).file)
-            dfname = strcat(restraints.pflex(kl).DEER(k).file,'_distr.dat');
-            dfname = strcat('deer_analysis\',dfname);
-            Pdata = load(dfname);
-            rexp = Pdata(:,1).';
-            distr_exp = Pdata(:,2).';
-            distr_exp = interp1(rexp,distr_exp,rax,'pchip',0);
-            distr_exp = distr_exp/sum(distr_exp);
-            restraints.pflex(kl).DEER(k).distr_exp = distr_exp;
-        else
-            restraints.pflex(kl).DEER(k).distr_exp = [];            
+                restraints.pflex(kl).DEER(k).r,restraints.pflex(kl).DEER(k).sigr,...
+                restraints.pflex(kl).DEER(k).r_model,restraints.pflex(kl).DEER(k).sigr_model);
+            argr = (restraints.pflex(kl).DEER(k).r-rax)/(sqrt(2)*restraints.pflex(kl).DEER(k).sigr);
+            distr_sim = exp(-argr.^2);
+            distr_sim = distr_sim/sum(distr_sim);
+            restraints.pflex(kl).DEER(k).overlap = sum(min([distr_sim;distr]));
+            if ~isnan(restraints.DEER(k).overlap)
+                score_DEER = score_DEER*restraints.DEER(k).overlap;
+                n_DEER = n_DEER + 1;
+            end
+            fprintf(fid,'Overlap: %5.3f\n',restraints.pflex(kl).DEER(k).overlap);
+            if isfield(restraints.pflex(kl).DEER(k),'file') && ~isempty(restraints.pflex(kl).DEER(k).file)
+                dfname = strcat(restraints.pflex(kl).DEER(k).file,'_distr.dat');
+                dfname = strcat('deer_analysis\',dfname);
+                Pdata = load(dfname);
+                rexp = Pdata(:,1).';
+                distr_exp = Pdata(:,2).';
+                distr_exp = interp1(rexp,distr_exp,rax,'pchip',0);
+                distr_exp = distr_exp/sum(distr_exp);
+                restraints.pflex(kl).DEER(k).distr_exp = distr_exp;
+            else
+                restraints.pflex(kl).DEER(k).distr_exp = [];
+            end
         end
     end
 end
-
 score_DEER = 1 - score_DEER^(1/n_DEER);
 
 % Evaluate SANS restraints
@@ -300,7 +301,7 @@ end
 
 score_SAS = score_SAS/n_SAS;
 
-if ~isempty(restraints.xlinks)
+if isfield(restraints,'xlinks') && ~isempty(restraints.xlinks)
     [KK_pairs,KE_pairs] = find_crosslinkable_pairs([snum0 1]);
     
     [nKK,~] = size(KK_pairs);
@@ -365,7 +366,7 @@ function newadr = correct_address(oldadr,restraints)
 
 Aminus1 = 64; % ASCII code of the last character before 'A'
 
-if isfield(restraints,'substitute') || ~isempty(restraints.substitute)
+if isfield(restraints,'substitute') && ~isempty(restraints.substitute)
     pa = strfind(oldadr,'(');
     pe = strfind(oldadr,')');
     if pa > 1

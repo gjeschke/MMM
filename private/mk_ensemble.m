@@ -24,22 +24,26 @@ for km = 1:length(ensemble_list)
         model_restraints = evaluate_model_restraints(ensemble_list{km},restraints,options);
     end
     DEER = display_DEER_single(km,model_restraints,populations,DEER);
-    for ks = 1:length(restraints.SANS)
-        if km == 1
-            restraints.SANS(ks).fit = model_restraints.SANS(ks).fit;
-            restraints.SANS(ks).fit(:,3) = populations(1)*model_restraints.SANS(ks).fit(:,3);
-        else
-            restraints.SANS(ks).fit(:,3) = restraints.SANS(ks).fit(:,3) +...
-                populations(km)*model_restraints.SANS(ks).fit(:,3);
+    if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
+        for ks = 1:length(restraints.SANS)
+            if km == 1
+                restraints.SANS(ks).fit = model_restraints.SANS(ks).fit;
+                restraints.SANS(ks).fit(:,3) = populations(1)*model_restraints.SANS(ks).fit(:,3);
+            else
+                restraints.SANS(ks).fit(:,3) = restraints.SANS(ks).fit(:,3) +...
+                    populations(km)*model_restraints.SANS(ks).fit(:,3);
+            end
         end
     end
-    for ks = 1:length(restraints.SAXS)
-        if km == 1
-            restraints.SAXS(ks).fit = model_restraints.SAXS(ks).fit;
-            restraints.SAXS(ks).fit(:,3) = populations(1)*model_restraints.SAXS(ks).fit(:,3);
-        else
-            restraints.SAXS(ks).fit(:,3) = restraints.SAXS(ks).fit(:,3) +...
-                populations(km)*model_restraints.SAXS(ks).fit(:,3);
+    if isfield(restraints,'SAXS') && ~isempty(restraints.SAXS)
+        for ks = 1:length(restraints.SAXS)
+            if km == 1
+                restraints.SAXS(ks).fit = model_restraints.SAXS(ks).fit;
+                restraints.SAXS(ks).fit(:,3) = populations(1)*model_restraints.SAXS(ks).fit(:,3);
+            else
+                restraints.SAXS(ks).fit(:,3) = restraints.SAXS(ks).fit(:,3) +...
+                    populations(km)*model_restraints.SAXS(ks).fit(:,3);
+            end
         end
     end
 end
@@ -172,23 +176,39 @@ core = length(model_restraints.DEER);
 rax = model_restraints.DEER(1).rax;
 flex = 0;
 
-for kl = 1:length(model_restraints.pflex)
-    flex = flex + length(model_restraints.pflex(kl).DEER);
-end
+DEER.all_distr = zeros(core,length(rax));
+DEER.all_distr_sim = zeros(core,length(rax));
+DEER.all_distr_exp = zeros(core,length(rax));
+DEER.axis_vecs = zeros(core,4);
+DEER.all_fnames = cell(1,core);
+DEER.all_adr1 = cell(1,core);
+DEER.all_adr2 = cell(1,core);
+DEER.all_flags = zeros(1,core);
+DEER.mod_depths = zeros(1,core);
+DEER.core = core;
+DEER.flex = flex;
+DEER.rax = rax;
 
-if ~exist('DEER','var') || isempty(DEER)
-    DEER.all_distr = zeros(core+flex,length(rax));
-    DEER.all_distr_sim = zeros(core+flex,length(rax));
-    DEER.all_distr_exp = zeros(core+flex,length(rax));
-    DEER.axis_vecs = zeros(core+flex,4);
-    DEER.all_fnames = cell(1,core+flex);
-    DEER.all_adr1 = cell(1,core+flex);
-    DEER.all_adr2 = cell(1,core+flex);
-    DEER.all_flags = zeros(1,core+flex);
-    DEER.mod_depths = zeros(1,core+flex);
-    DEER.core = core;
-    DEER.flex = flex;
-    DEER.rax = rax;
+
+if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex)
+    for kl = 1:length(model_restraints.pflex)
+        flex = flex + length(model_restraints.pflex(kl).DEER);
+    end
+
+    if ~exist('DEER','var') || isempty(DEER)
+        DEER.all_distr = zeros(core+flex,length(rax));
+        DEER.all_distr_sim = zeros(core+flex,length(rax));
+        DEER.all_distr_exp = zeros(core+flex,length(rax));
+        DEER.axis_vecs = zeros(core+flex,4);
+        DEER.all_fnames = cell(1,core+flex);
+        DEER.all_adr1 = cell(1,core+flex);
+        DEER.all_adr2 = cell(1,core+flex);
+        DEER.all_flags = zeros(1,core+flex);
+        DEER.mod_depths = zeros(1,core+flex);
+        DEER.core = core;
+        DEER.flex = flex;
+        DEER.rax = rax;
+    end
 end
 
 for k = 1:length(model_restraints.DEER)
@@ -236,53 +256,54 @@ for k = 1:length(model_restraints.DEER)
 end
 
 pflex = core;
-for kl = 1:length(model_restraints.pflex)
-    for k = 1:length(model_restraints.pflex(kl).DEER)
-        pflex = pflex + 1;
-        figure(pflex); 
-        if km == 1
-            clf; hold on;
-        end
-        distr = model_restraints.pflex(kl).DEER(k).distr;
-        axis_vec = [0,120,-1e-6,1e-6];
-        if isfield(model_restraints.pflex(kl).DEER(k),'file') && ~isempty(model_restraints.pflex(kl).DEER(k).file)
-            dfname = strcat(model_restraints.pflex(kl).DEER(k).file,'_distr.dat');
-            deer_basname = strcat('deer_analysis\',model_restraints.pflex(kl).DEER(k).file);
-            [axis_vec,md] = plot_exp_dist(deer_basname,rax);
-            DEER.mod_depths(pflex) = md;
-            dfname = strcat('deer_analysis\',dfname);
-            Pdata = load(dfname);
-            rexp = 10*Pdata(:,1).';
-            distr_exp = Pdata(:,2).';
-            distr_exp = interp1(rexp,distr_exp,rax,'pchip',0);
-            distr_exp = distr_exp/sum(distr_exp);
-            DEER.all_distr_exp(pflex,:) = distr_exp;
-        end
-        if ~isempty(distr)
-            title(sprintf('%s-%s',model_restraints.pflex(kl).DEER(k).adr1,model_restraints.pflex(kl).DEER(k).adr2));
-            argr = (model_restraints.pflex(kl).DEER(k).r-rax)/(sqrt(2)*model_restraints.pflex(kl).DEER(k).sigr);
-            distr_sim = exp(-argr.^2);
-            distr_sim = distr_sim/sum(distr_sim);
-            DEER.all_distr_sim(pflex,:) = distr_sim;
-            plot(rax,distr_sim,'Color',[0,0.6,0]);
-            plot(rax,populations(1)*distr,'Color',[0.2,0.2,1]);
-            DEER.all_distr(pflex,:) = DEER.all_distr(pflex,:) + populations(km)*distr;
-            if isfield(model_restraints.pflex(kl).DEER(k),'file')
-                DEER.all_fnames{pflex} = model_restraints.pflex(kl).DEER(k).file;
+if isfield(model_restraints,'pflex') && ~isempty(pflex)
+    for kl = 1:length(model_restraints.pflex)
+        for k = 1:length(model_restraints.pflex(kl).DEER)
+            pflex = pflex + 1;
+            figure(pflex);
+            if km == 1
+                clf; hold on;
             end
-            if model_restraints.pflex(kl).DEER(k).r ~=0 &&  model_restraints.pflex(kl).DEER(k).sigr ~=0
-                DEER.all_flags(pflex) = 1;
-                if 1.05*max(distr_sim) > axis_vec(4)
-                    axis_vec(4) = 1.05*max(distr_sim);
+            distr = model_restraints.pflex(kl).DEER(k).distr;
+            axis_vec = [0,120,-1e-6,1e-6];
+            if isfield(model_restraints.pflex(kl).DEER(k),'file') && ~isempty(model_restraints.pflex(kl).DEER(k).file)
+                dfname = strcat(model_restraints.pflex(kl).DEER(k).file,'_distr.dat');
+                deer_basname = strcat('deer_analysis\',model_restraints.pflex(kl).DEER(k).file);
+                [axis_vec,md] = plot_exp_dist(deer_basname,rax);
+                DEER.mod_depths(pflex) = md;
+                dfname = strcat('deer_analysis\',dfname);
+                Pdata = load(dfname);
+                rexp = 10*Pdata(:,1).';
+                distr_exp = Pdata(:,2).';
+                distr_exp = interp1(rexp,distr_exp,rax,'pchip',0);
+                distr_exp = distr_exp/sum(distr_exp);
+                DEER.all_distr_exp(pflex,:) = distr_exp;
+            end
+            if ~isempty(distr)
+                title(sprintf('%s-%s',model_restraints.pflex(kl).DEER(k).adr1,model_restraints.pflex(kl).DEER(k).adr2));
+                argr = (model_restraints.pflex(kl).DEER(k).r-rax)/(sqrt(2)*model_restraints.pflex(kl).DEER(k).sigr);
+                distr_sim = exp(-argr.^2);
+                distr_sim = distr_sim/sum(distr_sim);
+                DEER.all_distr_sim(pflex,:) = distr_sim;
+                plot(rax,distr_sim,'Color',[0,0.6,0]);
+                plot(rax,populations(1)*distr,'Color',[0.2,0.2,1]);
+                DEER.all_distr(pflex,:) = DEER.all_distr(pflex,:) + populations(km)*distr;
+                if isfield(model_restraints.pflex(kl).DEER(k),'file')
+                    DEER.all_fnames{pflex} = model_restraints.pflex(kl).DEER(k).file;
                 end
+                if model_restraints.pflex(kl).DEER(k).r ~=0 &&  model_restraints.pflex(kl).DEER(k).sigr ~=0
+                    DEER.all_flags(pflex) = 1;
+                    if 1.05*max(distr_sim) > axis_vec(4)
+                        axis_vec(4) = 1.05*max(distr_sim);
+                    end
+                end
+                DEER.all_adr1{pflex} = model_restraints.pflex(kl).DEER(k).adr1;
+                DEER.all_adr2{pflex} = model_restraints.pflex(kl).DEER(k).adr2;
             end
-            DEER.all_adr1{pflex} = model_restraints.pflex(kl).DEER(k).adr1;
-            DEER.all_adr2{pflex} = model_restraints.pflex(kl).DEER(k).adr2;
+            DEER.axis_vecs(pflex,:) = axis_vec;
         end
-        DEER.axis_vecs(pflex,:) = axis_vec;
     end
 end
-
 
 function [fit,chi2] = scale_offset_SAS_fit(fit)
 

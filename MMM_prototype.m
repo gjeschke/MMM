@@ -5340,24 +5340,26 @@ function menu_jobs_test_Callback(hObject, eventdata, handles)
 
 global model
 
-SLs = [1,16;19,36;44,56;59,72];
+SLs = [288,318;322,335;348,370];
+SL_tags = 'DEF';
 
 my_dir = pwd;
 hfig = gcf;
 set(hfig,'Pointer','watch');
 
-for ksl = 1:4
-    pname = sprintf('RmsZ_SL%i_2MF0',ksl);
-    pid = sprintf('ZSL%i',ksl);
+for ksl = 1:3
+    pname = sprintf('EMCV_IRES_SL%s_2',SL_tags(ksl));
+    pname = strcat('D:\projects\Christoph_Gmeiner\modelling\',pname);
+    pid = sprintf('ESL%s',SL_tags(ksl));
     cd(pname);
     nts = SLs(ksl,1):SLs(ksl,2);
     for kmod = 1:20
-        fname = sprintf('SL%i_m%i',ksl,kmod);
+        fname = sprintf('SL%s_m%i',SL_tags(ksl),kmod);
         model.selected = cell(1,length(nts));
         for knt = nts
-            indices = resolve_address(sprintf('(G){%i}%i',kmod,knt));
+            indices = resolve_address(sprintf('(B){%i}%i',kmod,knt));
             if isempty(indices)
-                add_msg_board(sprintf('ERROR: nt (G){%i}%i could not be found',kmod,knt));
+                add_msg_board(sprintf('ERROR: nt (B){%i}%i could not be found',kmod,knt));
                 return
             else
                 model.selected{knt+1-nts(1)} = indices;
@@ -5462,6 +5464,8 @@ if compile
             offset = defs(k).offset(krun);
             nts = defs(k).binding(krun,1):defs(k).binding(krun,2);
             used = defs(k).used(krun,:) - defs(k).defined(krun,1) + 1;
+            offset2 = defs(k).defined(krun,1) - 1;
+            options.offset = offset2;
             if defs(k).optimize(krun)
                 options.optimize = true;
             else

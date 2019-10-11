@@ -195,8 +195,8 @@ if ~isempty(DEER_fits)
     add_msg_board(sprintf('%i populations are at least 1%% of the maximum population for DEER only\n',length(coeff)));
 end
 
-included = included0;
 if ~isempty(SAS_fits)
+    included = included0;
     clear fit_multi_SAS % initialize iteration counter
 
     fanonym_SAS = @(v_opt)fit_multi_SAS(v_opt,all_SAS_fits,options);
@@ -274,8 +274,8 @@ if ~isempty(SAS_fits)
     normalize.SAS = fom_SAS;
 end
 
-included = included0;
 if ~isempty(DEER_fits) && ~isempty(SAS_fits)
+    included = included0;
     clear fit_multi_SAS_DEER % initialize iteration counter
 
     fanonym_integrative = @(v_opt)fit_multi_SAS_DEER(v_opt,all_SAS_fits,all_DEER_fits,normalize,options);
@@ -385,8 +385,10 @@ core = length(restraints.DEER);
 rax = restraints.DEER(1).rax;
 flex = 0;
 
-for kl = 1:length(restraints.pflex)
-    flex = flex + length(restraints.pflex(kl).DEER);
+if isfield(restraints,'pflex') && ~isempty(restraints.pflex) && isfield(restraints.pflex,'DEER')
+    for kl = 1:length(restraints.pflex)
+        flex = flex + length(restraints.pflex(kl).DEER);
+    end
 end
 
 overlaps = zeros(1,core+flex);
@@ -425,33 +427,36 @@ if ~DEER_valid
     return
 end
 
+
 pflex = core;
-for kl = 1:length(restraints.pflex)
-    for k = 1:length(restraints.pflex(kl).DEER)
-        pflex = pflex + 1;
-        if restraints.pflex(kl).DEER(k).r ~=0 &&  restraints.pflex(kl).DEER(k).sigr ~=0 % valid restraint
-            n_DEER = n_DEER + 1;
-            distr = restraints.pflex(kl).DEER(k).distr;
-            if ~isempty(distr)
-                distr = distr/sum(distr);
-                data = zeros(length(rax),3);
-                data(:,1) = rax.';
-                argr = (restraints.pflex(kl).DEER(k).r-rax)/(sqrt(2)*restraints.pflex(kl).DEER(k).sigr);
-                distr_sim = exp(-argr.^2);
-                distr_sim = distr_sim/sum(distr_sim);
-                data(:,2) = distr_sim.';
-                data(:,3) = distr.';
-                fits{n_DEER} = data;
-                overlaps(n_DEER) = sum(min([distr_sim;distr]));
-                score_DEER = score_DEER * overlaps(n_DEER);
-            else
-                DEER_valid = false;
-                break
+
+if isfield(restraints,'pflex') && ~isempty(restraints.pflex)
+    for kl = 1:length(restraints.pflex)
+        for k = 1:length(restraints.pflex(kl).DEER)
+            pflex = pflex + 1;
+            if restraints.pflex(kl).DEER(k).r ~=0 &&  restraints.pflex(kl).DEER(k).sigr ~=0 % valid restraint
+                n_DEER = n_DEER + 1;
+                distr = restraints.pflex(kl).DEER(k).distr;
+                if ~isempty(distr)
+                    distr = distr/sum(distr);
+                    data = zeros(length(rax),3);
+                    data(:,1) = rax.';
+                    argr = (restraints.pflex(kl).DEER(k).r-rax)/(sqrt(2)*restraints.pflex(kl).DEER(k).sigr);
+                    distr_sim = exp(-argr.^2);
+                    distr_sim = distr_sim/sum(distr_sim);
+                    data(:,2) = distr_sim.';
+                    data(:,3) = distr.';
+                    fits{n_DEER} = data;
+                    overlaps(n_DEER) = sum(min([distr_sim;distr]));
+                    score_DEER = score_DEER * overlaps(n_DEER);
+                else
+                    DEER_valid = false;
+                    break
+                end
             end
         end
     end
 end
-
 score_DEER = 1 - score_DEER^(1/n_DEER);
 fprintf(1,'Total DEER score : %5.3f\n',score_DEER);
 

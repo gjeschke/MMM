@@ -18,11 +18,11 @@ function [message,argout]=get_chain_model(indices,property,varargin)
 argout=[];
 
 
-if nargin<3,
+if nargin<3
     argin={};
 else
     argin=varargin{1};
-end;
+end
 message.error=0;
 message.text='';
 
