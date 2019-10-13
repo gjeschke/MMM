@@ -190,7 +190,7 @@ DEER.flex = flex;
 DEER.rax = rax;
 
 
-if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex)
+if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex) && isfield(model_restraints.pflex,'DEER')
     for kl = 1:length(model_restraints.pflex)
         flex = flex + length(model_restraints.pflex(kl).DEER);
     end
@@ -240,7 +240,7 @@ for k = 1:length(model_restraints.DEER)
         DEER.all_distr_sim(k,:) = distr_sim;
         plot(rax,distr_sim,'Color',[0,0.6,0]);
         title(sprintf('%s-%s',model_restraints.DEER(k).adr1,model_restraints.DEER(k).adr2));
-        plot(rax,populations(1)*distr,'Color',[0.2,0.2,1]);
+        plot(rax,populations(km)*distr,'Color',[0.2,0.2,1]);
         DEER.all_distr(k,:) = DEER.all_distr(k,:) + populations(km)*distr;
         if isfield(model_restraints.DEER(k),'file')
             DEER.all_fnames{k} = model_restraints.DEER(k).file;
@@ -256,7 +256,7 @@ for k = 1:length(model_restraints.DEER)
 end
 
 pflex = core;
-if isfield(model_restraints,'pflex') && ~isempty(pflex)
+if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex) && isfield(model_restraints.pflex,'DEER')
     for kl = 1:length(model_restraints.pflex)
         for k = 1:length(model_restraints.pflex(kl).DEER)
             pflex = pflex + 1;
@@ -286,7 +286,7 @@ if isfield(model_restraints,'pflex') && ~isempty(pflex)
                 distr_sim = distr_sim/sum(distr_sim);
                 DEER.all_distr_sim(pflex,:) = distr_sim;
                 plot(rax,distr_sim,'Color',[0,0.6,0]);
-                plot(rax,populations(1)*distr,'Color',[0.2,0.2,1]);
+                plot(rax,populations(km)*distr,'Color',[0.2,0.2,1]);
                 DEER.all_distr(pflex,:) = DEER.all_distr(pflex,:) + populations(km)*distr;
                 if isfield(model_restraints.pflex(kl).DEER(k),'file')
                     DEER.all_fnames{pflex} = model_restraints.pflex(kl).DEER(k).file;

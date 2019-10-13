@@ -430,7 +430,7 @@ end
 
 pflex = core;
 
-if isfield(restraints,'pflex') && ~isempty(restraints.pflex)
+if isfield(restraints,'pflex') && ~isempty(restraints.pflex) && isfield(restraints.pflex,'DEER')
     for kl = 1:length(restraints.pflex)
         for k = 1:length(restraints.pflex(kl).DEER)
             pflex = pflex + 1;

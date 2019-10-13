@@ -229,7 +229,7 @@ else
         handles.template_seq = '';
     end
     
-    [restrain,monitor,restraints,number,number_monitor,cancelled]=process_domain_restraints(handles,restraints);
+    [restrain,monitor,restraints,number,bnumber,number_monitor,cancelled]=process_domain_restraints(handles,restraints);
     if isfield(model,'current_structure');
         snum = model.current_structure;
     else
@@ -244,6 +244,7 @@ else
     handles.monitor = monitor;
     handles.restraints = restraints;
     handles.n_restraints = number;
+    handles.b_restraints = bnumber;
     handles.n_monitor = number_monitor;
     add_msg_board(sprintf('%i distribution restraints have been read.',number));
     
@@ -483,7 +484,7 @@ set(hfig,'Pointer','arrow');
 cd(my_path);
 guidata(hObject,handles);
 
-function [restrain,monitor,restraints,number,number_monitor,cancelled]=process_domain_restraints(handles,restraints)
+function [restrain,monitor,restraints,number,bnumber,number_monitor,cancelled]=process_domain_restraints(handles,restraints)
 
 global model
 global hMain
@@ -494,6 +495,7 @@ cancelled=false;
 
 restrain = [];
 number = 0;
+bnumber = 0;
 number_monitor = 0;
 
 if ~isfield(restraints,'sequence'),
@@ -701,9 +703,9 @@ if isfield(restraints,'DEER'),
                 exch = NO1; NO1 = NO2; NO2 = exch;
             end
             if restraints.DEER(k).r ~= 0,
-                [restrain,number] = mk_internal_restraint(restrain,NO1,NO2,resa,resb,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number,clabel,cT);
+                [restrain,number,bnumber] = mk_internal_restraint(restrain,NO1,NO2,resa,resb,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number,bnumber,clabel,cT);
             else
-                [monitor,number_monitor] = mk_internal_restraint(monitor,NO1,NO2,resa,resb,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number_monitor,clabel,cT);
+                [monitor,number_monitor] = mk_internal_restraint(monitor,NO1,NO2,resa,resb,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number_monitor,bnmon,clabel,cT);
                 number_monitor = number_monitor + 1;
             end
         end
@@ -724,9 +726,9 @@ if isfield(restraints,'DEER'),
             end
             NO = restraints.DEER(k).NO_rel2;
             if restraints.DEER(k).r ~= 0,
-                [restrain,number] = mk_beacon_restraint(restrain,NO,res_loop,xyz_beacon,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number,clabel,cT,indices,resb);
+                [restrain,number,bnumber] = mk_beacon_restraint(restrain,NO,res_loop,xyz_beacon,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number,bnumber,clabel,cT,indices,resb);
             else
-                [monitor,number_monitor] = mk_beacon_restraint(monitor,NO,res_loop,xyz_beacon,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number_monitor,clabel,cT,indices,resb);
+                [monitor,number_monitor] = mk_beacon_restraint(monitor,NO,res_loop,xyz_beacon,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number_monitor,bnmon,clabel,cT,indices,resb);
                 number_monitor = number_monitor + 1;
             end
         end
@@ -747,9 +749,9 @@ if isfield(restraints,'DEER'),
             end
             NO = restraints.DEER(k).NO_rel1;
             if restraints.DEER(k).r ~= 0,
-               [restrain,number] = mk_beacon_restraint(restrain,NO,res_loop,xyz_beacon,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number,clabel,cT,indices,resb);
+               [restrain,number,bnumber] = mk_beacon_restraint(restrain,NO,res_loop,xyz_beacon,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number,bnumber,clabel,cT,indices,resb);
             else
-               [monitor,number_monitor] = mk_beacon_restraint(monitor,NO,res_loop,xyz_beacon,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number_monitor,clabel,cT,indices,resb);
+               [monitor,number_monitor] = mk_beacon_restraint(monitor,NO,res_loop,xyz_beacon,restraints.DEER(k).r,restraints.DEER(k).sigr,res1,number_monitor,bnmon,clabel,cT,indices,resb);
                 number_monitor = number_monitor + 1;
             end
         end
@@ -786,9 +788,9 @@ if isfield(restraints,'depth'),
             return;
         end
         if restraints.depth(k).r ~= 0,
-            [restrain,number] = mk_depth_restraint(restrain,NO,res,restraints.depth(k).r,restraints.depth(k).sigr,res1,number,clabel,cT);
+            [restrain,number,bnumber] = mk_depth_restraint(restrain,NO,res,restraints.depth(k).r,restraints.depth(k).sigr,res1,number,bnumber,clabel,cT);
         else
-            [monitor,number_monitor] = mk_depth_restraint(monitor,NO,res,restraints.depth(k).r,restraints.depth(k).sigr,res1,number_monitor,clabel,cT);
+            [monitor,number_monitor] = mk_depth_restraint(monitor,NO,res,restraints.depth(k).r,restraints.depth(k).sigr,res1,number_monitor,bnmon,clabel,cT);
             number_monitor = number_monitor + 1;
         end
     end
@@ -827,9 +829,9 @@ if isfield(restraints,'oligomer'),
             return;
         end
         if restraints.oligomer(k).r ~= 0,
-            [restrain,number] = mk_oligomer_restraint(restrain,NO,res,restraints.oligomer(k).multi,restraints.oligomer(k).r,restraints.oligomer(k).sigr,res1,number,clabel,cT);
+            [restrain,number,bnumber] = mk_oligomer_restraint(restrain,NO,res,restraints.oligomer(k).multi,restraints.oligomer(k).r,restraints.oligomer(k).sigr,res1,number,bnumber,clabel,cT);
         else
-            [monitor,number_monitor] = mk_oligomer_restraint(monitor,NO,res,restraints.oligomer(k).multi,restraints.oligomer(k).r,restraints.oligomer(k).sigr,res1,number_monitor,clabel,cT);
+            [monitor,number_monitor] = mk_oligomer_restraint(monitor,NO,res,restraints.oligomer(k).multi,restraints.oligomer(k).r,restraints.oligomer(k).sigr,res1,number_monitor,bnmon,clabel,cT);
             number_monitor = number_monitor + 1;
         end
     end
@@ -990,9 +992,9 @@ bref = bref(1:bpoi,:);
 lower_bounds = zeros(vert);
 upper_bounds = 1e6*ones(vert);
 missing = ones(vert);
-for k = 1:length(restrain),
-    for kr = 1: length(restrain(k).r_beacon),
-        if strcmp(restrain(k).r_beacon(kr).type,'Gaussian'),
+for k = 1:length(restrain)
+    for kr = 1: length(restrain(k).r_beacon)
+        if strcmp(restrain(k).r_beacon(kr).type,'Gaussian')
             b = find(beacons == restrain(k).r_beacon(kr).resb) + ni;
             rmean = restrain(k).r_beacon(kr).par1;
             sigr = restrain(k).r_beacon(kr).par2;
@@ -1004,8 +1006,8 @@ for k = 1:length(restrain),
             missing(b,k) = 0;
         end
     end
-    for kr = 1: length(restrain(k).r_intern),
-        if strcmp(restrain(k).r_intern(kr).type,'Gaussian'),
+    for kr = 1: length(restrain(k).r_intern)
+        if strcmp(restrain(k).r_intern(kr).type,'Gaussian')
             b = restrain(k).r_intern(kr).site;
             rmean = restrain(k).r_intern(kr).par1;
             sigr = restrain(k).r_intern(kr).par2;
@@ -1019,11 +1021,11 @@ for k = 1:length(restrain),
     end
 end
 [~,~,err] = triangle_bound_smoothing(lower_bounds,upper_bounds);
-if err,
+if err
     return;
 end
 
-if auxiliary,
+if auxiliary
     for k1 = 1:vert-1,
         for k2 = k1+1:vert,
             setbound = false;
@@ -1238,20 +1240,20 @@ Ram_fix_clash = 0;
 resax = res1:resend;
 res_stat = zeros(1,length(resax));
 set(gcf,'Pointer','watch');
-distributions = cell(handles.n_restraints);
+distributions = cell(handles.n_restraints+handles.b_restraints);
 restraint_distr = cell(handles.n_restraints);
 descriptors = cell(handles.n_restraints);
 monitor_distr = cell(handles.n_monitor);
 monitor_descr = cell(handles.n_monitor);
 rax = get_distribution;
-for k = 1:handles.n_restraints,
+for k = 1:handles.n_restraints + handles.b_restraints
     distributions{k} = zeros(1,length(rax));
     restraint_distr{k} = zeros(1,length(rax));
 end
-for k = 1:handles.n_monitor,
+for k = 1:handles.n_monitor
     monitor_distr{k} = zeros(1,length(rax));
 end
-for k = 1:handles.n_restraints + handles.n_monitor,
+for k = 1:handles.n_restraints + handles.n_monitor
     handles.exp_distr{k} = [];
     handles.exp_r{k} = [];
 end
@@ -1832,7 +1834,7 @@ for k = 1:length(cadr)
     res(k) = cres;
 end
 
-function [restrain,number] = mk_beacon_restraint(restrain,NO,res_loop,xyz_beacon,rmean,sigr,res1,number,label,T,bindices,resb)
+function [restrain,number,bnumber] = mk_beacon_restraint(restrain,NO,res_loop,xyz_beacon,rmean,sigr,res1,number,bnumber,label,T,bindices,resb)
 
 scale_units = 10;
 
@@ -1846,7 +1848,7 @@ restrain(k).r_beacon(kr).label_type = label;
 restrain(k).r_beacon(kr).label_T = T;
 restrain(k).r_beacon(kr).bindices = bindices;
 restrain(k).r_beacon(kr).resb = resb;
-if rmean > 0 && sigr > 0,
+if rmean > 0 && sigr > 0
     restrain(k).r_beacon(kr).type = 'Gaussian';
     restrain(k).r_beacon(kr).par1 = rmean*scale_units;
     restrain(k).r_beacon(kr).par2 = sqrt(sigr^2 + grace^2)*scale_units;
@@ -1855,9 +1857,10 @@ else
     restrain(k).r_beacon(kr).type = 'bounds';
     restrain(k).r_beacon(kr).par1 = -rmean*scale_units;
     restrain(k).r_beacon(kr).par2 = -sigr*scale_units;
+    bnumber = bnumber + 1;
 end
 
-function [restrain,number] = mk_internal_restraint(restrain,NO1,NO2,resa,resb,rmean,sigr,res1,number,label,T)
+function [restrain,number,bnumber] = mk_internal_restraint(restrain,NO1,NO2,resa,resb,rmean,sigr,res1,number,bnumber,label,T)
 
 scale_units = 10;
 
@@ -1889,9 +1892,10 @@ else
     restrain(k).r_intern(kr).type = 'bounds';
     restrain(k).r_intern(kr).par1 = -rmean*scale_units;
     restrain(k).r_intern(kr).par2 = -sigr*scale_units;
+    bnumber = bnumber + 1;
 end
 
-function [restrain,number] = mk_depth_restraint(restrain,NO,res,rmean,sigr,res1,number,label,T)
+function [restrain,number,bnumber] = mk_depth_restraint(restrain,NO,res,rmean,sigr,res1,number,bnumber,label,T)
 
 scale_units = 10;
 
@@ -1914,9 +1918,10 @@ else
     restrain(k).depth(kr).type = 'bounds';
     restrain(k).depth(kr).par1 = -rmean*scale_units;
     restrain(k).depth(kr).par2 = -sigr*scale_units;
+    bnumber = bnumber + 1;
 end
 
-function [restrain,number] = mk_oligomer_restraint(restrain,NO,res,n,rmean,sigr,res1,number,label,T)
+function [restrain,number,bnumber] = mk_oligomer_restraint(restrain,NO,res,n,rmean,sigr,res1,number,bnumber,label,T)
 
 scale_units= 10;
 
@@ -1940,6 +1945,7 @@ else
     restrain(k).oligomer(kr).type = 'bounds';
     restrain(k).oligomer(kr).par1 = -rmean*scale_units;
     restrain(k).oligomer(kr).par2 = -sigr*scale_units;
+    bnumber = bnumber + 1;
 end
 restrain(k).oligomer(kr).n = n;
 
@@ -2395,12 +2401,12 @@ fprintf(fid_report,'\n--- Restraint fulfillment for model %i with weight %5.3f -
 poi = 0;
 dispoi = 0;
 mdispoi = 0;
-for k = 1:length(restrain),
+for k = 1:length(restrain)
     resnum = res1+k-1;
     radr = sprintf('%s%i',adr,resnum);
     fprintf(fid_report,'\nResidue %i\n\n',resnum);
     rindices = resolve_address(radr);
-    for kr = 1:length(restrain(k).r_beacon),
+    for kr = 1:length(restrain(k).r_beacon)
         sep = strfind(restrain(k).r_beacon(kr).label_type,'|');
         if isempty(sep)
             label1 = restrain(k).r_beacon(kr).label_type;
@@ -2436,7 +2442,13 @@ for k = 1:length(restrain),
                 fprintf(fid_report,'Beacon restraint [%5.2f, %5.2f] Å to residue %i fulfilled at <r> = %5.2f\n',...
                     restrain(k).r_beacon(kr).par1,restrain(k).r_beacon(kr).par2,restrain(k).r_beacon(kr).resb,rmean);
             case 'bounds'
-                if rmean >= restrain(k).r_beacon(kr).par1 && rmean <= restrain(k).r_beacon(kr).par2,
+                poi = poi + 1;
+                dispoi = dispoi + 1;
+                distributions{dispoi} = distributions{dispoi} + p_model*sim_distr;
+                exp_distr = (rax>=restrain(k).r_beacon(kr).par1) & (rax<= restrain(k).r_beacon(kr).par2);
+                exp_distr = exp_distr/sum(exp_distr);
+                restraint_distr{dispoi} = restraint_distr{dispoi} + p_model*exp_distr;
+                if rmean >= restrain(k).r_beacon(kr).par1 && rmean <= restrain(k).r_beacon(kr).par2
                     fprintf(fid_report,'Beacon restraint [%5.2f, %5.2f] Å to residue %i fulfilled at <r> = %5.2f\n',...
                         restrain(k).r_beacon(kr).par1,restrain(k).r_beacon(kr).par2,restrain(k).r_beacon(kr).resb,rmean);
                 else
@@ -2446,7 +2458,7 @@ for k = 1:length(restrain),
         end
     end
 
-    for kr = 1:length(monitor(k).r_beacon),
+    for kr = 1:length(monitor(k).r_beacon)
         sep = strfind(monitor(k).r_beacon(kr).label_type,'|');
         if isempty(sep)
             label1 = monitor(k).r_beacon(kr).label_type;
@@ -2467,7 +2479,7 @@ for k = 1:length(restrain),
         fprintf(fid_report,'Monitored distance to residue %i is <r> = %5.2f\n',monitor(k).r_beacon(kr).resb,rmean);
     end
 
-    for kr = 1:length(restrain(k).r_intern),
+    for kr = 1:length(restrain(k).r_intern)
         r2adr = sprintf('%s%i',adr,restrain(k).r_intern(kr).resb);
         r2indices = resolve_address(r2adr);
         sep = strfind(restrain(k).r_intern(kr).label_type,'|');
@@ -2506,6 +2518,13 @@ for k = 1:length(restrain),
                 fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] Å to residue %i fulfilled at <r> = %5.2f\n',...
                     restrain(k).r_intern(kr).par1,restrain(k).r_intern(kr).par2,restrain(k).r_intern(kr).resb,rmean);
             case 'bounds'
+                poi = poi + 1;
+                dispoi = dispoi + 1;
+                distributions{dispoi} = distributions{dispoi} + p_model*sim_distr;
+                exp_distr = (rax>=restrain(k).r_intern(kr).par1) & (rax<= restrain(k).r_intern(kr).par2);
+                exp_distr = exp_distr/sum(exp_distr);
+                restraint_distr{dispoi} = restraint_distr{dispoi} + p_model*exp_distr;
+                descriptors{dispoi} = sprintf('Internal restraint %i-%i with bounds (%5.2f,%5.2f)',resnum,restrain(k).r_intern(kr).resb,restrain(k).r_intern(kr).par1,restrain(k).r_intern(kr).par2);
                 if rmean >= restrain(k).r_intern(kr).par1 && rmean <= restrain(k).r_intern(kr).par2,
                     fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] Å to residue %i fulfilled at <r> = %5.2f\n',...
                         restrain(k).r_intern(kr).par1,restrain(k).r_intern(kr).par2,restrain(k).r_intern(kr).resb,rmean);
@@ -2565,7 +2584,15 @@ for k = 1:length(restrain),
                 fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] Å fulfilled at <r> = %5.2f\n',...
                     restrain(k).depth(kr).par1,restrain(k).depth(kr).par2,rmean);
             case 'bounds'
-                if rmean >= restrain(k).depth(kr).par1 && rmean <= restrain(k).depth(kr).par2,
+                poi = poi + 1;
+                dispoi = dispoi + 1;
+                restraint_distr{dispoi} = restraint_distr{dispoi} + p_model*exp_distr;
+                distributions{dispoi} = distributions{dispoi} + p_model*sim_distr;
+                exp_distr = (rax>=restrain(k).depth(kr).par1) & (rax<= restrain(k).depth(kr).par2);
+                exp_distr = exp_distr/sum(exp_distr);
+                restraint_distr{dispoi} = restraints-Distr{distpoi} + p_model*exp_distr;
+                descriptors{dispoi} = sprintf('Depth restraint %i with bounds = %5.2f,%5.2f',resnum,restrain(k).r_depth(kr).par1,restrain(k).r_depth(kr).par2);
+                if rmean >= restrain(k).depth(kr).par1 && rmean <= restrain(k).depth(kr).par2
                     fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] Å fulfilled at <r> = %5.2f\n',...
                         restrain(k).depth(kr).par1,restrain(k).depth(kr).par2,rmean);
                 else
@@ -2612,6 +2639,13 @@ for k = 1:length(restrain),
                 fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] Å fulfilled at <r> = %5.2f\n',...
                     restrain(k).oligomer(kr).par1,restrain(k).oligomer(kr).par2,rmean);
             case 'bounds'
+                poi = poi + 1;
+                dispoi = dispoi + 1;
+                distributions{dispoi} = distributions{dispoi} + p_model*sim_distr;
+                exp_distr = (rax>=restrain(k).oligomer(kr).par1) & (rx<= restrain(k).oligomer(kr).par2);
+                exp_distr = exp_distr/sum(exp_distr);
+                restraint_distr{dispoi} = restraint_distr{dispoi} + p_model*exp_distr;
+                descriptors{dispoi} = sprintf('Oligomer restraint %i (n = %i) with <r_{sim}> = %5.2f',resnum,restrain(k).oligomer(kr).n,rmean);
                 if rmean >= restrain(k).oligomer(kr).par1 && rmean <= restrain(k).oligomer(kr).par2,
                     fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] Å fulfilled at <r> = %5.2f\n',...
                         restrain(k).oligomer(kr).par1,restrain(k).oligomer(kr).par2,rmean);
@@ -2899,7 +2933,7 @@ end
 
 function update_plot(handles)
 
-if handles.copy,
+if handles.copy
     figure;
     handles.copy = false;
 else
@@ -2907,14 +2941,14 @@ else
     cla;
 end
 sc = 1;
-if handles.plot_nr == 0,
+if handles.plot_nr == 0
     plot(handles.resax,handles.success_distr,'k');
     set(gca,'FontSize',8);
     xlabel('Residue');
     ylabel('Rejection probability');
     title('');
     set(handles.text_axes_title,'String','Rejection distribution along the loop');
-elseif handles.plot_nr <= handles.n_restraints,
+elseif handles.plot_nr <= handles.n_restraints
     plot(handles.rax,handles.distributions{handles.plot_nr},'k');
     hold on;
     plot(handles.rax,handles.restraint_distr{handles.plot_nr},'r');
@@ -2937,7 +2971,7 @@ else
     title(handles.monitor_descr{handles.plot_nr-handles.n_restraints});
     set(handles.text_axes_title,'String','Distance distribution in the ensemble');
 end
-if handles.plot_nr > 0 && ~isempty(handles.exp_distr{handles.plot_nr}) && ~isempty(handles.exp_r{handles.plot_nr}),
+if handles.plot_nr > 0 && ~isempty(handles.exp_distr{handles.plot_nr}) && ~isempty(handles.exp_r{handles.plot_nr})
     plot(handles.exp_r{handles.plot_nr},sc*handles.exp_distr{handles.plot_nr}/max(handles.exp_distr{handles.plot_nr}),'b');
 end
 guidata(handles.text_axes_title,handles);

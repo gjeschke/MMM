@@ -740,22 +740,6 @@ for runstep = 0:last_step
                     end
                 end
                 if save_it
-                    for kc = 1:num_ch
-                        [~,ctag] = mk_address_parts([handles.diagnostics.snum,kc]);
-                        isRNA = false;
-                        for krna = 1:length(handles.restraints.RNA_tags)
-                            if strcmpi(['(' ctag ')'],handles.restraints.RNA_tags{krna})
-                                isRNA = true;
-                            end
-                        end
-                        if ~isRNA
-                            ncp = ncp + 1;
-                            new_cindices(ncp) = kc;
-                        end
-                    end
-                    new_cindices(ncp+1) = num_ch + 1;
-                    new_cindices = new_cindices(1:ncp+1);
-                    handles.new_cindices = new_cindices;
                     cch = 0;
                     found = true;
                     indices = cell(1,100);
@@ -787,7 +771,7 @@ for runstep = 0:last_step
                     end
                     model.selected{1} = [linked_model 1 1];
                     if isfield(handles.restraints,'RNA') && isfield(handles.restraints.RNA,'bind') && ~isempty(handles.restraints.RNA.bind)
-                        model.selected{2} = [handles.diagnostics.snum handles.new_cindices(end) km];
+                        model.selected{2} = [handles.diagnostics.snum RNA km];
                     end
                     fmname = sprintf('%s_m%i_flex.pdb',handles.basname,km);
                     wr_pdb_selected(fmname,handles.restraints.newID,[],true);

@@ -71,6 +71,7 @@ end
 
 clear restraints
 
+restraints.flex_time = 1;
 restraints.search = false;
 restraints.maxtrials = -1;
 restraints.ensemble = [];
@@ -319,7 +320,7 @@ while 1
                     restraints.pflex(pflex_poi).Nanchor = char(args(5));
                     restraints.pflex(pflex_poi).Canchor = char(args(6));
                     restraints.pflex(pflex_poi).models = 20; % default setting
-                    restraints.pflex(pflex_poi).time = 1; % default setting
+                    restraints.pflex(pflex_poi).time = restraints.flex_time; % default setting unless overwritten
                     restraints.pflex(pflex_poi).prob = 0.5; % default setting
                     pflex_DEER_poi = 0;
                     pflex_oligomer_poi = 0;
