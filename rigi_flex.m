@@ -667,46 +667,49 @@ for runstep = 0:last_step
                     add_msg_board(sprintf('Warning: No RNA connection in rigid-body arrangement %i',km));
                     add_msg_board('Skipping computation of flexible peptide sections in this rigid-body arrangement');
                     options.max_trials = -1;
-                end
-                for kp = 1:length(handles.restraints.pflex) % loop over flexible peptide segments
-                    options.fd = kp;
-                    handles.uipanel_runtime.Title = sprintf('Flexible peptide section %i in rigid-body arrangment %i',kp,km);
-                    handles = set_progress_interface(handles);
-                    set(gcf,'Pointer','watch');
-                    handles.text_time_left.String = 'Started.';
-                    handles.text_time_left.ForegroundColor = [0,0,180]/256;
-                    drawnow
-                    model.current_structure = handles.diagnostics.snum; % make the result of rigid-body arrangement the current structure
-                    [restrain,restraints,monitor,cancelled,number,number_monitor] = process_domain_restraints(handles.restraints.pflex(kp),km);
-                    options.max_time = handles.restraints.pflex(kp).time;
-                    options.max_trials = 1e6;
-                    set(handles.edit_max_time,'String',sprintf('%5.2f',options.max_time));
-                    drawnow
-                    if cancelled
-                        add_msg_board(sprintf('ERROR: Restraint processing failed for flexible domain %i in model %i',kp,kp));
-                        options.max_trials = -1;
+                else
+                    for kp = 1:length(handles.restraints.pflex) % loop over flexible peptide segments
+                        options.fd = kp;
+                        handles.uipanel_runtime.Title = sprintf('Flexible peptide section %i in rigid-body arrangment %i',kp,km);
+                        handles = set_progress_interface(handles);
+                        set(gcf,'Pointer','watch');
+                        handles.text_time_left.String = 'Started.';
+                        handles.text_time_left.ForegroundColor = [0,0,180]/256;
+                        drawnow
+                        model.current_structure = handles.diagnostics.snum; % make the result of rigid-body arrangement the current structure
+                        [restrain,restraints,monitor,cancelled,number,number_monitor] = process_domain_restraints(handles.restraints.pflex(kp),km);
+                        options.max_time = handles.restraints.pflex(kp).time;
+                        options.max_trials = 1e6;
+                        set(handles.edit_max_time,'String',sprintf('%5.2f',options.max_time));
+                        drawnow
+                        if cancelled
+                            add_msg_board(sprintf('ERROR: Restraint processing failed for flexible domain %i in model %i',kp,kp));
+                            options.max_trials = -1;
+                        end
+                        options.n_restraints = number;
+                        options.n_monitor = number_monitor;
+                        options.monitor = monitor;
+                        fidr = fopen(handles.report_name,'at');
+                        fprintf(fidr,'\n### Flexible peptide section %i in rigid-body arrangment %i ###\n',kp,km);
+                        fclose(fidr);
+                        flex_diagnostics = flex_engine(restraints,restrain,options,handles);
+                        if flex_diagnostics.success == 0
+                            add_msg_board(sprintf('Warning: No models found for flexible domain %i in rigid-body arrangement %i',kp,km));
+                            fprintf(fidr,'Modelling of flexible domain %i in rigid-body arrangement %i failed after %i s\n',kp,km,flex_diagnostics.runtime);
+                            add_msg_board('Skipping remaining flexible domains in this RBA');
+                            break
+                            options.max_trials = -1;
+                        else
+                            flex_success(km,kp) = 1;
+                        end
+                        all_flex_models(km,kp) = flex_diagnostics.snum;
+                        all_flex_model_times(km,kp) = flex_diagnostics.time_per_model;
+                        handles.flex_diagnostics{km,kp} = flex_diagnostics;
+                        handles.text_time_left.String = 'Completed.';
+                        handles.text_time_left.ForegroundColor = [0,127,0]/256;
+                        drawnow
+                        set(gcf,'Pointer','arrow');
                     end
-                    options.n_restraints = number;
-                    options.n_monitor = number_monitor;
-                    options.monitor = monitor;
-                    fidr = fopen(handles.report_name,'at');
-                    fprintf(fidr,'\n### Flexible peptide section %i in rigid-body arrangment %i ###\n',kp,km);
-                    fclose(fidr);
-                    flex_diagnostics = flex_engine(restraints,restrain,options,handles);
-                    if flex_diagnostics.success == 0
-                        add_msg_board(sprintf('Warning: No models found for flexible domain %i in rigid-body arrangement %i',kp,km));
-                        fprintf(fidr,'Modelling of flexible domain %i in rigid-body arrangement %i failed after %i s\n',kp,km,flex_diagnostics.runtime);
-                        options.max_trials = -1;
-                    else
-                        flex_success(km,kp) = 1;
-                    end
-                    all_flex_models(km,kp) = flex_diagnostics.snum;
-                    all_flex_model_times(km,kp) = flex_diagnostics.time_per_model;
-                    handles.flex_diagnostics{km,kp} = flex_diagnostics;
-                    handles.text_time_left.String = 'Completed.';
-                    handles.text_time_left.ForegroundColor = [0,127,0]/256;
-                    drawnow
-                    set(gcf,'Pointer','arrow');
                 end
                 linked_model = 0;
                 RNA = num_ch+1;
@@ -737,6 +740,22 @@ for runstep = 0:last_step
                     end
                 end
                 if save_it
+                    for kc = 1:num_ch
+                        [~,ctag] = mk_address_parts([handles.diagnostics.snum,kc]);
+                        isRNA = false;
+                        for krna = 1:length(handles.restraints.RNA_tags)
+                            if strcmpi(['(' ctag ')'],handles.restraints.RNA_tags{krna})
+                                isRNA = true;
+                            end
+                        end
+                        if ~isRNA
+                            ncp = ncp + 1;
+                            new_cindices(ncp) = kc;
+                        end
+                    end
+                    new_cindices(ncp+1) = num_ch + 1;
+                    new_cindices = new_cindices(1:ncp+1);
+                    handles.new_cindices = new_cindices;
                     cch = 0;
                     found = true;
                     indices = cell(1,100);
