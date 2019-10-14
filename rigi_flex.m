@@ -618,7 +618,8 @@ for runstep = 0:last_step
             end
             snum = handles.diagnostics.snum;
             num_ch = length(model.structures{handles.diagnostics.snum});
-            to_be_saved = zeros(handles.diagnostics.success,num_ch+1);
+            RNA = num_ch;
+            to_be_saved = zeros(handles.diagnostics.success,2);
             if isfield(handles.restraints,'solutions') && ~isempty(handles.restraints.solutions)
                 list_name = sprintf('%s_model_list.dat',handles.restraints.solutions);
             else
@@ -712,7 +713,6 @@ for runstep = 0:last_step
                     end
                 end
                 linked_model = 0;
-                RNA = num_ch+1;
                 chains = zeros(1,num_ch+1);
                 ncp = 0;
                 for kc = 1:num_ch
