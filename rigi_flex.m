@@ -790,9 +790,11 @@ for runstep = 0:last_step
                 handles.max_time = handles.restraints.build_time;
                 handles.edit_max_time.String = sprintf('%5.2f',handles.max_time);
             end
-            handles.pushbutton_run.String = 'Run assembler';
+            set(gcf,'Pointer','arrow');
+            handles.progress = 3;
+            handles.pushbutton_run.String = 'Complete';
+            handles.pushbutton_run.Enable = 'off';
             guidata(hObject,handles);
-            return
         otherwise
             add_msg_board('Full RigiFlex run completed');
     end
