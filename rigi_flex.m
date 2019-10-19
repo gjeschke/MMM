@@ -418,10 +418,10 @@ for runstep = 0:last_step
                     stretch = csoln(:,2);
                     [stretch,strpoi] = sort(stretch);
                     csoln = csoln(strpoi,:);
-                    success = false;
+                    full_connect = false;
                     kcombi = 0;
                     snum = handles.diagnostics.snum;
-                    while ~isempty(stretch) && ~success && kcombi < length(stretch) && kcombi < 1
+                    while ~isempty(stretch) && ~full_connect && kcombi < length(stretch) && kcombi < handles.restraints.RNA.models
                         kcombi = kcombi + 1;
                         ccombi = csoln(kcombi,3:end);
                         % make adjustment transformation matrices
@@ -433,9 +433,9 @@ for runstep = 0:last_step
                             if rb_assign(kr) > 1
                                 baspoi6 = (rb_assign(kr)-2)*6;
                                 dtrans = 10*dvecs(km,baspoi6+1:baspoi6+3);
-                                % fprintf(1,'Translation(%i): (%3.1f, %3.1f, %3.1f) Å\n',kr,dtrans);
+                                % fprintf(1,'Translation(%i): (%3.1f, %3.1f, %3.1f) ?\n',kr,dtrans);
                                 deuler = dvecs(km,baspoi6+4:baspoi6+6);
-                                % fprintf(1,'Rotation(%i)   : (%3.1f, %3.1f, %3.1f)°\n',kr,180*deuler/pi);
+                                % fprintf(1,'Rotation(%i)   : (%3.1f, %3.1f, %3.1f)?\n',kr,180*deuler/pi);
                                 adj_transmats{rb_assign(kr)} = transrot2affine(dtrans,deuler);
                             end
                         end
@@ -475,7 +475,7 @@ for runstep = 0:last_step
                         for kb = 1:length(handles.restraints.RNA.bind)
                             adra = sprintf('[%s]%s',stag,handles.restraints.RNA.bind(kb).anchora);
                             inda = resolve_address(adra);
-                            adre = sprintf('[%s]%s',stag,handles.restraints.RNA.bind(kb).anchora);
+                            adre = sprintf('[%s]%s',stag,handles.restraints.RNA.bind(kb).anchore);
                             inde = resolve_address(adre);
                             env_sel(inda(2),1) = inda(4);
                             env_sel(inda(2),2) = inde(4);
@@ -552,10 +552,14 @@ for runstep = 0:last_step
                             stitch_chain(pindices,nindices,chain_tag,initflag);
                             initflag = false;
                             success_vec(km) = 1;
-                            success = true;
                             if solutions_given
                                 link_fid = fopen(linkable_name,'at');
-                                fprintf(link_fid,'%8i%6i\n',rba_solutions(km,1),rba_solutions(km,2));
+                                fprintf(link_fid,'%8i%6i',rba_solutions(km,1),rba_solutions(km,2));
+                                for ksl = 1:length(ccombi)
+                                    fprintf(link_fid,'%6i',ccombi(ksl));
+                                end
+                                fprintf(link_fid,'%6ii',kcombi);
+                                fprintf(link_fid,'\n');
                                 fclose(link_fid);
                             end
                             if only_FlexRNA % conformer should be saved, if it is already complete
@@ -981,7 +985,7 @@ if ~isempty(handles.restraints.SAXS)
     fprintf(fid_report,'SAXS fit chi^2 threshold: %5.2f\n',options.SAXS_threshold);
 end
 if ~isempty(handles.restraints.xlinks)
-    fprintf(fid_report,'Crosslink threshold     : %5.1f Å\n',options.xlink_threshold);
+    fprintf(fid_report,'Crosslink threshold     : %5.1f ?\n',options.xlink_threshold);
     fprintf(fid_report,'%4.1f%% crosslinks must match.\n',options.xlink_percentage);
 end
 fprintf(fid_report,'Probability threshold   : %i\n',handles.restraints.p_model);
@@ -1067,7 +1071,7 @@ for kr1 = 1:length(restraints.rb)-1
                 sigr = sqrt(sum(sum_distr.*(10*rax-meanr).^2));
                 distributions(poi).meanr = meanr;
                 distributions(poi).sigr = sigr;
-                fprintf(fid_report,'<r> = %4.1f Å, sigr = %4.1f Å, Rigidity index for ensemble: %5.2f\n',meanr,sigr,sqrt(mean_var/sigr^2));
+                fprintf(fid_report,'<r> = %4.1f ?, sigr = %4.1f ?, Rigidity index for ensemble: %5.2f\n',meanr,sigr,sqrt(mean_var/sigr^2));
                 match = false;
                 for kr = 1:length(restraints.DEER)
                     if ~isempty(restraints.DEER(kr).indices1) && ~isempty(restraints.DEER(kr).indices2)
@@ -1095,7 +1099,7 @@ for kr1 = 1:length(restraints.rb)-1
                     sim_distr = sim_distr/sum(sim_distr);
                     known(poi) = 1;
                     overlap = sum(min([sum_distr;sim_distr]));
-                    fprintf(fid_report,' for restraint <r> = %4.1f Å, sigr = %4.1f Å (overlap: %6.4f).\n',r_restr,sigr_restr,overlap);
+                    fprintf(fid_report,' for restraint <r> = %4.1f ?, sigr = %4.1f ? (overlap: %6.4f).\n',r_restr,sigr_restr,overlap);
                     fprintf(fid_report,'Rigidity index to restraint: %5.2f\n',sqrt(mean_var/sigr_restr^2));
                 else
                     fprintf(fid_report,' (unrestrained).\n');
@@ -1173,7 +1177,7 @@ for kr = 1:length(restraints.DEER)
             sigr = sqrt(sum(sum_distr.*(10*rax-meanr).^2));
             distributions(poi).meanr = meanr;
             distributions(poi).sigr = sigr;
-            fprintf(fid_report,'<r> = %4.1f Å, sigr = %4.1f Å for restraint <r> = %4.1f Å, sigr = %4.1f Å\n',meanr,sigr,restraints.DEER(kr).r,restraints.DEER(kr).sigr);
+            fprintf(fid_report,'<r> = %4.1f ?, sigr = %4.1f ? for restraint <r> = %4.1f ?, sigr = %4.1f ?\n',meanr,sigr,restraints.DEER(kr).r,restraints.DEER(kr).sigr);
             fprintf(fid_report,'Rigidity index for ensemble: %5.2f; to restraint: %5.2f\n',sqrt(mean_var/sigr^2),sqrt(mean_var/restraints.DEER(kr).sigr^2));
             sim_distr = (rax-restraints.DEER(kr).r/10).^2/(2*0.01*restraints.DEER(kr).sigr^2);
             sim_distr = exp(-sim_distr);
@@ -1384,7 +1388,7 @@ if handles.radiobutton_DEER.Value
     hold on;
     plot(info.rax,info.sum_distr,'k');
     plot(info.rax, distr(cm,:),'Color',[0,0,0.75]); 
-    my_title = sprintf('DEER %s-%s <r> = %4.1f Å, sr = %4.1f Å Overlap: %5.3f',info.adr1,info.adr2,info.meanr,info.sigr,info.overlap);
+    my_title = sprintf('DEER %s-%s <r> = %4.1f ?, sr = %4.1f ? Overlap: %5.3f',info.adr1,info.adr2,info.meanr,info.sigr,info.overlap);
     if handles.distributions(cr).r_req >= 0 && handles.distributions(cr).sigr_req >= 0
         sim_distr = (info.rax-info.r_req/10).^2/(2*0.01*info.sigr_req^2);
         sim_distr = exp(-sim_distr);
@@ -2453,7 +2457,7 @@ dx=(NOall(:,1)-xmean);
 dy=(NOall(:,2)-ymean);
 dz=(NOall(:,3)-zmean);
 nNO=length(dx);
-rmsd=sqrt(0.005+nNO*sum(dx.^2.*pop+dy.^2.*pop+dz.^2.*pop)/(nNO-1))/10; % divided by 10 for Å -> nm
+rmsd=sqrt(0.005+nNO*sum(dx.^2.*pop+dy.^2.*pop+dz.^2.*pop)/(nNO-1))/10; % divided by 10 for ? -> nm
 
 function res = correct_section_address(adr)
 
@@ -2472,9 +2476,9 @@ end
 
 function [restrain,number] = mk_beacon_restraint(restrain,NO,res_loop,xyz_beacon,rmean,sigr,res1,number,label1,label2,bindices,resb)
 
-scale_units = 1; % rd_restraints_rigiflex already converts to Å
+scale_units = 1; % rd_restraints_rigiflex already converts to ?
 
-grace = 0.5; % 5 Å uncertainty of label position
+grace = 0.5; % 5 ? uncertainty of label position
 
 k = res_loop - res1 + 1;
 kr = length(restrain(k).r_beacon)+1;
@@ -2497,9 +2501,9 @@ end;
 
 function [restrain,number] = mk_internal_restraint(restrain,NO1,NO2,resa,resb,rmean,sigr,res1,number,label1,label2)
 
-scale_units = 1; % rd_restraints_rigiflex already converts to Å
+scale_units = 1; % rd_restraints_rigiflex already converts to ?
 
-grace = 0.5; % 5 Å uncertainty of label position
+grace = 0.5; % 5 ? uncertainty of label position
 
 if resa < resb % restraint must be stored at the later site
     exch = resa;
@@ -2531,7 +2535,7 @@ end;
 
 function [restrain,number] = mk_depth_restraint(restrain,NO,res,zmean,sigz,res1,number,label)
 
-scale_units = 1; % rd_restraints_rigiflex already converts to Å
+scale_units = 1; % rd_restraints_rigiflex already converts to ?
 
 k = res - res1 + 1;
 kr = length(restrain(k).depth)+1;
@@ -2555,7 +2559,7 @@ end;
 
 function [restrain,number] = mk_oligomer_restraint(restrain,NO,res,n,rmean,sigr,res1,number,label)
 
-scale_units= 1; % rd_restraints_rigiflex already converts to Å
+scale_units= 1; % rd_restraints_rigiflex already converts to ?
 
 k = res - res1 + 1;
 kr = length(restrain(k).oligomer)+1;
@@ -2662,8 +2666,8 @@ function [handles,restraints] = analyze_exhaustive(handles,restraints)
 
 tph = 1000000; % trials per hour, to be replaced with machine-specific value
 target_resolution = 3; % lowest resolution to be considered sensible with spin labels
-min_approach = 5; % minimal approach of two reference points [Å]
-max_extension = 180; % 180 maximum distance between any two reference points [Å]
+min_approach = 5; % minimal approach of two reference points [?]
+max_extension = 180; % 180 maximum distance between any two reference points [?]
 
 [m,~] = size(restraints.lb);
 % augment lower and upper bounds
@@ -2766,7 +2770,7 @@ if isfield(restraints.RNA,'DEER')
             sigr = sqrt(sum(sum_distr.*(10*rax-meanr).^2));
             distributions(poi).meanr = meanr;
             distributions(poi).sigr = sigr;
-            fprintf(fid_report,'<r> = %4.1f Å, sigr = %4.1f Å for restraint <r> = %4.1f Å, sigr = %4.1f Å)',meanr,sigr,restraints.RNA.DEER(kr).r,restraints.RNA.DEER(kr).sigr);
+            fprintf(fid_report,'<r> = %4.1f ?, sigr = %4.1f ? for restraint <r> = %4.1f ?, sigr = %4.1f ?)',meanr,sigr,restraints.RNA.DEER(kr).r,restraints.RNA.DEER(kr).sigr);
             fprintf(fid_report,'Rigidity index for ensemble: %5.2f; to restraint: %5.2f\n',sqrt(mean_var/sigr^2),sqrt(mean_var/restraints.RNA.DEER(kr).sigr^2));
             sim_distr = (rax-restraints.DEER(kr).r/10).^2/(2*0.01*restraints.DEER(kr).sigr^2);
             sim_distr = exp(-sim_distr);

@@ -17,8 +17,8 @@ function [restraints,failed] = rd_restraints_rigiflex(fname,unprocessed)
 % RIGID     rigid-body and reference point definitions
 % DEER      distance distribution restraints between spin labels
 % ODEER     distance distribution restraints between two different spin labels
-% RLINK     RNA link (<= 7 Å per nt)
-% PLINK     protein link (<= 3.8 Å per aa)
+% RLINK     RNA link (<= 7 ? per nt)
+% PLINK     protein link (<= 3.8 ? per aa)
 % CROSSLINK crosslinks, currently the linker type is stored, but not
 %           further evaluated
 % SANS      SANS data file and resolution parameter file
@@ -421,10 +421,11 @@ while 1
                         snum=id;
                         model.current_structure=snum;
                     else
-                        fname=get_pdb_file(restraints.PDB,true);
-                        if isempty(fname)
-                            fname = [restraints.PDB '.pdb'];
-                        end
+%                         fname=get_pdb_file(restraints.PDB,true);
+%                         if isempty(fname)
+%                             fname = [restraints.PDB '.pdb'];
+%                         end
+                        fname = [restraints.PDB '.pdb'];
                         [message,snum]=add_pdb(fname);
                         if message.error
                             add_msg_board(sprintf('ERROR: Specified structure PDB file %s could not be retrieved from server',restraints.PDB));
@@ -1524,7 +1525,7 @@ dx=(NOall(:,1)-xmean);
 dy=(NOall(:,2)-ymean);
 dz=(NOall(:,3)-zmean);
 nNO=length(dx);
-rmsd=sqrt(0.005+nNO*sum(dx.^2.*pop+dy.^2.*pop+dz.^2.*pop)/(nNO-1))/10; % divided by 10 for Å -> nm
+rmsd=sqrt(0.005+nNO*sum(dx.^2.*pop+dy.^2.*pop+dz.^2.*pop)/(nNO-1))/10; % divided by 10 for ? -> nm
 
 function  ctag = get_ctag(adr)
 
