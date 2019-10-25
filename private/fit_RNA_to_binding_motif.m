@@ -17,10 +17,13 @@ function conformation = fit_RNA_to_binding_motif(decoys,motif,nts,rrmcoor,used,o
 % libdir    directory where the library should be stored
 % chaintag  tag for the RNA chain
 % conformation  number of already existing conformations, defaults to zero
-% options   determines whether the models are optimized by Tinker and
-%           provides optimization options
+% options   determines whether the models are optimized by Tinker,
+%           provides optimization options, and can define an acceptance
+%           threshold for the fit of the binding motif, if the acceptance
+%           threshold is negative, the model is only compiled and written,
+%           not fitted
 %
-% G. Jeschke, 19.03.2018
+% G. Jeschke, 19.03.2018-25.10.2019
 
 acceptance = 2.0; % acceptance threshold, RMSD (Å) for overlap of bases of the binding nts
 
@@ -74,7 +77,14 @@ libdir = fullfile(pwd,libdir);
 mydir = pwd;
 cd(decoys);
 
-RNA_list = dir('*.pdb');
+file_list = get_file_list('diverse_SLs.dat');
+if ~isempty(file_list)
+    for kf = 1:length(file_list)
+        RNA_list(kf).name = file_list{kf};
+    end
+else
+    RNA_list = dir('*.pdb');
+end
 
 ndecoys = length(RNA_list);
 
@@ -87,6 +97,12 @@ for kd = 1:ndecoys
         cd(mydir);
         set(gcf,'Pointer','arrow');
         return
+    end
+    % write copy without fitting, if requested
+    if acceptance < 0
+        write_unfitted_rna(snum,nts,used,offset,libdir,chaintag,conformation,options);
+        conformation = conformation + 1;
+        continue
     end
     stag = mk_address_parts(snum);
     dpoi = 0;
@@ -168,7 +184,7 @@ ncoor = [coor ones(m,1)];
 ncoor = ncoor*transmat';
 ncoor = ncoor(:,1:3);
 
-function [clash,fit_options] = write_fitted_rna(snum,dcoor,dcoor1,transmat,rrmcoor,nts,used,offset,libdir,chaintag,conformation,fit_options)
+function write_fitted_rna(snum,dcoor,dcoor1,transmat,rrmcoor,nts,used,offset,libdir,chaintag,conformation,fit_options)
 
 global model
 
@@ -300,3 +316,56 @@ if ~clash
     end
     wr_pdb_selected(fullfile(libdir,fname2),pdbid);
 end
+
+function write_unfitted_rna(snum,nts,used,offset,libdir,chaintag,conformation,fit_options)
+
+global model
+
+fname = sprintf('F_%i',conformation+1);
+fname2 = sprintf('S_%i',conformation+1);
+
+if isfield(model,'selected')
+    model = rmfield(model,'selected');
+end
+ctag = chaintag(2);
+model.current_chain = ctag;
+model.chain_tags{snum} = [':' ctag ':'];
+model.structures{snum}.name = ctag;
+% renumber the nts
+id = 1;
+tag = id2tag(id,model.structures{snum}(1).residues{1}.residue_tags);
+newtags = ':';
+while ~isempty(tag)
+    oldnum = str2double(tag);
+    newnum = oldnum + offset;
+    model.structures{snum}(1).residues{1}.info(id).number = newnum;
+    newtags = [newtags sprintf('%i',newnum) ':'];
+    id = id + 1;
+    tag = id2tag(id,model.structures{snum}(1).residues{1}.residue_tags);
+end
+model.structures{snum}(1).residues{1}.residue_tags = newtags;
+selection = ones(1,4);
+% select the residues to be stored
+selection(1) = snum;
+select_nt = used(1):used(2);
+poi = 0;
+for k = select_nt
+    selection(4) = k;
+    poi = poi + 1;
+    model.selected{poi} = selection;
+end
+pdbid = sprintf('RNA%s',ctag);
+wr_pdb_selected(fullfile(libdir,fname),pdbid);
+% now write a structure without the binding motif
+if isfield(model,'selected')
+    model = rmfield(model,'selected');
+end
+poi = 0;
+for k = select_nt
+    if min(abs(nts-k-fit_options.offset)) ~= 0
+        selection(4) = k;
+        poi = poi + 1;
+        model.selected{poi} = selection;
+    end
+end
+wr_pdb_selected(fullfile(libdir,fname2),pdbid);

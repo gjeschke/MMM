@@ -5340,43 +5340,116 @@ function menu_jobs_test_Callback(hObject, eventdata, handles)
 
 global model
 
-SLs = [288,318;322,335;348,370];
-SL_tags = 'DEF';
+pdb_list = dir('a9_*.pdb');
+path_SLD = 'D:\projects\Christoph_Gmeiner\modelling\SLD_CYANA\';
+path_SLE = 'D:\projects\Christoph_Gmeiner\modelling\SLE_CYANA\';
+path_SLF = 'D:\projects\Christoph_Gmeiner\modelling\SLF_CYANA\';
 
-my_dir = pwd;
-hfig = gcf;
-set(hfig,'Pointer','watch');
-
-for ksl = 1:3
-    pname = sprintf('EMCV_IRES_SL%s_2',SL_tags(ksl));
-    pname = strcat('D:\projects\Christoph_Gmeiner\modelling\',pname);
-    pid = sprintf('ESL%s',SL_tags(ksl));
-    cd(pname);
-    nts = SLs(ksl,1):SLs(ksl,2);
-    for kmod = 1:20
-        fname = sprintf('SL%s_m%i',SL_tags(ksl),kmod);
-        model.selected = cell(1,length(nts));
-        for knt = nts
-            indices = resolve_address(sprintf('(B){%i}%i',kmod,knt));
-            if isempty(indices)
-                add_msg_board(sprintf('ERROR: nt (B){%i}%i could not be found',kmod,knt));
-                return
-            else
-                model.selected{knt+1-nts(1)} = indices;
-            end
-        end
-        message = wr_pdb_selected(fname,pid);
-        if message.error
-            add_msg_board(strcat('ERROR (wr_pdb_selected): ',message.text));
-        else
-            add_msg_board(sprintf('Structure file %s written',fname));
+[msg, RRM1] = get_object('[PTBC](A)58-154','xyz_backbone');
+RRM1 = consolidate_coor(RRM1);
+if msg.error
+    add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
+end
+[msg, RRM2] = get_object('[PTBC](C)182-283','xyz_backbone');
+RRM2 = consolidate_coor(RRM2);
+if msg.error
+    add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
+end
+[msg, RRM34] = get_object('[PTBC](E)455-531','xyz_backbone');
+if msg.error
+    add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
+end
+RRM34 = consolidate_coor(RRM34);
+for k = 1:length(pdb_list)
+    [~,snum] = add_pdb(pdb_list(k).name);
+    sadr = mk_address(snum);
+    fname = pdb_list(k).name;
+    poi = strfind(fname,'.pdb');
+    fname = fname(1:poi-1);
+    % transform and save SLD
+    oname = strcat(fname,'_SLD.pdb');
+    oname = strcat(path_SLD,oname);
+    xyz0 = model.structures{snum}(2).xyz{1};
+    [msg, RRM34_conf] = get_object(sprintf('%s(A)455-531',sadr),'xyz_backbone');
+    RRM34_conf = consolidate_coor(RRM34_conf);
+    if msg.error
+        add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
+    end
+    [rms,~,transmat] = rmsd_superimpose(RRM34,RRM34_conf);
+    fprintf(1,'For %s superposition r.ms.d. is %6.1f Å\n',fname,rms);
+    xyz = affine_trafo_coor(xyz0,transmat);
+    model.structures{snum}(2).xyz{1} = xyz;
+    if isfield(model,'selected')
+        model = rmfield(model,'selected');
+    end
+    spoi = 0;
+    for knt = 288:318
+        spoi = spoi + 1;
+        ind = resolve_address(sprintf('%s(B){1}%i',sadr,knt));
+        model.selected{spoi} = ind;
+    end
+    message = wr_pdb_selected(oname,'SLD0');
+    if message.error
+        if interactive
+            add_msg_board(sprintf('Warning: Model %s could not be automatically saved. %s\n',oname));
         end
     end
-    cd(my_dir);
+    % transform and save SLE
+    oname = strcat(fname,'_SLE.pdb');
+    oname = strcat(path_SLE,oname);
+    [msg, RRM1_conf] = get_object(sprintf('%s(A)58-154',sadr),'xyz_backbone');
+    RRM1_conf = consolidate_coor(RRM1_conf);
+    if msg.error
+        add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
+    end
+    [rms,~,transmat] = rmsd_superimpose(RRM1,RRM1_conf);
+    fprintf(1,'For %s superposition r.ms.d. is %6.1f Å\n',fname,rms);
+    xyz = affine_trafo_coor(xyz0,transmat);
+    model.structures{snum}(2).xyz{1} = xyz;
+    if isfield(model,'selected')
+        model = rmfield(model,'selected');
+    end
+    spoi = 0;
+    for knt = 322:335
+        spoi = spoi + 1;
+        ind = resolve_address(sprintf('%s(B){1}%i',sadr,knt));
+        model.selected{spoi} = ind;
+    end
+    message = wr_pdb_selected(oname,'SLE0');
+    if message.error
+        if interactive
+            add_msg_board(sprintf('Warning: Model %s could not be automatically saved. %s\n',oname));
+        end
+    end    
+    % transform and save SLF
+    oname = strcat(fname,'_SLF.pdb');
+    oname = strcat(path_SLF,oname);
+    [msg, RRM2_conf] = get_object(sprintf('%s(A)182-283',sadr),'xyz_backbone');
+    RRM2_conf = consolidate_coor(RRM2_conf);
+    if msg.error
+        add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
+    end
+    [rms,~,transmat] = rmsd_superimpose(RRM2,RRM2_conf);
+    fprintf(1,'For %s superposition r.ms.d. is %6.1f Å\n',fname,rms);
+    xyz = affine_trafo_coor(xyz0,transmat);
+    model.structures{snum}(2).xyz{1} = xyz;
+    if isfield(model,'selected')
+        model = rmfield(model,'selected');
+    end
+    spoi = 0;
+    for knt = 348:370
+        spoi = spoi + 1;
+        ind = resolve_address(sprintf('%s(B){1}%i',sadr,knt));
+        model.selected{spoi} = ind;
+    end
+    message = wr_pdb_selected(oname,'SLF0');
+    if message.error
+        if interactive
+            add_msg_board(sprintf('Warning: Model %s could not be automatically saved. %s\n',oname));
+        end
+    end
 end
 
-set(hfig,'Pointer','arrow');
-cd(my_dir);
 
 % --------------------------------------------------------------------
 function menu_EPR_dHis_Callback(hObject, eventdata, handles)
@@ -5682,12 +5755,55 @@ function menu_jobs_test2_Callback(hObject, ~, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% fname = 'PTB1_20190223_block29';
-% loop_assembler_PTB1(fname);
-% mk_quality_check_yasara;
+global model
 
-analyze_all_conformers('PTBP1_valid_conformers.dat');
+% reduce stemloop library
 
+n = 100;
+
+msd = zeros(n);
+flist = cell(1,n);
+coor = cell(1,n);
+
+pdb_list = dir('a*.pdb');
+
+nc = 0;
+
+for k = 1:length(pdb_list)
+    [~,snum] = add_pdb(pdb_list(k).name);
+    fname = pdb_list(k).name;
+    poi = strfind(fname,'.pdb');
+    fname = fname(1:poi-1);
+    xyz = model.structures{snum}(1).xyz{1};
+    if nc < n
+        nc = nc + 1;
+        coor{nc} = xyz;
+        for kp = 1:nc-1
+            rms = rmsd_superimpose(coor{kp},xyz);
+            msd(kp,nc) = rms^2;
+            msd(nc,kp) = msd(kp,nc);
+        end
+        flist{nc} = fname;
+    else
+        msdsum = sum(msd);
+        cmsd = zeros(1,n);
+        for kp = 1:n
+            rms = rmsd_superimpose(coor{kp},xyz);
+            cmsd(kp) = rms^2;
+        end
+        msdsum = msdsum + cmsd;
+        [minmsd,central] = min(msdsum);
+        if sum(cmsd) > minmsd % the model differs more from all others than the central one
+            flist{central} = fname;
+            msd(central,1:central-1) = cmsd(1:central-1);
+            msd(central,central+1:end) = cmsd(central+1:end);
+            cmsd = msd(central,:).';
+            msd(:,central) = cmsd;
+        end
+    end
+end
+
+put_file_list('diverse_SLs.dat',flist);
 
 guidata(hObject,handles);
 
@@ -5762,15 +5878,9 @@ function menu_jobs_test6_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 stag1 = 'MMM0';
-chains1 = 'ABCDEFG';
-stag2 = '2MF0';
-chains2 = 'CDABEFG';
-pop1 = [0.095439,0.094966,0.006039,0.096859,0.018338,0.062139,0.031488,...
-    0.023636,0.036029,0.047476,0.015594,0.017581,0.030589,0.005188,...
-    0.003107,0.063085,0.043029,0.058166,0.032717,0.074343,0.009256,...
-    0.029028,0.027230,0.034893,0.043786];
+chains1 = 'AB';
 options.mode = 'backbone';
-[sigma,pair_rmsd] = ensemble_comparison(stag1,chains1,pop1,stag2,chains2,[],options);
+[sigma,pair_rmsd] = ensemble_comparison(stag1,chains1); %,pop1,stag2,chains2,[],options);
 guidata(hObject,handles);
 
 

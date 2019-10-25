@@ -9,7 +9,7 @@ function fname = put_file_list(fname,my_list,selection,append,aux_data,comments)
 %           use NaN if you want to skip this argument (whole list will be
 %           written then)
 % append    optional flag, if true and file fname already exists, the
-%           entries are appended to the existing file
+%           entries are appended to the existing file, defaults to false
 % aux_data  optional additional numerical data, they are written in the
 %           form %12.6f if in size [m,n] of the array, either matches the 
 %           length of the selection or n matches it and m = 1,
@@ -23,6 +23,10 @@ function fname = put_file_list(fname,my_list,selection,append,aux_data,comments)
 
 if ~exist('selection','var') || sum(isnan(selection))
     selection = 1:length(my_list);
+end
+
+if ~exist('append','var')
+    append = false;
 end
 
 if append 

@@ -2,7 +2,7 @@ function mk_ensemble(ensemble_list,populations,restraints,options)
 
 global model
 
-DEER = [];
+DEER.initialize = true;
 
 
 fid = fopen(options.script_file,'wt');
@@ -176,26 +176,27 @@ core = length(model_restraints.DEER);
 rax = model_restraints.DEER(1).rax;
 flex = 0;
 
-DEER.all_distr = zeros(core,length(rax));
-DEER.all_distr_sim = zeros(core,length(rax));
-DEER.all_distr_exp = zeros(core,length(rax));
-DEER.axis_vecs = zeros(core,4);
-DEER.all_fnames = cell(1,core);
-DEER.all_adr1 = cell(1,core);
-DEER.all_adr2 = cell(1,core);
-DEER.all_flags = zeros(1,core);
-DEER.mod_depths = zeros(1,core);
-DEER.core = core;
-DEER.flex = flex;
-DEER.rax = rax;
+if DEER.initialize
+    DEER.all_distr = zeros(core,length(rax));
+    DEER.all_distr_sim = zeros(core,length(rax));
+    DEER.all_distr_exp = zeros(core,length(rax));
+    DEER.axis_vecs = zeros(core,4);
+    DEER.all_fnames = cell(1,core);
+    DEER.all_adr1 = cell(1,core);
+    DEER.all_adr2 = cell(1,core);
+    DEER.all_flags = zeros(1,core);
+    DEER.mod_depths = zeros(1,core);
+    DEER.core = core;
+    DEER.flex = flex;
+    DEER.rax = rax;
+end
 
 
 if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex) && isfield(model_restraints.pflex,'DEER')
     for kl = 1:length(model_restraints.pflex)
         flex = flex + length(model_restraints.pflex(kl).DEER);
     end
-
-    if ~exist('DEER','var') || isempty(DEER)
+    if DEER.initialize
         DEER.all_distr = zeros(core+flex,length(rax));
         DEER.all_distr_sim = zeros(core+flex,length(rax));
         DEER.all_distr_exp = zeros(core+flex,length(rax));
@@ -304,6 +305,8 @@ if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex) && isfi
         end
     end
 end
+
+DEER.initialize = false;
 
 function [fit,chi2] = scale_offset_SAS_fit(fit)
 

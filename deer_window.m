@@ -1399,6 +1399,7 @@ if isfield(model,'labels') && ~isempty(model.labels),
     end;
 end;
 
+indices=resolve_address('*');
 
 % make list of selected atoms
 if ~isempty(indices),
