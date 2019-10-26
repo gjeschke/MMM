@@ -5759,7 +5759,7 @@ global model
 
 % reduce stemloop library
 
-n = 100;
+n = 15;
 
 msd = zeros(n);
 flist = cell(1,n);

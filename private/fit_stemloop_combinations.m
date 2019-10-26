@@ -222,22 +222,24 @@ for k = models % 1:nmod loop over all models
             if valid_combi
                 failed = false;
                 for ksl1 = 1:length(libs)-1
+                    library1 = libs{ksl1};
                     kdecoy1 = all_combis(ksl1,kcombi);
-                    xyz_sl1 = library.chains{kdecoy1}.xyz{1};
-                    hull_vert1 = library.hulls(kdecoy1).vertices;
+                    xyz_sl1 = library1.chains{kdecoy1}.xyz{1};
+                    hull_vert1 = library1.hulls(kdecoy1).vertices;
                     transmat1 = trafo{k,ksl1};
                     xyz_sl1 = affine_trafo_coor(xyz_sl1,transmat1);
                     hull_vert1 = affine_trafo_coor(hull_vert1,transmat1);
                     for ksl2 = ksl1+1:length(libs)
+                        library2 = libs{ksl2};
                         kdecoy2 = all_combis(ksl2,kcombi);
-                        xyz_sl2 = library.chains{kdecoy2}.xyz{1};
-                        hull_vert2 = library.hulls(kdecoy2).vertices;
+                        xyz_sl2 = library2.chains{kdecoy2}.xyz{1};
+                        hull_vert2 = library2.hulls(kdecoy2).vertices;
                         transmat2 = trafo{k,ksl2};
                         xyz_sl2 = affine_trafo_coor(xyz_sl2,transmat2);
                         hull_vert2 = affine_trafo_coor(hull_vert2,transmat2);
                         cost = clash_cost_super_fast(hull_vert1,...
-                            library.hulls(kdecoy1).faces,...
-                            hull_vert2,library.hulls(kdecoy2).faces,...
+                            library1.hulls(kdecoy1).faces,...
+                            hull_vert2,library2.hulls(kdecoy2).faces,...
                             xyz_sl1,xyz_sl2,clash_threshold,fine_clash_thr);
                         if cost > clash_fail
                             failed = true;
