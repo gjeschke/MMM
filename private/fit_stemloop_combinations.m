@@ -53,12 +53,6 @@ for k = 1:length(restraints.stemlibs)
 end
 
 report = fopen(repname,'at');
-% for kl = 1:3
-%     figure(10+kl); clf;
-%     hold on;
-%     plot([1,nmod],[max_link_length(kl),max_link_length(kl)],'k');
-% end
-%tic,
 
 solutions = zeros(10000,5);
 valid_rbas = zeros(1,nmod);
@@ -98,24 +92,14 @@ for k = models % 1:nmod loop over all models
                     rrm_hulls(kc).faces,hull_vert,library.hulls(kdecoy).faces,...
                     xyz_rrm,xyz_sl,clash_threshold,fine_clash_thr);
                 all_costs(kc) = cost;
-                % all_costs1(kc) = cost1;
-%                 if kc == ksl % exclude clashes with the own RRM
-%                     fprintf(own_clashes,'Own clash cost of SL%i: %5.1f\n',ksl,cost);
-%                 end
                 full_cost = full_cost + cost;
             end
             if full_cost < clash_fail
                 vpoi(ksl) = vpoi(ksl) + 1;
                 valid_decoys(ksl,vpoi(ksl)) = kdecoy;
-                % fprintf(report,'Model %i, stemloop %c(%i) has clash cost %6.2f (%6.2f, %6.2f, %6.2f)\n',k,sls(ksl),kdecoy,full_cost,all_costs);
             end
         end
     end
-%     fprintf(report,'Model %i',k);
-%     for klib = 1:length(libs)
-%         fprintf(report,', %i SL%c models',vpoi(klib),sls(klib));
-%     end
-%     fprintf(report,' models are non-clashing.\n');
     full_expand = prod(vpoi);
     if full_expand > 0
         % check link restraints
@@ -269,18 +253,6 @@ for k = models % 1:nmod loop over all models
                 for ksl = 1:length(libs)
                     solutions(spoi,2+ksl) = all_combis(ksl,kcombi);
                 end
-%                 if ~isempty(modnum)
-%                     fprintf(report,'R%i.%i|',modnum.block,modnum.num);
-%                 end
-%                 fprintf(report,'M(%i) ',k);
-%                 for ksl = 1:length(libs)
-%                     fprintf(report,', SL%i(%i)',ksl,all_combis(ksl,kcombi));
-%                 end
-%                 fprintf(report,'\n');
-%                 for kr = 1:length(all_r)
-%                     fprintf(report,'%5.1f  Å',all_r(kr));
-%                 end
-%                 fprintf(report,'\n');
             end
         end
 
@@ -301,8 +273,5 @@ for k = models % 1:nmod loop over all models
     end
 end
 solutions = solutions(1:spoi,:);
-% save test_SL solutions trafo 
-% fprintf(report,'\n%i solutions were found in %i valid RBAs.\n',spoi,sum(valid_rbas));
 fclose(report);
-% add_msg_board(sprintf('%i solutions were found in %i valid RBAs.\n',spoi,sum(valid_rbas)));
 
