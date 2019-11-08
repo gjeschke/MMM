@@ -22,7 +22,7 @@ function varargout = MMM_prototype(varargin)
 
 % Edit the above text to modify the response to help MMM_prototype
 
-% Last Modified by GUIDE v2.5 11-Sep-2019 07:43:19
+% Last Modified by GUIDE v2.5 05-Nov-2019 07:38:03
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -5856,18 +5856,28 @@ function menu_jobs_test5_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-stag1 = 'MMM0';
-chains1 = 'A';
-stag2 = 'INTG';
-chains2 = 'A';
-pop1 = [0.090796,0.099188,0.122686,0.092954,0.122686,0.109618,0.014790,...
-    0.042663,0.025220,0.038287,0.028097,0.069097,0.104943,0.026179,...
-    0.006158,0.006638];
-pop2 = [1.00,0.012,0.011,0.68,0.063,0.223,0.094,0.415,0.040,0.133,0.284,...
-    0.087,0.432,0.183,0.039,0.440,0.125,0.440,0.165,0.038,0.100,0.014];
-pop2 = pop2/sum(pop2);
-options.mode = 'backbone';
-[sigma,pair_rmsd] = ensemble_comparison(stag1,chains1,pop1,stag2,chains2,pop2,options);
+mylist = get_file_list('PTBP1_RNA_flex_conformers_ensemble.dat');
+fid = fopen('PTBP1_optimize.dat','wt');
+for k = 1:length(mylist)
+    ind = strfind(mylist{k},'_loops');
+    if ~isempty(ind)
+        fprintf(fid,'%s\n',mylist{k});
+    end
+end
+fclose(fid);
+
+conformer_list = get_file_list('PTBP1_optimize.dat');
+for kc = 1:length(conformer_list)
+    fname = conformer_list{kc};
+    fprintf(1,'We will optimize: %s\n',fname);
+    options.console = false;
+    ind = strfind(fname,'_loops');
+    options.fname = strcat(fname(1:ind-1),'_yasara.pdb');
+    tic,
+    optimize_by_yasara(fname,options);
+    toc,
+end
+
 guidata(hObject,handles);
 
 
@@ -5877,10 +5887,40 @@ function menu_jobs_test6_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-stag1 = 'MMM0';
-chains1 = 'AB';
-options.mode = 'backbone';
-[sigma,pair_rmsd] = ensemble_comparison(stag1,chains1); %,pop1,stag2,chains2,[],options);
+mylist = dir('PTB1_191026_f8*.pdb');
+fid = fopen('PTBP1_RNA_conformers.dat','wt');
+for k = 1:length(mylist)
+    fprintf(fid,'%s\n',mylist(k).name);
+end
+fclose(fid);
+
+conformer_list = get_file_list('PTBP1_RNA_conformers.dat');
+tested_list = get_file_list('yasara_tested.dat');
+for kc = 1:length(conformer_list)
+    to_be_tested = true;
+    for kp = 1:length(tested_list)
+        if strcmp(conformer_list{kc},tested_list{kp})
+            to_be_tested = false;
+            break
+        end
+    end
+    if to_be_tested
+        fname = conformer_list{kc};
+        fprintf(1,'We will process: %s\n',fname);
+        seqs{1} = 'NSVQSGNLALAASAAAVDAGMAMAGQS';
+        Nanchors{1} = '(A)154';
+        Canchors{1} = '(B)182';
+        seqs{2} = 'DSQPSLDQTMAAAFGLSVPNVHGALAPLAIPSAAAAAAAAGRIAIPGLAGAGN';
+        Nanchors{2} = '(A)283';
+        Canchors{2} = '(C)337';
+        options.console = false;
+        options.optimize = false;
+        tic,
+        insert_yasara_loop(fname,Nanchors,Canchors,seqs,options);
+        toc,        
+    end
+end
+
 guidata(hObject,handles);
 
 

@@ -340,329 +340,331 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
     % the parallel code section is separate for Monte Carlo and exhaustive
     % Rigi, since model rejection is handled differently
     parblocks = parblocks + 1;
-    res_vec = res*ones(1,options.granularity);
-    % profile on
-    parfor kt = 1:options.granularity % ### parfor
-        if solutions_given
-            [msoln,nsoln] = size(solutions);
-            [mproc,~] = size(processed);
-            ksoln = zeros(1,msoln);
-            psoln = 0;
-            skip = true;
-            for kbp = 1:msoln
-                if parblocks == solutions(kbp,1) && kt == solutions(kbp,2)
-                    to_be_processed = true;
-                    for kbpp = 1:mproc
-                        if parblocks == processed(kbpp,1) && kt == processed(kbpp,2)
-                            to_be_processed = false;
+    if parblocks >= restraints.search_range(1) && parblocks <= restraints.search_range(2)
+        res_vec = res*ones(1,options.granularity);
+        % profile on
+        parfor kt = 1:options.granularity % ### parfor
+            if solutions_given
+                [msoln,nsoln] = size(solutions);
+                [mproc,~] = size(processed);
+                ksoln = zeros(1,msoln);
+                psoln = 0;
+                skip = true;
+                for kbp = 1:msoln
+                    if parblocks == solutions(kbp,1) && kt == solutions(kbp,2)
+                        to_be_processed = true;
+                        for kbpp = 1:mproc
+                            if parblocks == processed(kbpp,1) && kt == processed(kbpp,2)
+                                to_be_processed = false;
+                            end
                         end
-                    end
-                    if to_be_processed
-                        psoln = psoln + 1;
-                        ksoln(psoln) = kbp;
-                        skip = false;
-                    end
-                end
-            end
-            if skip
-                merr_vec(kt) = 1; % skipped trials are reported as metrization errors
-                continue
-            end
-            ksoln = ksoln(1:psoln);
-            fprintf(1,'Trial %i.%i: Model will be tested.\n',parblocks,kt);
-            if nsoln > 2
-                for kksoln = 1:psoln
-                    fprintf(1,'combination: ');
-                    for kx = 3:nsoln
-                        fprintf(1,'%i',solutions(kksoln,kx));
-                        if kx < nsoln
-                            fprintf(1,', ');
-                        else
-                            fprintf(1,'.\n');
+                        if to_be_processed
+                            psoln = psoln + 1;
+                            ksoln(psoln) = kbp;
+                            skip = false;
                         end
                     end
                 end
-                fprintf(1,'\n');
+                if skip
+                    merr_vec(kt) = 1; % skipped trials are reported as metrization errors
+                    continue
+                end
+                ksoln = ksoln(1:psoln);
+                fprintf(1,'Trial %i.%i: Model will be tested.\n',parblocks,kt);
+                if nsoln > 2
+                    for kksoln = 1:psoln
+                        fprintf(1,'combination: ');
+                        for kx = 3:nsoln
+                            fprintf(1,'%i',solutions(kksoln,kx));
+                            if kx < nsoln
+                                fprintf(1,', ');
+                            else
+                                fprintf(1,'.\n');
+                            end
+                        end
+                    end
+                    fprintf(1,'\n');
+                end
             end
-        end
-        fulfill = true;
-        if bask + kt <= prod(intervals)
-            fractions = get_restraint_fractions(bask+kt,intervals,digitbase);
-            [dmatr,err,cres] = metrize_exhaustive(lb,ub,irbr,fractions,intervals);
-        else
-            err = 1; % report a metrization error for surplus trials
-        end
-        if err == 1% metrization failed (restraints inconsistent), next trial, increment error counter
-            merr_vec(kt) = 1;
-        else
-            if cres > res_vec(kt)
-                res_vec(kt) = cres;
-            end
-            coor0=dmat2coor(dmatr); % embed distance matrix to Cartesian space
-            if isempty(coor0)
-                eerr_vec(kt) = 1;
+            fulfill = true;
+            if bask + kt <= prod(intervals)
+                fractions = get_restraint_fractions(bask+kt,intervals,digitbase);
+                [dmatr,err,cres] = metrize_exhaustive(lb,ub,irbr,fractions,intervals);
             else
-                [coor1,err] = bound_refiner(coor0,lb,ub);
-                if err > 0
-                    berr_vec(kt) = 1;
+                err = 1; % report a metrization error for surplus trials
+            end
+            if err == 1% metrization failed (restraints inconsistent), next trial, increment error counter
+                merr_vec(kt) = 1;
+            else
+                if cres > res_vec(kt)
+                    res_vec(kt) = cres;
+                end
+                coor0=dmat2coor(dmatr); % embed distance matrix to Cartesian space
+                if isempty(coor0)
+                    eerr_vec(kt) = 1;
                 else
-                    t_labels = cell(1,length(rb));
-                    t_points = cell(1,length(rb));
-                    atransmat = zeros(4*length(rb),4);
-                    for kr = 1:length(rb)
-                        baspoi = 3*(kr-1);
-                        baspoi4 = 4*(kr-1);
-                        % [~,lab_t,transmat] = rmsd_superimpose(coor1(baspoi+1:baspoi+3,:),rb(kr).ref(1:3,2:4));
-                        [~,lab_t,transmat] = superimpose_3points(coor1(baspoi+1:baspoi+3,:),rb(kr).ref(1:3,2:4));
-                        t_labels{kr} = lab_t;
-                        t_points{kr} = affine_coor_set(points{kr},transmat);
-                        atransmat(baspoi4+1:baspoi4+4,:) = transmat;
-                    end
-                    tmats{kt} = atransmat;
-                    paux = 1;
-                    for kaux = 1:naux
-                        acoor1 = t_points{auxiliary(kaux,1)};
-                        acoor2 = t_points{auxiliary(kaux,3)};
-                        coor1b = acoor1(auxiliary(kaux,2),:);
-                        coor2b = acoor2(auxiliary(kaux,4),:);
-                        rsim = norm(coor1b-coor2b);
-                        prob = prob_Gaussian(rsim,auxiliary(kaux,5),sqrt(auxiliary(kaux,6)^2+cres^2)); % include resolution into uncertainty
-                        paux = paux*prob;
-                    end
-                    if paux < pthr^naux
-                        aerr_vec(kt) = 1;
-                        fulfill = false;
-                        paux = 0;
-                    end
-                    % check how well label-to-label distances are reproduced
-                    plabels = 1;
-                    if fulfill
-                        for kcore = 1:ncore
-                            acoor1 = t_points{core(kcore,1)};
-                            acoor2 = t_points{core(kcore,3)};
-                            coor1b = acoor1(core(kcore,2),:);
-                            coor2b = acoor2(core(kcore,4),:);
+                    [coor1,err] = bound_refiner(coor0,lb,ub);
+                    if err > 0
+                        berr_vec(kt) = 1;
+                    else
+                        t_labels = cell(1,length(rb));
+                        t_points = cell(1,length(rb));
+                        atransmat = zeros(4*length(rb),4);
+                        for kr = 1:length(rb)
+                            baspoi = 3*(kr-1);
+                            baspoi4 = 4*(kr-1);
+                            % [~,lab_t,transmat] = rmsd_superimpose(coor1(baspoi+1:baspoi+3,:),rb(kr).ref(1:3,2:4));
+                            [~,lab_t,transmat] = superimpose_3points(coor1(baspoi+1:baspoi+3,:),rb(kr).ref(1:3,2:4));
+                            t_labels{kr} = lab_t;
+                            t_points{kr} = affine_coor_set(points{kr},transmat);
+                            atransmat(baspoi4+1:baspoi4+4,:) = transmat;
+                        end
+                        tmats{kt} = atransmat;
+                        paux = 1;
+                        for kaux = 1:naux
+                            acoor1 = t_points{auxiliary(kaux,1)};
+                            acoor2 = t_points{auxiliary(kaux,3)};
+                            coor1b = acoor1(auxiliary(kaux,2),:);
+                            coor2b = acoor2(auxiliary(kaux,4),:);
                             rsim = norm(coor1b-coor2b);
-                            prob = prob_Gaussian(rsim,core(kcore,5),sqrt(core(kcore,6)^2+cres^2)); % include resolution into uncertainty
-                            plabels = plabels*prob;
+                            prob = prob_Gaussian(rsim,auxiliary(kaux,5),sqrt(auxiliary(kaux,6)^2+cres^2)); % include resolution into uncertainty
+                            paux = paux*prob;
                         end
-                        if plabels < pthr^ncore
+                        if paux < pthr^naux
+                            aerr_vec(kt) = 1;
                             fulfill = false;
-                            rerr_vec(kt) = 1;
+                            paux = 0;
                         end
-                    end
-                    % check for linker lengths
-                    if fulfill
-                        if ~isempty(links(1).maxr)
-                            for kl = 1:length(links)
-                                if ~isempty(links(kl).ref_indices)
-                                    acoor1 = t_points{links(kl).ref_indices(1)};
-                                    acoor2 = t_points{links(kl).ref_indices(3)};
-                                    coor1b = acoor1(links(kl).ref_indices(2),:);
-                                    coor2b = acoor2(links(kl).ref_indices(4),:);
-                                    rlink = norm(coor2b - coor1b);
-                                    if rlink > links(kl).maxr + cres % include resolution into uncertainty
-                                        fulfill = false;
+                        % check how well label-to-label distances are reproduced
+                        plabels = 1;
+                        if fulfill
+                            for kcore = 1:ncore
+                                acoor1 = t_points{core(kcore,1)};
+                                acoor2 = t_points{core(kcore,3)};
+                                coor1b = acoor1(core(kcore,2),:);
+                                coor2b = acoor2(core(kcore,4),:);
+                                rsim = norm(coor1b-coor2b);
+                                prob = prob_Gaussian(rsim,core(kcore,5),sqrt(core(kcore,6)^2+cres^2)); % include resolution into uncertainty
+                                plabels = plabels*prob;
+                            end
+                            if plabels < pthr^ncore
+                                fulfill = false;
+                                rerr_vec(kt) = 1;
+                            end
+                        end
+                        % check for linker lengths
+                        if fulfill
+                            if ~isempty(links(1).maxr)
+                                for kl = 1:length(links)
+                                    if ~isempty(links(kl).ref_indices)
+                                        acoor1 = t_points{links(kl).ref_indices(1)};
+                                        acoor2 = t_points{links(kl).ref_indices(3)};
+                                        coor1b = acoor1(links(kl).ref_indices(2),:);
+                                        coor2b = acoor2(links(kl).ref_indices(4),:);
+                                        rlink = norm(coor2b - coor1b);
+                                        if rlink > links(kl).maxr + cres % include resolution into uncertainty
+                                            fulfill = false;
+                                        end
+                                    end
+                                end
+                                if ~fulfill
+                                    lerr_vec(kt) = 1;
+                                end
+                            end
+                        end
+                        % check for rigid-body clashes
+                        if fulfill
+                            clashed = false;
+                            for kr1 = 1:length(rb)-1
+                                baspoi4 = 4*(kr1-1);
+                                atransmat = tmats{kt};
+                                transmat = atransmat(baspoi4+1:baspoi4+4,:);
+                                hc1 = single(affine_coor_set(heavy_coor{kr1},transmat));
+                                hc1h = affine_coor_set(hulls(kr1).vertices,transmat);
+                                for kr2 = kr1+1:length(rb)
+                                    baspoi4b = 4*(kr2-1);
+                                    transmatb = atransmat(baspoi4b+1:baspoi4b+4,:);
+                                    hc2 = single(affine_coor_set(heavy_coor{kr2},transmatb));
+                                    hc2h = affine_coor_set(hulls(kr2).vertices,transmatb);
+                                    % the fine threshold of -1 prevents the
+                                    % slow fine-grained clash_cost dunction to
+                                    % be ever called
+                                    cost = clash_cost_super_fast(hc1h,hulls(kr1).faces,hc2h,hulls(kr2).faces,hc1,hc2,clash_threshold,-1);
+                                    if cost > clash_fail
+                                        clashed = true;
+                                        % fprintf(2,'Clash test failed between RB%i and RB%i at cost function %12.0f\n',kr1,kr2,cost);
                                     end
                                 end
                             end
-                            if ~fulfill
-                                lerr_vec(kt) = 1;
+                            if clashed
+                                cerr_vec(kt) = 1;
+                                fulfill = false;
                             end
                         end
-                    end
-                    % check for rigid-body clashes
-                    if fulfill
-                        clashed = false;
-                        for kr1 = 1:length(rb)-1
-                            baspoi4 = 4*(kr1-1);
-                            atransmat = tmats{kt};
-                            transmat = atransmat(baspoi4+1:baspoi4+4,:);
-                            hc1 = single(affine_coor_set(heavy_coor{kr1},transmat));
-                            hc1h = affine_coor_set(hulls(kr1).vertices,transmat);
-                            for kr2 = kr1+1:length(rb)
-                                baspoi4b = 4*(kr2-1);
-                                transmatb = atransmat(baspoi4b+1:baspoi4b+4,:);
-                                hc2 = single(affine_coor_set(heavy_coor{kr2},transmatb));
-                                hc2h = affine_coor_set(hulls(kr2).vertices,transmatb);
-                                % the fine threshold of -1 prevents the
-                                % slow fine-grained clash_cost dunction to
-                                % be ever called
-                                cost = clash_cost_super_fast(hc1h,hulls(kr1).faces,hc2h,hulls(kr2).faces,hc1,hc2,clash_threshold,-1);
-                                if cost > clash_fail
-                                    clashed = true;
-                                    % fprintf(2,'Clash test failed between RB%i and RB%i at cost function %12.0f\n',kr1,kr2,cost);
+                        if fulfill
+                            xld = zeros(length(xlinks),1);
+                            xlf = 0;
+                            for kl = 1:length(xlinks)
+                                acoor1 = t_points{xlinks(kl).ref_indices(1)};
+                                acoor2 = t_points{xlinks(kl).ref_indices(3)};
+                                coor1b = acoor1(xlinks(kl).ref_indices(2),:);
+                                coor2b = acoor2(xlinks(kl).ref_indices(4),:);
+                                rlink = norm(coor2b - coor1b);
+                                xld(kl) = rlink;
+                                if rlink > xlinks(kl).maxr + cres % include resolution into uncertainty
+                                    xlf = xlf + 1;
                                 end
                             end
-                        end
-                        if clashed
-                            cerr_vec(kt) = 1;
-                            fulfill = false;
-                        end
-                    end
-                    if fulfill
-                        xld = zeros(length(xlinks),1);
-                        xlf = 0;
-                        for kl = 1:length(xlinks)
-                            acoor1 = t_points{xlinks(kl).ref_indices(1)};
-                            acoor2 = t_points{xlinks(kl).ref_indices(3)};
-                            coor1b = acoor1(xlinks(kl).ref_indices(2),:);
-                            coor2b = acoor2(xlinks(kl).ref_indices(4),:);
-                            rlink = norm(coor2b - coor1b);
-                            xld(kl) = rlink;
-                            if rlink > xlinks(kl).maxr + cres % include resolution into uncertainty
-                                xlf = xlf + 1;
+                            xlink_distances{kt} = xld;
+                            if 100*(length(xlinks)-xlf)/length(xlinks) < xlink_percentage
+                                xerr_vec(kt) = 1;
+                                fulfill = false;
                             end
                         end
-                        xlink_distances{kt} = xld;
-                        if 100*(length(xlinks)-xlf)/length(xlinks) < xlink_percentage
-                            xerr_vec(kt) = 1;
-                            fulfill = false;
-                        end
-                    end
-                    if fulfill
-                        atransmat = tmats{kt};
-                        % the first refinement is performed without
-                        % testing for clashes, as this is much faster
-                        fprintf(1,'Refining T%i.%i\n',parblocks,kt);
-                        atransmat0 = atransmat;
-                        [atransmat,errvec,mprob,xld] = ...
-                            refine_rba(rb,atransmat0,points,pthr,naux,auxiliary,ncore,core,links,1e6,heavy_coor,xlink_percentage,xlinks);
-                        if ~sum(errvec)
-                            fprintf(1,'Secondary refining T%i.%i\n',parblocks,kt);
+                        if fulfill
+                            atransmat = tmats{kt};
+                            % the first refinement is performed without
+                            % testing for clashes, as this is much faster
+                            fprintf(1,'Refining T%i.%i\n',parblocks,kt);
+                            atransmat0 = atransmat;
                             [atransmat,errvec,mprob,xld] = ...
-                                refine_rba_fast(rb,atransmat,points,pthr,naux,auxiliary,ncore,core,links,clash_threshold,heavy_coor,xlink_percentage,xlinks);
+                                refine_rba(rb,atransmat0,points,pthr,naux,auxiliary,ncore,core,links,1e6,heavy_coor,xlink_percentage,xlinks);
+                            if ~sum(errvec)
+                                fprintf(1,'Secondary refining T%i.%i\n',parblocks,kt);
+                                [atransmat,errvec,mprob,xld] = ...
+                                    refine_rba_fast(rb,atransmat,points,pthr,naux,auxiliary,ncore,core,links,clash_threshold,heavy_coor,xlink_percentage,xlinks);
+                            end
+                            tmats{kt} = atransmat;
+                            xlink_distances{kt} = xld;
+                            model_prob(kt) = mprob;
+                            aerr_vec(kt) = errvec(1);
+                            rerr_vec(kt) = errvec(2);
+                            lerr_vec(kt) = errvec(3);
+                            cerr_vec(kt) = errvec(4);
+                            xerr_vec(kt) = errvec(5);
                         end
-                        tmats{kt} = atransmat;
-                        xlink_distances{kt} = xld;
-                        model_prob(kt) = mprob;
-                        aerr_vec(kt) = errvec(1);
-                        rerr_vec(kt) = errvec(2);
-                        lerr_vec(kt) = errvec(3);
-                        cerr_vec(kt) = errvec(4);
-                        xerr_vec(kt) = errvec(5);
                     end
                 end
             end
         end
-    end
-    % profile viewer
-    if ~solutions_given
-        fprintf(1,'Parallel block %i completed.\n',parblocks);
-    end
-    % analyze all models generated in the parallel code section
-    met_err = met_err + sum(merr_vec);
-    embed_err = embed_err + sum(eerr_vec);
-    bound_err = bound_err + sum(berr_vec);
-    aux_fail = aux_fail + sum(aerr_vec);
-    label_fail = label_fail + sum(rerr_vec);
-    link_fail = link_fail + sum(lerr_vec);
-    clash_err = clash_err + sum(cerr_vec);
-    xlink_fail = xlink_fail + sum(xerr_vec);
-    stem_fail = stem_fail + sum(stem_vec);
-    stem2_fail = stem2_fail + sum(stem2_vec);
-    stem3_fail = stem3_fail + sum(stem3_vec);
-    fail_vec = merr_vec+eerr_vec+berr_vec+aerr_vec+rerr_vec+lerr_vec+cerr_vec+xerr_vec;
-    fail_vec = fail_vec + stem_vec+stem2_vec+stem3_vec;
-    if worst_res < max(res_vec)
-        worst_res = max(res_vec);
-    end
-    for k = bask+1:bask+options.granularity
-        if fail_vec(k-bask) == 0
-            if isempty(all_s_combi{k-bask})
-                all_combi = scombi(k-bask,:);
-            else
-                all_combi = all_s_combi{k-bask};
-            end
-            atransmat = tmats{k-bask};
-            for kr = 1:length(rb)
-                baspoi4 = 4*(kr-1);
-                transmats{kr} = atransmat(baspoi4+1:baspoi4+4,:);
-            end
-            [ncombi,~] = size(all_combi);
-            for kcombi = 1:ncombi
-                success = success + 1;
-                ccombi = all_combi(kcombi,:);
-                probabilities(success) = model_prob(k-bask)^(1/(naux+ncore));
-                tmstd = [];
-                t_chain_coor = chain_coor;
-                for kr = 1:length(restraints.rb)
-                    for kc = 1:length(restraints.rb(kr).chains)
-                        t_chain_coor{kr,kc} = affine_coor_set(chain_coor{kr,kc},transmats{kr});
-                        if isfield(restraints,'superimpose') && restraints.rb(kr).chains(kc) == restraints.superimpose
-                            [~,~,tmstd] = rmsd_superimpose(chain_coor{kr,kc},t_chain_coor{kr,kc});
-                        end
-                    end
+        % profile viewer
+        if ~solutions_given
+            fprintf(1,'Parallel block %i completed.\n',parblocks);
+        end
+        % analyze all models generated in the parallel code section
+        met_err = met_err + sum(merr_vec);
+        embed_err = embed_err + sum(eerr_vec);
+        bound_err = bound_err + sum(berr_vec);
+        aux_fail = aux_fail + sum(aerr_vec);
+        label_fail = label_fail + sum(rerr_vec);
+        link_fail = link_fail + sum(lerr_vec);
+        clash_err = clash_err + sum(cerr_vec);
+        xlink_fail = xlink_fail + sum(xerr_vec);
+        stem_fail = stem_fail + sum(stem_vec);
+        stem2_fail = stem2_fail + sum(stem2_vec);
+        stem3_fail = stem3_fail + sum(stem3_vec);
+        fail_vec = merr_vec+eerr_vec+berr_vec+aerr_vec+rerr_vec+lerr_vec+cerr_vec+xerr_vec;
+        fail_vec = fail_vec + stem_vec+stem2_vec+stem3_vec;
+        if worst_res < max(res_vec)
+            worst_res = max(res_vec);
+        end
+        for k = bask+1:bask+options.granularity
+            if fail_vec(k-bask) == 0
+                if isempty(all_s_combi{k-bask})
+                    all_combi = scombi(k-bask,:);
+                else
+                    all_combi = all_s_combi{k-bask};
                 end
-                for kr = 1:length(restraints.rb)
-                    for kc = 1:length(restraints.rb(kr).chains)
-                        if ~isempty(tmstd)
-                            t_chain_coor{kr,kc} = affine_coor_set(t_chain_coor{kr,kc},tmstd);
-                        end
-                        model.structures{snum}(restraints.rb(kr).chains(kc)).xyz{success} = t_chain_coor{kr,kc};
-                        if success > 1
-                            model.structures{snum}(restraints.rb(kr).chains(kc)).atoms{success} = ...
-                                model.structures{snum}(restraints.rb(kr).chains(kc)).atoms{1};
-                            model.structures{snum}(restraints.rb(kr).chains(kc)).residues{success} = ...
-                                model.structures{snum}(restraints.rb(kr).chains(kc)).residues{1};
-                            model.structures{snum}(restraints.rb(kr).chains(kc)).Bfactor{success} = ...
-                                model.structures{snum}(restraints.rb(kr).chains(kc)).Bfactor{1};
-                            model.structures{snum}(restraints.rb(kr).chains(kc)).Btensor{success} = ...
-                                model.structures{snum}(restraints.rb(kr).chains(kc)).Btensor{1};
-                        end
-                    end
+                atransmat = tmats{k-bask};
+                for kr = 1:length(rb)
+                    baspoi4 = 4*(kr-1);
+                    transmats{kr} = atransmat(baspoi4+1:baspoi4+4,:);
                 end
-                sfulfill = true;
-                % now compare stemloop restraints
-                if ~isempty(restraints.stemlibs)
-                    modnum.block = parblocks;
-                    modnum.num = k-bask;
-                    modnum.model = success;
-                    [sl_solutions,~,~,~,ccombi] = fit_stemloop_combinations(restraints,snum0,snum,repname,modnum);
-                    if isempty(sl_solutions)
-                        success = success - 1;
-                        stem_fail = stem_fail + 1;
-                        sfulfill = false;
-                    end
-                end
-                if sfulfill
-                    if sfulfill
-                        fid = fopen(solutionname,'at');
-                        if ~isempty(ccombi) && sum(ccombi) > 0
-                            fprintf(fid,'%8i%6i',parblocks,k-bask);
-                            for ksl = 1:length(ccombi)
-                                fprintf(fid,'%6i',ccombi(ksl));
-                            end
-                            fprintf(fid,'\n');
-                        else
-                            fprintf(fid,'%8i%6i\n',parblocks,k-bask);
-                        end
-                        fclose(fid);
-                        soln_count = soln_count + 1;
-                        t_points = cell(1,length(rb));
-                        for kr = 1:length(rb)
-                             t_points{kr} = affine_coor_set(points{kr},transmats{kr});
-                        end
-                        reference_geometry{soln_count} = t_points;
-                        if restraints.search
-                            success = success -1;
-                        end
-                        if solutions_given
-                            fid = fopen(proc_name,'at');
-                            fprintf(fid,'%8i%6i\n',parblocks,k-bask);
-                            fclose(fid);
-                        end
-                    end
-                end
-            end
-            if ~skip_mode && sfulfill
-                fid = fopen(combinationname,'at');
-                all_combi = all_s_combi{k-bask};
                 [ncombi,~] = size(all_combi);
                 for kcombi = 1:ncombi
-                    fprintf(fid,'%8i%6i%6i%6i%6i\n',parblocks,k-bask,all_combi(kcombi,:)); 
+                    success = success + 1;
+                    ccombi = all_combi(kcombi,:);
+                    probabilities(success) = model_prob(k-bask)^(1/(naux+ncore));
+                    tmstd = [];
+                    t_chain_coor = chain_coor;
+                    for kr = 1:length(restraints.rb)
+                        for kc = 1:length(restraints.rb(kr).chains)
+                            t_chain_coor{kr,kc} = affine_coor_set(chain_coor{kr,kc},transmats{kr});
+                            if isfield(restraints,'superimpose') && restraints.rb(kr).chains(kc) == restraints.superimpose
+                                [~,~,tmstd] = rmsd_superimpose(chain_coor{kr,kc},t_chain_coor{kr,kc});
+                            end
+                        end
+                    end
+                    for kr = 1:length(restraints.rb)
+                        for kc = 1:length(restraints.rb(kr).chains)
+                            if ~isempty(tmstd)
+                                t_chain_coor{kr,kc} = affine_coor_set(t_chain_coor{kr,kc},tmstd);
+                            end
+                            model.structures{snum}(restraints.rb(kr).chains(kc)).xyz{success} = t_chain_coor{kr,kc};
+                            if success > 1
+                                model.structures{snum}(restraints.rb(kr).chains(kc)).atoms{success} = ...
+                                    model.structures{snum}(restraints.rb(kr).chains(kc)).atoms{1};
+                                model.structures{snum}(restraints.rb(kr).chains(kc)).residues{success} = ...
+                                    model.structures{snum}(restraints.rb(kr).chains(kc)).residues{1};
+                                model.structures{snum}(restraints.rb(kr).chains(kc)).Bfactor{success} = ...
+                                    model.structures{snum}(restraints.rb(kr).chains(kc)).Bfactor{1};
+                                model.structures{snum}(restraints.rb(kr).chains(kc)).Btensor{success} = ...
+                                    model.structures{snum}(restraints.rb(kr).chains(kc)).Btensor{1};
+                            end
+                        end
+                    end
+                    sfulfill = true;
+                    % now compare stemloop restraints
+                    if ~isempty(restraints.stemlibs)
+                        modnum.block = parblocks;
+                        modnum.num = k-bask;
+                        modnum.model = success;
+                        [sl_solutions,~,~,~,ccombi] = fit_stemloop_combinations(restraints,snum0,snum,repname,modnum);
+                        if isempty(sl_solutions)
+                            success = success - 1;
+                            stem_fail = stem_fail + 1;
+                            sfulfill = false;
+                        end
+                    end
+                    if sfulfill
+                        if sfulfill
+                            fid = fopen(solutionname,'at');
+                            if ~isempty(ccombi) && sum(ccombi) > 0
+                                fprintf(fid,'%8i%6i',parblocks,k-bask);
+                                for ksl = 1:length(ccombi)
+                                    fprintf(fid,'%6i',ccombi(ksl));
+                                end
+                                fprintf(fid,'\n');
+                            else
+                                fprintf(fid,'%8i%6i\n',parblocks,k-bask);
+                            end
+                            fclose(fid);
+                            soln_count = soln_count + 1;
+                            t_points = cell(1,length(rb));
+                            for kr = 1:length(rb)
+                                t_points{kr} = affine_coor_set(points{kr},transmats{kr});
+                            end
+                            reference_geometry{soln_count} = t_points;
+                            if restraints.search
+                                success = success -1;
+                            end
+                            if solutions_given
+                                fid = fopen(proc_name,'at');
+                                fprintf(fid,'%8i%6i\n',parblocks,k-bask);
+                                fclose(fid);
+                            end
+                        end
+                    end
                 end
-                fclose(fid);
+                if ~skip_mode && sfulfill
+                    fid = fopen(combinationname,'at');
+                    all_combi = all_s_combi{k-bask};
+                    [ncombi,~] = size(all_combi);
+                    for kcombi = 1:ncombi
+                        fprintf(fid,'%8i%6i%6i%6i%6i\n',parblocks,k-bask,all_combi(kcombi,:));
+                    end
+                    fclose(fid);
+                end
             end
         end
     end
@@ -682,7 +684,7 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
             title('Crosslink fulfillment');
         end
         %  update runtime information
-        left_time1 = 3600*maxtime - runtime; 
+        left_time1 = 3600*maxtime - runtime;
         left_time2 = runtime*(trials-bask)/bask;
         left_time3 = runtime*(maxmodels-success)/success;
         if isnan(left_time3)

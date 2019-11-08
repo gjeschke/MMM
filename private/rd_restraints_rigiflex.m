@@ -73,6 +73,7 @@ clear restraints
 
 restraints.flex_time = 1;
 restraints.search = false;
+restraints.search_range = [1 1e6];
 restraints.maxtrials = -1;
 restraints.ensemble = [];
 restraints.p_model = [];
@@ -103,6 +104,7 @@ restraints.xlinks(1).indices1 = [];
 restraints.xlinks(1).coor2 = [];
 restraints.xlinks(1).indices2 = [];
 
+restraints.RNA_save = false;
 restraints.stemloop_links = [];
 restraints.SL_DEER = [];
 restraints.SAXS = [];
@@ -160,6 +162,12 @@ while 1
                 case 'SEARCH'
                     mode=0;
                     restraints.search = true;
+                    if length(args) >= 3
+                        restraints.serach_range(1)=str2double(char(args(3)));
+                    end
+                    if length(args) >= 4
+                        restraints.serach_range(2)=str2double(char(args(4)));
+                    end
                 case 'RIGIDISTR'
                     mode=0;
                     restraints.rigi_distributions = true;
@@ -884,6 +892,8 @@ while 1
                     key = strtrim(char(args(1)));
                     if key(1) == ':' % new subkey
                         switch key
+                            case ':SAVE'
+                                restraints.RNA_save = true;
                             case ':SEQ'
                                 restraints.RNA(RNA_poi).nta = str2double((char(args(2))));
                                 restraints.RNA(RNA_poi).nte = str2double((char(args(3))));

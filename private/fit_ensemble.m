@@ -41,6 +41,7 @@ options.text_info_status.String = sprintf('of %i',ensemble_size);
 
 included = zeros(1,ensemble_size);
 populations = [];
+len_DEER = 0;
 for km = 1:length(model_list)
     options.text_iteration_counter.String = sprintf('%i',km);
     drawnow
@@ -51,8 +52,11 @@ for km = 1:length(model_list)
     else
         model_restraints = evaluate_model_restraints(model_list{km},restraints,options);
     end
-    [overlaps,DEER_fits] = get_DEER(model_restraints);
-    [chi2_vec,SAS_fits,valid] = get_SAS(model_restraints);
+    [overlaps,DEER_fits] = get_DEER(model_restraints,restraints);
+%     if isempty(DEER_fits)
+%         disp('Aber hallo!');
+%     end
+    [chi2_vec,SAS_fits,valid] = get_SAS(model_restraints,restraints);
     if isempty(overlaps) || ~valid
         continue
     end
@@ -61,9 +65,10 @@ for km = 1:length(model_list)
     SAS_scores(km) = sum(chi2_vec);
     if ~initialized
         initialized = true;
+        len_DEER = length(DEER_fits);
         mpoi = 1;
-        all_DEER_fits = cell(1,length(DEER_fits));
-        for k = 1:length(DEER_fits)
+        all_DEER_fits = cell(1,len_DEER);
+        for k = 1:len_DEER
             dat0 = DEER_fits{k};
             [m,~] = size(dat0);
             data = zeros(m,2+ensemble_size);
@@ -82,7 +87,7 @@ for km = 1:length(model_list)
         end
     else
         mpoi = mpoi + 1;
-        for k = 1:length(DEER_fits)
+        for k = 1:len_DEER
             dat0 = DEER_fits{k};
             data = all_DEER_fits{k};
             data(:,2+mpoi) = dat0(:,3);
@@ -110,7 +115,7 @@ end
 included = included(1:mpoi);
 included0 = included;
 
-for k = 1:length(DEER_fits)
+for k = 1:len_DEER
     data = all_DEER_fits{k};
     data = data(:,1:2+mpoi);
     all_DEER_fits{k} = data;
@@ -127,7 +132,7 @@ options.text_info_status.String = '· 1000';
 
 ensemble_size = mpoi;
 
-if ~isempty(DEER_fits)
+if len_DEER > 0
 
     clear fit_multi_DEER % initialize iteration counter
 
@@ -204,6 +209,10 @@ if ~isempty(SAS_fits)
     l_SAS = [zeros(1,ensemble_size) -0.01*ones(1,length(all_SAS_fits))];
     u_SAS = [ones(1,ensemble_size) 0.01*ones(1,length(all_SAS_fits))];
     v0 = [ones(1,ensemble_size)/ensemble_size zeros(1,length(all_SAS_fits))];
+    
+    fit_options = optimoptions('patternsearch',...
+        'MaxFunctionEvaluations',10000*length(v0),'MaxIterations',500*length(v0),...
+        'StepTolerance',options.threshold/10);
 
     tic,
     [v,fom_SAS,exitflag,fit_output] = patternsearch(fanonym_SAS,v0,[],[],[],[],l_SAS,u_SAS,[],fit_options);
@@ -376,7 +385,7 @@ end
 
 
 
-function [overlaps,fits] = get_DEER(restraints)
+function [overlaps,fits] = get_DEER(restraints,restraints0)
 
 
 % make DEER distance distributions
@@ -385,7 +394,8 @@ core = length(restraints.DEER);
 rax = restraints.DEER(1).rax;
 flex = 0;
 
-if isfield(restraints,'pflex') && ~isempty(restraints.pflex) && isfield(restraints.pflex,'DEER')
+if isfield(restraints,'pflex') && ~isempty(restraints.pflex) && isfield(restraints.pflex,'DEER')...
+        && isfield(restraints0,'pflex') && ~isempty(restraints0.pflex) && isfield(restraints0.pflex,'DEER')
     for kl = 1:length(restraints.pflex)
         flex = flex + length(restraints.pflex(kl).DEER);
     end
@@ -398,7 +408,7 @@ n_DEER = 0;
 score_DEER = 1;
 DEER_valid = true;
 
-for k = 1:length(restraints.DEER)
+for k = 1:max(length(restraints.DEER),length(restraints0.DEER))
     if restraints.DEER(k).r ~=0 &&  restraints.DEER(k).sigr ~=0 % this is a restraint to be tested
         distr = restraints.DEER(k).distr;
         n_DEER = n_DEER + 1;
@@ -430,7 +440,8 @@ end
 
 pflex = core;
 
-if isfield(restraints,'pflex') && ~isempty(restraints.pflex) && isfield(restraints.pflex,'DEER')
+if isfield(restraints,'pflex') && ~isempty(restraints.pflex) && isfield(restraints.pflex,'DEER')...
+        && isfield(restraints0,'pflex') && ~isempty(restraints0.pflex) && isfield(restraints0.pflex,'DEER')
     for kl = 1:length(restraints.pflex)
         for k = 1:length(restraints.pflex(kl).DEER)
             pflex = pflex + 1;
@@ -469,14 +480,14 @@ end
 overlaps = real(overlaps(1:n_DEER));
 fits = fits(1:n_DEER);
 
-function [chi2_vec,fits,valid] = get_SAS(restraints)
+function [chi2_vec,fits,valid] = get_SAS(restraints,restraints0)
 
 chi2_vec = zeros(1,10);
 fits = cell(1,10);
 valid = true;
 
 n_SANS = 0;
-if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
+if isfield(restraints,'SANS') && ~isempty(restraints.SANS) && isfield(restraints0,'SANS') && ~isempty(restraints0.SANS)
     n_SANS = length(restraints.SANS);
     for ks = 1:n_SANS
         fits{ks} = restraints.SANS(ks).fit;
@@ -485,7 +496,7 @@ if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
 end
 
 n_SAXS = 0;
-if isfield(restraints,'SAXS') && ~isempty(restraints.SAXS)
+if isfield(restraints,'SAXS') && ~isempty(restraints.SAXS) && isfield(restraints0,'SAXS') && ~isempty(restraints0.SAXS)
     n_SAXS = length(restraints.SAXS);
     for ks = 1:n_SAXS
         fits{n_SANS+ks} = restraints.SAXS(ks).fit;

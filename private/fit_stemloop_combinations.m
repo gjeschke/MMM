@@ -39,8 +39,8 @@ stag = mk_address(snum);
 stag0 = mk_address(snum0);
 
 libs = cell(1,length(restraints.stemlibs));
-chains = char(1,3);
-sls = char(1,3);
+chains = zeros(1,length(restraints.stemlibs));
+sls = zeros(1,length(restraints.stemlibs));
 rrm_hulls(3).vertices = [];
 rrm_hulls(3).faces = [];
 for k = 1:length(restraints.stemlibs)
@@ -101,6 +101,9 @@ for k = models % 1:nmod loop over all models
         end
     end
     full_expand = prod(vpoi);
+    if isempty(vpoi)
+        full_expand = 0;
+    end
     if full_expand > 0
         % check link restraints
         nlinks = length(restraints.RNA.bind) - 1;

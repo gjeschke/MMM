@@ -377,17 +377,19 @@ for runstep = 0:last_step
             [pathstr,basname] = fileparts(handles.options.fname);
             report_name = fullfile(pathstr,strcat(basname,'_RNA_link_report.txt'));
             linkable_name = fullfile(pathstr,strcat(basname,'_RNA_linkable.dat'));
-            [solutions,trafo,stemlibs,dvecs] = fit_stemloop_combinations(handles.restraints,handles.template_snum,handles.diagnostics.snum,report_name);
-            % assign the stemloops to rigid bodies, needed for RBA adjustment
-            rb_assign = zeros(1,length(stemlibs));
-            rna_chains = zeros(1,length(stemlibs));
-            for klib = 1:length(stemlibs)
-                slindi = resolve_address(sprintf('%s%s',stag,stemlibs{klib}.chaintag));
-                rna_chains(klib) = slindi(2);
-                for kr = 1:length(handles.restraints.rb)
-                    for kcc = 1:length(handles.restraints.rb(kr).chains)
-                        if slindi(2) == handles.restraints.rb(kr).chains(kcc)
-                            rb_assign(klib) = kr;
+            if ~isempty(handles.restraints.stemlibs)
+                [solutions,trafo,stemlibs,dvecs] = fit_stemloop_combinations(handles.restraints,handles.template_snum,handles.diagnostics.snum,report_name);
+                % assign the stemloops to rigid bodies, needed for RBA adjustment
+                rb_assign = zeros(1,length(stemlibs));
+                rna_chains = zeros(1,length(stemlibs));
+                for klib = 1:length(stemlibs)
+                    slindi = resolve_address(sprintf('%s%s',stag,stemlibs{klib}.chaintag));
+                    rna_chains(klib) = slindi(2);
+                    for kr = 1:length(handles.restraints.rb)
+                        for kcc = 1:length(handles.restraints.rb(kr).chains)
+                            if slindi(2) == handles.restraints.rb(kr).chains(kcc)
+                                rb_assign(klib) = kr;
+                            end
                         end
                     end
                 end
@@ -414,61 +416,67 @@ for runstep = 0:last_step
                 success_vec = zeros(1,handles.diagnostics.success);
                 initialize_model = true;
                 for km = 1:handles.diagnostics.success % loop over rigid-body models
-                    csoln = solutions(solutions(:,1)==km,:);
-                    stretch = csoln(:,2);
-                    [stretch,strpoi] = sort(stretch);
-                    csoln = csoln(strpoi,:);
+                    if ~isempty(handles.restraints.stemlibs)
+                        csoln = solutions(solutions(:,1)==km,:);
+                        stretch = csoln(:,2);
+                        [stretch,strpoi] = sort(stretch);
+                        csoln = csoln(strpoi,:);
+                    else
+                        stretch = 1;
+                    end
                     full_connect = false;
                     kcombi = 0;
                     snum = handles.diagnostics.snum;
                     while ~isempty(stretch) && ~full_connect && kcombi < length(stretch) && kcombi < handles.restraints.RNA.models
                         kcombi = kcombi + 1;
-                        ccombi = csoln(kcombi,3:end);
-                        % make adjustment transformation matrices
-                        adj_transmats = cell(1,length(handles.restraints.rb));
-                        for kr = 1:length(handles.restraints.rb)
-                            adj_transmats{kr} = eye(4);
-                        end
-                        for kr = 2:length(rb_assign)
-                            if rb_assign(kr) > 1
-                                baspoi6 = (rb_assign(kr)-2)*6;
-                                dtrans = 10*dvecs(km,baspoi6+1:baspoi6+3);
-                                % fprintf(1,'Translation(%i): (%3.1f, %3.1f, %3.1f) ?\n',kr,dtrans);
-                                deuler = dvecs(km,baspoi6+4:baspoi6+6);
-                                % fprintf(1,'Rotation(%i)   : (%3.1f, %3.1f, %3.1f)?\n',kr,180*deuler/pi);
-                                adj_transmats{rb_assign(kr)} = transrot2affine(dtrans,deuler);
+                        if ~isempty(handles.restraints.stemlibs)
+                            ccombi = csoln(kcombi,3:end);
+                            % make adjustment transformation matrices
+                            adj_transmats = cell(1,length(handles.restraints.rb));
+                            for kr = 1:length(handles.restraints.rb)
+                                adj_transmats{kr} = eye(4);
                             end
-                        end
-                        % apply adjustment of RBA
-                        for kr = 1:length(handles.restraints.rb)                       
-                            for kc = 1:length(handles.restraints.rb(kr).chains)
-                                if min(abs(rna_chains-handles.restraints.rb(kr).chains(kc))) ~= 0
-                                    % adr_rep = mk_address([snum handles.restraints.rb(kr).chains(kc) km]);
-              %                      fprintf(1,'Replacing coordinates of %s\n',adr_rep);
-                                    model.structures{snum}(handles.restraints.rb(kr).chains(kc)).xyz{km} = ...
-                                        affine_coor_set(model.structures{snum}(handles.restraints.rb(kr).chains(kc)).xyz{km},adj_transmats{kr});
+                            for kr = 2:length(rb_assign)
+                                if rb_assign(kr) > 1
+                                    baspoi6 = (rb_assign(kr)-2)*6;
+                                    dtrans = 10*dvecs(km,baspoi6+1:baspoi6+3);
+                                    % fprintf(1,'Translation(%i): (%3.1f, %3.1f, %3.1f) ?\n',kr,dtrans);
+                                    deuler = dvecs(km,baspoi6+4:baspoi6+6);
+                                    % fprintf(1,'Rotation(%i)   : (%3.1f, %3.1f, %3.1f)?\n',kr,180*deuler/pi);
+                                    adj_transmats{rb_assign(kr)} = transrot2affine(dtrans,deuler);
                                 end
                             end
-                        end
-                        % replace binding motifs by stemloops from library if stemloop
-                        % libraries are tested
-                        for klib = 1:length(stemlibs)
-                            chain_coor = stemlibs{klib}.chains{ccombi(klib)}.xyz{1};
-                            chain_coor = affine_coor_set(chain_coor,trafo{km,klib});
-                            if initialize_model
-                                fields = fieldnames(model.structures{snum}(chain_indices(klib)));
-                                for kfield = 1:length(fields)
-                                    if isfield(stemlibs{klib}.chains{ccombi(klib)},fields{kfield})
-                                        model.structures{snum}(chain_indices(klib)).(fields{kfield}) = stemlibs{klib}.chains{ccombi(klib)}.(fields{kfield});
+                            % apply adjustment of RBA
+                            for kr = 1:length(handles.restraints.rb)                       
+                                for kc = 1:length(handles.restraints.rb(kr).chains)
+                                    if min(abs(rna_chains-handles.restraints.rb(kr).chains(kc))) ~= 0
+                                        % adr_rep = mk_address([snum handles.restraints.rb(kr).chains(kc) km]);
+                  %                      fprintf(1,'Replacing coordinates of %s\n',adr_rep);
+                                        model.structures{snum}(handles.restraints.rb(kr).chains(kc)).xyz{km} = ...
+                                            affine_coor_set(model.structures{snum}(handles.restraints.rb(kr).chains(kc)).xyz{km},adj_transmats{kr});
                                     end
                                 end
                             end
-                            model.structures{snum}(chain_indices(klib)).xyz{km} = chain_coor;
-                            model.structures{snum}(chain_indices(klib)).residues{km} = stemlibs{klib}.chains{ccombi(klib)}.residues{1};
-                            model.structures{snum}(chain_indices(klib)).Bfactor{km} = stemlibs{klib}.chains{ccombi(klib)}.Bfactor{1};
-                            model.structures{snum}(chain_indices(klib)).Btensor{km} = stemlibs{klib}.chains{ccombi(klib)}.Btensor{1};
-                            model.structures{snum}(chain_indices(klib)).atoms{km} = stemlibs{klib}.chains{ccombi(klib)}.atoms{1};
-                            model.structures{snum}(chain_indices(klib)).isotopes = stemlibs{klib}.chains{ccombi(klib)}.isotopes;
+                            % replace binding motifs by stemloops from library if stemloop
+                            % libraries are tested
+                            for klib = 1:length(stemlibs)
+                                chain_coor = stemlibs{klib}.chains{ccombi(klib)}.xyz{1};
+                                chain_coor = affine_coor_set(chain_coor,trafo{km,klib});
+                                if initialize_model
+                                    fields = fieldnames(model.structures{snum}(chain_indices(klib)));
+                                    for kfield = 1:length(fields)
+                                        if isfield(stemlibs{klib}.chains{ccombi(klib)},fields{kfield})
+                                            model.structures{snum}(chain_indices(klib)).(fields{kfield}) = stemlibs{klib}.chains{ccombi(klib)}.(fields{kfield});
+                                        end
+                                    end
+                                end
+                                model.structures{snum}(chain_indices(klib)).xyz{km} = chain_coor;
+                                model.structures{snum}(chain_indices(klib)).residues{km} = stemlibs{klib}.chains{ccombi(klib)}.residues{1};
+                                model.structures{snum}(chain_indices(klib)).Bfactor{km} = stemlibs{klib}.chains{ccombi(klib)}.Bfactor{1};
+                                model.structures{snum}(chain_indices(klib)).Btensor{km} = stemlibs{klib}.chains{ccombi(klib)}.Btensor{1};
+                                model.structures{snum}(chain_indices(klib)).atoms{km} = stemlibs{klib}.chains{ccombi(klib)}.atoms{1};
+                                model.structures{snum}(chain_indices(klib)).isotopes = stemlibs{klib}.chains{ccombi(klib)}.isotopes;
+                            end
                         end
                         initialize_model = false;
                         env_sel = zeros(num_ch,2);
@@ -555,14 +563,16 @@ for runstep = 0:last_step
                             if solutions_given
                                 link_fid = fopen(linkable_name,'at');
                                 fprintf(link_fid,'%8i%6i',rba_solutions(km,1),rba_solutions(km,2));
-                                for ksl = 1:length(ccombi)
-                                    fprintf(link_fid,'%6i',ccombi(ksl));
+                                if exist('ccombi','var')
+                                    for ksl = 1:length(ccombi)
+                                        fprintf(link_fid,'%6i',ccombi(ksl));
+                                    end
+                                    fprintf(link_fid,'%6ii',kcombi);
                                 end
-                                fprintf(link_fid,'%6ii',kcombi);
                                 fprintf(link_fid,'\n');
                                 fclose(link_fid);
                             end
-                            if only_FlexRNA % conformer should be saved, if it is already complete
+                            if only_FlexRNA || handles.restraints.RNA_save % conformer should be saved, if it is already complete
                                 new_cindices = zeros(1,num_ch+1);
                                 ncp = 0;
                                 for kc = 1:num_ch
@@ -589,7 +599,7 @@ for runstep = 0:last_step
                                     spoi = spoi + 1;
                                     model.selected{spoi} = [snum kc km];
                                 end
-                                fmname = sprintf('%s_m%i_flex.pdb',handles.basname,km);
+                                fmname = sprintf('%s_m%i_RNAflex.pdb',handles.basname,km);
                                 message = wr_pdb_selected(fmname,handles.restraints.newID);
                                 if message.error
                                     if interactive

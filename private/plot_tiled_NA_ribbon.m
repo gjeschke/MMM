@@ -153,7 +153,7 @@ if poi>0 && sum(sum(isnan(C3)))==0 && sum(sum(isnan(C4)))==0,
     if ~isempty(backbone)
         [x,y,z]=generalized_tubeplot(backbone',rung',normal',3,graph_settings.NA_spr);
         [mm,nn]=size(x);
-        for kk=1:length(C3),
+        for kk=1:poi,
             rnum=resnum(kk);
             cindices=[indices rnum];
             aa=(kk-1)*graph_settings.spr;

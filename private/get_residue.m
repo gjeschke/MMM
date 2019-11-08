@@ -66,6 +66,8 @@ switch property
         [message,argout]=xyz_backbone(indices);
     case 'name'
         [message,argout]=name_residue(indices);
+    case 'slc' % single-letter code
+        [message,argout]=slc_residue(indices);
     otherwise
         message.error=3;
         message.text='Property does not exist';
@@ -126,6 +128,27 @@ message.error=0;
 message.text='';
 
 name=model.structures{indices(1)}(indices(2)).residues{indices(3)}.info(indices(4)).name;
+
+function [message,slc] = slc_residue(indices)
+% returns single_letter code for a residue
+%
+% indices  index vector, length at least 4
+
+global model
+global residue_defs
+
+message.error=0;
+message.text='';
+
+slc = '';
+name=model.structures{indices(1)}(indices(2)).residues{indices(3)}.info(indices(4)).name;
+rid = tag2id(name,residue_defs.restags);
+if isempty(rid)
+    message.error = 1;
+    message.text = 'Unknown residue';
+    return
+end
+slc = residue_defs.single_letter_code(rid);
 
 function [message,absresnum]=get_absresnum(indices)
 % returns the absolute residue number (for PRONOX)

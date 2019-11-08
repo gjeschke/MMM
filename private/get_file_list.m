@@ -13,7 +13,7 @@ poi = 0;
 
 fid=fopen(fname);
 if fid == -1
-    add_msg_board('ERROR: File list does not exist');
+    add_msg_board('Warning: File list does not exist');
     my_list = {};
     return;
 end
