@@ -46,6 +46,7 @@ for km = 1:length(model_list)
     options.text_iteration_counter.String = sprintf('%i',km);
     drawnow
     fname = sprintf('%s_restraints.mat',model_list{km});
+    fprintf(1,'%s\n',model_list{km});
     if exist(fname,'file')
         s = load(fname);
         model_restraints = s.restraints;
@@ -57,7 +58,10 @@ for km = 1:length(model_list)
 %         disp('Aber hallo!');
 %     end
     [chi2_vec,SAS_fits,valid] = get_SAS(model_restraints,restraints);
-    if isempty(overlaps) || ~valid
+    if isempty(overlaps) && ~valid
+        continue
+    end
+    if isempty(DEER_fits) && ~isempty(restraints.DEER(1).r)
         continue
     end
     n_DEER = length(overlaps);
@@ -283,7 +287,7 @@ if ~isempty(SAS_fits)
     normalize.SAS = fom_SAS;
 end
 
-if ~isempty(DEER_fits) && ~isempty(SAS_fits)
+if len_DEER > 0 && ~isempty(SAS_fits)
     included = included0;
     clear fit_multi_SAS_DEER % initialize iteration counter
 
@@ -388,10 +392,10 @@ end
 function [overlaps,fits] = get_DEER(restraints,restraints0)
 
 
+
 % make DEER distance distributions
 
 core = length(restraints.DEER);
-rax = restraints.DEER(1).rax;
 flex = 0;
 
 if isfield(restraints,'pflex') && ~isempty(restraints.pflex) && isfield(restraints.pflex,'DEER')...
@@ -404,12 +408,15 @@ end
 overlaps = zeros(1,core+flex);
 fits = cell(1,core+flex);
 
+
+
 n_DEER = 0;
 score_DEER = 1;
 DEER_valid = true;
 
-for k = 1:max(length(restraints.DEER),length(restraints0.DEER))
-    if restraints.DEER(k).r ~=0 &&  restraints.DEER(k).sigr ~=0 % this is a restraint to be tested
+for k = 1:min(length(restraints.DEER),length(restraints0.DEER))
+    if ~isempty(restraints0.DEER(k).r) && restraints.DEER(k).r ~=0 &&  restraints.DEER(k).sigr ~=0  % this is a restraint to be tested
+        rax = restraints.DEER(1).rax;
         distr = restraints.DEER(k).distr;
         n_DEER = n_DEER + 1;
         if ~isempty(distr)
@@ -444,6 +451,7 @@ if isfield(restraints,'pflex') && ~isempty(restraints.pflex) && isfield(restrain
         && isfield(restraints0,'pflex') && ~isempty(restraints0.pflex) && isfield(restraints0.pflex,'DEER')
     for kl = 1:length(restraints.pflex)
         for k = 1:length(restraints.pflex(kl).DEER)
+            rax = restraints.pflex(kl).DEER(k).rax;
             pflex = pflex + 1;
             if restraints.pflex(kl).DEER(k).r ~=0 &&  restraints.pflex(kl).DEER(k).sigr ~=0 % valid restraint
                 n_DEER = n_DEER + 1;

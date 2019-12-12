@@ -163,10 +163,10 @@ while 1
                     mode=0;
                     restraints.search = true;
                     if length(args) >= 3
-                        restraints.serach_range(1)=str2double(char(args(3)));
+                        restraints.search_range(1)=str2double(char(args(3)));
                     end
                     if length(args) >= 4
-                        restraints.serach_range(2)=str2double(char(args(4)));
+                        restraints.search_range(2)=str2double(char(args(4)));
                     end
                 case 'RIGIDISTR'
                     mode=0;

@@ -88,62 +88,64 @@ set(hfig,'Pointer','watch');
 
 % Evaluate DEER restraints in rigid bodies
 
-fprintf(fid,'DEER restraints for model %s\n\n',fname0);
-fprintf(fid,'>>> core and RNA\n\n');
-for k = 1:length(restraints.DEER)
-    restraints.DEER(k).adr1 = correct_address(restraints.DEER(k).adr1,restraints);
-    restraints.DEER(k).adr2 = correct_address(restraints.DEER(k).adr2,restraints);
-    [rax,distr] = mk_distance_distribution(restraints.DEER(k).adr1,restraints.DEER(k).adr2,restraints.DEER(k).label);
-    restraints.DEER(k).rax = rax;
-    restraints.DEER(k).distr = distr;
-    if isfield(restraints.DEER(k),'file') && ~isempty(restraints.DEER(k).file) && ~isempty(rax)
-        [texp,vexp,deer,bckg,param] = fit_DEER_primary(rax,distr,strcat('deer\',restraints.DEER(k).file),options);
-        restraints.DEER(k).texp = texp;
-        restraints.DEER(k).vexp = vexp;
-        restraints.DEER(k).deer = deer;
-        restraints.DEER(k).bckg = bckg;
-        restraints.DEER(k).param = param;
-        fprintf(fid,'%s-%s rmsd: %6.4f, mod. depth: %6.3f, kdec: %6.4f\n',...
+if ~isempty(restraints.DEER(1).r)
+    fprintf(fid,'DEER restraints for model %s\n\n',fname0);
+    fprintf(fid,'>>> core and RNA\n\n');
+    for k = 1:length(restraints.DEER)
+        restraints.DEER(k).adr1 = correct_address(restraints.DEER(k).adr1,restraints);
+        restraints.DEER(k).adr2 = correct_address(restraints.DEER(k).adr2,restraints);
+        [rax,distr] = mk_distance_distribution(restraints.DEER(k).adr1,restraints.DEER(k).adr2,restraints.DEER(k).label);
+        restraints.DEER(k).rax = rax;
+        restraints.DEER(k).distr = distr;
+        if isfield(restraints.DEER(k),'file') && ~isempty(restraints.DEER(k).file) && ~isempty(rax)
+            [texp,vexp,deer,bckg,param] = fit_DEER_primary(rax,distr,strcat('deer\',restraints.DEER(k).file),options);
+            restraints.DEER(k).texp = texp;
+            restraints.DEER(k).vexp = vexp;
+            restraints.DEER(k).deer = deer;
+            restraints.DEER(k).bckg = bckg;
+            restraints.DEER(k).param = param;
+            fprintf(fid,'%s-%s rmsd: %6.4f, mod. depth: %6.3f, kdec: %6.4f\n',...
+                restraints.DEER(k).adr1,restraints.DEER(k).adr2,...
+                param.rmsd,param.depth,param.kdec);
+        else
+            restraints.DEER(k).texp = [];
+            restraints.DEER(k).vexp = [];
+            restraints.DEER(k).deer = [];
+            restraints.DEER(k).bckg = [];
+            restraints.DEER(k).param = [];
+        end
+        if isempty(rax)
+            continue
+        end
+        rax = 10*rax;
+        restraints.DEER(k).rax = rax;
+        restraints.DEER(k).r_model = sum(restraints.DEER(k).distr.*rax);
+        restraints.DEER(k).sigr_model = sqrt(sum(restraints.DEER(k).distr.*(rax-restraints.DEER(k).r_model).^2));
+        fprintf(fid,'%s-%s requested: %4.1f (%4.1f) Å found: %4.1f (%4.1f) Å; ',...
             restraints.DEER(k).adr1,restraints.DEER(k).adr2,...
-            param.rmsd,param.depth,param.kdec);
-    else
-        restraints.DEER(k).texp = [];
-        restraints.DEER(k).vexp = [];
-        restraints.DEER(k).deer = [];
-        restraints.DEER(k).bckg = [];
-        restraints.DEER(k).param = [];
-    end
-    if isempty(rax)
-        continue
-    end
-    rax = 10*rax;
-    restraints.DEER(k).rax = rax;
-    restraints.DEER(k).r_model = sum(restraints.DEER(k).distr.*rax);
-    restraints.DEER(k).sigr_model = sqrt(sum(restraints.DEER(k).distr.*(rax-restraints.DEER(k).r_model).^2));
-    fprintf(fid,'%s-%s requested: %4.1f (%4.1f) Å found: %4.1f (%4.1f) Å; ',...
-        restraints.DEER(k).adr1,restraints.DEER(k).adr2,...
-        restraints.DEER(k).r,restraints.DEER(k).sigr,...
-        restraints.DEER(k).r_model,restraints.DEER(k).sigr_model);
-    argr = (restraints.DEER(k).r-rax)/(sqrt(2)*restraints.DEER(k).sigr);
-    distr_sim = exp(-argr.^2);
-    distr_sim = distr_sim/sum(distr_sim);
-    restraints.DEER(k).overlap = sum(min([distr_sim;distr]));
-    if ~isnan(restraints.DEER(k).overlap)
-        score_DEER = score_DEER*restraints.DEER(k).overlap;
-        n_DEER = n_DEER + 1;
-    end
-    fprintf(fid,'Overlap: %5.3f\n',restraints.DEER(k).overlap);
-    if isfield(restraints.DEER(k),'file') && ~isempty(restraints.DEER(k).file)
-        dfname = strcat(restraints.DEER(k).file,'_distr.dat');
-        dfname = strcat('deer_analysis\',dfname);
-        Pdata = load(dfname);
-        rexp = Pdata(:,1).';
-        distr_exp = Pdata(:,2).';
-        distr_exp = interp1(rexp,distr_exp,rax,'pchip',0);
-        distr_exp = distr_exp/sum(distr_exp);
-        restraints.DEER(k).distr_exp = distr_exp;
-    else
-        restraints.DEER(k).distr_exp = [];
+            restraints.DEER(k).r,restraints.DEER(k).sigr,...
+            restraints.DEER(k).r_model,restraints.DEER(k).sigr_model);
+        argr = (restraints.DEER(k).r-rax)/(sqrt(2)*restraints.DEER(k).sigr);
+        distr_sim = exp(-argr.^2);
+        distr_sim = distr_sim/sum(distr_sim);
+        restraints.DEER(k).overlap = sum(min([distr_sim;distr]));
+        if ~isnan(restraints.DEER(k).overlap)
+            score_DEER = score_DEER*restraints.DEER(k).overlap;
+            n_DEER = n_DEER + 1;
+        end
+        fprintf(fid,'Overlap: %5.3f\n',restraints.DEER(k).overlap);
+        if isfield(restraints.DEER(k),'file') && ~isempty(restraints.DEER(k).file)
+            dfname = strcat(restraints.DEER(k).file,'_distr.dat');
+            dfname = strcat('deer_analysis\',dfname);
+            Pdata = load(dfname);
+            rexp = Pdata(:,1).';
+            distr_exp = Pdata(:,2).';
+            distr_exp = interp1(rexp,distr_exp,rax,'pchip',0);
+            distr_exp = distr_exp/sum(distr_exp);
+            restraints.DEER(k).distr_exp = distr_exp;
+        else
+            restraints.DEER(k).distr_exp = [];
+        end
     end
 end
 

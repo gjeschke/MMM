@@ -5814,13 +5814,31 @@ function menu_jobs_test3_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% fname = 'PTBP1_refined_sRRM2';
-% PTBP1_ensemble_SAS_fit(fname);
-fname = 'PTBP1_cyana_with_109_500';
-PTBP1_ensemble_SAS_fit(fname);
-PTBP1_ensemble_DEER_fit(fname);
-PTB1_SAS_DEER_fit(fname);
-PTBP1_ensemble_maker(fname);
+global model
+
+mylist = dir('*_no23.pdb');
+
+for k = 1:length(mylist)
+    fname0 = mylist(k).name;
+    poi = strfind(fname0,'.pdb');
+    fname = fname0(1:poi-1);
+    poi = strfind(fname,'_no23');
+    oname = fname(1:poi-1);
+    clear global model
+    model = [];
+    fprintf(1,'Creating loop for %s\n',fname);
+    add_pdb(fname);
+    [restraints,restrain,aux] = get_domain_restraints('PTB1_loop23_restraints.dat');
+    aux.max_time = 1;
+    aux.save_path = pwd;
+    aux.save_name = strcat(oname,'_loop23');
+    success = make_loop_and_save(restraints,restrain,aux);
+    if success
+        fprintf(1,'Model %s was successfully generated.\n',aux.save_name);
+    else
+        fprintf(1,'Model %s failed.\n',aux.save_name);
+    end
+end
 guidata(hObject,handles);
 
 
@@ -5856,13 +5874,20 @@ function menu_jobs_test5_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-mylist = get_file_list('PTBP1_RNA_flex_conformers_ensemble.dat');
+% mylist = get_file_list('PTBP1_RNA_flex_conformers_ensemble.dat');
+% fid = fopen('PTBP1_optimize.dat','wt');
+% for k = 1:length(mylist)
+%     ind = strfind(mylist{k},'_loops');
+%     if ~isempty(ind)
+%         fprintf(fid,'%s\n',mylist{k});
+%     end
+% end
+% fclose(fid);
+
+mylist = dir('*_rf23.pdb');
 fid = fopen('PTBP1_optimize.dat','wt');
 for k = 1:length(mylist)
-    ind = strfind(mylist{k},'_loops');
-    if ~isempty(ind)
-        fprintf(fid,'%s\n',mylist{k});
-    end
+    fprintf(fid,'%s\n',mylist(k).name);
 end
 fclose(fid);
 
@@ -5871,8 +5896,8 @@ for kc = 1:length(conformer_list)
     fname = conformer_list{kc};
     fprintf(1,'We will optimize: %s\n',fname);
     options.console = false;
-    ind = strfind(fname,'_loops');
-    options.fname = strcat(fname(1:ind-1),'_yasara.pdb');
+    ind = strfind(fname,'_rf23.pdb');
+    options.fname = strcat(fname(1:ind-1),'_r23_yasara.pdb');
     tic,
     optimize_by_yasara(fname,options);
     toc,
@@ -5887,7 +5912,7 @@ function menu_jobs_test6_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-mylist = dir('PTB1_191026_f8*.pdb');
+mylist = dir('PTB1_191115_f5_*.pdb');
 fid = fopen('PTBP1_RNA_conformers.dat','wt');
 for k = 1:length(mylist)
     fprintf(fid,'%s\n',mylist(k).name);
