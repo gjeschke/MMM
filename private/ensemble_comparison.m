@@ -1,4 +1,4 @@
-function [sigma,pair_rmsd] = ensemble_comparison(stag1,chains1,pop1,stag2,chains2,pop2,options)
+function [sigma,pair_rmsd,ordering] = ensemble_comparison(stag1,chains1,pop1,stag2,chains2,pop2,options)
 % [sigma,pair_rmsd] = ensemble_comparison(stag1,chains1,stag2,chains2,options)
 %
 % Analyzes internal variation of conformations in ensemble structures as
@@ -31,8 +31,10 @@ function [sigma,pair_rmsd] = ensemble_comparison(stag1,chains1,pop1,stag2,chains
 %           conformers in the two ensembles and between ensembles, where n1
 %           and n2 are numbers of conformers in the first and second
 %           ensemble, respectively
+% ordering  cell of vectors [1,n1], [1,n2], [1,n1], [1,n2] that assign
+%           original conformer numbers to entries in the sorted matrices 
 %
-% G. Jeschke, 25.9.2019
+% G. Jeschke, 25.9.2019, 15.12. 2019
 
 global model
 
@@ -144,6 +146,7 @@ end
 rmsdsum = sum(pair_rmsd1);
 [~,sorting] = sort(rmsdsum);
 pair_rmsd{1} = pair_rmsd1(sorting,sorting);
+ordering{1} = sorting;
 
 sigma(1) = get_sigma(pair_rmsd{1},pop1);
 
@@ -158,6 +161,7 @@ if options.ensembles > 1
     rmsdsum = sum(pair_rmsd2);
     [~,sorting] = sort(rmsdsum);
     pair_rmsd{2} = pair_rmsd2(sorting,sorting);
+    ordering{2} = sorting;
     sigma(2) = get_sigma(pair_rmsd{2},pop2);
     
     [cross_rmsd,msg] = cross_ensemble_pair_rmsd(stag1,chains1,stag2,chains2,options);
@@ -170,7 +174,9 @@ if options.ensembles > 1
     rmsdsum1 = sum(cross_rmsd,1);
     rmsdsum2 = sum(cross_rmsd,2);
     [~,sorting1] = sort(rmsdsum1);
+    ordering{3} = sorting1;
     [~,sorting2] = sort(rmsdsum2);
+    ordering{4} = sorting2;
     pair_rmsd{3} = cross_rmsd(sorting2,sorting1);
     sigma(3) = get_sigma(pair_rmsd{3},pop1,pop2);
 end

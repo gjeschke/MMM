@@ -12,6 +12,13 @@ function diagnostics = rigi_flex_engine(restraints,options,handles)
 
 global model
 
+if ~isfield(restraints,'core')
+    restraints.core = [];
+end
+if ~isfield(restraints,'auxiliary')
+    restraints.auxiliary = [];
+end
+
 solutions_given = false;
 solutions = [];
 processed = [];

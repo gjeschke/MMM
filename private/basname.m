@@ -6,4 +6,4 @@ if isempty(points)
     name=FileName;
 else
     name=FileName(1:points(end)-1);
-end;
+end

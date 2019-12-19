@@ -71,6 +71,7 @@ end
 
 clear restraints
 
+restraints.no_fitting = false;
 restraints.flex_time = 1;
 restraints.search = false;
 restraints.search_range = [1 1e6];
@@ -159,6 +160,8 @@ while 1
         args=myline{1};
         if strcmp(char(args(1)),'#')
             switch upper(char(args(2)))
+                case 'NOFIT'
+                    restraints.no_fitting = true;
                 case 'SEARCH'
                     mode=0;
                     restraints.search = true;

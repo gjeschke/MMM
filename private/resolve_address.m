@@ -77,9 +77,9 @@ tsyn{16}.short='"U"';
 tsyn{16}.long='"T"';
 
 type_synonyms=':';
-for k=1:length(tsyn),
+for k=1:length(tsyn)
     type_synonyms=[type_synonyms tsyn{k}.short ':'];
-end;
+end
 
 % Definition of element synonyms
 esyn{1}.short='"X"';
@@ -323,7 +323,7 @@ else
                 if isempty(indices) % no other domain was yet stored
                     indices=dobjects;
                 else % there are already objects stored and the hierarchy level must match
-                    [mmm,nnn]=size(indices);
+                    [~,nnn]=size(indices);
                     if nn~=nnn
                         message.error=3;
                         message.text='Domain size mismatch';
@@ -965,7 +965,7 @@ for k=1:length(tagcells)
         end;
     else % processing for single tag (no range)
         id=tag2id(tag,tags,codelist);
-        if ~isempty(id) && ~sum(find(indices==id)), 
+        if ~isempty(id) && ~sum(find(indices==id)) 
             indices=[indices id]; 
         end;
     end;

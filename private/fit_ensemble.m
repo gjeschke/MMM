@@ -151,15 +151,28 @@ if len_DEER > 0
         'StepTolerance',options.threshold/10);
 
     tic,
-    [v,fom_DEER,exitflag,fit_output] = patternsearch(fanonym_DEER,v0,[],[],[],[],l_DEER,u_DEER,[],fit_options);
+    if isfield(restraints,'no_fitting') && restraints.no_fitting 
+        fom_DEER = fit_multi_DEER(v0,all_DEER_fits,options);
+        v = v0;
+        exitflag = -1;
+        fit_output.iterations= 0;
+        fit_output.funccount = 0;
+        fit_output.meshsize = NaN;
+        fit_output.maxconstraint = NaN;
+    else
+        [v,fom_DEER,exitflag,fit_output] = patternsearch(fanonym_DEER,v0,[],[],[],[],l_DEER,u_DEER,[],fit_options);
+    end
     DEER_time = toc;
     th = floor(DEER_time/3600);
     DEER_time = DEER_time - 3600*th;
     tmin = floor(DEER_time/60);
     ts = round(DEER_time - 60*tmin);
 
-    add_msg_board(sprintf('DEER restraints were fitted in %i h %i min %i s with overlap deficiency of %5.3f\n',th,tmin,ts,fom_DEER));
-
+    if isfield(restraints,'no_fitting') && restraints.no_fitting
+        add_msg_board('DEER restraints were not fitted.');
+    else
+        add_msg_board(sprintf('DEER restraints were fitted in %i h %i min %i s with overlap deficiency of %5.3f\n',th,tmin,ts,fom_DEER));
+    end
     options.text_DEER_fom0.String = sprintf('%5.3f',fom_DEER);
 
     log_fid = fopen(options.logfile,'at');
@@ -219,7 +232,17 @@ if ~isempty(SAS_fits)
         'StepTolerance',options.threshold/10);
 
     tic,
-    [v,fom_SAS,exitflag,fit_output] = patternsearch(fanonym_SAS,v0,[],[],[],[],l_SAS,u_SAS,[],fit_options);
+    if isfield(restraints,'no_fitting') && restraints.no_fitting 
+        fom_SAS = fit_multi_SAS(v0,all_SAS_fits,options);
+        v = v0;
+        exitflag = -1;
+        fit_output.iterations= 0;
+        fit_output.funccount = 0;
+        fit_output.meshsize = NaN;
+        fit_output.maxconstraint = NaN;
+    else
+        [v,fom_SAS,exitflag,fit_output] = patternsearch(fanonym_SAS,v0,[],[],[],[],l_SAS,u_SAS,[],fit_options);
+    end
     SAS_time = toc;
     th = floor(SAS_time/3600);
     SAS_time = SAS_time - 3600*th;
@@ -228,8 +251,11 @@ if ~isempty(SAS_fits)
 
     bsl = v(end-length(all_SAS_fits)+1:end);
 
-    add_msg_board(sprintf('SAS restraints were fitted in %i h %i min %i s with sum of chi^2 of %5.2f',th,tmin,ts,fom_SAS));
-
+     if isfield(restraints,'no_fitting') && restraints.no_fitting 
+         add_msg_board('SAS restraints were not fitted.');
+     else
+         add_msg_board(sprintf('SAS restraints were fitted in %i h %i min %i s with sum of chi^2 of %5.2f',th,tmin,ts,fom_SAS));
+     end
     log_fid = fopen(options.logfile,'at');
     if log_fid ~= -1 % there is currently no error reporting here, if the logfile cannot be written
         fprintf(log_fid,'SAXS/SANS curves fit took %i h %i min %i s\n',th,tmin,ts);
@@ -301,7 +327,17 @@ if len_DEER > 0 && ~isempty(SAS_fits)
         'StepTolerance',options.threshold/10);
 
     tic,
-    [v,fom,exitflag,fit_output] = patternsearch(fanonym_integrative,v0,[],[],[],[],l,u,[],fit_options);
+    if isfield(restraints,'no_fitting') && restraints.no_fitting 
+        fom = fit_multi_SAS_DEER(v0,all_SAS_fits,all_DEER_fits,normalize,options);
+        v = v0;
+        exitflag = -1;
+        fit_output.iterations= 0;
+        fit_output.funccount = 0;
+        fit_output.meshsize = NaN;
+        fit_output.maxconstraint = NaN;
+    else
+        [v,fom,exitflag,fit_output] = patternsearch(fanonym_integrative,v0,[],[],[],[],l,u,[],fit_options);
+    end
     integrative_time = toc;
 
 
@@ -311,7 +347,11 @@ if len_DEER > 0 && ~isempty(SAS_fits)
     tmin = floor(integrative_time/60);
     ts = round(integrative_time - 60*tmin);
 
-    add_msg_board(sprintf('Integrative fit in %i h %i min %i s with loss of %5.3f',th,tmin,ts,fom));
+    if isfield(restraints,'no_fitting') && restraints.no_fitting 
+        add_msg_board('No integrative fitting performed.');
+    else
+        add_msg_board(sprintf('Integrative fit in %i h %i min %i s with loss of %5.3f',th,tmin,ts,fom));
+    end
 
     coeff1 = v(1:end-length(all_SAS_fits));
     bsl = v(end-length(all_SAS_fits)+1:end);

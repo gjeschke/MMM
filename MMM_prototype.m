@@ -22,7 +22,7 @@ function varargout = MMM_prototype(varargin)
 
 % Edit the above text to modify the response to help MMM_prototype
 
-% Last Modified by GUIDE v2.5 05-Nov-2019 07:38:03
+% Last Modified by GUIDE v2.5 12-Dec-2019 11:15:30
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -5984,4 +5984,14 @@ else
     set(hfig,'Pointer','arrow');
     cd(my_path);
 end
+guidata(hObject,handles);
+
+
+% --------------------------------------------------------------------
+function menu_ensembles_compare_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_ensembles_compare (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+compare_ensembles;
 guidata(hObject,handles);
