@@ -5339,116 +5339,52 @@ function menu_jobs_test_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 global model
+global general
 
-pdb_list = dir('a9_*.pdb');
-path_SLD = 'D:\projects\Christoph_Gmeiner\modelling\SLD_CYANA\';
-path_SLE = 'D:\projects\Christoph_Gmeiner\modelling\SLE_CYANA\';
-path_SLF = 'D:\projects\Christoph_Gmeiner\modelling\SLF_CYANA\';
+fmname = 'rigid_part.pdb';
 
-[msg, RRM1] = get_object('[PTBC](A)58-154','xyz_backbone');
-RRM1 = consolidate_coor(RRM1);
-if msg.error
-    add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
-end
-[msg, RRM2] = get_object('[PTBC](C)182-283','xyz_backbone');
-RRM2 = consolidate_coor(RRM2);
-if msg.error
-    add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
-end
-[msg, RRM34] = get_object('[PTBC](E)455-531','xyz_backbone');
-if msg.error
-    add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
-end
-RRM34 = consolidate_coor(RRM34);
-for k = 1:length(pdb_list)
-    [~,snum] = add_pdb(pdb_list(k).name);
-    sadr = mk_address(snum);
-    fname = pdb_list(k).name;
-    poi = strfind(fname,'.pdb');
-    fname = fname(1:poi-1);
-    % transform and save SLD
-    oname = strcat(fname,'_SLD.pdb');
-    oname = strcat(path_SLD,oname);
-    xyz0 = model.structures{snum}(2).xyz{1};
-    [msg, RRM34_conf] = get_object(sprintf('%s(A)455-531',sadr),'xyz_backbone');
-    RRM34_conf = consolidate_coor(RRM34_conf);
-    if msg.error
-        add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
+[fname,pname]=uigetfile('*.pdb','Load template PDB file');
+if isequal(fname,0) || isequal(pname,0)
+    add_msg_board('ERROR: Ensemble of ensembles fitting requires a template');
+    return
+else
+    message = add_pdb(fullfile(pname,fname));
+    if message.error
+        add_msg_board(sprintf('ERROR: Loading of PDB file failed (%s)',message.text));
+        return
     end
-    [rms,~,transmat] = rmsd_superimpose(RRM34,RRM34_conf);
-    fprintf(1,'For %s superposition r.ms.d. is %6.1f Å\n',fname,rms);
-    xyz = affine_trafo_coor(xyz0,transmat);
-    model.structures{snum}(2).xyz{1} = xyz;
+end
+
+[fname,pname]=uigetfile('*.dat','Specify restraint file');
+if isequal(fname,0) || isequal(pname,0)
+    add_msg_board('ERROR: Restraint loading cancelled by user');
+    return
+else
+    reset_user_paths(pname);
+    general.restraint_files = pname;
+    restraint_file = fullfile(pname,fname);
+end
+
+for k = 1:20
     if isfield(model,'selected')
         model = rmfield(model,'selected');
     end
-    spoi = 0;
-    for knt = 288:318
-        spoi = spoi + 1;
-        ind = resolve_address(sprintf('%s(B){1}%i',sadr,knt));
-        model.selected{spoi} = ind;
-    end
-    message = wr_pdb_selected(oname,'SLD0');
-    if message.error
-        if interactive
-            add_msg_board(sprintf('Warning: Model %s could not be automatically saved. %s\n',oname));
-        end
-    end
-    % transform and save SLE
-    oname = strcat(fname,'_SLE.pdb');
-    oname = strcat(path_SLE,oname);
-    [msg, RRM1_conf] = get_object(sprintf('%s(A)58-154',sadr),'xyz_backbone');
-    RRM1_conf = consolidate_coor(RRM1_conf);
-    if msg.error
-        add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
-    end
-    [rms,~,transmat] = rmsd_superimpose(RRM1,RRM1_conf);
-    fprintf(1,'For %s superposition r.ms.d. is %6.1f Å\n',fname,rms);
-    xyz = affine_trafo_coor(xyz0,transmat);
-    model.structures{snum}(2).xyz{1} = xyz;
-    if isfield(model,'selected')
-        model = rmfield(model,'selected');
-    end
-    spoi = 0;
-    for knt = 322:335
-        spoi = spoi + 1;
-        ind = resolve_address(sprintf('%s(B){1}%i',sadr,knt));
-        model.selected{spoi} = ind;
-    end
-    message = wr_pdb_selected(oname,'SLE0');
-    if message.error
-        if interactive
-            add_msg_board(sprintf('Warning: Model %s could not be automatically saved. %s\n',oname));
-        end
-    end    
-    % transform and save SLF
-    oname = strcat(fname,'_SLF.pdb');
-    oname = strcat(path_SLF,oname);
-    [msg, RRM2_conf] = get_object(sprintf('%s(A)182-283',sadr),'xyz_backbone');
-    RRM2_conf = consolidate_coor(RRM2_conf);
-    if msg.error
-        add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
-    end
-    [rms,~,transmat] = rmsd_superimpose(RRM2,RRM2_conf);
-    fprintf(1,'For %s superposition r.ms.d. is %6.1f Å\n',fname,rms);
-    xyz = affine_trafo_coor(xyz0,transmat);
-    model.structures{snum}(2).xyz{1} = xyz;
-    if isfield(model,'selected')
-        model = rmfield(model,'selected');
-    end
-    spoi = 0;
-    for knt = 348:370
-        spoi = spoi + 1;
-        ind = resolve_address(sprintf('%s(B){1}%i',sadr,knt));
-        model.selected{spoi} = ind;
-    end
-    message = wr_pdb_selected(oname,'SLF0');
-    if message.error
-        if interactive
-            add_msg_board(sprintf('Warning: Model %s could not be automatically saved. %s\n',oname));
-        end
+    model.selected{1} = [1 1 k];
+    wr_pdb_selected(fmname,sprintf('HN%i',k));
+    add_pdb(fmname);
+    [restraints,restrain,aux] = get_domain_restraints(restraint_file);
+    aux.save_path = pwd;
+    aux.pdbid = 'HNA1';
+    aux.save_name = sprintf('hnRNPA1_NMR%i',k);
+    success = make_loop_and_save(restraints,restrain,aux);
+    if success
+        fprintf(1,'For stub %s %i models were successfully generated.\n',aux.save_name,success);
+    else
+        fprintf(1,'Model %s failed.\n',aux.save_name);
     end
 end
+guidata(hObject,handles);
+
 
 
 % --------------------------------------------------------------------
@@ -5832,6 +5768,7 @@ for k = 1:length(mylist)
     aux.max_time = 1;
     aux.save_path = pwd;
     aux.save_name = strcat(oname,'_loop23');
+    aux.pdbid = 'PTB1';
     success = make_loop_and_save(restraints,restrain,aux);
     if success
         fprintf(1,'Model %s was successfully generated.\n',aux.save_name);

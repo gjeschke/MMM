@@ -47,7 +47,6 @@ end
 
 if cancelled
     add_msg_board('Processing of restraints cancelled.');
-    set(hfig,'Pointer','arrow');
     return
 end
 aux.template_seq = template_seq;

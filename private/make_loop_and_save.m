@@ -165,14 +165,14 @@ rng('shuffle'); % initialize random number generator to be able to obtain differ
 pmodel = aux.p_model;
 pthr = exp(-erfinv(pmodel)^2);
 
-max_models = 1;
+max_models = restraints.ensemble;
 
 all_p_model = zeros(1,max_models);
 
 snum_vec = zeros(1,max_models);
 
-ntrials = 50000; % number of Monte Carlo trials
-max_seconds = 3600*aux.max_time; % maximum runtime in seconds
+ntrials = 20000000; % number of Monte Carlo trials
+max_seconds = 3600*restraints.max_time; % maximum runtime in seconds
 
 
 load([general.Ramachandran 'Ramachandran_disordered']);
@@ -361,7 +361,7 @@ while kMC <= ntrials
 
         if ~errcode
             tpm = runtime/err_count(1);
-            fprintf(1,'Time per model: %8.1f s',tpm);
+            fprintf(1,'Time per model: %8.1f s\n',tpm);
             success = success + 1;
             if success == 1
                 bb0 = coor;
@@ -383,7 +383,7 @@ while kMC <= ntrials
                 success = success - 1; 
             else
                 all_p_model(success) = p_model;
-                if attach_it,
+                if attach_it
                     if free_standing && success == 1
                         [msg,snum]=add_pdb(pmodel);
                         template_indices = [snum 1 1];
@@ -404,7 +404,7 @@ while kMC <= ntrials
                             model = rmfield(model,'selected');
                         end
                         model.selected{1} = model_indices;
-                        wr_pdb_selected(aux.save_name,'PTB1');
+                        wr_pdb_selected(sprintf('%s_m%i',aux.save_name,success),aux.pdbid);
                     end
                 end
             end

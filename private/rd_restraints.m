@@ -30,6 +30,7 @@ restraints.target='';
 restraints.helix_mindist=default_helix_mindist;
 restraints.ref_chain='';
 restraints.SAXS = [];
+restraints.max_time = 1; % default
 
 
 DEER_poi=0;
