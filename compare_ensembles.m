@@ -22,7 +22,7 @@ function varargout = compare_ensembles(varargin)
 
 % Edit the above text to modify the response to help compare_ensembles
 
-% Last Modified by GUIDE v2.5 16-Dec-2019 07:49:48
+% Last Modified by GUIDE v2.5 22-Dec-2019 13:55:04
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -477,16 +477,18 @@ popup_chains.String = popup_chains.String(1:nch);
 stag = id2tag(snum,model.structure_tags);
 
 options.mode = 'backbone';
+options.cluster_sorting = true;
 
 [sigma,pair_rmsd,ordering] = ensemble_comparison(stag,[],pop,[],[],[],options);
 text_rmsd.String = sprintf('%5.2f Å',sigma);
+populations = pop(ordering{1});
 
 pair_rmsd = pair_rmsd{1};
 options.xlabel = 'Conformer number';
 options.ylabel = 'Conformer number';
 handles = plot_pair_rmsd(handles,pair_rmsd,options);
 oname = strcat(basname,'_pair_rmsd.mat');
-save(oname,'sigma','pair_rmsd','resnums','seqtypes');
+save(oname,'sigma','pair_rmsd','resnums','seqtypes','ordering','populations');
 
 switch num
     case 1
@@ -497,6 +499,7 @@ switch num
         handles.ensemble1.resnums = resnums;
         handles.ensemble1.seqtypes = seqtypes;
         handles.ensemble1.chains = chain_list;
+        handles.ensemble1.ordering = ordering{1};
     case 2
         handles.ensemble2.exist = true;
         handles.ensemble2.sigma = sigma;
@@ -505,6 +508,7 @@ switch num
         handles.ensemble2.resnums = resnums;
         handles.ensemble2.seqtypes = seqtypes;
         handles.ensemble2.chains = chain_list;
+        handles.ensemble2.ordering = ordering{2};
 end
 
 handles.popupmenu_display.Value = num;
@@ -903,3 +907,41 @@ function radiobutton_normalization_sqrt_r_Callback(hObject, eventdata, handles)
 options.figure = [];
 handles = update_display(handles,options);
 guidata(hObject,handles);
+
+
+% --- Executes on button press in pushbutton_save_ensemble1.
+function pushbutton_save_ensemble1_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_save_ensemble1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+global model
+global general
+
+model.current_structure = handles.ensemble1.snum;
+idCode = model.info{handles.ensemble1.snum}.idCode;
+model_sequence = handles.ensemble1.ordering;
+
+default_name = strcat(handles.ensemble1.name,'_ordered.pdb');
+
+[filename, pathname] = uiputfile(default_name, 'Save ordered ensemble 1 as PDB');
+if isequal(filename,0) || isequal(pathname,0)
+    add_msg_board('Save as PDB cancelled by user');
+else
+    reset_user_paths(pathname);
+    general.pdb_files=pathname;
+    fname=fullfile(pathname, filename);
+    msg=sprintf('Ordered ensemble 1 saved as PDB file: %s',fname);
+    add_msg_board(msg);
+    set(gcf,'Pointer','watch');
+    wr_pdb(fname,idCode,model_sequence);
+end
+
+set(gcf,'Pointer','arrow');
+
+
+% --- Executes on button press in pushbutton_save_ensemble2.
+function pushbutton_save_ensemble2_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_save_ensemble2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)

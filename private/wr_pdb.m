@@ -30,6 +30,8 @@ function message=wr_pdb(fname,idCode,modnum,chain,cleaned)
 %           written
 %           if there are several chains, the requested model must exist in
 %           all of them (or in none)
+%           modnum can also be a vector of models that are then written in
+%           the sequence given by this vector
 % chain     optional argument, chain number for a structure with multiple
 %           chains, if present, only this particular chain is written
 %           if the requested chain does not exist, no file is written
@@ -44,9 +46,9 @@ function message=wr_pdb(fname,idCode,modnum,chain,cleaned)
 global model
 global chemistry
 
-if nargin<5,
+if nargin<5
     cleaned=false;
-end;
+end
 
 message.error=0;
 message.text='';
@@ -67,9 +69,9 @@ numSeq=0;
 
 
 % append proper extension, if extension is missing
-if isempty(strfind(fname,'.')), fname=strcat(fname,'.pdb'); end;
+if ~contains(fname,'.'), fname=strcat(fname,'.pdb'); end
 
-snum=model.current_structure;
+snum = model.current_structure;
 
 % generate header line
 header=sprintf('HEADER    %s',model.info{snum}.class);
@@ -102,26 +104,26 @@ end;
 fprintf(fid,'REMARK   4\n%s\n',format);
 fprintf(fid,'REMARK   5\n%s\n',origin);
 
-if isfield(model.info{snum},'Modeller_GA341'),
-    if nargin>2 && modnum<=length(model.info{snum}.Modeller_GA341) && modnum>=1,
+if isfield(model.info{snum},'Modeller_GA341')
+    if nargin>2 && modnum<=length(model.info{snum}.Modeller_GA341) && modnum>=1
         GA341=model.info{snum}.Modeller_GA341(modnum);
     else
         GA341=model.info{snum}.Modeller_GA341;
     end;
     fprintf(fid,'REMARK   6\n');
-    for k=1:length(GA341),
+    for k=1:length(GA341)
         fprintf(fid,'REMARK   6 GA341 OF MODEL %i: %6.4f\n',k,GA341(k));
     end;
 end;
 
-if isfield(model.info{snum},'Modeller_DOPE'),
-    if nargin>2 && modnum<=length(model.info{snum}.Modeller_DOPE) && modnum>=1,
+if isfield(model.info{snum},'Modeller_DOPE')
+    if nargin>2 && modnum<=length(model.info{snum}.Modeller_DOPE) && modnum>=1
         DOPE=model.info{snum}.Modeller_DOPE(modnum);
     else
         DOPE=model.info{snum}.Modeller_DOPE;
     end;
     fprintf(fid,'REMARK   7\n');
-    for k=1:length(DOPE),
+    for k=1:length(DOPE)
         fprintf(fid,'REMARK   7 DOPE OF MODEL %i: %10.1f\n',k,DOPE(k));
     end;
 end;
@@ -356,11 +358,12 @@ end;
 
 % write ATOM and HETATM records
 
-models=length(model.structures{snum}(1).residues);
+models = length(model.structures{snum}(1).xyz);
 modvec=1:models;
-if nargin>2 && modnum<=models && modnum>=1,
+if nargin>2 && max(modnum) <=models && min(modnum) >=1
     modvec=modnum;
-end;
+end
+models=length(modvec);
 
 atoms=0;
 for cnum=cnumbers,
@@ -368,12 +371,14 @@ for cnum=cnumbers,
     atoms=atoms+catoms+1;
 end;
 atom_table=zeros(atoms,3); % preallocate atom number translation table
-for mnum=modvec,
+mnum_new = 0;
+for mnum=modvec
+    mnum_new = mnum_new + 1;
     atnum=0; % initialize atom serial number
-    if models>1,
-        fprintf(fid,'MODEL     %4i\n',mnum);
+    if models>1
+        fprintf(fid,'MODEL     %4i\n',mnum_new);
     end;
-    for cnum=cnumbers,
+    for cnum=cnumbers
         cid=model.structures{snum}(cnum).name;
         residues=length(model.structures{snum}(cnum).residues{1}.info);
         for rnum=1:residues,
@@ -481,52 +486,54 @@ for mnum=modvec,
 end;
 
 % write CONECT records
-for cnum=cnumbers,
-    cid=model.structures{snum}(cnum).name;
-    [conny,n]=size(atom_table);
-    [mb,nb]=size(model.structures{snum}(cnum).conn);
-    if nb>1,
-        for k=1:conny,
-            if atom_table(k,2)==cnum,
-                poi=atom_table(k,1);
-                hetflag1=atom_table(k,3);
-                bonds=zeros(1,n);
-                hetflags=zeros(1,n);
-                for kk=1:n, % translate atom numbers of bonded atoms
-                    bond=model.structures{snum}(cnum).conn(poi,kk);
-                    if bond,
-                        poi2=find(atom_table(:,1)==bond);
-                        for kkk=1:length(poi2),
-                            if atom_table(poi2(kkk),2)==cnum,
-                                bonds(kk)=poi2(kkk);
-                                hetflags(kk)=atom_table(poi2(kkk),3);
+if sum(atom_table(:,3)) > 0 % do only if there are HETATOMS
+    for cnum=cnumbers,
+        cid=model.structures{snum}(cnum).name;
+        [conny,n]=size(atom_table);
+        [mb,nb]=size(model.structures{snum}(cnum).conn);
+        if nb>1,
+            for k=1:conny,
+                if atom_table(k,2)==cnum,
+                    poi=atom_table(k,1);
+                    hetflag1=atom_table(k,3);
+                    bonds=zeros(1,n);
+                    hetflags=zeros(1,n);
+                    for kk=1:n, % translate atom numbers of bonded atoms
+                        bond=model.structures{snum}(cnum).conn(poi,kk);
+                        if bond,
+                            poi2=find(atom_table(:,1)==bond);
+                            for kkk=1:length(poi2),
+                                if atom_table(poi2(kkk),2)==cnum,
+                                    bonds(kk)=poi2(kkk);
+                                    hetflags(kk)=atom_table(poi2(kkk),3);
+                                end;
                             end;
                         end;
                     end;
-                end;
-                abonds=bonds(1:length(find(bonds>0)));
-                poi=0;
-                while poi<length(abonds),
-                    tline=sprintf('CONECT%5i',k);
-                    apoi=0;
-                    flush=0;
-                    while apoi<4 && poi<length(abonds),
-                        poi=poi+1;
-                        if hetflag1 || hetflags(poi),
-                            apoi=apoi+1;
-                            flush=1;
-                            tline=sprintf('%s%5i',tline,abonds(poi));
+                    abonds=bonds(1:length(find(bonds>0)));
+                    poi=0;
+                    while poi<length(abonds),
+                        tline=sprintf('CONECT%5i',k);
+                        apoi=0;
+                        flush=0;
+                        while apoi<4 && poi<length(abonds),
+                            poi=poi+1;
+                            if hetflag1 || hetflags(poi),
+                                apoi=apoi+1;
+                                flush=1;
+                                tline=sprintf('%s%5i',tline,abonds(poi));
+                            end;
                         end;
-                    end;
-                    if flush,
-                        fprintf(fid,'%s\n',tline);
-                        numConect=numConect+1;
+                        if flush,
+                            fprintf(fid,'%s\n',tline);
+                            numConect=numConect+1;
+                        end;
                     end;
                 end;
             end;
         end;
     end;
-end;
+end
 
 % write MASTER record
 fprintf(fid,'MASTER    %5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i%5i\n',numRemark,0,numHet,numHelix,numSheet,0,numSite,numXform,numCoord,numTer,numConect,numSeq);

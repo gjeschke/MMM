@@ -22,7 +22,7 @@ function varargout = MMM_prototype(varargin)
 
 % Edit the above text to modify the response to help MMM_prototype
 
-% Last Modified by GUIDE v2.5 12-Dec-2019 11:15:30
+% Last Modified by GUIDE v2.5 24-Dec-2019 09:27:32
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -5691,56 +5691,12 @@ function menu_jobs_test2_Callback(hObject, ~, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-global model
-
-% reduce stemloop library
-
-n = 15;
-
-msd = zeros(n);
-flist = cell(1,n);
-coor = cell(1,n);
-
-pdb_list = dir('a*.pdb');
-
-nc = 0;
-
-for k = 1:length(pdb_list)
-    [~,snum] = add_pdb(pdb_list(k).name);
-    fname = pdb_list(k).name;
-    poi = strfind(fname,'.pdb');
-    fname = fname(1:poi-1);
-    xyz = model.structures{snum}(1).xyz{1};
-    if nc < n
-        nc = nc + 1;
-        coor{nc} = xyz;
-        for kp = 1:nc-1
-            rms = rmsd_superimpose(coor{kp},xyz);
-            msd(kp,nc) = rms^2;
-            msd(nc,kp) = msd(kp,nc);
-        end
-        flist{nc} = fname;
-    else
-        msdsum = sum(msd);
-        cmsd = zeros(1,n);
-        for kp = 1:n
-            rms = rmsd_superimpose(coor{kp},xyz);
-            cmsd(kp) = rms^2;
-        end
-        msdsum = msdsum + cmsd;
-        [minmsd,central] = min(msdsum);
-        if sum(cmsd) > minmsd % the model differs more from all others than the central one
-            flist{central} = fname;
-            msd(central,1:central-1) = cmsd(1:central-1);
-            msd(central,central+1:end) = cmsd(central+1:end);
-            cmsd = msd(central,:).';
-            msd(:,central) = cmsd;
-        end
-    end
-end
-
-put_file_list('diverse_SLs.dat',flist);
-
+[restraints,restrain,aux] = get_domain_restraints('Gly180_free_unrestrained.dat');
+aux.save_path = pwd;
+aux.pdbid = 'PGLY';
+aux.save_name = 'Gly180';
+success = make_loop_and_save(restraints,restrain,aux);
+fprintf(1,'%i loops were generated\n',success);
 guidata(hObject,handles);
 
 
@@ -5785,22 +5741,13 @@ function menu_jobs_test4_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-stag1 = 'MMM0';
-chains1 = 'BA';
-stag2 = 'MMM1';
-chains2 = 'AB';
-% pop1 = [0.016957,0.054164,0.123205,0.009972,0.042209,0.039926,0.042478,...
-%     0.050806,0.072700,0.061686,0.137443,0.031732,0.017225,0.094595,...
-%     0.075521,0.011047,0.091908,0.026426];
-pop1 = [0.067318,0.097607,0.152869,0.181209,0.042521,0.063776,0.105577,...
-    0.017723,0.055097,0.019849,0.073163,0.123290];
-pop1 = pop1/sum(pop1);
-pop2 = [0.026875,0.047059,0.019219,0.008430,0.074030,0.019567,0.038881,...
-    0.012606,0.075770,0.011214,0.012954,0.034357,0.043057,0.066896,...
-    0.002514,0.116661,0.005646,0.162946,0.178085,0.043231];
-pop2 = pop2/sum(pop2);
-options.mode = 'backbone';
-[sigma,pair_rmsd] = ensemble_comparison(stag1,chains1,pop1,stag2,chains2,pop2,options);
+tic,
+[coor,N,n] = rd_CA_trace('hnRNPA1_LCD_free_unrestrained_m6');
+p = 1;
+options.verbose = true;
+% [coor,N,n] = rd_CA_trace('PTB1_CYANA_RRM34_superimposed_ordered');
+toc,
+[C,R0,nu,raxis,Rg_distr] = local_compactness(coor,N,n,p,options);
 guidata(hObject,handles);
 
 
@@ -5931,4 +5878,14 @@ function menu_ensembles_compare_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 compare_ensembles;
+guidata(hObject,handles);
+
+
+% --------------------------------------------------------------------
+function menu_ensembles_compactness_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_ensembles_compactness (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+handles = compactness_analysis_interface(handles);
 guidata(hObject,handles);

@@ -46,6 +46,10 @@ if ~exist('options','var') || isempty(options)
     options.mode = 'backbone';
 end
 
+if ~isfield(options,'cluster_sorting')
+    options.cluster_sorting = false;
+end
+
 if exist('stag2','var') && ~isempty(stag2)
     sigma = zeros(1,3);
     pair_rmsd = cell(1,3);
@@ -150,6 +154,12 @@ ordering{1} = sorting;
 
 sigma(1) = get_sigma(pair_rmsd{1},pop1);
 
+if options.ensembles == 1 && options.cluster_sorting
+    [new_pair_rmsd,new_ordering] = cluster_analysis(pair_rmsd{1},pop1,sorting);
+    ordering{1} = new_ordering;
+    pair_rmsd{1}= new_pair_rmsd;
+end
+
 if options.ensembles > 1
     [pair_rmsd2,msg] = ensemble_pair_rmsd(stag2,chains2,options);
     if msg.error
@@ -221,3 +231,4 @@ else
     end
     sigma = sqrt(msdsum/popsum);
 end
+
