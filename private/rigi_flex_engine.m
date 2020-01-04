@@ -67,7 +67,7 @@ end
 
 tph = 1000000; % trials per hour, to be replaced with machine-specific value
 
-target_resolution = 3; % resolution with spin labels is not realistically better than 3 Å
+target_resolution = 3; % resolution with spin labels is not realistically better than 3 ?
 res = target_resolution;
 
 diagnostics.success = 0;
@@ -88,9 +88,9 @@ end
 % setting for the algorithm
 maxat = 50000; % maximum number of heavy atoms in rigid body
 forgive = 0.8; % scaling factor for van-der-Waals radii in clash tests
-min_approach = 5; % minimal approach of two reference points [Å]
-max_extension = 180; % maximum distance between any two reference points [Å]
-clash_threshold = 1.5*forgive; % a uniform van-der-Waals radius of 1.5 Å is assumed for heavy atoms
+min_approach = 5; % minimal approach of two reference points [?]
+max_extension = 180; % maximum distance between any two reference points [?]
+clash_threshold = 1.5*forgive; % a uniform van-der-Waals radius of 1.5 ? is assumed for heavy atoms
 clash_fail = 10000; %500; % maximum value of the clash cost function in testing for the unrefined model
 
 

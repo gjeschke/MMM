@@ -91,7 +91,7 @@ tstart = tic;
 if ~isempty(combination)
     [v1,cost] = fminsearch(@rba_cost_fct,v0,options,atransmat,rb,points,naux,auxiliary,ncore,core,links,clash_threshold,heavy_coor,hulls,pthr,clash_fail,do_echo,v0);
 else
-    [v1,cost] = fminsearch(@rba_cost_fct,v0,options,atransmat,rb,points,naux,auxiliary,ncore,core,links,clash_threshold,heavy_coor,hulls,pthr,clash_fail);
+    [v1,cost] = fminsearch(@rba_cost_fct,v0,options,atransmat,rb,points,naux,auxiliary,ncore,core,links,clash_threshold,heavy_coor,hulls,pthr,clash_fail,do_echo,v0);
 end
 telapsed = toc(tstart);
 
@@ -166,7 +166,7 @@ for kaux = 1:naux
     end
     aux_fulfill(kaux) = prob;
     if detailed_verbose
-        fprintf(1,'Auxiliary restraint %i at %4.1f Å for %4.1f Å (%4.1f Å); Probability %4.2f\n',kaux,rsim,auxiliary(kaux,5),auxiliary(kaux,6),prob);
+        fprintf(1,'Auxiliary restraint %i at %4.1f ? for %4.1f ? (%4.1f ?); Probability %4.2f\n',kaux,rsim,auxiliary(kaux,5),auxiliary(kaux,6),prob);
     end
     paux = paux*prob;
 end
@@ -346,7 +346,11 @@ for kcore = 1:ncore
     rsim = norm(coor1b-coor2b);
     cost_core = cost_core + ((rsim-core(kcore,5))/core(kcore,6))^2; 
 end
-costs.core = cost_core/(-ncore*log(pthr));
+if ncore > 0
+    costs.core = cost_core/(-ncore*log(pthr));
+else
+    costs.core = 0;
+end
 cost = cost + costs.core;
 if costs.core > 1
     fit_success = false;
@@ -365,7 +369,7 @@ if ~isempty(links(1).maxr)
             coor1b = acoor1(links(kl).ref_indices(2),:);
             coor2b = acoor2(links(kl).ref_indices(4),:);
             rlink = norm(coor2b - coor1b);
-            % fprintf(1,'Link(%i), Combi(%i,%i,%i): %4.2f Å\n',kl,combination,rlink);
+            % fprintf(1,'Link(%i), Combi(%i,%i,%i): %4.2f ?\n',kl,combination,rlink);
             if rlink > 0.99*links(kl).maxr 
                 cost_link = cost_link + link_weight*(rlink-0.99*links(kl).maxr)^2;
             end

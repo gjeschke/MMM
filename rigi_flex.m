@@ -65,7 +65,7 @@ j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image
 load helpicon
 set(handles.pushbutton_help,'CData',cdata);
 
-if ~exist('model','var') || ~isfield(model,'current_structure'),
+if ~exist('model','var') || ~isfield(model,'current_structure')
     set(hMain.popupmenu_view,'Value',1);
     % initialize display
     axes(hMain.axes_model);
@@ -2674,7 +2674,7 @@ guidata(hObject,handles);
 
 function [handles,restraints] = analyze_exhaustive(handles,restraints)
 
-tph = 1000000; % trials per hour, to be replaced with machine-specific value
+tph = 500000; % trials per hour, to be replaced with machine-specific value
 target_resolution = 3; % lowest resolution to be considered sensible with spin labels
 min_approach = 5; % minimal approach of two reference points [?]
 max_extension = 180; % 180 maximum distance between any two reference points [?]
