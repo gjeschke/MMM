@@ -22,7 +22,7 @@ function varargout = MMM_prototype(varargin)
 
 % Edit the above text to modify the response to help MMM_prototype
 
-% Last Modified by GUIDE v2.5 12-Dec-2019 11:15:30
+% Last Modified by GUIDE v2.5 24-Dec-2019 09:27:32
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -5339,116 +5339,52 @@ function menu_jobs_test_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 global model
+global general
 
-pdb_list = dir('a9_*.pdb');
-path_SLD = 'D:\projects\Christoph_Gmeiner\modelling\SLD_CYANA\';
-path_SLE = 'D:\projects\Christoph_Gmeiner\modelling\SLE_CYANA\';
-path_SLF = 'D:\projects\Christoph_Gmeiner\modelling\SLF_CYANA\';
+fmname = 'rigid_part.pdb';
 
-[msg, RRM1] = get_object('[PTBC](A)58-154','xyz_backbone');
-RRM1 = consolidate_coor(RRM1);
-if msg.error
-    add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
-end
-[msg, RRM2] = get_object('[PTBC](C)182-283','xyz_backbone');
-RRM2 = consolidate_coor(RRM2);
-if msg.error
-    add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
-end
-[msg, RRM34] = get_object('[PTBC](E)455-531','xyz_backbone');
-if msg.error
-    add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
-end
-RRM34 = consolidate_coor(RRM34);
-for k = 1:length(pdb_list)
-    [~,snum] = add_pdb(pdb_list(k).name);
-    sadr = mk_address(snum);
-    fname = pdb_list(k).name;
-    poi = strfind(fname,'.pdb');
-    fname = fname(1:poi-1);
-    % transform and save SLD
-    oname = strcat(fname,'_SLD.pdb');
-    oname = strcat(path_SLD,oname);
-    xyz0 = model.structures{snum}(2).xyz{1};
-    [msg, RRM34_conf] = get_object(sprintf('%s(A)455-531',sadr),'xyz_backbone');
-    RRM34_conf = consolidate_coor(RRM34_conf);
-    if msg.error
-        add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
+[fname,pname]=uigetfile('*.pdb','Load template PDB file');
+if isequal(fname,0) || isequal(pname,0)
+    add_msg_board('ERROR: Ensemble of ensembles fitting requires a template');
+    return
+else
+    message = add_pdb(fullfile(pname,fname));
+    if message.error
+        add_msg_board(sprintf('ERROR: Loading of PDB file failed (%s)',message.text));
+        return
     end
-    [rms,~,transmat] = rmsd_superimpose(RRM34,RRM34_conf);
-    fprintf(1,'For %s superposition r.ms.d. is %6.1f Å\n',fname,rms);
-    xyz = affine_trafo_coor(xyz0,transmat);
-    model.structures{snum}(2).xyz{1} = xyz;
+end
+
+[fname,pname]=uigetfile('*.dat','Specify restraint file');
+if isequal(fname,0) || isequal(pname,0)
+    add_msg_board('ERROR: Restraint loading cancelled by user');
+    return
+else
+    reset_user_paths(pname);
+    general.restraint_files = pname;
+    restraint_file = fullfile(pname,fname);
+end
+
+for k = 1:20
     if isfield(model,'selected')
         model = rmfield(model,'selected');
     end
-    spoi = 0;
-    for knt = 288:318
-        spoi = spoi + 1;
-        ind = resolve_address(sprintf('%s(B){1}%i',sadr,knt));
-        model.selected{spoi} = ind;
-    end
-    message = wr_pdb_selected(oname,'SLD0');
-    if message.error
-        if interactive
-            add_msg_board(sprintf('Warning: Model %s could not be automatically saved. %s\n',oname));
-        end
-    end
-    % transform and save SLE
-    oname = strcat(fname,'_SLE.pdb');
-    oname = strcat(path_SLE,oname);
-    [msg, RRM1_conf] = get_object(sprintf('%s(A)58-154',sadr),'xyz_backbone');
-    RRM1_conf = consolidate_coor(RRM1_conf);
-    if msg.error
-        add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
-    end
-    [rms,~,transmat] = rmsd_superimpose(RRM1,RRM1_conf);
-    fprintf(1,'For %s superposition r.ms.d. is %6.1f Å\n',fname,rms);
-    xyz = affine_trafo_coor(xyz0,transmat);
-    model.structures{snum}(2).xyz{1} = xyz;
-    if isfield(model,'selected')
-        model = rmfield(model,'selected');
-    end
-    spoi = 0;
-    for knt = 322:335
-        spoi = spoi + 1;
-        ind = resolve_address(sprintf('%s(B){1}%i',sadr,knt));
-        model.selected{spoi} = ind;
-    end
-    message = wr_pdb_selected(oname,'SLE0');
-    if message.error
-        if interactive
-            add_msg_board(sprintf('Warning: Model %s could not be automatically saved. %s\n',oname));
-        end
-    end    
-    % transform and save SLF
-    oname = strcat(fname,'_SLF.pdb');
-    oname = strcat(path_SLF,oname);
-    [msg, RRM2_conf] = get_object(sprintf('%s(A)182-283',sadr),'xyz_backbone');
-    RRM2_conf = consolidate_coor(RRM2_conf);
-    if msg.error
-        add_msg_board(sprintf('ERROR: %s. Aborting',msg.text));
-    end
-    [rms,~,transmat] = rmsd_superimpose(RRM2,RRM2_conf);
-    fprintf(1,'For %s superposition r.ms.d. is %6.1f Å\n',fname,rms);
-    xyz = affine_trafo_coor(xyz0,transmat);
-    model.structures{snum}(2).xyz{1} = xyz;
-    if isfield(model,'selected')
-        model = rmfield(model,'selected');
-    end
-    spoi = 0;
-    for knt = 348:370
-        spoi = spoi + 1;
-        ind = resolve_address(sprintf('%s(B){1}%i',sadr,knt));
-        model.selected{spoi} = ind;
-    end
-    message = wr_pdb_selected(oname,'SLF0');
-    if message.error
-        if interactive
-            add_msg_board(sprintf('Warning: Model %s could not be automatically saved. %s\n',oname));
-        end
+    model.selected{1} = [1 1 k];
+    wr_pdb_selected(fmname,sprintf('HN%i',k));
+    add_pdb(fmname);
+    [restraints,restrain,aux] = get_domain_restraints(restraint_file);
+    aux.save_path = pwd;
+    aux.pdbid = 'HNA1';
+    aux.save_name = sprintf('hnRNPA1_NMR%i',k);
+    success = make_loop_and_save(restraints,restrain,aux);
+    if success
+        fprintf(1,'For stub %s %i models were successfully generated.\n',aux.save_name,success);
+    else
+        fprintf(1,'Model %s failed.\n',aux.save_name);
     end
 end
+guidata(hObject,handles);
+
 
 
 % --------------------------------------------------------------------
@@ -5755,56 +5691,12 @@ function menu_jobs_test2_Callback(hObject, ~, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-global model
-
-% reduce stemloop library
-
-n = 15;
-
-msd = zeros(n);
-flist = cell(1,n);
-coor = cell(1,n);
-
-pdb_list = dir('a*.pdb');
-
-nc = 0;
-
-for k = 1:length(pdb_list)
-    [~,snum] = add_pdb(pdb_list(k).name);
-    fname = pdb_list(k).name;
-    poi = strfind(fname,'.pdb');
-    fname = fname(1:poi-1);
-    xyz = model.structures{snum}(1).xyz{1};
-    if nc < n
-        nc = nc + 1;
-        coor{nc} = xyz;
-        for kp = 1:nc-1
-            rms = rmsd_superimpose(coor{kp},xyz);
-            msd(kp,nc) = rms^2;
-            msd(nc,kp) = msd(kp,nc);
-        end
-        flist{nc} = fname;
-    else
-        msdsum = sum(msd);
-        cmsd = zeros(1,n);
-        for kp = 1:n
-            rms = rmsd_superimpose(coor{kp},xyz);
-            cmsd(kp) = rms^2;
-        end
-        msdsum = msdsum + cmsd;
-        [minmsd,central] = min(msdsum);
-        if sum(cmsd) > minmsd % the model differs more from all others than the central one
-            flist{central} = fname;
-            msd(central,1:central-1) = cmsd(1:central-1);
-            msd(central,central+1:end) = cmsd(central+1:end);
-            cmsd = msd(central,:).';
-            msd(:,central) = cmsd;
-        end
-    end
-end
-
-put_file_list('diverse_SLs.dat',flist);
-
+[restraints,restrain,aux] = get_domain_restraints('Gly180_free_unrestrained.dat');
+aux.save_path = pwd;
+aux.pdbid = 'PGLY';
+aux.save_name = 'Gly180';
+success = make_loop_and_save(restraints,restrain,aux);
+fprintf(1,'%i loops were generated\n',success);
 guidata(hObject,handles);
 
 
@@ -5832,6 +5724,7 @@ for k = 1:length(mylist)
     aux.max_time = 1;
     aux.save_path = pwd;
     aux.save_name = strcat(oname,'_loop23');
+    aux.pdbid = 'PTB1';
     success = make_loop_and_save(restraints,restrain,aux);
     if success
         fprintf(1,'Model %s was successfully generated.\n',aux.save_name);
@@ -5848,22 +5741,13 @@ function menu_jobs_test4_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-stag1 = 'MMM0';
-chains1 = 'BA';
-stag2 = 'MMM1';
-chains2 = 'AB';
-% pop1 = [0.016957,0.054164,0.123205,0.009972,0.042209,0.039926,0.042478,...
-%     0.050806,0.072700,0.061686,0.137443,0.031732,0.017225,0.094595,...
-%     0.075521,0.011047,0.091908,0.026426];
-pop1 = [0.067318,0.097607,0.152869,0.181209,0.042521,0.063776,0.105577,...
-    0.017723,0.055097,0.019849,0.073163,0.123290];
-pop1 = pop1/sum(pop1);
-pop2 = [0.026875,0.047059,0.019219,0.008430,0.074030,0.019567,0.038881,...
-    0.012606,0.075770,0.011214,0.012954,0.034357,0.043057,0.066896,...
-    0.002514,0.116661,0.005646,0.162946,0.178085,0.043231];
-pop2 = pop2/sum(pop2);
-options.mode = 'backbone';
-[sigma,pair_rmsd] = ensemble_comparison(stag1,chains1,pop1,stag2,chains2,pop2,options);
+tic,
+[coor,N,n] = rd_CA_trace('hnRNPA1_LCD_free_unrestrained_m6');
+p = 1;
+options.verbose = true;
+% [coor,N,n] = rd_CA_trace('PTB1_CYANA_RRM34_superimposed_ordered');
+toc,
+[C,R0,nu,raxis,Rg_distr] = local_compactness(coor,N,n,p,options);
 guidata(hObject,handles);
 
 
@@ -5994,4 +5878,14 @@ function menu_ensembles_compare_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 compare_ensembles;
+guidata(hObject,handles);
+
+
+% --------------------------------------------------------------------
+function menu_ensembles_compactness_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_ensembles_compactness (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+handles = compactness_analysis_interface(handles);
 guidata(hObject,handles);
