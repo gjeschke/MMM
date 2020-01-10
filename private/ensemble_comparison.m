@@ -155,7 +155,8 @@ ordering{1} = sorting;
 sigma(1) = get_sigma(pair_rmsd{1},pop1);
 
 if options.ensembles == 1 && options.cluster_sorting
-    [new_pair_rmsd,new_ordering] = cluster_analysis(pair_rmsd{1},pop1,sorting);
+    options2.fname = sprintf('cluster_analysis_ensemble_%s.dat',stag1);
+    [new_pair_rmsd,new_ordering] = cluster_analysis(pair_rmsd{1},pop1,sorting,options2);
     ordering{1} = new_ordering;
     pair_rmsd{1}= new_pair_rmsd;
 end

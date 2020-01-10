@@ -401,10 +401,8 @@ for runstep = 0:last_step
             set(gcf,'Pointer','watch');
             handles.text_time_left.String = 'Started.';
             handles.text_time_left.ForegroundColor = [0,0,180]/256;
-            rba = [handles.diagnostics.snum,1];
-            secdefs = process_rna_domain_restraints(handles.restraints,rba);
-            RNA_linkers = zeros(handles.diagnostics.success,length(secdefs));
-            RNA_linker_time = zeros(handles.diagnostics.success,length(secdefs));
+            RNA_linkers = zeros(handles.diagnostics.success,100);
+            RNA_linker_time = zeros(handles.diagnostics.success,100);
             if isfield(handles.restraints,'RNA') && isfield(handles.restraints.RNA,'bind')
                 num_ch = length(model.structures{handles.diagnostics.snum});
                 initflag = true;
@@ -415,22 +413,31 @@ for runstep = 0:last_step
                 end
                 success_vec = zeros(1,handles.diagnostics.success);
                 initialize_model = true;
+                succeeded = 0;
+                tic_full = tic;
                 for km = 1:handles.diagnostics.success % loop over rigid-body models
                     if ~isempty(handles.restraints.stemlibs)
                         csoln = solutions(solutions(:,1)==km,:);
-                        stretch = csoln(:,2);
-                        [stretch,strpoi] = sort(stretch);
-                        csoln = csoln(strpoi,:);
+                        [mc,~] = size(csoln);
+                        randseq = rand(1,mc);
+                        [~,randpoi] = sort(randseq);
+                        csoln = csoln(randpoi,:);
                     else
-                        stretch = 1;
+                        csoln = 1;
                     end
                     full_connect = false;
                     kcombi = 0;
                     snum = handles.diagnostics.snum;
-                    while ~isempty(stretch) && ~full_connect && kcombi < length(stretch) && kcombi < handles.restraints.RNA.models
-                        kcombi = kcombi + 1;
+                    while ~isempty(csoln) && ~full_connect
+                        model.current_structure = handles.diagnostics.snum;
                         if ~isempty(handles.restraints.stemlibs)
-                            ccombi = csoln(kcombi,3:end);
+                            [mc,~] = size(csoln);
+                            ccombi = csoln(1,3:end);
+                            if mc > 1
+                                csoln = csoln(2:mc,:);
+                            else
+                                csoln = [];
+                            end
                             % make adjustment transformation matrices
                             adj_transmats = cell(1,length(handles.restraints.rb));
                             for kr = 1:length(handles.restraints.rb)
@@ -491,8 +498,9 @@ for runstep = 0:last_step
 
                         handles.text_success.String = sprintf('%i',km);
                         rba = [handles.diagnostics.snum,km];
-                        model.current_structure = handles.diagnostics.snum;
                         [secdefs,RNA] = process_rna_domain_restraints(handles.restraints,rba);
+                        RNA_linkers = RNA_linkers(:,1:length(secdefs));
+                        RNA_linker_time = RNA_linker_time(:,1:length(secdefs));
                         parts = length(handles.restraints.RNA_tags) + length(secdefs);
                         pindices = ones(parts,3);
                         for sec = 0:length(secdefs)
@@ -537,14 +545,63 @@ for runstep = 0:last_step
                                 RNA_linker_time(km,sec) = diagnostics.time_per_model;
                                 pindices(2*sec,1) = diagnostics.snum;
                                 fprintf(report_fid,'Successful modelling (structure %i) with %i models and %5.1f s/model\n\n',diagnostics.snum,diagnostics.success,diagnostics.time_per_model);
+                                % resort stemloop combinations to bring
+                                % forward the combinations with the
+                                % succeeding link
+                                [mc,~] = size(csoln);
+                                sorter = ones(1,mc);
+                                lib1 = secdefs(sec).libs(1);
+                                lib2 = secdefs(sec).libs(2);
+                                for k = 1:mc
+                                    match = true;
+                                    if lib1 ~= 0
+                                        if ccombi(lib1) ~= csoln(k,lib1+2)
+                                            match = false;
+                                        end
+                                    end
+                                    if lib2 ~= 0
+                                        if ccombi(lib2) ~= csoln(k,lib2+2)
+                                            match = false;
+                                        end
+                                    end
+                                    if match
+                                        sorter(k) = 0;
+                                    end
+                                end
+                                [~,soln_order] = sort(sorter);
+                                csoln = csoln(soln_order,:);
                             else
                                 fprintf(1,'RNA modelling failed for section %i in RBA %i\n',sec,km);
                                 fprintf(report_fid,'Modelling of RNA for RBA %i failed. Remaining RNA sections (if any) are skipped.\n\n',km);
                                 full_connect = false;
+                                % remove combinations which have the failed
+                                % link
+                                [mc,~] = size(csoln);
+                                selector = ones(1,mc);
+                                lib1 = secdefs(sec).libs(1);
+                                lib2 = secdefs(sec).libs(2);
+                                for k = 1:mc
+                                    match = true;
+                                    if lib1 ~= 0
+                                        if ccombi(lib1) ~= csoln(k,lib1+2)
+                                            match = false;
+                                        end
+                                    end
+                                    if lib2 ~= 0
+                                        if ccombi(lib2) ~= csoln(k,lib2+2)
+                                            match = false;
+                                        end
+                                    end
+                                    if match
+                                        selector(k) = 0;
+                                    end
+                                end
+                                csoln = csoln(selector ~= 0,:);
                                 break
                             end
                         end
                         if full_connect
+                            succeeded = succeeded + 1;
                             fprintf(report_fid,'Modelling of RNA for RBA %i succeeded.\n\n',km);
                             nindices = [handles.diagnostics.snum,num_ch+1,km];
                             chain_tag = handles.restraints.RNA.chain_id;
@@ -608,7 +665,12 @@ for runstep = 0:last_step
                                 end
                             end
                         end
+                        if isempty(handles.restraints.stemlibs)
+                            csoln = [];
+                        end
                     end
+                    time_per_rba = toc(tic_full)/km;
+                    add_msg_board(sprintf('%5.1f%% success with %6.1f s/RBA',100*succeeded/km,time_per_rba));
                 end
             end
             handles.RNA_link_success = success_vec;

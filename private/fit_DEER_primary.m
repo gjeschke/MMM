@@ -53,7 +53,7 @@ if ~isfield(options,'dim') || isempty(options.dim)
     options.dim = 3;
 end
 if ~isfield(options,'kdec')
-    options.depth = [];
+    options.kdec = [];
 end
 if ~isfield(options,'cutoff') || isempty(options.cutoff)
     options.cutoff = 1;

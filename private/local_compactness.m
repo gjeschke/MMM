@@ -11,7 +11,8 @@ function [C,R0,nu,raxis,Rg_distr,P,R0_P,nu_P] = local_compactness(coor,N,n,p,opt
 %           are 1/N, otherwise populations are normalized
 % options   struct with options
 %           .verbose    flag indicating if verbose information is
-%                       displayed, defaults to false 
+%                       displayed, defaults to false
+%           .resaxis    optional axis with residue numbers
 %
 % C         local compactness matrix
 % R0        segment length in Rg = R0 n`nu

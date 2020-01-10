@@ -26,7 +26,7 @@ if ~exist(ensemble_pdb,'file')
     add_msg_board('PDB file of ensemble not found. Assembling from individual files');
     N = length(file_list);
     for k = 1:length(file_list)
-        [ccoor,cN,n] = rd_CA_trace(file_list{k});
+        [ccoor,cN,n,resaxis,sequence] = rd_CA_trace(file_list{k});
         if cN > 1
             add_msg_board(sprintf('ERROR: File %s is supposed to be a single model, but contains %i models.',file_list{k},cN));
             return
@@ -45,21 +45,33 @@ if ~exist(ensemble_pdb,'file')
         bas = bas + n;
     end
 else
-    [coor,N,n] = rd_CA_trace(ensemble_pdb);
+    [coor,N,n,resaxis,sequence] = rd_CA_trace(ensemble_pdb);
 end
 set(hfig,'Pointer','arrow');
 
 options.verbose = true;
+options.resaxis = resaxis;
 [C,R0,nu,raxis,Rg_distr,P,R0_ee,nu_ee] = local_compactness(coor,N,n,p,options);
 
 add_msg_board(sprintf('Radius of gyration fit parameters: R0 = %4.2f Å, nu = %5.3f',R0,nu));
 add_msg_board(sprintf('Root mean square segment length fit parameters: R0ee = %4.2f Å, nuee = %5.3f',R0_ee,nu_ee));
 
+x = [resaxis(1) resaxis(end)];
+[tags,colors] = mk_color_list('aa_colors.def');
+rgb = zeros(length(sequence),3);
+for k = 1:length(sequence)
+    svgid = tag2id(sequence(k),tags);
+    svgcolor = id2tag(svgid,colors);
+    rgb(k,:) = svg2rgb(svgcolor);
+end
+
 figure;
-[n,~] = size(C);
-plot(1,1,'k.');
-plot(n,n,'k.');
-image(C,'CDataMapping','scaled');
+image(x,x,C,'CDataMapping','scaled');
+hold on;
+for k = 1:length(sequence)
+    plot(resaxis(k),resaxis(1)-2,'.','MarkerSize',10,'Color',rgb(k,:));
+    plot(resaxis(1)-2,resaxis(k),'.','MarkerSize',10,'Color',rgb(k,:));
+end
 curr_axis = gca;
 set(curr_axis,'CLim',[-1,1]);
 set(curr_axis,'YDir','normal');
@@ -77,7 +89,12 @@ mymap = flipud(mymap);
 colormap(mymap);
 title('Relative deviation from random coil radius of gyration');
 figure;
-image(P,'CDataMapping','scaled');
+image(x,x,P,'CDataMapping','scaled');
+hold on;
+for k = 1:length(sequence)
+    plot(resaxis(k),resaxis(1)-2,'.','MarkerSize',10,'Color',rgb(k,:));
+    plot(resaxis(1)-2,resaxis(k),'.','MarkerSize',10,'Color',rgb(k,:));
+end
 curr_axis = gca;
 set(curr_axis,'CLim',[-1,1]);
 set(curr_axis,'YDir','normal');
@@ -92,7 +109,7 @@ figure;
 [n1,n2] = size(Rg_distr);
 plot(1,1,'k.');
 plot(n1,n2,'k.');
-image(1:n2,raxis,Rg_distr,'CDataMapping','scaled');
+image([1,n2],[raxis(1),raxis(end)],Rg_distr,'CDataMapping','scaled');
 curr_axis = gca;
 curr_axis.YDir = 'normal';
 colorbar;

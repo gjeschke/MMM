@@ -1,29 +1,85 @@
 function mk_ensemble(ensemble_list,populations,restraints,options)
+% mk_ensemble(ensemble_list,populations,restraints,options)
+%
+% Write ensemble file and make restraint fulfillment plots
+%
+% ensemble_list     list of conformer PDB files making up the ensemble
+% populations       vector of populations, defaults to uniform populations
+% restraints        restraint definition
+% options           .script     flag indicating whether an MMM display
+%                               script is to be written, default: true
+%                   .write_pdb  flag indicating whether ensemble file is to
+%                               be written out, default: true
+%                   .ordering   ensemble ordering, defaults to sequence in
+%                               file list
+%                   .individual flag indicating whether distance
+%                               distributions of individual conformers are
+%                               plotted, defaults to false
+%                   .groups     groups of ensemble members, for which a
+%                               sum distance distribution is plotted,
+%                               array of struct with fields
+%                               .conformers  conformer numbers
+%                               .color       RGB color triple
+%                               defaults to empty
+%
+% G. Jeschke, 7.1.2020
+
+
 
 global model
 
+if ~exist('populations','var') || isempty(populations)
+    populations = ones(1,length(ensemble_list));
+    populations = populations/sum(populations);
+end
+
+if ~exist('options','var') || isempty(options) || ~isfield(options,'script') || isempty(options.script)
+    options.script = true;
+end
+
+if ~isfield(options,'write_pdb') || isempty(options.write_pdb)
+    options.write_pdb = true;
+end
+
+if ~isfield(options,'ordering') || isempty(options.ordering)
+    options.ordering = 1:length(ensemble_list);
+end
+
+populations = populations(options.ordering);
+
+if ~isfield(options,'individual') || isempty(options.individual)
+    options.individual = false;
+end
+
+if ~isfield(options,'groups') || isempty(options.groups)
+    options.groups = [];
+end
+
 DEER.initialize = true;
 
+if options.script
+    fid = fopen(options.script_file,'wt');
+    fprintf(fid,'show [%s] ribbon\n',options.pdb_ID);
+    fprintf(fid,'color [%s](B){:} grey\n',options.pdb_ID);
+    fprintf(fid,'colorscheme [%s](A){:} sequence\n',options.pdb_ID);
 
-fid = fopen(options.script_file,'wt');
-fprintf(fid,'show [%s] ribbon\n',options.pdb_ID);
-fprintf(fid,'color [%s](B){:} grey\n',options.pdb_ID);
-fprintf(fid,'colorscheme [%s](A){:} sequence\n',options.pdb_ID);
-
-for km = 1:length(populations)
-    alpha = populations(km)/max(populations);
-    fprintf(fid,'transparency [%s](:){%i} %5.3f\n',options.pdb_ID,km,alpha);
+    for km = 1:length(populations)
+        alpha = populations(km)/max(populations);
+        fprintf(fid,'transparency [%s](:){%i} %5.3f\n',options.pdb_ID,km,alpha);
+    end
+    fclose(fid);
 end
 
 for km = 1:length(ensemble_list)
-    fname = sprintf('%s_restraints.mat',ensemble_list{km});
+    fname = sprintf('%s_restraints.mat',ensemble_list{options.ordering(km)});
     if exist(fname,'file')
         s = load(fname);
         model_restraints = s.restraints;
     else
         model_restraints = evaluate_model_restraints(ensemble_list{km},restraints,options);
     end
-    DEER = display_DEER_single(km,model_restraints,populations,DEER);
+    fprintf(1,'%s: %6.3f\n',fname,populations(km));
+    DEER = display_DEER_single(km,model_restraints,populations,DEER,options);
     if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
         for ks = 1:length(restraints.SANS)
             if km == 1
@@ -85,6 +141,10 @@ n_DEER = 0;
 for k = 1:DEER.core+DEER.flex
     DEER.all_distr(k,:) = DEER.all_distr(k,:)/sum(DEER.all_distr(k,:));
     figure(k); hold on;
+    for kgrp = 1:length(options.groups)
+        DEER.groups_distr{kgrp}(k,:) = DEER.groups_distr{kgrp}(k,:)/sum(DEER.all_distr(k,:));
+        plot(DEER.rax,DEER.groups_distr{kgrp}(k,:),'Color',options.groups(kgrp).color);
+    end
     plot(DEER.rax,DEER.all_distr(k,:),'Color',[0.6,0,0]);
     axis_vec = DEER.axis_vecs(k,:);
     if 1.05*max(DEER.all_distr(k,:)) > axis_vec(4)
@@ -108,13 +168,15 @@ for k = 1:DEER.core+DEER.flex
     if DEER.all_flags(k)
         ftype = 'fit';
         title(sprintf('%s-%s. o_{res}: %5.3f, o_{exp}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap,overlap_exp,DEER.mod_depths(k)));
-        colr = get_color(overlap);
-        fprintf(fid,'plot %s.CA %s.CA 6 %5.3f %5.3f %5.3f :\n',adr1,adr2,colr);
+        % Restraint plotting in model was disabled
+        % colr = get_color(overlap);
+        % fprintf(fid,'plot %s.CA %s.CA 6 %5.3f %5.3f %5.3f :\n',adr1,adr2,colr);
     else
         ftype = 'control';
         title(sprintf('%s-%s. o_{exp}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap_exp,DEER.mod_depths(k)));
-        colr = get_color(overlap_exp);
-        fprintf(fid,'plot %s.CA %s.CA 6 %5.3f %5.3f %5.3f :\n',adr1,adr2,colr);
+        % Restraint plotting in model was disabled        
+        % colr = get_color(overlap_exp);
+        % fprintf(fid,'plot %s.CA %s.CA 6 %5.3f %5.3f %5.3f :\n',adr1,adr2,colr);
     end
     axis(axis_vec);
     [texp,vexp,deer,bckg,param] = fit_DEER_primary(DEER.rax/10,DEER.all_distr(k,:),strcat('deer\',DEER.all_fnames{k}),options);
@@ -136,41 +198,42 @@ add_msg_board(sprintf('Mean DEER overlap deficiency: %6.3f',score_DEER));
 
 add_msg_board(sprintf('Sum of all SANS/SAXS chi^2: %5.2f',sum_chi2));
 
-% Make ensemble PDB file
-[msg,snum0] = add_pdb(ensemble_list{1});
-if msg.error
-    add_msg_board(sprintf('ERROR: First PDB file %s could not be read (%s).',ensemble_list{1},msg.text));
-    return
-end
-for kf = 2:length(ensemble_list)
-    copy_structure(snum0,'+mod',[],kf,snum0); % make a copy of the first model
-    [msg,snumc] = add_pdb(ensemble_list{kf});
+if options.write_pdb
+    % Make ensemble PDB file
+    [msg,snum0] = add_pdb(ensemble_list{1});
     if msg.error
-        add_msg_board(sprintf('ERROR: PDB file #%i (%s) could not be read (%s).',kf,ensemble_list{kf},msg.text));
+        add_msg_board(sprintf('ERROR: First PDB file %s could not be read (%s).',ensemble_list{1},msg.text));
         return
     end
-    for kc = 1:length(model.structures{snum0})
-        model.structures{snum0}(kc).atoms{kf} = model.structures{snumc}(kc).atoms{1};
-        model.structures{snum0}(kc).residues{kf} =model.structures{snumc}(kc).residues{1};
-        model.structures{snum0}(kc).xyz{kf} = model.structures{snumc}(kc).xyz{1};
-        model.structures{snum0}(kc).Bfactor{kf} =  model.structures{snumc}(kc).Bfactor{1};
-        model.structures{snum0}(kc).Btensor{kf} = model.structures{snumc}(kc).Btensor{1};
+    for kf = 2:length(ensemble_list)
+        copy_structure(snum0,'+mod',[],kf,snum0); % make a copy of the first model
+        [msg,snumc] = add_pdb(ensemble_list{kf});
+        if msg.error
+            add_msg_board(sprintf('ERROR: PDB file #%i (%s) could not be read (%s).',kf,ensemble_list{kf},msg.text));
+            return
+        end
+        for kc = 1:length(model.structures{snum0})
+            model.structures{snum0}(kc).atoms{kf} = model.structures{snumc}(kc).atoms{1};
+            model.structures{snum0}(kc).residues{kf} =model.structures{snumc}(kc).residues{1};
+            model.structures{snum0}(kc).xyz{kf} = model.structures{snumc}(kc).xyz{1};
+            model.structures{snum0}(kc).Bfactor{kf} =  model.structures{snumc}(kc).Bfactor{1};
+            model.structures{snum0}(kc).Btensor{kf} = model.structures{snumc}(kc).Btensor{1};
+        end
+    end
+    model.selected = cell(1,1);
+    model.selected{1} = snum0;
+    message = wr_pdb_selected(options.pdb_file,options.pdb_ID);
+
+    if message.error
+        add_msg_board(strcat('ERROR (wr_pdb_selected): ',message.text));
+    else
+        add_msg_board(sprintf('Structure file %s written',options.pdb_file));
     end
 end
-model.selected = cell(1,1);
-model.selected{1} = snum0;
-message = wr_pdb_selected(options.pdb_file,options.pdb_ID);
-
-if message.error
-    add_msg_board(strcat('ERROR (wr_pdb_selected): ',message.text));
-else
-    add_msg_board(sprintf('Structure file %s written',options.pdb_file));
-end
-
-fclose(fid);
 
 
-function DEER = display_DEER_single(km,model_restraints,populations,DEER)
+
+function DEER = display_DEER_single(km,model_restraints,populations,DEER,options)
 
 core = length(model_restraints.DEER);
 rax = model_restraints.DEER(1).rax;
@@ -178,6 +241,9 @@ flex = 0;
 
 if DEER.initialize
     DEER.all_distr = zeros(core,length(rax));
+    for k = 1:length(options.groups)
+        DEER.groups_distr{k} = zeros(core,length(rax));
+    end
     DEER.all_distr_sim = zeros(core,length(rax));
     DEER.all_distr_exp = zeros(core,length(rax));
     DEER.axis_vecs = zeros(core,4);
@@ -198,6 +264,9 @@ if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex) && isfi
     end
     if DEER.initialize
         DEER.all_distr = zeros(core+flex,length(rax));
+        for k = 1:length(options.groups)
+            DEER.groups_distr{k} = zeros(core+flex,length(rax));
+        end
         DEER.all_distr_sim = zeros(core+flex,length(rax));
         DEER.all_distr_exp = zeros(core+flex,length(rax));
         DEER.axis_vecs = zeros(core+flex,4);
@@ -219,13 +288,16 @@ for k = 1:length(model_restraints.DEER)
     figure(k); 
     if km == 1
         clf; hold on;
+        title(sprintf('%s-%s',model_restraints.DEER(k).adr1,model_restraints.DEER(k).adr2));
     end
     axis_vec = [0,120,-1e-6,1e-6];
     if isfield(model_restraints.DEER(k),'file') && ~isempty(model_restraints.DEER(k).file)
         dfname = strcat(model_restraints.DEER(k).file,'_distr.dat');
         deer_basname = strcat('deer_analysis\',model_restraints.DEER(k).file);
-        [axis_vec,md] = plot_exp_dist(deer_basname,rax);
-        DEER.mod_depths(k) = md;
+        if km == 1
+            [axis_vec,md] = plot_exp_dist(deer_basname,rax);
+            DEER.mod_depths(k) = md;
+        end
         dfname = strcat('deer_analysis\',dfname);
         Pdata = load(dfname);
         rexp = 10*Pdata(:,1).';
@@ -239,10 +311,18 @@ for k = 1:length(model_restraints.DEER)
         distr_sim = exp(-argr.^2);
         distr_sim = distr_sim/sum(distr_sim);
         DEER.all_distr_sim(k,:) = distr_sim;
-        plot(rax,distr_sim,'Color',[0,0.6,0]);
-        title(sprintf('%s-%s',model_restraints.DEER(k).adr1,model_restraints.DEER(k).adr2));
-        plot(rax,populations(km)*distr,'Color',[0.2,0.2,1]);
+        if km == 1
+            plot(rax,distr_sim,'Color',[0,0.6,0]);
+        end
+        if options.individual
+            plot(rax,populations(km)*distr,'Color',[0.2,0.2,1]);
+        end
         DEER.all_distr(k,:) = DEER.all_distr(k,:) + populations(km)*distr;
+        for kgrp = 1:length(options.groups)
+            if min(abs(options.groups(kgrp).conformers-km)) == 0
+                DEER.groups_distr{kgrp}(k,:) = DEER.groups_distr{kgrp}(k,:) + populations(km)*distr;
+            end
+        end
         if isfield(model_restraints.DEER(k),'file')
             DEER.all_fnames{k} = model_restraints.DEER(k).file;
         end
@@ -253,7 +333,9 @@ for k = 1:length(model_restraints.DEER)
             end
         end
     end
-    DEER.axis_vecs(k,:) = axis_vec;
+    if km == 1
+        DEER.axis_vecs(k,:) = axis_vec;
+    end
 end
 
 pflex = core;
@@ -264,14 +346,17 @@ if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex) && isfi
             figure(pflex);
             if km == 1
                 clf; hold on;
+                title(sprintf('%s-%s',model_restraints.DEER(k).adr1,model_restraints.DEER(k).adr2));
             end
             distr = model_restraints.pflex(kl).DEER(k).distr;
             axis_vec = [0,120,-1e-6,1e-6];
             if isfield(model_restraints.pflex(kl).DEER(k),'file') && ~isempty(model_restraints.pflex(kl).DEER(k).file)
                 dfname = strcat(model_restraints.pflex(kl).DEER(k).file,'_distr.dat');
                 deer_basname = strcat('deer_analysis\',model_restraints.pflex(kl).DEER(k).file);
-                [axis_vec,md] = plot_exp_dist(deer_basname,rax);
-                DEER.mod_depths(pflex) = md;
+                if km == 1
+                    [axis_vec,md] = plot_exp_dist(deer_basname,rax);
+                    DEER.mod_depths(pflex) = md;
+                end
                 dfname = strcat('deer_analysis\',dfname);
                 Pdata = load(dfname);
                 rexp = 10*Pdata(:,1).';
@@ -286,9 +371,18 @@ if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex) && isfi
                 distr_sim = exp(-argr.^2);
                 distr_sim = distr_sim/sum(distr_sim);
                 DEER.all_distr_sim(pflex,:) = distr_sim;
-                plot(rax,distr_sim,'Color',[0,0.6,0]);
-                plot(rax,populations(km)*distr,'Color',[0.2,0.2,1]);
+                if km == 1
+                    plot(rax,distr_sim,'Color',[0,0.6,0]);
+                end
+                if options.individual
+                    plot(rax,populations(km)*distr,'Color',[0.2,0.2,1]);
+                end
                 DEER.all_distr(pflex,:) = DEER.all_distr(pflex,:) + populations(km)*distr;
+                for kgrp = 1:length(options.groups)
+                    if min(abs(options.groups(kgrp).conformers-km)) == 0
+                        DEER.groups_distr{kgrp}(pflex,:) = DEER.groups_distr{kgrp}(pflex,:) + populations(km)*distr;
+                    end
+                end
                 if isfield(model_restraints.pflex(kl).DEER(k),'file')
                     DEER.all_fnames{pflex} = model_restraints.pflex(kl).DEER(k).file;
                 end
@@ -301,7 +395,9 @@ if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex) && isfi
                 DEER.all_adr1{pflex} = model_restraints.pflex(kl).DEER(k).adr1;
                 DEER.all_adr2{pflex} = model_restraints.pflex(kl).DEER(k).adr2;
             end
-            DEER.axis_vecs(pflex,:) = axis_vec;
+            if km == 1
+                DEER.axis_vecs(pflex,:) = axis_vec;
+            end
         end
     end
 end
@@ -390,17 +486,17 @@ if ~skip
     plot([r3,r4],[-0.04*ma,-0.04*ma],'Color',[0.6,0,0],'LineWidth',4);
 end
 
-function rgb = get_color(overlap,limit)
-
-if ~exist('limit','var')
-    limit = 0.8;
-end
-sigdim = 0.4;
-red = [1 0 0];
-green = [0 1 0];
-if overlap > limit
-    overlap = limit;
-end
-dimit = exp(-(overlap-limit/2)^2/(2*sigdim^2));
-fulfill = overlap/limit;
-rgb = dimit*(fulfill*green + (1-fulfill)*red);
+% function rgb = get_color(overlap,limit)
+% 
+% if ~exist('limit','var')
+%     limit = 0.8;
+% end
+% sigdim = 0.4;
+% red = [1 0 0];
+% green = [0 1 0];
+% if overlap > limit
+%     overlap = limit;
+% end
+% dimit = exp(-(overlap-limit/2)^2/(2*sigdim^2));
+% fulfill = overlap/limit;
+% rgb = dimit*(fulfill*green + (1-fulfill)*red);

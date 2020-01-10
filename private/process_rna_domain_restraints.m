@@ -59,6 +59,7 @@ if isfield(restraints,'stemlibs')
                 RNA.bind(kb).nte = restraints.stemlibs{kl}.nte;
                 RNA.bind(kb).anchora = sprintf('%s%i',restraints.stemlibs{kl}.chaintag,restraints.stemlibs{kl}.nta);
                 RNA.bind(kb).anchore = sprintf('%s%i',restraints.stemlibs{kl}.chaintag,restraints.stemlibs{kl}.nte);
+                RNA.bind(kb).stemlib = kl;
             end
         end
     end
@@ -95,21 +96,21 @@ end
 % find all sections (between anchor points in rigid bodies) and subsections
 % (stem or loop sections) forward from the first binding motif
 section = 1;
-sections_fwd{1} = zeros(100,3);
+sections_fwd{1} = zeros(100,5);
 segment = 0;
 while fwdpoi < seqlen
     fwdpoi = fwdpoi + 1;
     newtype = restrain(fwdpoi).stem;
     if type == 1 && (newtype == 0 || restrain(fwdpoi).known)
         segment = segment + 1;
-        sections_fwd{section}(segment,:) = [type,restrain(stem_start).nt,restrain(fwdpoi-1).nt];
+        sections_fwd{section}(segment,:) = [type,restrain(stem_start).nt,restrain(fwdpoi-1).nt,restrain(stem_start-1).stem_id,restrain(fwdpoi).stem_id];
         % fprintf(1,'Inserting stem from nucleotide %i to %i\n',restrain(stem_start).nt,restrain(fwdpoi-1).nt);
         restrain = consolidate_stem(restrain,RNA,restrain(stem_start).stem_id);
         loop_start = fwdpoi;
     end
     if type == 0 && (newtype == 1 || restrain(fwdpoi).known)
         segment = segment + 1;
-        sections_fwd{section}(segment,:) = [type,restrain(loop_start).nt,restrain(fwdpoi-1).nt];
+        sections_fwd{section}(segment,:) = [type,restrain(loop_start).nt,restrain(fwdpoi-1).nt,restrain(loop_start-1).stem_id,restrain(fwdpoi).stem_id];
         % fprintf(1,'Inserting loop from nucleotide %i to %i\n',restrain(loop_start).nt,restrain(fwdpoi-1).nt);
         stem_start = fwdpoi;
     end
@@ -117,7 +118,7 @@ while fwdpoi < seqlen
         sections_fwd{section} = sections_fwd{section}(1:segment,:);
         section = section + 1;
         segment = 0;
-        sections_fwd{section} = zeros(100,3);
+        sections_fwd{section} = zeros(100,5);
     end
     if type == 2 && ~restrain(fwdpoi).known
         if newtype == 0
@@ -134,12 +135,12 @@ end
 if type == 0
     segment = segment + 1;
     % fprintf(1,'Inserting loop from nucleotide %i to %i\n',restrain(loop_start).nt,restrain(fwdpoi).nt);
-    sections_fwd{section}(segment,:) = [type,restrain(loop_start).nt,restrain(fwdpoi).nt];
+    sections_fwd{section}(segment,:) = [type,restrain(loop_start).nt,restrain(fwdpoi).nt,restrain(loop_start-1).stem_id,0];
 elseif type == 1
     segment = segment + 1;
     % fprintf(1,'Inserting stem from nucleotide %i to %i\n',restrain(stem_start).nt,restrain(fwdpoi).nt);
     restrain = consolidate_stem(restrain,RNA,restrain(stem_start).stem_id);
-    sections_fwd{section}(segment,:) = [type,restrain(stem_start).nt,restrain(fwdpoi).nt];
+    sections_fwd{section}(segment,:) = [type,restrain(stem_start).nt,restrain(fwdpoi).nt,restrain(stem_start-1).stem_id,0];
 end
 
 if segment > 0
@@ -154,6 +155,7 @@ for ks = 1:length(sections_fwd)
     [mss,~] = size(csection); % number of subsections
     for kss = 1:mss
         secdefs(ks,kss).nts = csection(kss,2:3);
+        secdefs(ks,kss).libs = csection(kss,4:5);
         if kss == 1 % there is an initial anchor in a binding motif
             secdefs(ks,kss).anchori = get_initial_anchor(csection(kss,2),RNA,rba);
         else
@@ -189,7 +191,8 @@ for k = 1:m
 end
 secdefs = secdefs(1:poi);
 
-function [restrain,restraints,monitor,cancelled,number,number_monitor,msg] = process_RNA_restraints(restraints,stemlibs)
+
+function [restrain,restraints,monitor,cancelled,number,number_monitor,msg] = process_RNA_restraints(restraints)
 % Processes restraints for a single flexible domain
 
 msg.error = 0;
@@ -211,7 +214,7 @@ end
 
 for k = 1:length(restraints.sequence)
     restrain(k).stem = 0;
-    restrain(k).stem_id = [];
+    restrain(k).stem_id = 0;
     restrain(k).label = [];
     restrain(k).r_beacon = [];
     restrain(k).r_intern = [];
@@ -221,7 +224,16 @@ for k = 1:length(restraints.sequence)
     restrain(k).nt = restraints.nta + k -1;
     restrain(k).motif = [];
     restrain(k).known = 0;
+    for kb = 1:length(restraints.bind)
+        if restrain(k).nt >= restraints.bind(kb).nta && restrain(k).nt <= restraints.bind(kb).nte
+           restrain(k).stem_id = restraints.bind(kb).stemlib;
+           if isempty(restrain(k).stem_id)
+               restrain(k).stem_id = 0;
+           end
+        end
+    end
 end
+
 
 monitor = restrain;
 

@@ -1,20 +1,27 @@
-function [coor,N,n] = rd_CA_trace(fname)
+function [coor,N,n,resnum,sequence] = rd_CA_trace(fname)
 % [coor,N,n] = rd_CA_trace(fname)
 %
 % Reads Calpha coordinates from a PDB file into an [N*n,3] array coor,
 % where N is the number of models and n the number of CA atoms per model
-%
+% 
 % fname     file name, if no extension is given ' .pdb'  is appended
+%
+% resnum    residue number axis
+% sequence  sequence in single-letter code
 %
 % if not all models have the same number of CA atoms, a warning is output
 % and output parameter n is empty
 %
 % G. Jeschke, 24.12.2019
 
+global residue_defs
+
 N = 0;
 n = [];
 coor = zeros(1000000,3);
 nvec = zeros(1,10000);
+resnum = zeros(1,10000);
+sequence = char(32*ones(1,10000));
 
 if ~contains(fname,'.')
     fname = strcat(fname,'.pdb');
@@ -37,7 +44,15 @@ while 1
             nc = nc + 1;
             coor(cpoi,1) = str2double(tline(31:38)); 
             coor(cpoi,2) = str2double(tline(39:46)); 
-            coor(cpoi,3) = str2double(tline(47:54)); 
+            coor(cpoi,3) = str2double(tline(47:54));
+            if N == 0
+                resnum(cpoi) = str2double(tline(23:26));
+                amino_id=tag2id(tline(18:20),upper(residue_defs.restags),residue_defs.single_letter_code); % test whether this is an amino acid
+                if isempty(amino_id)
+                    amino_id = '?';
+                end
+                sequence(cpoi) = amino_id;
+            end
         end
     end
     if length(tline) >= 6 && strcmpi(tline(1:6),'ENDMDL')
@@ -62,3 +77,5 @@ if max(abs(nvec - mean(nvec))) ~= 0
 end
 
 n = nvec(1);
+resnum = resnum(1:n);
+sequence = sequence(1:n);

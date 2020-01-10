@@ -5796,7 +5796,7 @@ function menu_jobs_test6_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-mylist = dir('PTB1_191115_f5_*.pdb');
+mylist = dir('PTB1_200104_b*.pdb');
 fid = fopen('PTBP1_RNA_conformers.dat','wt');
 for k = 1:length(mylist)
     fprintf(fid,'%s\n',mylist(k).name);
@@ -5826,7 +5826,10 @@ for kc = 1:length(conformer_list)
         options.optimize = false;
         tic,
         insert_yasara_loop(fname,Nanchors,Canchors,seqs,options);
-        toc,        
+        toc,       
+        fid = fopen('yasara_tested.dat','at');
+        fprintf(fid,'%s\n',fname);
+        fclose(fid);
     end
 end
 

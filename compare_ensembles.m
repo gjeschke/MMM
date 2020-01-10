@@ -22,7 +22,7 @@ function varargout = compare_ensembles(varargin)
 
 % Edit the above text to modify the response to help compare_ensembles
 
-% Last Modified by GUIDE v2.5 22-Dec-2019 13:55:04
+% Last Modified by GUIDE v2.5 07-Jan-2020 07:56:55
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -69,6 +69,7 @@ hMain.auxiliary=[hMain.auxiliary hObject];
 handles.pushbutton_compare.Enable = 'off';
 handles.pushbutton_correlation1.Enable = 'off';
 handles.pushbutton_correlation2.Enable = 'off';
+handles.pushbutton_restraint_plots.Enable = 'off';
 handles.ensemble1.pair_rmsd = [];
 handles.ensemble2.pair_rmsd = [];
 handles.cross_std = [];
@@ -123,7 +124,7 @@ if isequal(fname,0) || isequal(pname,0)
     add_msg_board('Ensemble loading cancelled by user');
     return
 elseif ~exist(ensemble_pdb,'file')
-    add_msg_board('PDB file if ensemble not found');
+    add_msg_board('PDB file of ensemble not found');
     return    
 else
     set(hfig,'Pointer','watch');
@@ -143,6 +144,7 @@ else
     handles.ensemble1.snum = snum;
     handles = setup_ensemble(handles,1);
     handles.pushbutton_correlation1.Enable = 'on';
+    handles.pushbutton_restraint_plots.Enable = 'on';
     handles.cross_std = [];
     set(hfig,'Pointer','arrow');
 end
@@ -168,7 +170,7 @@ if isequal(fname,0) || isequal(pname,0)
     add_msg_board('Ensemble loading cancelled by user');
     return
 elseif ~exist(ensemble_pdb,'file')
-    add_msg_board('PDB file if ensemble not found');
+    add_msg_board('PDB file of ensemble not found');
     return    
 else
     set(hfig,'Pointer','watch');
@@ -938,6 +940,7 @@ else
 end
 
 set(gcf,'Pointer','arrow');
+guidata(hObject,handles);
 
 
 % --- Executes on button press in pushbutton_save_ensemble2.
@@ -945,3 +948,105 @@ function pushbutton_save_ensemble2_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton_save_ensemble2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+global model
+global general
+
+model.current_structure = handles.ensemble2.snum;
+idCode = model.info{handles.ensemble2.snum}.idCode;
+model_sequence = handles.ensemble2.ordering;
+
+default_name = strcat(handles.ensemble1.name,'_ordered.pdb');
+
+[filename, pathname] = uiputfile(default_name, 'Save ordered ensemble 2 as PDB');
+if isequal(filename,0) || isequal(pathname,0)
+    add_msg_board('Save as PDB cancelled by user');
+else
+    reset_user_paths(pathname);
+    general.pdb_files=pathname;
+    fname=fullfile(pathname, filename);
+    msg=sprintf('Ordered ensemble 2 saved as PDB file: %s',fname);
+    add_msg_board(msg);
+    set(gcf,'Pointer','watch');
+    wr_pdb(fname,idCode,model_sequence);
+end
+
+set(gcf,'Pointer','arrow');
+guidata(hObject,handles);
+
+% --- Executes on button press in pushbutton_restraint_plots.
+function pushbutton_restraint_plots_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_restraint_plots (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+global general
+
+% Generate option structure for fitting/restraint evaluation
+options.threshold = 0.01; % convert percentage to fraction
+options.ensemble_size = length(handles.ensemble1.file_list);
+options.depth = [0.005,0.65];
+options.dim = 3;
+options.kdec = [0, NaN];
+options.cutoff = 0.9;
+options.lm = 50;
+options.fb = 18;
+options.xlmax = 20;
+
+my_path=pwd;
+cd(general.restraint_files);
+
+[fname,pname]=uigetfile('*.dat','Load restraints from file');
+if isequal(fname,0) || isequal(pname,0)
+    add_msg_board('Restraint loading cancelled by user');
+    cd(my_path);
+    return
+else
+    reset_user_paths(pname);
+    general.restraint_files=pname;
+    [~,name] = fileparts(fname);
+    handles.save_path = pname;
+    handles.save_name = name;
+    
+    hfig=gcf;
+    set(hfig,'Pointer','watch');
+
+    rtype = get_restraint_type(fullfile(pname,fname));
+    plot_groups = get_plot_groups(fullfile(pname,fname));
+    unprocessed = true;
+    
+    switch rtype
+        case 'GENERIC'
+            restraints = rd_restraints(fullfile(pname,fname));
+            if isfield(restraints,'DEER') && ~isempty(restraints.DEER)
+                for k = 1:length(restraints.DEER)
+                    restraints.DEER(k).r = 10*restraints.DEER(k).r;
+                    restraints.DEER(k).sigr = 10*restraints.DEER(k).sigr;
+                end
+            end
+        case 'FLEX'
+            restraints = rd_restraints(fullfile(pname,fname));
+            if isfield(restraints,'DEER') && ~isempty(restraints.DEER)
+                for k = 1:length(restraints.DEER)
+                    restraints.DEER(k).r = 10*restraints.DEER(k).r;
+                    restraints.DEER(k).sigr = 10*restraints.DEER(k).sigr;
+                end
+            end
+        case 'RIGIFLEX'
+            restraints = rd_restraints_rigiflex(fullfile(pname,fname),unprocessed);
+        otherwise
+            add_msg_board(sprintf('ERROR: Restraint type %s is not supported in ensemble fits',rtype));
+            restraints = [];
+    end
+    cd(my_path);
+    options.script = false;
+    options.write_pdb = false;
+    options.ordering = handles.ensemble1.ordering;
+    options.individual = false;
+    options.groups = plot_groups;
+    mk_ensemble(handles.ensemble1.file_list,handles.ensemble1.pop,restraints,options);
+    set(hfig,'Pointer','arrow');
+end
+
+
+guidata(hObject,handles);

@@ -18,6 +18,10 @@ function [pair_rmsd,ordering,cluster_assignment,cluster_sizes,cluster_pop] = clu
 %               .iterative  (default: true) flag indicating iterative mode
 %               .verbose    (default:false) flag for verbose output to
 %                           command window
+%               .fname      optional file name for assignment file
+%               .depth      recursion depth, defaults to 1
+%               .previous   cluster number in previous iteration, defaults
+%                           to 0
 %
 % Output:
 %
@@ -42,8 +46,24 @@ end
 if ~exist('options','var') || isempty(options) || ~isfield(options,'iterative') || isempty(options.iterative)
     options.iterative = true;
 end
+if ~isfield(options,'depth') || isempty(options.depth)
+    options.depth = 1;
+end
+if ~isfield(options,'previous') || isempty(options.previous)
+    options.previous = 0;
+end
 if ~isfield(options,'verbose') || isempty(options.verbose)
     options.verbose = false;
+end
+if ~isfield(options,'fname') || isempty(options.fname)
+    options.log = false;
+else
+    options.log = true;
+    if options.depth == 1
+        logfile = fopen(options.fname,'wt');
+    else
+        logfile = fopen(options.fname,'at');
+    end
 end
 % hierarchical clustering
 pairdist = squareform(pair_rmsd);
@@ -61,6 +81,10 @@ if options.verbose
     % figure(2); clf;
     % plot(c,'k.');
 end
+if options.log
+    fprintf(logfile,'--- Depth %i; Previous cluster %i ---\n',options.depth,options.previous);
+    fprintf(logfile,'%i clusters detected at inconsistency coefficient threshold %4.2f\n',max(c),inconsistency);
+end
 
 % Compute populations of the clusters
 pop_ordered = pop(ordering);
@@ -73,7 +97,10 @@ end
 % Determine the cluster with maximum population
 [ma,poi] = max(cluster_pop);
 if options.verbose
-    fprintf(1,'Cluster %i has maximum population %5.3f\n',poi,ma);
+    fprintf(1,'Cluster %i with size %i has maximum population %5.3f\n',poi,cluster_sizes(poi),ma);
+end
+if options.log
+    fprintf(logfile,'Cluster %i with size %i has maximum population %5.3f\n',poi,cluster_sizes(poi),ma);
 end
 % Find standard deviation of all clusters from the one with maximum
 % population
@@ -106,15 +133,18 @@ for k = 1:max(c)
             end
         end
         cluster_std_dev(k) = ensemble_standard_deviation(cluster_pair_rmsd,pop1,pop2);
-    end
-    if options.verbose
-        fprintf(1,'Cluster %i has standard deviation of %5.3f A to largest cluster %i\n',k,cluster_std_dev(k),poi);
+        if options.verbose
+            fprintf(1,'Cluster %i with size %i has standard deviation of %5.3f A to largest cluster %i\n',k,n2,cluster_std_dev(k),poi);
+        end
+        if options.log
+            fprintf(logfile,'Cluster %i with size %i has standard deviation of %5.3f A to largest cluster %i\n',k,n2,cluster_std_dev(k),poi);
+        end
     end
 end
 % Sort clusters by standard deviation form the largest (by population) cluster 
 [~,cluster_ordering] = sort(cluster_std_dev);
 % Make the new index vector for conformers
-new_orderimg = zeros(1,length(ordering));
+new_ordering = zeros(1,length(ordering));
 spoi = 0;
 for k = 1:length(cluster_ordering) % all clusters in the correct sequence
     for kc = 1:length(c) % all conformers
@@ -123,6 +153,9 @@ for k = 1:length(cluster_ordering) % all clusters in the correct sequence
             new_ordering(spoi) = kc;
         end
     end
+end
+if options.log
+    fclose(logfile);
 end
 % rearrange pair rmsd matrix and population vector
 pair_rmsd = pair_rmsd(new_ordering,new_ordering);
@@ -133,13 +166,15 @@ cluster_pop = cluster_pop(cluster_ordering);
 block_pointer = 0;
 if options.iterative
     new_ordering = 1:length(ordering);
+    options.depth = options.depth + 1;
     for k = 1:length(cluster_sizes)
+        options.previous = k;
         if cluster_sizes(k) > 2
             block_pair_rmsd = pair_rmsd(block_pointer+1:block_pointer+cluster_sizes(k),...
                 block_pointer+1:block_pointer+cluster_sizes(k));
             block_pop = pop(ordering(block_pointer+1:block_pointer+cluster_sizes(k)));
             block_ordering = 1:cluster_sizes(k);
-            [~,new_block_ordering] = cluster_analysis(block_pair_rmsd,block_pop,block_ordering);
+            [~,new_block_ordering] = cluster_analysis(block_pair_rmsd,block_pop,block_ordering,options);
             new_ordering(block_pointer+1:block_pointer+cluster_sizes(k)) = block_pointer + new_block_ordering;
         end
         block_pointer = block_pointer+ cluster_sizes(k);
@@ -147,3 +182,13 @@ if options.iterative
     pair_rmsd = pair_rmsd(new_ordering,new_ordering);
     ordering = ordering(new_ordering);
 end
+if options.log
+    logfile = fopen(options.fname,'at');
+    fprintf(logfile,'Conformer ordering:\n');
+    for k = 1:length(ordering)-1
+        fprintf(logfile,'%i, ',ordering(k));
+    end
+    fprintf(logfile,'%i\n',ordering(end));
+    fclose(logfile);
+end
+
