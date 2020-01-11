@@ -514,12 +514,13 @@ for runstep = 0:last_step
                         poi = 0;
                         for kc = 1:num_ch
                             cmind = [handles.diagnostics.snum,kc,km];
+                            stag = mk_address_parts(cmind);
                             if env_sel(kc,1) == 0
                                 [~,xyz] = get_chain_model(cmind,'xyz_heavy');
                                 [m,~] = size(xyz);
                                 environ(poi+1:poi+m,:) = xyz;
                                 poi = poi+m;
-                                stag = mk_address_parts(cmind);
+                            else
                                 for kr = env_sel(kc,1)+1:env_sel(kc,2)-1
                                     [~,xyz] = get_residue([cmind,kr],'xyz_heavy');
                                     [m,~] = size(xyz);
