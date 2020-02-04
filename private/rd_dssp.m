@@ -49,21 +49,21 @@ residues=[];
 fid=fopen(fname,'r');
 
 poi=0;
-if fid~=-1,
+if fid~=-1
     isheader=1;
-    while isheader,
+    while isheader
         tline = fgetl(fid);
-        if ~ischar(tline), break, end;
-        if strfind(tline,'  #  RESIDUE'),
+        if ~ischar(tline), break, end
+        if contains(tline,'  #  RESIDUE')
             isheader=0;
-        end;
-    end;
-    while ~isheader, % residue information is only read if keyword was found
+        end
+    end
+    while ~isheader% residue information is only read if keyword was found
         tline = fgetl(fid);
-        if ~ischar(tline), break, end;
-        if length(tline)>=115,
+        if ~ischar(tline), break, end
+        if length(tline)>=115
             poi=poi+1;
-            if strcmp(tline(12),' '), tline(12)='Z'; end; % patch missing chain ID
+            if strcmp(tline(12),' '), tline(12)='Z'; end % patch missing chain ID
             residues(poi).tag=strtrim(tline(6:11));
             residues(poi).chain=tline(12);
             residues(poi).slc=tline(14);
@@ -85,8 +85,8 @@ if fid~=-1,
             residues(poi).alpha=sscanf(tline(98:103),'%f');
             residues(poi).phi=sscanf(tline(104:109),'%f');
             residues(poi).psi=sscanf(tline(110:115),'%f');
-        end;
-    end;
-end;
+        end
+    end
+end
 
 fclose(fid);

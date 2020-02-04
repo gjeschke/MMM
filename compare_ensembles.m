@@ -22,7 +22,7 @@ function varargout = compare_ensembles(varargin)
 
 % Edit the above text to modify the response to help compare_ensembles
 
-% Last Modified by GUIDE v2.5 07-Jan-2020 07:56:55
+% Last Modified by GUIDE v2.5 04-Feb-2020 10:55:00
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1044,9 +1044,50 @@ else
     options.ordering = handles.ensemble1.ordering;
     options.individual = false;
     options.groups = plot_groups;
-    mk_ensemble(handles.ensemble1.file_list,handles.ensemble1.pop,restraints,options);
+    [score_DEER,sum_chi2] = mk_ensemble(handles.ensemble1.file_list,handles.ensemble1.pop,restraints,options);
+    nc = length(handles.ensemble1.pop);
+    fprintf(1,'--- Fitted ensemble with %i conformers---\n',nc);
+    fprintf(1,'Total SAS chi^2 value: %6.3f\n',sum_chi2);
+    fprintf(1,'Total DEER score : %5.3f\n',score_DEER);
+
+    if handles.checkbox_null_test.Value
+        [fname_list,pname_list]=uigetfile('*.dat','Load conformer file list');
+        if isequal(fname,0) || isequal(pname,0)
+            add_msg_board('Conformer list loading cancelled by user');
+            cd(my_path);
+            set(hfig,'Pointer','arrow');
+            guidata(hObject,handles);
+            return
+        end
+        random_file_list = handles.ensemble1.file_list;
+        all_conformers = get_file_list(fullfile(pname_list,fname_list));
+        nac = length(all_conformers);
+        add_msg_board(sprintf('Evaluating fit quality for %i random ensembles',restraints.random_ensembles));
+        fprintf(1,'--- Random ensembles ---\n');
+        fprintf(1,'#   SAS chi^2  DEER score\n');
+        options.plot = false;
+        uniform_populations = ones(1,nc)/nc;
+        for krnd = 1:restraints.random_ensembles
+            sequencer = rand(1,nac);
+            [~,sequence] = sort(sequencer);
+            for k = 1:nc
+                random_file_list{k} = all_conformers{sequence(k)};
+            end
+            [score_DEER,sum_chi2] = mk_ensemble(random_file_list,uniform_populations,restraints,options);
+            fprintf(1,'%3i%10.3f%12.3f\n',krnd,sum_chi2,score_DEER);
+        end
+    end
     set(hfig,'Pointer','arrow');
 end
 
 
 guidata(hObject,handles);
+
+
+% --- Executes on button press in checkbox_null_test.
+function checkbox_null_test_Callback(hObject, eventdata, handles)
+% hObject    handle to checkbox_null_test (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of checkbox_null_test

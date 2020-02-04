@@ -5706,32 +5706,55 @@ function menu_jobs_test3_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-global model
+% [file_list,pop] = rd_ensemble_description('hnRNPA1_restrained_LCD_ensemble.dat');
 
-mylist = dir('*_no23.pdb');
-
-for k = 1:length(mylist)
-    fname0 = mylist(k).name;
-    poi = strfind(fname0,'.pdb');
-    fname = fname0(1:poi-1);
-    poi = strfind(fname,'_no23');
-    oname = fname(1:poi-1);
-    clear global model
-    model = [];
-    fprintf(1,'Creating loop for %s\n',fname);
-    add_pdb(fname);
-    [restraints,restrain,aux] = get_domain_restraints('PTB1_loop23_restraints.dat');
-    aux.max_time = 1;
-    aux.save_path = pwd;
-    aux.save_name = strcat(oname,'_loop23');
-    aux.pdbid = 'PTB1';
-    success = make_loop_and_save(restraints,restrain,aux);
-    if success
-        fprintf(1,'Model %s was successfully generated.\n',aux.save_name);
-    else
-        fprintf(1,'Model %s failed.\n',aux.save_name);
-    end
+mydir = dir('hnRNPA1_LCD*.pdb');
+for k = 1:length(mydir)
+    file_list{k} = mydir(k).name;
 end
+pop = ones(1,length(mydir))/length(mydir);
+
+secstruct = ensemble_secondary_structure(file_list,pop);
+figure(11); clf; 
+plot(secstruct.resnum,secstruct.H);
+hold on;
+plot(secstruct.resnum,secstruct.B);
+plot(secstruct.resnum,secstruct.E);
+plot(secstruct.resnum,secstruct.G);
+plot(secstruct.resnum,secstruct.I);
+plot(secstruct.resnum,secstruct.T);
+plot(secstruct.resnum,secstruct.S);
+plot(secstruct.resnum,secstruct.none,'k');
+figure(12); clf; 
+plot(secstruct.resnum,secstruct.acc);
+
+
+% global model
+% 
+% mylist = dir('*_no23.pdb');
+% 
+% for k = 1:length(mylist)
+%     fname0 = mylist(k).name;
+%     poi = strfind(fname0,'.pdb');
+%     fname = fname0(1:poi-1);
+%     poi = strfind(fname,'_no23');
+%     oname = fname(1:poi-1);
+%     clear global model
+%     model = [];
+%     fprintf(1,'Creating loop for %s\n',fname);
+%     add_pdb(fname);
+%     [restraints,restrain,aux] = get_domain_restraints('PTB1_loop23_restraints.dat');
+%     aux.max_time = 1;
+%     aux.save_path = pwd;
+%     aux.save_name = strcat(oname,'_loop23');
+%     aux.pdbid = 'PTB1';
+%     success = make_loop_and_save(restraints,restrain,aux);
+%     if success
+%         fprintf(1,'Model %s was successfully generated.\n',aux.save_name);
+%     else
+%         fprintf(1,'Model %s failed.\n',aux.save_name);
+%     end
+% end
 guidata(hObject,handles);
 
 
@@ -5767,6 +5790,10 @@ function menu_jobs_test5_Callback(hObject, eventdata, handles)
 %     end
 % end
 % fclose(fid);
+
+analyze_PTBP1_CYANA('PTBP1_CYANA_culled_ensemble');
+
+return
 
 mylist = dir('*_rf23.pdb');
 fid = fopen('PTBP1_optimize.dat','wt');

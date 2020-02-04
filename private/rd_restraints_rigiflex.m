@@ -119,6 +119,7 @@ restraints.solutions = '';
 restraints.solution_mode = '';
 restraints.substitute = [];
 restraints.rigi_distributions = false;
+restraints.random_ensembles = 1;
 
 DEER_poi=0;
 rb_poi=0;
@@ -170,6 +171,11 @@ while 1
                     end
                     if length(args) >= 4
                         restraints.search_range(2)=str2double(char(args(4)));
+                    end
+                case 'RANDOM'
+                    mode=0;
+                    if length(args) >= 3
+                        restraints.random_ensembles =str2double(char(args(3)));
                     end
                 case 'RIGIDISTR'
                     mode=0;

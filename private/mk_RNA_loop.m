@@ -110,7 +110,7 @@ while isempty(ecoor) && runtime < 3600*options.maxtime
             fixed = [f2'; fixed];
         end
         options.max_shift = 2;
-        [coor,min_dist,cycles,max_shift] = clash_repair(coor,environ,fixed,options);
+        [coor,min_dist,~,max_shift] = clash_repair(coor,environ,fixed,options);
         ecoor(:,2:4) = coor;
         % fprintf(1,'Clash repair required %i cycles and lead to a maximum shift of %6.2f Å\n',cycles,max_shift);
         if min_dist < options.clash_thr || max_shift > options.max_shift

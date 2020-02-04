@@ -1,4 +1,4 @@
-function mk_ensemble(ensemble_list,populations,restraints,options)
+function [score_DEER,sum_chi2] = mk_ensemble(ensemble_list,populations,restraints,options)
 % mk_ensemble(ensemble_list,populations,restraints,options)
 %
 % Write ensemble file and make restraint fulfillment plots
@@ -28,6 +28,7 @@ function mk_ensemble(ensemble_list,populations,restraints,options)
 
 global model
 
+
 if ~exist('populations','var') || isempty(populations)
     populations = ones(1,length(ensemble_list));
     populations = populations/sum(populations);
@@ -43,6 +44,11 @@ end
 
 if ~isfield(options,'ordering') || isempty(options.ordering)
     options.ordering = 1:length(ensemble_list);
+end
+
+
+if ~isfield(options,'plot') || isempty(options.plot)
+    options.plot = true;
 end
 
 populations = populations(options.ordering);
@@ -109,29 +115,33 @@ bpoi = 0;
 if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
     for ks = 1:length(restraints.SANS)
         bpoi = bpoi + 1;
-        figure(10000+bpoi); clf;
         [fit,chi2] = scale_offset_SAS_fit(restraints.SANS(ks).fit);
-        plot(fit(:,1),fit(:,2),'k');
-        hold on
-        plot(fit(:,1),fit(:,3),'Color',[0.6,0,0]);
-        title(sprintf('SANS %s: chi^2 %5.2f\n',restraints.SANS(ks).data,chi2));
         sum_chi2 = sum_chi2 + chi2;
-        xlabel('Scattering vector s');
-        ylabel('Scattering amplitude [n.a.]');
+        if options.plot
+            figure(10000+bpoi); clf;
+            plot(fit(:,1),fit(:,2),'k');
+            hold on
+            plot(fit(:,1),fit(:,3),'Color',[0.6,0,0]);
+            title(sprintf('SANS %s: chi^2 %5.2f\n',restraints.SANS(ks).data,chi2));
+            xlabel('Scattering vector s');
+            ylabel('Scattering amplitude [n.a.]');
+        end
     end
 end
 if isfield(restraints,'SAXS') && ~isempty(restraints.SAXS)
     for ks = 1:length(restraints.SAXS)
         bpoi = bpoi + 1;
-        figure(10000+bpoi); clf;
         [fit,chi2] = scale_offset_SAS_fit(restraints.SAXS(ks).fit);
-        plot(fit(:,1),fit(:,2),'k');
-        hold on
-        plot(fit(:,1),fit(:,3),'Color',[0.6,0,0]);
-        title(sprintf('SAXS %s: chi^2 %5.2f\n',restraints.SAXS(ks).data,chi2));
         sum_chi2 = sum_chi2 + chi2;
-        xlabel('Scattering vector s');
-        ylabel('Scattering amplitude [n.a.]');
+        if options.plot
+            figure(10000+bpoi); clf;
+            plot(fit(:,1),fit(:,2),'k');
+            hold on
+            plot(fit(:,1),fit(:,3),'Color',[0.6,0,0]);
+            title(sprintf('SAXS %s: chi^2 %5.2f\n',restraints.SAXS(ks).data,chi2));
+            xlabel('Scattering vector s');
+            ylabel('Scattering amplitude [n.a.]');
+        end
     end
 end
 
@@ -140,12 +150,18 @@ n_DEER = 0;
 
 for k = 1:DEER.core+DEER.flex
     DEER.all_distr(k,:) = DEER.all_distr(k,:)/sum(DEER.all_distr(k,:));
-    figure(k); hold on;
+    if options.plot
+        figure(k); hold on;
+    end
     for kgrp = 1:length(options.groups)
         DEER.groups_distr{kgrp}(k,:) = DEER.groups_distr{kgrp}(k,:)/sum(DEER.all_distr(k,:));
-        plot(DEER.rax,DEER.groups_distr{kgrp}(k,:),'Color',options.groups(kgrp).color);
+        if options.plot
+            plot(DEER.rax,DEER.groups_distr{kgrp}(k,:),'Color',options.groups(kgrp).color);
+        end
     end
-    plot(DEER.rax,DEER.all_distr(k,:),'Color',[0.6,0,0]);
+    if options.plot
+        plot(DEER.rax,DEER.all_distr(k,:),'Color',[0.6,0,0]);
+    end
     axis_vec = DEER.axis_vecs(k,:);
     if 1.05*max(DEER.all_distr(k,:)) > axis_vec(4)
         axis_vec(4) = 1.05*max(DEER.all_distr(k,:));
@@ -165,22 +181,24 @@ for k = 1:DEER.core+DEER.flex
     end
     adr1 = DEER.all_adr1{k};
     adr2 = DEER.all_adr2{k};
-    if DEER.all_flags(k)
-        ftype = 'fit';
-        title(sprintf('%s-%s. o_{res}: %5.3f, o_{exp}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap,overlap_exp,DEER.mod_depths(k)));
-        % Restraint plotting in model was disabled
-        % colr = get_color(overlap);
-        % fprintf(fid,'plot %s.CA %s.CA 6 %5.3f %5.3f %5.3f :\n',adr1,adr2,colr);
-    else
-        ftype = 'control';
-        title(sprintf('%s-%s. o_{exp}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap_exp,DEER.mod_depths(k)));
-        % Restraint plotting in model was disabled        
-        % colr = get_color(overlap_exp);
-        % fprintf(fid,'plot %s.CA %s.CA 6 %5.3f %5.3f %5.3f :\n',adr1,adr2,colr);
+    if options.plot
+        if DEER.all_flags(k)
+            ftype = 'fit';
+            title(sprintf('%s-%s. o_{res}: %5.3f, o_{exp}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap,overlap_exp,DEER.mod_depths(k)));
+            % Restraint plotting in model was disabled
+            % colr = get_color(overlap);
+            % fprintf(fid,'plot %s.CA %s.CA 6 %5.3f %5.3f %5.3f :\n',adr1,adr2,colr);
+        else
+            ftype = 'control';
+            title(sprintf('%s-%s. o_{exp}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap_exp,DEER.mod_depths(k)));
+            % Restraint plotting in model was disabled
+            % colr = get_color(overlap_exp);
+            % fprintf(fid,'plot %s.CA %s.CA 6 %5.3f %5.3f %5.3f :\n',adr1,adr2,colr);
+        end
+        axis(axis_vec);
     end
-    axis(axis_vec);
     [texp,vexp,deer,bckg,param] = fit_DEER_primary(DEER.rax/10,DEER.all_distr(k,:),strcat('deer\',DEER.all_fnames{k}),options);
-    if ~isempty(texp)
+    if ~isempty(texp) && options.plot
         figure(1000+k); clf;
         plot(texp,vexp,'k');
         hold on;
@@ -192,7 +210,6 @@ for k = 1:DEER.core+DEER.flex
 end
 
 score_DEER = 1 - score_DEER^(1/n_DEER);
-fprintf(1,'Total DEER score : %5.3f\n',score_DEER);
 
 add_msg_board(sprintf('Mean DEER overlap deficiency: %6.3f',score_DEER));
 

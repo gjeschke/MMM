@@ -22,7 +22,7 @@ function [rms,coor2b,transmat,rotmat,trans2]=rmsd_superimpose(coor1,coor2,weight
 % transmat   affine transformation matrix for coordinate set 2 (for 3
 %            output arguments)
 %
-% If 5 output arguments are requested, the translaation of the
+% If 5 output arguments are requested, the translation of the
 % coordinates to the mean of the source coordinates, rotation matrix, and
 % translation to the mean of the target coordinates are separately output
 %
