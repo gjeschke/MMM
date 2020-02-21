@@ -84,7 +84,7 @@ for km = 1:length(ensemble_list)
     else
         model_restraints = evaluate_model_restraints(ensemble_list{km},restraints,options);
     end
-    fprintf(1,'%s: %6.3f\n',fname,populations(km));
+    % fprintf(1,'%s: %6.3f\n',fname,populations(km));
     DEER = display_DEER_single(km,model_restraints,populations,DEER,options);
     if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
         for ks = 1:length(restraints.SANS)
@@ -302,17 +302,19 @@ for k = 1:length(model_restraints.DEER)
     DEER.all_adr1{k} = model_restraints.DEER(k).adr1;
     DEER.all_adr2{k} = model_restraints.DEER(k).adr2;
     distr = model_restraints.DEER(k).distr;
-    figure(k); 
-    if km == 1
-        clf; hold on;
-        title(sprintf('%s-%s',model_restraints.DEER(k).adr1,model_restraints.DEER(k).adr2));
+    if options.plot
+        figure(k);
+        if km == 1
+            clf; hold on;
+            title(sprintf('%s-%s',model_restraints.DEER(k).adr1,model_restraints.DEER(k).adr2));
+        end
     end
     axis_vec = [0,120,-1e-6,1e-6];
     if isfield(model_restraints.DEER(k),'file') && ~isempty(model_restraints.DEER(k).file)
         dfname = strcat(model_restraints.DEER(k).file,'_distr.dat');
         deer_basname = strcat('deer_analysis\',model_restraints.DEER(k).file);
         if km == 1
-            [axis_vec,md] = plot_exp_dist(deer_basname,rax);
+            [axis_vec,md] = plot_exp_dist(deer_basname,rax,options);
             DEER.mod_depths(k) = md;
         end
         dfname = strcat('deer_analysis\',dfname);
@@ -328,10 +330,10 @@ for k = 1:length(model_restraints.DEER)
         distr_sim = exp(-argr.^2);
         distr_sim = distr_sim/sum(distr_sim);
         DEER.all_distr_sim(k,:) = distr_sim;
-        if km == 1
+        if km == 1 && options.plot
             plot(rax,distr_sim,'Color',[0,0.6,0]);
         end
-        if options.individual
+        if options.individual && options.plot
             plot(rax,populations(km)*distr,'Color',[0.2,0.2,1]);
         end
         DEER.all_distr(k,:) = DEER.all_distr(k,:) + populations(km)*distr;
@@ -360,10 +362,12 @@ if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex) && isfi
     for kl = 1:length(model_restraints.pflex)
         for k = 1:length(model_restraints.pflex(kl).DEER)
             pflex = pflex + 1;
-            figure(pflex);
-            if km == 1
-                clf; hold on;
-                title(sprintf('%s-%s',model_restraints.DEER(k).adr1,model_restraints.DEER(k).adr2));
+            if options.plot
+                figure(pflex);
+                if km == 1
+                    clf; hold on;
+                    title(sprintf('%s-%s',model_restraints.DEER(k).adr1,model_restraints.DEER(k).adr2));
+                end
             end
             distr = model_restraints.pflex(kl).DEER(k).distr;
             axis_vec = [0,120,-1e-6,1e-6];
@@ -371,7 +375,7 @@ if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex) && isfi
                 dfname = strcat(model_restraints.pflex(kl).DEER(k).file,'_distr.dat');
                 deer_basname = strcat('deer_analysis\',model_restraints.pflex(kl).DEER(k).file);
                 if km == 1
-                    [axis_vec,md] = plot_exp_dist(deer_basname,rax);
+                    [axis_vec,md] = plot_exp_dist(deer_basname,rax,options);
                     DEER.mod_depths(pflex) = md;
                 end
                 dfname = strcat('deer_analysis\',dfname);
@@ -383,15 +387,17 @@ if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex) && isfi
                 DEER.all_distr_exp(pflex,:) = distr_exp;
             end
             if ~isempty(distr)
-                title(sprintf('%s-%s',model_restraints.pflex(kl).DEER(k).adr1,model_restraints.pflex(kl).DEER(k).adr2));
+                if options.plot
+                    title(sprintf('%s-%s',model_restraints.pflex(kl).DEER(k).adr1,model_restraints.pflex(kl).DEER(k).adr2));
+                end
                 argr = (model_restraints.pflex(kl).DEER(k).r-rax)/(sqrt(2)*model_restraints.pflex(kl).DEER(k).sigr);
                 distr_sim = exp(-argr.^2);
                 distr_sim = distr_sim/sum(distr_sim);
                 DEER.all_distr_sim(pflex,:) = distr_sim;
-                if km == 1
+                if km == 1 && options.plot
                     plot(rax,distr_sim,'Color',[0,0.6,0]);
                 end
-                if options.individual
+                if options.individual && options.plot
                     plot(rax,populations(km)*distr,'Color',[0.2,0.2,1]);
                 end
                 DEER.all_distr(pflex,:) = DEER.all_distr(pflex,:) + populations(km)*distr;
@@ -439,7 +445,7 @@ m = length(curve);
 chi2 = sum(((curve-v(1)*sim-v(2))./errors).^2)/(m-1);
 
 
-function [axis_vec,md] = plot_exp_dist(deer_basname,rax)
+function [axis_vec,md] = plot_exp_dist(deer_basname,rax,options)
 
 rmax = 120;
 
@@ -455,19 +461,25 @@ distr_lb = interp1(rexp,distr_lb,rax,'pchip',0);
 distr_lb = distr_lb/scal;
 distr_ub = interp1(rexp,distr_ub,rax,'pchip',0);
 distr_ub = distr_ub/scal;
-for k = 1:length(rax)
-    plot([rax(k),rax(k)],[distr_lb(k),distr_ub(k)],'Color',[0.5,0.5,0.5]);
+if options.plot
+    fill([rax'; flipud(rax')],[distr_ub'; flipud(distr_lb')],0.75*[1,1,1],'LineStyle','none')
+    plot(rax,distr_exp,'k','LineWidth',1.5);
+    grid on
+    box on
 end
-plot(rax,distr_exp,'k');
 ma = max(distr_ub);
 axis_vec = [0,rmax,-0.1*ma,1.05*ma];
-axis(axis_vec);
-xlabel('distance r [Å]');
-ylabel('P(r)');
+if options.plot
+    axis(axis_vec);
+    xlabel('distance r [?]');
+    ylabel('P(r)');
+end
 
 data = load(sprintf('%s_bckg.dat',deer_basname));
-md = 1-data(1,3);
-title(sprintf('m.d. %4.2f',md));
+md = 1-max(data(:,3));
+if options.plot
+    title(sprintf('m.d. %4.2f',md));
+end
 data = load(sprintf('%s_fit.dat',deer_basname));
 tmax = data(end,1);
 sc = (tmax/2)^(1/3);
@@ -478,14 +490,18 @@ if r1 > rmax
     r1 = rmax;
     skip = true;
 end
-plot([r0,r1],[-0.04*ma,-0.04*ma],'Color',[0,0.6,0],'LineWidth',4);
+if options.plot
+    plot([r0,r1],[-0.04*ma,-0.04*ma],'Color',[0,0.6,0],'LineWidth',4);
+end
 if ~skip
     r2 = 40*sc;
     if r2 > rmax
         r2 = rmax;
         skip = true;
     end
-    plot([r1,r2],[-0.04*ma,-0.04*ma],'Color',[0.8,0.8,0],'LineWidth',4);
+    if options.plot
+        plot([r1,r2],[-0.04*ma,-0.04*ma],'Color',[0.8,0.8,0],'LineWidth',4);
+    end
 end
 if ~skip
     r3 = 50*sc;
@@ -493,14 +509,18 @@ if ~skip
         r3 = rmax;
         skip = true;
     end
-    plot([r2,r3],[-0.04*ma,-0.04*ma],'Color',[0.8,0.6,0],'LineWidth',4);
+    if options.plot
+        plot([r2,r3],[-0.04*ma,-0.04*ma],'Color',[0.8,0.6,0],'LineWidth',4);
+    end
 end
 if ~skip
     r4 = 60*sc;
     if r4 > rmax
         r4 = rmax;
     end
-    plot([r3,r4],[-0.04*ma,-0.04*ma],'Color',[0.6,0,0],'LineWidth',4);
+    if options.plot
+        plot([r3,r4],[-0.04*ma,-0.04*ma],'Color',[0.6,0,0],'LineWidth',4);
+    end
 end
 
 % function rgb = get_color(overlap,limit)

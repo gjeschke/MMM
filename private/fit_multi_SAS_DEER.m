@@ -46,7 +46,7 @@ fom_DEER = fit_multi_DEER(v(1:n-3),all_fits_DEER);
 
 fom = (fom_SAS/normalize.SAS + fom_DEER/normalize.DEER)/2 - 1;
 
-if exist('opt','var')
+if exist('opt','var')  && isfield(opt,'interactive') && opt.interactive
     if mod(call_count,update_number) == 0
         axis(opt.plot_axes);
         cla; hold on;

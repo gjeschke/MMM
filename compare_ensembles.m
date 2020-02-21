@@ -982,6 +982,8 @@ function pushbutton_restraint_plots_Callback(hObject, eventdata, handles)
 
 global general
 
+partial = true;
+
 % Generate option structure for fitting/restraint evaluation
 options.threshold = 0.01; % convert percentage to fraction
 options.ensemble_size = length(handles.ensemble1.file_list);
@@ -1050,7 +1052,8 @@ else
     fprintf(1,'Total SAS chi^2 value: %6.3f\n',sum_chi2);
     fprintf(1,'Total DEER score : %5.3f\n',score_DEER);
 
-    if handles.checkbox_null_test.Value
+    % Code section for random ensemble
+    if handles.radiobutton_control_random.Value
         [fname_list,pname_list]=uigetfile('*.dat','Load conformer file list');
         if isequal(fname,0) || isequal(pname,0)
             add_msg_board('Conformer list loading cancelled by user');
@@ -1067,6 +1070,10 @@ else
         fprintf(1,'#   SAS chi^2  DEER score\n');
         options.plot = false;
         uniform_populations = ones(1,nc)/nc;
+        poi = strfind(fname_list,'.dat');
+        fname_log = strcat(fname_list(1:poi-1),'_control_fits.dat');
+        fid = fopen(fullfile(pname_list,fname_log),'wt');
+        fprintf(fid,'%% SAS chi^2  DEER deficiency\n');
         for krnd = 1:restraints.random_ensembles
             sequencer = rand(1,nac);
             [~,sequence] = sort(sequencer);
@@ -1075,11 +1082,196 @@ else
             end
             [score_DEER,sum_chi2] = mk_ensemble(random_file_list,uniform_populations,restraints,options);
             fprintf(1,'%3i%10.3f%12.3f\n',krnd,sum_chi2,score_DEER);
+            fprintf(fid,'%12.3f%12.3f\n',sum_chi2,score_DEER);
         end
+        fclose(fid);
     end
+    
+    % Code section for reduced rmsd ensemble
+    if handles.radiobutton_control_reduced_rmsd.Value && ~partial
+        [fname_list,pname_list]=uigetfile('*.mat','Load pair rmsd file');
+        if isequal(fname,0) || isequal(pname,0)
+            add_msg_board('Pair rmsd file loading cancelled by user');
+            cd(my_path);
+            set(hfig,'Pointer','arrow');
+            guidata(hObject,handles);
+            return
+        end
+        selected_file_list = handles.ensemble1.file_list;
+        pair_info = load(fullfile(pname_list,fname_list));
+        add_msg_board(sprintf('Evaluating fit quality for %i reduced rmsd ensembles',nc));
+        fprintf(1,'--- Reduced rmsd ensembles ---\n');
+        fprintf(1,'#   SAS chi^2  DEER score   rmsd [Å]\n');
+        options.plot = false;
+        uniform_populations = ones(1,nc)/nc;
+        kt = 0;
+        poi = strfind(fname_list,'.mat');
+        fname_log = strcat(fname_list(1:poi-1),'_control_fits.dat');
+        fid = fopen(fullfile(pname_list,fname_log),'wt');
+        fprintf(fid,'%% SAS chi^2  DEER deficiency  rmsd [Å]\n');
+        
+        fit_options.threshold = 0; 
+        fit_options.old_ensemble_size = nc;
+        fit_options.plot_axes = []; % for display updates during fitting
+        fit_options.text_DEER_fom0 = []; % for display updates during fitting
+        fit_options.text_SAS_fom0 = []; % for display updates during fitting
+        fit_options.text_DEER_fom = []; % for display updates during fitting
+        fit_options.text_SAS_fom = []; % for display updates during fitting
+        fit_options.text_loss = [];
+        fit_options.text_DEER_size = [];
+        fit_options.text_SAS_size = [];
+        fit_options.text_iteration_counter = [];
+        fit_options.text_ensemble_size = [];
+        fit_options.text_status = [];
+        fit_options.text_info_status = [];
+        fit_options.depth = [0.005,0.65];
+        fit_options.dim = 3;
+        fit_options.kdec = [0, NaN];
+        fit_options.cutoff = 0.9;
+        fit_options.lm = 50;
+        fit_options.fb = 18;
+        fit_options.xlmax = 20;
+        fit_options.interactive = false;
+        for ke = 1:nc
+            fit_options.logfile = fullfile(pname_list,sprintf('%s.%i.log',fname_log,ke));
+            template = handles.ensemble1.file_list{ke};
+            for kc = 1:length(pair_info.conformer_list)
+                if strcmpi(pair_info.conformer_list{kc},template)
+                    kt = kc;
+                end
+            end
+            if kt == 0
+                fprintf(2,'ERROR: Conformer %i of fitted ensemble not found in list of all conformers\n',ke);
+                continue
+            end
+            pair_rmsd = pair_info.pair_rmsd(kt,:);
+            [~,order] = sort(pair_rmsd);
+            these_rmsd = pair_info.pair_rmsd(order(1:nc),order(1:nc));
+            ensemble_rmsd = sqrt(sum(sum(these_rmsd.^2))/(nc^2-nc));
+            for kc = 1:length(selected_file_list)
+                selected_file_list{kc} = pair_info.conformer_list{order(kc)};
+            end
+            fitted_populations = uniform_populations;
+%            [included,populations] = fit_ensemble(restraints,selected_file_list,fit_options);
+%            fitted_populations = zeros(size(uniform_populations));
+%             for k = 1:length(included)
+%                 fitted_populations = populations(included(k));
+%             end
+%             fitted_populations = fitted_populations/sum(fitted_populations);
+            [score_DEER,sum_chi2] = mk_ensemble(selected_file_list,fitted_populations,restraints,options);
+            fprintf(1,'%3i%10.3f%12.3f%12.2f\n',ke,sum_chi2,score_DEER,ensemble_rmsd);
+            fprintf(fid,'%12.3f%12.3f%12.2f\n',sum_chi2,score_DEER,ensemble_rmsd);
+        end
+        fclose(fid);
+    end
+    
+    % Code section for partially reduced rmsd ensemble
+    if handles.radiobutton_control_reduced_rmsd.Value && partial
+        [fname_list,pname_list]=uigetfile('*.mat','Load pair rmsd file');
+        if isequal(fname,0) || isequal(pname,0)
+            add_msg_board('Pair rmsd file loading cancelled by user');
+            cd(my_path);
+            set(hfig,'Pointer','arrow');
+            guidata(hObject,handles);
+            return
+        end
+        selected_file_list = handles.ensemble1.file_list;
+        pair_info = load(fullfile(pname_list,fname_list));
+        add_msg_board(sprintf('Evaluating fit quality for %i reduced rmsd ensembles',(nc*(nc-1))/2));
+        fprintf(1,'--- Reduced rmsd ensembles ---\n');
+        fprintf(1,'#   SAS chi^2  DEER score   rmsd [Å]\n');
+        options.plot = false;
+        uniform_populations = ones(1,nc)/nc;
+        kt = 0;
+        poi = strfind(fname_list,'.mat');
+        fname_log = strcat(fname_list(1:poi-1),'_partial_control_fits.dat');
+        fid = fopen(fullfile(pname_list,fname_log),'wt');
+        fprintf(fid,'%% (k,l) SAS chi^2  DEER deficiency  rmsd [Å]\n');
+        
+        fit_options.threshold = 0; 
+        fit_options.old_ensemble_size = nc;
+        fit_options.plot_axes = []; % for display updates during fitting
+        fit_options.text_DEER_fom0 = []; % for display updates during fitting
+        fit_options.text_SAS_fom0 = []; % for display updates during fitting
+        fit_options.text_DEER_fom = []; % for display updates during fitting
+        fit_options.text_SAS_fom = []; % for display updates during fitting
+        fit_options.text_loss = [];
+        fit_options.text_DEER_size = [];
+        fit_options.text_SAS_size = [];
+        fit_options.text_iteration_counter = [];
+        fit_options.text_ensemble_size = [];
+        fit_options.text_status = [];
+        fit_options.text_info_status = [];
+        fit_options.depth = [0.005,0.65];
+        fit_options.dim = 3;
+        fit_options.kdec = [0, NaN];
+        fit_options.cutoff = 0.9;
+        fit_options.lm = 50;
+        fit_options.fb = 18;
+        fit_options.xlmax = 20;
+        fit_options.interactive = false;
+        for ke = 1:nc-1
+            template = handles.ensemble1.file_list{ke};
+            for kc = 1:length(pair_info.conformer_list)
+                if strcmpi(pair_info.conformer_list{kc},template)
+                    kt = kc;
+                end
+            end
+            if kt == 0
+                fprintf(2,'ERROR: Conformer %i of fitted ensemble not found in list of all conformers\n',ke);
+                continue
+            end
+            kt2 = 0;
+            for ke2 = ke+1:nc
+                fit_options.logfile = fullfile(pname_list,sprintf('%s.%i.%i.log',fname_log,ke,ke2));
+                list_file = fullfile(pname_list,sprintf('%s.%i.%i.mat',fname_log,ke,ke2));
+                template2 = handles.ensemble1.file_list{ke2};
+                for kc = 1:length(pair_info.conformer_list)
+                    if strcmpi(pair_info.conformer_list{kc},template2)
+                        kt2 = kc;
+                    end
+                end
+                if kt2 == 0
+                    fprintf(2,'ERROR: Conformer %i of fitted ensemble not found in list of all conformers\n',ke2);
+                    continue
+                end
+                pair_rmsd = sqrt(pair_info.pair_rmsd(kt,:).^2+pair_info.pair_rmsd(kt2,:).^2);
+                [~,order0] = sort(pair_rmsd);
+                order = zeros(1,nc);
+                opoi = 2;
+                ko = 0;
+                order(1) = ke;
+                order(2) = ke2;
+                while opoi < nc && ko < length(order0)
+                    ko = ko + 1; 
+                    if order0(ko) ~= ke && order0(ko) ~= ke2
+                        opoi = opoi + 1;
+                        order(opoi) = order0(ko);
+                    end
+                end
+                these_rmsd = pair_info.pair_rmsd(order,order);
+                ensemble_rmsd = sqrt(sum(sum(these_rmsd.^2))/(nc^2-nc));
+                for kc = 1:length(selected_file_list)
+                    selected_file_list{kc} = pair_info.conformer_list{order(kc)};
+                end
+                fitted_populations = uniform_populations;
+                %            [included,populations] = fit_ensemble(restraints,selected_file_list,fit_options);
+                %            fitted_populations = zeros(size(uniform_populations));
+                %             for k = 1:length(included)
+                %                 fitted_populations = populations(included(k));
+                %             end
+                %             fitted_populations = fitted_populations/sum(fitted_populations);
+                [score_DEER,sum_chi2] = mk_ensemble(selected_file_list,fitted_populations,restraints,options);
+                save(list_file,'score_DEER','sum_chi2','selected_file_list');
+                fprintf(1,'(%2i,%2i)%10.3f%12.3f%12.2f\n',ke,ke2,sum_chi2,score_DEER,ensemble_rmsd);
+                fprintf(fid,'(%2i,%2i)%12.3f%12.3f%12.2f\n',ke,ke2,sum_chi2,score_DEER,ensemble_rmsd);
+            end
+        end
+        fclose(fid);
+    end
+
     set(hfig,'Pointer','arrow');
 end
-
 
 guidata(hObject,handles);
 

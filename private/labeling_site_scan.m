@@ -234,20 +234,20 @@ else
                     mmm=mmm+1;
                     cindices(mmm,:)=cindices0(kr,:);
                 end;
-            end;
+            end
             cindices=cindices(1:mmm,:);
         else
             adr=mk_address(indices(k,:));
             to_label=sprintf('%s%s',adr,res_string);
             [cindices,msg]=resolve_address(to_label);
-            [mmm,nnn]=size(cindices);
-        end;
-        if mmm>=1,
-            if hMain.site_scan_residue,
+            [mmm,~]=size(cindices);
+        end
+        if mmm>=1
+            if hMain.site_scan_residue
                 add_msg_board(sprintf('Scanning %i selected residues.',mmm));
             else
                 add_msg_board(sprintf('Scanning %i residues in chain model %s',mmm,adr));
-            end;
+            end
             scanned=scanned+mmm;
             if exist([libraries{k} '.mat'],'file')
                 load(libraries{k});

@@ -36,17 +36,27 @@ SAS_scores = DEER_scores;
 
 initialized = false;
 ensemble_size = length(model_list);
-options.text_status.String = 'Evaluation';
-options.text_info_status.String = sprintf('of %i',ensemble_size);
+
+if ~isfield(options,'interactive') || isempty(options.interactive)
+    options.interactive = true;
+end
+if options.interactive
+    options.text_status.String = 'Evaluation';
+    options.text_info_status.String = sprintf('of %i',ensemble_size);
+end
 
 included = zeros(1,ensemble_size);
 populations = [];
 len_DEER = 0;
 for km = 1:length(model_list)
-    options.text_iteration_counter.String = sprintf('%i',km);
+    if options.interactive
+        options.text_iteration_counter.String = sprintf('%i',km);
+    end
     drawnow
     fname = sprintf('%s_restraints.mat',model_list{km});
-    fprintf(1,'%s\n',model_list{km});
+    if options.interactive
+        fprintf(1,'%s\n',model_list{km});
+    end
     if exist(fname,'file')
         s = load(fname);
         model_restraints = s.restraints;
@@ -131,8 +141,10 @@ for k = 1:length(SAS_fits)
     all_SAS_fits{k} = data;
 end
 
-options.text_status.String = 'Iteration';
-options.text_info_status.String = '· 1000';
+if options.interactive
+    options.text_status.String = 'Iteration';
+    options.text_info_status.String = '· 1000';
+end
 
 ensemble_size = mpoi;
 
@@ -173,7 +185,9 @@ if len_DEER > 0
     else
         add_msg_board(sprintf('DEER restraints were fitted in %i h %i min %i s with overlap deficiency of %5.3f\n',th,tmin,ts,fom_DEER));
     end
-    options.text_DEER_fom0.String = sprintf('%5.3f',fom_DEER);
+    if options.interactive
+        options.text_DEER_fom0.String = sprintf('%5.3f',fom_DEER);
+    end
 
     log_fid = fopen(options.logfile,'at');
     if log_fid ~= -1 % there is currently no error reporting here, if the logfile cannot be written
@@ -196,14 +210,16 @@ if len_DEER > 0
         end
         fprintf(log_fid,'%i iterations and %i function evaluations were performed.\n',fit_output.iterations,fit_output.funccount);
         fprintf(log_fid,'Mesh size is at %12.4g, maximum constraint violation at %12.4g.\n',fit_output.meshsize,fit_output.maxconstraint);
-        if exitflag >=0
-            esize = sum(v >= options.threshold*max(v));
-            options.text_DEER_size.String = sprintf('%i',esize);
-            options.text_DEER_fom0.String = sprintf('%5.3f',fom_DEER);
-            fprintf(log_fid,'DEER-only ensemble has %i conformers and overlap deficiency %5.3f\n\n',esize,fom_DEER);
-        else
-            options.text_DEER_size.String = sprintf('%i',NaN);
-            options.text_DEER_fom0.String = sprintf('%5.3f',NaN);
+        if options.interactive
+            if exitflag >=0
+                esize = sum(v >= options.threshold*max(v));
+                options.text_DEER_size.String = sprintf('%i',esize);
+                options.text_DEER_fom0.String = sprintf('%5.3f',fom_DEER);
+                fprintf(log_fid,'DEER-only ensemble has %i conformers and overlap deficiency %5.3f\n\n',esize,fom_DEER);
+            else
+                options.text_DEER_size.String = sprintf('%i',NaN);
+                options.text_DEER_fom0.String = sprintf('%5.3f',NaN);
+            end
         end
         fprintf(log_fid,'\n');
     end
@@ -279,8 +295,10 @@ if ~isempty(SAS_fits)
         fprintf(log_fid,'Mesh size is at %12.4g, maximum constraint violation at %12.4g.\n',fit_output.meshsize,fit_output.maxconstraint);
         if exitflag >=0
             esize = sum(v >= options.threshold*max(v));
-            options.text_SAS_size.String = sprintf('%i',esize);
-            options.text_SAS_fom0.String = sprintf('%5.3f',fom_SAS);
+            if options.interactive
+                options.text_SAS_size.String = sprintf('%i',esize);
+                options.text_SAS_fom0.String = sprintf('%5.3f',fom_SAS);
+            end
             fprintf(log_fid,'SAS-only ensemble has %i conformers and chi^2 sum %5.3f\n\n',esize,fom_SAS);
             fprintf(log_fid,'Fitted SAS-curve baseline offsets:\n');
             bpoi = 0;
@@ -296,7 +314,7 @@ if ~isempty(SAS_fits)
                     fprintf(log_fid,'%s: %6.4f\n',model_restraints.SAXS(ks).data,bsl(bpoi));
                 end
             end
-        else
+        elseif options.interactive
             options.text_SAS_size.String = sprintf('%i',NaN);
             options.text_SAS_fom0.String = sprintf('%5.3f',NaN);
         end
@@ -359,11 +377,13 @@ if len_DEER > 0 && ~isempty(SAS_fits)
     fom_DEER = sim_multi_DEER(coeff1,all_DEER_fits);
     [fom_SAS,fits_SAS] = sim_multi_SAS(v,all_SAS_fits);
 
-    for ksas = 1:length(fits_SAS)
-        figure(3000+ksas); clf; hold on;
-        plot(fits_SAS(ksas).s,fits_SAS(ksas).curve,'k');
-        plot(fits_SAS(ksas).s,fits_SAS(ksas).sim,'r');
-        title(sprintf('chi2 = %5.2f',fits_SAS(ksas).chi2));
+    if options.interactive
+        for ksas = 1:length(fits_SAS)
+            figure(3000+ksas); clf; hold on;
+            plot(fits_SAS(ksas).s,fits_SAS(ksas).curve,'k');
+            plot(fits_SAS(ksas).s,fits_SAS(ksas).sim,'r');
+            title(sprintf('chi2 = %5.2f',fits_SAS(ksas).chi2));
+        end
     end
 
     coeff = coeff1/max(coeff1);
@@ -395,10 +415,12 @@ if len_DEER > 0 && ~isempty(SAS_fits)
         fprintf(log_fid,'Mesh size is at %12.4g, maximum constraint violation at %12.4g.\n',fit_output.meshsize,fit_output.maxconstraint);
         if exitflag >=0
             esize = sum(v >= options.threshold*max(v));
-            options.text_ensemble_size.String = sprintf('%i',esize);
-            options.text_loss.String = sprintf('%5.3f',fom);
-            options.text_DEER_fom.String = sprintf('%5.3f',fom_DEER);
-            options.text_SAS_fom.String = sprintf('%5.3f',fom_SAS);
+            if options.interactive
+                options.text_ensemble_size.String = sprintf('%i',esize);
+                options.text_loss.String = sprintf('%5.3f',fom);
+                options.text_DEER_fom.String = sprintf('%5.3f',fom_DEER);
+                options.text_SAS_fom.String = sprintf('%5.3f',fom_SAS);
+            end
             fprintf(log_fid,'Integrative ensemble has %i conformers and loss %5.3f\n\n',length(included),fom);
             fprintf(log_fid,'Fitted SAS-curve baseline offsets:\n');
             bpoi = 0;
@@ -414,7 +436,7 @@ if len_DEER > 0 && ~isempty(SAS_fits)
                     fprintf(log_fid,'%s: %6.4f\n',model_restraints.SAXS(ks).data,bsl(bpoi));
                 end
             end
-        else
+        elseif options.interactive
             options.text_ensemble_size.String = sprintf('%i',NaN);
             options.text_loss.String = sprintf('%5.3f',NaN);
             options.text_DEER_fom.String = sprintf('%5.3f',NaN);
@@ -466,10 +488,15 @@ for k = 1:min(length(restraints.DEER),length(restraints0.DEER))
             argr = (restraints.DEER(k).r-rax)/(sqrt(2)*restraints.DEER(k).sigr);
             distr_sim = exp(-argr.^2);
             distr_sim = distr_sim/sum(distr_sim);
-            data(:,2) = distr_sim.';
+            if isfield(restraints.DEER(k),'distr_exp') && ~isempty(restraints.DEER(k).distr_exp)
+                data(:,2) = restraints.DEER(k).distr_exp.';
+                overlaps(n_DEER) = sum(min([restraints.DEER(k).distr_exp;distr]));
+            else
+                data(:,2) = distr_sim.';
+                overlaps(n_DEER) = sum(min([distr_sim;distr]));
+            end
             data(:,3) = distr.';
-            fits{n_DEER} = data;
-            overlaps(n_DEER) = sum(min([distr_sim;distr]));
+            fits{n_DEER} = data;            
             score_DEER = score_DEER * overlaps(n_DEER);
         else
             DEER_valid = false;
@@ -503,7 +530,13 @@ if isfield(restraints,'pflex') && ~isempty(restraints.pflex) && isfield(restrain
                     argr = (restraints.pflex(kl).DEER(k).r-rax)/(sqrt(2)*restraints.pflex(kl).DEER(k).sigr);
                     distr_sim = exp(-argr.^2);
                     distr_sim = distr_sim/sum(distr_sim);
-                    data(:,2) = distr_sim.';
+                    if isfield(restraints.pflex(kl).DEER(k),'distr_exp') && ~isempty(restraints.pflex(kl).DEER(k).distr_exp)
+                        data(:,2) = restraints.pflex(kl).DEER(k).distr_exp.';
+                        overlaps(n_DEER) = sum(min([restraints.pflex(kl).DEER(k).distr_exp;distr]));
+                    else
+                        data(:,2) = distr_sim.';
+                        overlaps(n_DEER) = sum(min([distr_sim;distr]));
+                    end
                     data(:,3) = distr.';
                     fits{n_DEER} = data;
                     overlaps(n_DEER) = sum(min([distr_sim;distr]));
@@ -516,8 +549,8 @@ if isfield(restraints,'pflex') && ~isempty(restraints.pflex) && isfield(restrain
         end
     end
 end
-score_DEER = 1 - score_DEER^(1/n_DEER);
-fprintf(1,'Total DEER score : %5.3f\n',score_DEER);
+% score_DEER = 1 - score_DEER^(1/n_DEER);
+% fprintf(1,'Total DEER score : %5.3f\n',score_DEER);
 
 if ~DEER_valid
     overlaps = [];

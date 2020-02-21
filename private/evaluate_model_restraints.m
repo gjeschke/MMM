@@ -140,7 +140,7 @@ if ~isempty(restraints.DEER(1).r)
             Pdata = load(dfname);
             rexp = Pdata(:,1).';
             distr_exp = Pdata(:,2).';
-            distr_exp = interp1(rexp,distr_exp,rax,'pchip',0);
+            distr_exp = interp1(10*rexp,distr_exp,rax,'pchip',0);
             distr_exp = distr_exp/sum(distr_exp);
             restraints.DEER(k).distr_exp = distr_exp;
         else
@@ -204,7 +204,7 @@ if isfield(restraints,'pflex') && ~isempty(restraints.pflex) && isfield(restrain
                 Pdata = load(dfname);
                 rexp = Pdata(:,1).';
                 distr_exp = Pdata(:,2).';
-                distr_exp = interp1(rexp,distr_exp,rax,'pchip',0);
+                distr_exp = interp1(10*rexp,distr_exp,rax,'pchip',0);
                 distr_exp = distr_exp/sum(distr_exp);
                 restraints.pflex(kl).DEER(k).distr_exp = distr_exp;
             else

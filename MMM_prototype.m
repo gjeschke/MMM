@@ -5791,11 +5791,25 @@ function menu_jobs_test5_Callback(hObject, eventdata, handles)
 % end
 % fclose(fid);
 
-analyze_PTBP1_CYANA('PTBP1_CYANA_culled_ensemble');
+% my_dir = dir('a*.pdb');
+% 
+% conformer_list = cell(1,1000);
+% 
+% k2 = 0;
+% for k = 1:length(my_dir)
+%     poi = strfind(my_dir(k).name,'yasara');
+%     if isempty(poi)
+%         k2 = k2 + 1;
+%         conformer_list{k2} = my_dir(k).name;
+%     end 
+% end
+% 
+% pair_rmsd = PTB1_mk_pair_rmsd_total(conformer_list);
+% 
+% save PTB1_CYANA_pair_rmsd_total pair_rmsd conformer_list
 
-return
 
-mylist = dir('*_rf23.pdb');
+mylist = dir('a10_*.pdb');
 fid = fopen('PTBP1_optimize.dat','wt');
 for k = 1:length(mylist)
     fprintf(fid,'%s\n',mylist(k).name);
@@ -5807,8 +5821,8 @@ for kc = 1:length(conformer_list)
     fname = conformer_list{kc};
     fprintf(1,'We will optimize: %s\n',fname);
     options.console = false;
-    ind = strfind(fname,'_rf23.pdb');
-    options.fname = strcat(fname(1:ind-1),'_r23_yasara.pdb');
+    ind = strfind(fname,'.pdb');
+    options.fname = strcat(fname(1:ind-1),'_yasara.pdb');
     tic,
     optimize_by_yasara(fname,options);
     toc,
@@ -5823,7 +5837,7 @@ function menu_jobs_test6_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-mylist = dir('PTB1_200104_b*.pdb');
+mylist = dir('PTB1_200221_t16*.pdb');
 fid = fopen('PTBP1_RNA_conformers.dat','wt');
 for k = 1:length(mylist)
     fprintf(fid,'%s\n',mylist(k).name);
@@ -5850,7 +5864,7 @@ for kc = 1:length(conformer_list)
         Nanchors{2} = '(A)283';
         Canchors{2} = '(C)337';
         options.console = false;
-        options.optimize = false;
+        options.optimize = true;
         tic,
         insert_yasara_loop(fname,Nanchors,Canchors,seqs,options);
         toc,       

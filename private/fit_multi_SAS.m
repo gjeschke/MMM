@@ -38,7 +38,7 @@ for k = 1:length(fit)
     fom = fom + chi2;
 end
 
-if exist('opt','var')
+if exist('opt','var')  && isfield(opt,'interactive') && opt.interactive
     if mod(call_count,update_number) == 0
         axis(opt.plot_axes);
         cla; hold on;
