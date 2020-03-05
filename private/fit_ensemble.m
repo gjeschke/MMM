@@ -477,7 +477,7 @@ score_DEER = 1;
 DEER_valid = true;
 
 for k = 1:min(length(restraints.DEER),length(restraints0.DEER))
-    if ~isempty(restraints0.DEER(k).r) && restraints.DEER(k).r ~=0 &&  restraints.DEER(k).sigr ~=0  % this is a restraint to be tested
+    if ~isempty(restraints0.DEER(k).r) && restraints0.DEER(k).r ~=0 &&  restraints0.DEER(k).sigr ~=0  % this is a restraint to be tested
         rax = restraints.DEER(1).rax;
         distr = restraints.DEER(k).distr;
         n_DEER = n_DEER + 1;

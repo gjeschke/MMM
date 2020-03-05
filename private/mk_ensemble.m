@@ -184,7 +184,8 @@ for k = 1:DEER.core+DEER.flex
     if options.plot
         if DEER.all_flags(k)
             ftype = 'fit';
-            title(sprintf('%s-%s. o_{res}: %5.3f, o_{exp}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap,overlap_exp,DEER.mod_depths(k)));
+            title(sprintf('%s-%s. o_{exp}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap_exp,DEER.mod_depths(k)));
+            % title(sprintf('%s-%s. o_{res}: %5.3f, o_{exp}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap,overlap_exp,DEER.mod_depths(k)));
             % Restraint plotting in model was disabled
             % colr = get_color(overlap);
             % fprintf(fid,'plot %s.CA %s.CA 6 %5.3f %5.3f %5.3f :\n',adr1,adr2,colr);
@@ -312,12 +313,12 @@ for k = 1:length(model_restraints.DEER)
     axis_vec = [0,120,-1e-6,1e-6];
     if isfield(model_restraints.DEER(k),'file') && ~isempty(model_restraints.DEER(k).file)
         dfname = strcat(model_restraints.DEER(k).file,'_distr.dat');
-        deer_basname = strcat('deer_analysis\',model_restraints.DEER(k).file);
+        deer_basname = strcat('DeerLab\',model_restraints.DEER(k).file);
         if km == 1
             [axis_vec,md] = plot_exp_dist(deer_basname,rax,options);
             DEER.mod_depths(k) = md;
         end
-        dfname = strcat('deer_analysis\',dfname);
+        dfname = strcat('DeerLab\',dfname);
         Pdata = load(dfname);
         rexp = 10*Pdata(:,1).';
         distr_exp = Pdata(:,2).';
@@ -373,12 +374,12 @@ if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex) && isfi
             axis_vec = [0,120,-1e-6,1e-6];
             if isfield(model_restraints.pflex(kl).DEER(k),'file') && ~isempty(model_restraints.pflex(kl).DEER(k).file)
                 dfname = strcat(model_restraints.pflex(kl).DEER(k).file,'_distr.dat');
-                deer_basname = strcat('deer_analysis\',model_restraints.pflex(kl).DEER(k).file);
+                deer_basname = strcat('DeerLab\',model_restraints.pflex(kl).DEER(k).file);
                 if km == 1
                     [axis_vec,md] = plot_exp_dist(deer_basname,rax,options);
                     DEER.mod_depths(pflex) = md;
                 end
-                dfname = strcat('deer_analysis\',dfname);
+                dfname = strcat('DeerLab\',dfname);
                 Pdata = load(dfname);
                 rexp = 10*Pdata(:,1).';
                 distr_exp = Pdata(:,2).';

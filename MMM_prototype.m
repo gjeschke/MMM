@@ -5809,14 +5809,14 @@ function menu_jobs_test5_Callback(hObject, eventdata, handles)
 % save PTB1_CYANA_pair_rmsd_total pair_rmsd conformer_list
 
 
-mylist = dir('a10_*.pdb');
-fid = fopen('PTBP1_optimize.dat','wt');
-for k = 1:length(mylist)
-    fprintf(fid,'%s\n',mylist(k).name);
-end
-fclose(fid);
+% mylist = dir('a10_*.pdb');
+% fid = fopen('PTBP1_optimize.dat','wt');
+% for k = 1:length(mylist)
+%     fprintf(fid,'%s\n',mylist(k).name);
+% end
+% fclose(fid);
 
-conformer_list = get_file_list('PTBP1_optimize.dat');
+conformer_list = get_file_list('PTBP1_all_restraints.dat');
 for kc = 1:length(conformer_list)
     fname = conformer_list{kc};
     fprintf(1,'We will optimize: %s\n',fname);

@@ -383,9 +383,10 @@ for k = 1:length(handles.pairing)
     end
 end
 options.mode = 'backbone';
-[sigma,pair_rmsd,ordering] = ensemble_comparison(stag1,chains1,pop1,stag2,chains2,pop2,options);
+[sigma,pair_rmsd,ordering,densities] = ensemble_comparison(stag1,chains1,pop1,stag2,chains2,pop2,options);
 
 handles.text_cross_std.String = sprintf('%5.2f Å',sigma(3));
+handles.text_similarities.String = sprintf('%5.2f, %5.2f Å',densities(3),densities(4));
 ensemble1_stdv = pair_rmsd(1);
 ensemble2_stdv = pair_rmsd(2);
 cross_stdv = pair_rmsd{3};
@@ -450,6 +451,7 @@ switch num
         snum = handles.ensemble1.snum;
         pop = handles.ensemble1.pop;
         text_rmsd = handles.text_rmsd1;
+        text_density = handles.text_density1;
         text_nconf = handles.text_nconformers1;
         popup_chains = handles.popupmenu_chains1;
     case 2
@@ -457,6 +459,7 @@ switch num
         snum = handles.ensemble2.snum;
         pop = handles.ensemble2.pop;
         text_rmsd = handles.text_rmsd2;
+        text_density = handles.text_density2;
         text_nconf = handles.text_nconformers2;
         popup_chains = handles.popupmenu_chains2;
     otherwise
@@ -481,7 +484,8 @@ stag = id2tag(snum,model.structure_tags);
 options.mode = 'backbone';
 options.cluster_sorting = true;
 
-[sigma,pair_rmsd,ordering] = ensemble_comparison(stag,[],pop,[],[],[],options);
+[sigma,pair_rmsd,ordering,densities] = ensemble_comparison(stag,[],pop,[],[],[],options);
+text_density.String = sprintf('%5.2f Å',densities(1));
 text_rmsd.String = sprintf('%5.2f Å',sigma);
 populations = pop(ordering{1});
 
@@ -510,7 +514,7 @@ switch num
         handles.ensemble2.resnums = resnums;
         handles.ensemble2.seqtypes = seqtypes;
         handles.ensemble2.chains = chain_list;
-        handles.ensemble2.ordering = ordering{2};
+        handles.ensemble2.ordering = ordering{1};
 end
 
 handles.popupmenu_display.Value = num;

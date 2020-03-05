@@ -1,4 +1,4 @@
-function [sigma,pair_rmsd,ordering] = ensemble_comparison(stag1,chains1,pop1,stag2,chains2,pop2,options)
+function [sigma,pair_rmsd,ordering,densities] = ensemble_comparison(stag1,chains1,pop1,stag2,chains2,pop2,options)
 % [sigma,pair_rmsd] = ensemble_comparison(stag1,chains1,stag2,chains2,options)
 %
 % Analyzes internal variation of conformations in ensemble structures as
@@ -32,9 +32,12 @@ function [sigma,pair_rmsd,ordering] = ensemble_comparison(stag1,chains1,pop1,sta
 %           and n2 are numbers of conformers in the first and second
 %           ensemble, respectively
 % ordering  cell of vectors [1,n1], [1,n2], [1,n1], [1,n2] that assign
-%           original conformer numbers to entries in the sorted matrices 
+%           original conformer numbers to entries in the sorted matrices
+% densities ensemble densities and similarities, single number, if only one
+%           ensemble is input, otherwise vector(1,4) density1, density2,
+%           similarity12, similarity21
 %
-% G. Jeschke, 25.9.2019, 15.12. 2019
+% G. Jeschke, 25.9.2019-04.03.2020
 
 global model
 
@@ -190,6 +193,38 @@ if options.ensembles > 1
     ordering{4} = sorting2;
     pair_rmsd{3} = cross_rmsd(sorting2,sorting1);
     sigma(3) = get_sigma(pair_rmsd{3},pop1,pop2);
+end
+
+% compute ensemble densities
+densities = zeros(1,4);
+for ke = 1:options.ensembles
+    distmat = pair_rmsd{ke};
+    [m,~] = size(distmat);
+    msq = zeros(1,m);
+    for k = 1:m
+        cmsd = distmat(k,:).^2;
+        cmsd(k) = 1e12;
+        msq(k) = min(cmsd);
+    end
+    densities(ke) = sqrt(mean(msq));
+end
+if options.ensembles < 2
+    densities = densities(1);
+else
+    distmat = pair_rmsd{3};
+    [m1,m2] = size(distmat);
+    msq = zeros(1,m1);
+    for k = 1:m1
+        cmsd = distmat(k,:).^2;
+        msq(k) = min(cmsd);
+    end
+    densities(3) = sqrt(mean(msq));
+    msq = zeros(1,m2);
+    for k = 1:m2
+        cmsd = distmat(:,k).^2;
+        msq(k) = min(cmsd);
+    end
+    densities(4) = sqrt(mean(msq));
 end
 
 set(hfig,'Pointer','arrow');

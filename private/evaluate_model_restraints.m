@@ -136,7 +136,7 @@ if ~isempty(restraints.DEER(1).r)
         fprintf(fid,'Overlap: %5.3f\n',restraints.DEER(k).overlap);
         if isfield(restraints.DEER(k),'file') && ~isempty(restraints.DEER(k).file)
             dfname = strcat(restraints.DEER(k).file,'_distr.dat');
-            dfname = strcat('deer_analysis\',dfname);
+            dfname = strcat('DeerLab\',dfname);
             Pdata = load(dfname);
             rexp = Pdata(:,1).';
             distr_exp = Pdata(:,2).';
@@ -200,7 +200,7 @@ if isfield(restraints,'pflex') && ~isempty(restraints.pflex) && isfield(restrain
             fprintf(fid,'Overlap: %5.3f\n',restraints.pflex(kl).DEER(k).overlap);
             if isfield(restraints.pflex(kl).DEER(k),'file') && ~isempty(restraints.pflex(kl).DEER(k).file)
                 dfname = strcat(restraints.pflex(kl).DEER(k).file,'_distr.dat');
-                dfname = strcat('deer_analysis\',dfname);
+                dfname = strcat('DeerLab\',dfname);
                 Pdata = load(dfname);
                 rexp = Pdata(:,1).';
                 distr_exp = Pdata(:,2).';
