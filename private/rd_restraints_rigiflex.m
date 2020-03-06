@@ -105,6 +105,7 @@ restraints.xlinks(1).indices1 = [];
 restraints.xlinks(1).coor2 = [];
 restraints.xlinks(1).indices2 = [];
 
+restraints.save_rigi = false;
 restraints.RNA_save = false;
 restraints.stemloop_links = [];
 restraints.SL_DEER = [];
@@ -163,6 +164,8 @@ while 1
             switch upper(char(args(2)))
                 case 'NOFIT'
                     restraints.no_fitting = true;
+                case 'SAVERIGI'
+                    restraints.save_rigi = true;
                 case 'SEARCH'
                     mode=0;
                     restraints.search = true;

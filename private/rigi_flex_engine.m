@@ -173,17 +173,6 @@ for rba = 1:length(heavy_coor)
     hulls(rba).faces = kpa;
 end
 
-nc = kc;
-all_chains = all_chains(1:nc);
-
-% selection is used for saving partial structures, remove old selection
-if isfield(model,'selected')
-    model = rmfield(model,'selected');
-end
-for kc = 1:nc
-    model.selected{kc} = [snum all_chains(kc) 1];
-end
-
 rbnum = length(restraints.rb);
 
 % augment lower and upper bounds
@@ -634,32 +623,41 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                         end
                     end
                     if sfulfill
-                        if sfulfill
-                            fid = fopen(solutionname,'at');
-                            if ~isempty(ccombi) && sum(ccombi) > 0
-                                fprintf(fid,'%8i%6i',parblocks,k-bask);
-                                for ksl = 1:length(ccombi)
-                                    fprintf(fid,'%6i',ccombi(ksl));
-                                end
-                                fprintf(fid,'\n');
-                            else
-                                fprintf(fid,'%8i%6i\n',parblocks,k-bask);
+                        fid = fopen(solutionname,'at');
+                        if ~isempty(ccombi) && sum(ccombi) > 0
+                            fprintf(fid,'%8i%6i',parblocks,k-bask);
+                            for ksl = 1:length(ccombi)
+                                fprintf(fid,'%6i',ccombi(ksl));
                             end
+                            fprintf(fid,'\n');
+                        else
+                            fprintf(fid,'%8i%6i\n',parblocks,k-bask);
+                        end
+                        fclose(fid);
+                        soln_count = soln_count + 1;
+                        t_points = cell(1,length(rb));
+                        for kr = 1:length(rb)
+                            t_points{kr} = affine_coor_set(points{kr},transmats{kr});
+                        end
+                        reference_geometry{soln_count} = t_points;
+                        if restraints.search
+                            success = success -1;
+                        end
+                        if solutions_given
+                            fid = fopen(proc_name,'at');
+                            fprintf(fid,'%8i%6i\n',parblocks,k-bask);
                             fclose(fid);
-                            soln_count = soln_count + 1;
-                            t_points = cell(1,length(rb));
-                            for kr = 1:length(rb)
-                                t_points{kr} = affine_coor_set(points{kr},transmats{kr});
+                        end
+                        if restraints.save_rigi
+                            if isfield(model,'selected')
+                                model = rmfield(model,'selected');
                             end
-                            reference_geometry{soln_count} = t_points;
-                            if restraints.search
-                                success = success -1;
+                            model.selected = cell(1,length(model.structures{snum}));
+                            for kc = 1:length(model.structures{snum})
+                                model.selected{kc} = [snum kc success];
                             end
-                            if solutions_given
-                                fid = fopen(proc_name,'at');
-                                fprintf(fid,'%8i%6i\n',parblocks,k-bask);
-                                fclose(fid);
-                            end
+                            conformer = fullfile(pathstr,sprintf('%s_T%i_%i.dat',basname,parblocks,k-bask));
+                            wr_pdb_selected(conformer,PDBid);
                         end
                     end
                 end
