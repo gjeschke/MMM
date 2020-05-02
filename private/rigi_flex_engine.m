@@ -656,7 +656,7 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
                             for kc = 1:length(model.structures{snum})
                                 model.selected{kc} = [snum kc success];
                             end
-                            conformer = fullfile(pathstr,sprintf('%s_T%i_%i.dat',basname,parblocks,k-bask));
+                            conformer = fullfile(pathstr,sprintf('%s_T%i_%i.pdb',basname,parblocks,k-bask));
                             wr_pdb_selected(conformer,PDBid);
                         end
                     end

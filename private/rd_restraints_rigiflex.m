@@ -964,6 +964,7 @@ while 1
                                 restraints.RNA(RNA_poi).bind(RNA_bind_poi).anchora = char(args(2));
                                 restraints.RNA(RNA_poi).bind(RNA_bind_poi).nte = str2double(char(args(3)));
                                 restraints.RNA(RNA_poi).bind(RNA_bind_poi).anchore = char(args(4));
+                                restraints.RNA(RNA_poi).bind(RNA_bind_poi).stemlib = [];
                             case 4 % STEM
                                 RNA_stem_poi = RNA_stem_poi + 1;
                                 restraints.RNA(RNA_poi).stems(RNA_stem_poi).C5pf = str2double(char(args(1)));

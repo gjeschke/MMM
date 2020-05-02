@@ -28,7 +28,6 @@ function [score_DEER,sum_chi2] = mk_ensemble(ensemble_list,populations,restraint
 
 global model
 
-
 if ~exist('populations','var') || isempty(populations)
     populations = ones(1,length(ensemble_list));
     populations = populations/sum(populations);
@@ -175,6 +174,9 @@ for k = 1:DEER.core+DEER.flex
         end
     end
     overlap = sum(min([DEER.all_distr_sim(k,:);DEER.all_distr(k,:)]));
+    if ~isnan(overlap_exp)
+        overlap = overlap_exp;
+    end
     if ~isnan(overlap) && overlap > 10*eps && DEER.all_flags(k)
         score_DEER = score_DEER*overlap;
         n_DEER = n_DEER + 1;
@@ -252,6 +254,8 @@ end
 
 
 function DEER = display_DEER_single(km,model_restraints,populations,DEER,options)
+
+color_Gaussian_restraint = [0,0.25,0];
 
 core = length(model_restraints.DEER);
 rax = model_restraints.DEER(1).rax;
@@ -332,10 +336,10 @@ for k = 1:length(model_restraints.DEER)
         distr_sim = distr_sim/sum(distr_sim);
         DEER.all_distr_sim(k,:) = distr_sim;
         if km == 1 && options.plot
-            plot(rax,distr_sim,'Color',[0,0.6,0]);
+            plot(rax,distr_sim,'Color',color_Gaussian_restraint);
         end
         if options.individual && options.plot
-            plot(rax,populations(km)*distr,'Color',[0.2,0.2,1]);
+            plot(rax,populations(km)*distr,'Color',conformer_color(km,length(populations)));
         end
         DEER.all_distr(k,:) = DEER.all_distr(k,:) + populations(km)*distr;
         for kgrp = 1:length(options.groups)
@@ -396,10 +400,10 @@ if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex) && isfi
                 distr_sim = distr_sim/sum(distr_sim);
                 DEER.all_distr_sim(pflex,:) = distr_sim;
                 if km == 1 && options.plot
-                    plot(rax,distr_sim,'Color',[0,0.6,0]);
+                    plot(rax,distr_sim,'Color',color_Gaussian_restraint);
                 end
                 if options.individual && options.plot
-                    plot(rax,populations(km)*distr,'Color',[0.2,0.2,1]);
+                    plot(rax,populations(km)*distr,'Color',conformer_color(km,length(populations)));
                 end
                 DEER.all_distr(pflex,:) = DEER.all_distr(pflex,:) + populations(km)*distr;
                 for kgrp = 1:length(options.groups)
@@ -523,6 +527,14 @@ if ~skip
         plot([r3,r4],[-0.04*ma,-0.04*ma],'Color',[0.6,0,0],'LineWidth',4);
     end
 end
+
+function rgb = conformer_color(km,m)
+
+blue = linspace(0.5,0,m);
+green = linspace(0,0.5,m);
+white = linspace(-0.5,0.5,m);
+white = 0.5 - abs(white);
+rgb = [white(km),green(km)+white(km),blue(km)+white(km)];
 
 % function rgb = get_color(overlap,limit)
 % 

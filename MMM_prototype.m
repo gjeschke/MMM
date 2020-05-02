@@ -5764,16 +5764,86 @@ function menu_jobs_test4_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-tic,
-[coor,N,n] = rd_CA_trace('hnRNPA1_LCD_free_unrestrained_m6');
-p = 1;
-options.verbose = true;
-% [coor,N,n] = rd_CA_trace('PTB1_CYANA_RRM34_superimposed_ordered');
-toc,
-[C,R0,nu,raxis,Rg_distr] = local_compactness(coor,N,n,p,options);
-guidata(hObject,handles);
+% tic,
+% [coor,N,n] = rd_CA_trace('hnRNPA1_LCD_free_unrestrained_m6');
+% p = 1;
+% options.verbose = true;
+% % [coor,N,n] = rd_CA_trace('PTB1_CYANA_RRM34_superimposed_ordered');
+% toc,
+% [C,R0,nu,raxis,Rg_distr] = local_compactness(coor,N,n,p,options);
+
+global general
+
+[fname,pname]=uigetfile('*.dat','Load ensemble description from file');
+[file_list,pop] = rd_ensemble_description(fullfile(pname,fname));
+
+% Generate option structure for fitting/restraint evaluation
+options.threshold = 0.01; % convert percentage to fraction
+options.ensemble_size = length(file_list);
+options.depth = [0.005,0.65];
+options.dim = 3;
+options.kdec = [0, NaN];
+options.cutoff = 0.9;
+options.lm = 50;
+options.fb = 18;
+options.xlmax = 20;
 
 
+my_path=pwd;
+cd(general.restraint_files);
+
+[fname,pname]=uigetfile('*.dat','Load restraints from file');
+if isequal(fname,0) || isequal(pname,0)
+    add_msg_board('Restraint loading cancelled by user');
+    cd(my_path);
+    return
+else
+    reset_user_paths(pname);
+    general.restraint_files=pname;
+    [~,name] = fileparts(fname);
+    handles.save_path = pname;
+    handles.save_name = name;
+    
+    hfig=gcf;
+    set(hfig,'Pointer','watch');
+
+    rtype = get_restraint_type(fullfile(pname,fname));
+    plot_groups = get_plot_groups(fullfile(pname,fname));
+    unprocessed = true;
+    
+    switch rtype
+        case 'GENERIC'
+            restraints = rd_restraints(fullfile(pname,fname));
+            if isfield(restraints,'DEER') && ~isempty(restraints.DEER)
+                for k = 1:length(restraints.DEER)
+                    restraints.DEER(k).r = 10*restraints.DEER(k).r;
+                    restraints.DEER(k).sigr = 10*restraints.DEER(k).sigr;
+                end
+            end
+        case 'FLEX'
+            restraints = rd_restraints(fullfile(pname,fname));
+            if isfield(restraints,'DEER') && ~isempty(restraints.DEER)
+                for k = 1:length(restraints.DEER)
+                    restraints.DEER(k).r = 10*restraints.DEER(k).r;
+                    restraints.DEER(k).sigr = 10*restraints.DEER(k).sigr;
+                end
+            end
+        case 'RIGIFLEX'
+            restraints = rd_restraints_rigiflex(fullfile(pname,fname),unprocessed);
+        otherwise
+            add_msg_board(sprintf('ERROR: Restraint type %s is not supported in ensemble fits',rtype));
+            restraints = [];
+    end
+    cd(my_path);
+    options.script = false;
+    options.write_pdb = false;
+    options.individual = false;
+    options.groups = plot_groups;
+    [score_DEER,sum_chi2] = mk_ensemble(file_list,pop,restraints,options);
+    fprintf(1,'DEER score     : %5.3f\n',score_DEER);
+    fprintf(1,'SAS chi-squared: %5.3f\n',sum_chi2);   
+    set(hfig,'Pointer','arrow');
+end
 
 % --------------------------------------------------------------------
 function menu_jobs_test5_Callback(hObject, eventdata, handles)
@@ -5809,22 +5879,35 @@ function menu_jobs_test5_Callback(hObject, eventdata, handles)
 % save PTB1_CYANA_pair_rmsd_total pair_rmsd conformer_list
 
 
-% mylist = dir('a10_*.pdb');
-% fid = fopen('PTBP1_optimize.dat','wt');
-% for k = 1:length(mylist)
-%     fprintf(fid,'%s\n',mylist(k).name);
-% end
-% fclose(fid);
+mylist = dir('PTB1_200328*_rigiflex.pdb');
+fid = fopen('PTBP1_optimize.dat','wt');
+for k = 1:length(mylist)
+    fprintf(fid,'%s\n',mylist(k).name);
+end
+fclose(fid);
 
-conformer_list = get_file_list('PTBP1_all_restraints.dat');
+conformer_list = get_file_list('PTBP1_optimize.dat');
+optimized_list = get_file_list('yasara_optimized.dat');
 for kc = 1:length(conformer_list)
-    fname = conformer_list{kc};
-    fprintf(1,'We will optimize: %s\n',fname);
-    options.console = false;
-    ind = strfind(fname,'.pdb');
-    options.fname = strcat(fname(1:ind-1),'_yasara.pdb');
-    tic,
-    optimize_by_yasara(fname,options);
+    to_be_optimized = true;
+    for kp = 1:length(optimized_list)
+        if strcmp(conformer_list{kc},optimized_list{kp})
+            to_be_optimized = false;
+            break
+        end
+    end
+    if to_be_optimized
+        fname = conformer_list{kc};
+        fprintf(1,'We will optimize: %s\n',fname);
+        options.console = false;
+        ind = strfind(fname,'.pdb');
+        options.fname = strcat(fname(1:ind-1),'_yasara.pdb');
+        tic,
+        optimize_by_yasara(fname,options);
+        fid = fopen('yasara_optimized.dat','at');
+        fprintf(fid,'%s\n',fname);
+        fclose(fid);
+    end
     toc,
 end
 
@@ -5837,7 +5920,7 @@ function menu_jobs_test6_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-mylist = dir('PTB1_200221_t16*.pdb');
+mylist = dir('PTB1_200328*.pdb');
 fid = fopen('PTBP1_RNA_conformers.dat','wt');
 for k = 1:length(mylist)
     fprintf(fid,'%s\n',mylist(k).name);

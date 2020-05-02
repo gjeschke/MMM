@@ -73,7 +73,9 @@ z = linkage(pairdist);
 inconsistency = 1.51;
 c = ones(length(pop),1);
 while max(c) < 2
-    inconsistency = inconsistency - 0.01;
+    if inconsistency > 0.01
+        inconsistency = inconsistency - 0.01;
+        endI ethz.zoom.us
     c = cluster(z,'cutoff',inconsistency);
 end
 if options.verbose

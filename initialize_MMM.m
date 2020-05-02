@@ -471,6 +471,21 @@ rotamer_libraries(24).type='peptide';
 rotamer_libraries(24).exclude=':H2:HO2:OXT:';
 rotamer_libraries(24).download{1} = 'https://dl.dropboxusercontent.com/s/tbpu2lzw8z2kp1b/GM1_298K_UFF_8192_r5.zip';
 
+rotamer_libraries(25).label = 'R3P';
+rotamer_libraries(25).tc = 'R3P';
+rotamer_libraries(25).T = 298;
+rotamer_libraries(25).files = ':R3P_298K_UFF_512:';
+rotamer_libraries(25).type = 'nucleotide';
+rotamer_libraries(25).exclude = ':O3'':HO3'':'; % this atom comes from the rotamer
+
+rotamer_libraries(26).label = 'R5P';
+rotamer_libraries(26).tc = 'R5P';
+rotamer_libraries(26).T = 298;
+rotamer_libraries(26).files = ':R5P_298K_UFF_2048:';
+rotamer_libraries(26).type = 'nucleotide';
+rotamer_libraries(26).exclude = ':C5'':H5'':H5'''':O5'':HO5'':'; % these atoms come from the rotamer
+
+
 ligand_libraries(1).label='dHisCuIDA';
 ligand_libraries(1).tc='IDA';
 ligand_libraries(1).files=':dHis_Cu_IDA_asym:';

@@ -65,7 +65,13 @@ while 1
                     atname = 'H5**';
                 case '*HO2' 
                     atname = 'HO2*';
+                case ' O1P' 
+                    atname = ' OP1';
+                case ' O2P' 
+                    atname = ' OP2';
                 case '*HO3' 
+                    skip = true;
+                case '*HO5' 
                     skip = true;
             end
             if ~skip
