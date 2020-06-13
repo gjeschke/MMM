@@ -88,7 +88,7 @@ set(hfig,'Pointer','watch');
 
 % Evaluate DEER restraints in rigid bodies
 
-if ~isempty(restraints.DEER(1).r)
+if isfield(restraints,'DEER') && ~isempty(restraints.DEER(1).r)
     fprintf(fid,'DEER restraints for model %s\n\n',fname0);
     fprintf(fid,'>>> core and RNA\n\n');
     for k = 1:length(restraints.DEER)
@@ -97,7 +97,8 @@ if ~isempty(restraints.DEER(1).r)
         [rax,distr] = mk_distance_distribution(restraints.DEER(k).adr1,restraints.DEER(k).adr2,restraints.DEER(k).label);
         restraints.DEER(k).rax = rax;
         restraints.DEER(k).distr = distr;
-        if isfield(restraints.DEER(k),'file') && ~isempty(restraints.DEER(k).file) && ~isempty(rax)
+        if isfield(restraints.DEER(k),'file') && ~isempty(restraints.DEER(k).file) && ~isempty(rax)...
+                && exist(['deer\' restraints.DEER(k).file '.DSC'],'file')
             [texp,vexp,deer,bckg,param] = fit_DEER_primary(rax,distr,strcat('deer\',restraints.DEER(k).file),options);
             restraints.DEER(k).texp = texp;
             restraints.DEER(k).vexp = vexp;
@@ -121,7 +122,7 @@ if ~isempty(restraints.DEER(1).r)
         restraints.DEER(k).rax = rax;
         restraints.DEER(k).r_model = sum(restraints.DEER(k).distr.*rax);
         restraints.DEER(k).sigr_model = sqrt(sum(restraints.DEER(k).distr.*(rax-restraints.DEER(k).r_model).^2));
-        fprintf(fid,'%s-%s requested: %4.1f (%4.1f) Å found: %4.1f (%4.1f) Å; ',...
+        fprintf(fid,'%s-%s requested: %4.1f (%4.1f) ? found: %4.1f (%4.1f) ?; ',...
             restraints.DEER(k).adr1,restraints.DEER(k).adr2,...
             restraints.DEER(k).r,restraints.DEER(k).sigr,...
             restraints.DEER(k).r_model,restraints.DEER(k).sigr_model);
@@ -161,7 +162,8 @@ if isfield(restraints,'pflex') && ~isempty(restraints.pflex) && isfield(restrain
             [rax,distr] = mk_distance_distribution(restraints.pflex(kl).DEER(k).adr1,restraints.pflex(kl).DEER(k).adr2,label);
             restraints.pflex(kl).DEER(k).rax = rax;
             restraints.pflex(kl).DEER(k).distr = distr;
-            if isfield(restraints.pflex(kl).DEER(k),'file') && ~isempty(restraints.pflex(kl).DEER(k).file) && ~isempty(rax)
+            if isfield(restraints.pflex(kl).DEER(k),'file') && ~isempty(restraints.pflex(kl).DEER(k).file) && ~isempty(rax)...
+                    && exist(['deer\' restraints.pflex(kl).DEER(k).file '.DSC'],'file')
                 [texp,vexp,deer,bckg,param] = fit_DEER_primary(rax,distr,strcat('deer\',restraints.pflex(kl).DEER(k).file),options);
                 restraints.pflex(kl).DEER(k).texp = texp;
                 restraints.pflex(kl).DEER(k).vexp = vexp;
@@ -185,7 +187,7 @@ if isfield(restraints,'pflex') && ~isempty(restraints.pflex) && isfield(restrain
             restraints.pflex(kl).DEER(k).rax = rax;
             restraints.pflex(kl).DEER(k).r_model = sum(restraints.pflex(kl).DEER(k).distr.*rax);
             restraints.pflex(kl).DEER(k).sigr_model = sqrt(sum(restraints.pflex(kl).DEER(k).distr.*(rax-restraints.pflex(kl).DEER(k).r_model).^2));
-            fprintf(fid,'%s-%s requested: %4.1f (%4.1f) Å found: %4.1f (%4.1f) Å; ',...
+            fprintf(fid,'%s-%s requested: %4.1f (%4.1f) ? found: %4.1f (%4.1f) ?; ',...
                 restraints.pflex(kl).DEER(k).adr1,restraints.pflex(kl).DEER(k).adr2,...
                 restraints.pflex(kl).DEER(k).r,restraints.pflex(kl).DEER(k).sigr,...
                 restraints.pflex(kl).DEER(k).r_model,restraints.pflex(kl).DEER(k).sigr_model);
@@ -322,25 +324,25 @@ if isfield(restraints,'xlinks') && ~isempty(restraints.xlinks)
             det1 = sum(abs(ind1 - KK_pairs(k1,1:4))) + sum(abs(ind2 - KK_pairs(k1,5:8)));
             det2 = sum(abs(ind2 - KK_pairs(k1,1:4))) + sum(abs(ind1 - KK_pairs(k1,5:8)));
             if det1 == 0 || det2 == 0
-                fprintf(fid,'KK crosslink %s-%s has CA-CA distance %4.1f Å\n',adr1,adr2,KK_pairs(k1,9));
+                fprintf(fid,'KK crosslink %s-%s has CA-CA distance %4.1f ?\n',adr1,adr2,KK_pairs(k1,9));
             end
         end
         for k1 = 1:nKE
             det1 = sum(abs(ind1 - KE_pairs(k1,1:4))) + sum(abs(ind2 - KE_pairs(k1,5:8)));
             det2 = sum(abs(ind2 - KE_pairs(k1,1:4))) + sum(abs(ind1 - KE_pairs(k1,5:8)));
             if det1 == 0 || det2 == 0
-                fprintf(fid,'KE crosslink %s-%s has CA-CA distance %4.1f Å\n',adr1,adr2,KE_pairs(k1,9));
+                fprintf(fid,'KE crosslink %s-%s has CA-CA distance %4.1f ?\n',adr1,adr2,KE_pairs(k1,9));
             end
         end
     end
     
-    fprintf(fid,'\nList of potentially crosslinkable pairs (<= %4.1f Å CA-CA distance)\n\n',options.xlmax);
+    fprintf(fid,'\nList of potentially crosslinkable pairs (<= %4.1f ? CA-CA distance)\n\n',options.xlmax);
     
     for k1 = 1:nKK
         adr1 = mk_address(KK_pairs(k1,1:4));
         adr2 = mk_address(KK_pairs(k1,5:8));
         if KK_pairs(k1,9) <= options.xlmax
-            fprintf(fid,'Potential KK crosslink %s-%s has CA-CA distance %4.1f Å\n',adr1,adr2,KK_pairs(k1,9));
+            fprintf(fid,'Potential KK crosslink %s-%s has CA-CA distance %4.1f ?\n',adr1,adr2,KK_pairs(k1,9));
         end
     end
     
@@ -348,7 +350,7 @@ if isfield(restraints,'xlinks') && ~isempty(restraints.xlinks)
         adr1 = mk_address(KE_pairs(k1,1:4));
         adr2 = mk_address(KE_pairs(k1,5:8));
         if KE_pairs(k1,9) <= 20
-            fprintf(fid,'Potential KE crosslink %s-%s has CA-CA distance %4.1f Å\n',adr1,adr2,KE_pairs(k1,9));
+            fprintf(fid,'Potential KE crosslink %s-%s has CA-CA distance %4.1f ?\n',adr1,adr2,KE_pairs(k1,9));
         end
     end
 end

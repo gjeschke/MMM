@@ -378,7 +378,10 @@ while 1
                     restraints.DEER(DEER_poi).r=scale_units*str2double(char(args(3)));
                     restraints.DEER(DEER_poi).sigr=scale_units*str2double(char(args(4)));
                     restraints.DEER(DEER_poi).type= 1;
-                case 16
+                    if length(args) > 4
+                        restraints.DEER(DEER_poi).file = char(args(5));
+                    end
+               case 16
                     DEER_poi = DEER_poi + 1;
                     restraints.DEER(DEER_poi).label = [label1 '|' label2];
                     restraints.DEER(DEER_poi).T = 298;
@@ -400,6 +403,9 @@ while 1
                     end
                     restraints.DEER(DEER_poi).r = scale_units*str2double(char(args(argpoi+1)));
                     restraints.DEER(DEER_poi).sigr = scale_units*str2double(char(args(argpoi+2)));
+                    if length(args) > argpoi+2
+                        restraints.DEER(DEER_poi).file = char(argpoi+3);
+                    end
                 case 2
                     direct_poi=direct_poi+1;
                     restraints.direct(direct_poi).adr1=char(args(1));

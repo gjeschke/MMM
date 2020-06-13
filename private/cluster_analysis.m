@@ -72,11 +72,12 @@ z = linkage(pairdist);
 % is found
 inconsistency = 1.51;
 c = ones(length(pop),1);
-while max(c) < 2
-    if inconsistency > 0.01
-        inconsistency = inconsistency - 0.01;
-        endI ethz.zoom.us
+while max(c) < 2 && inconsistency > 0.01
+    inconsistency = inconsistency - 0.01;
     c = cluster(z,'cutoff',inconsistency);
+end
+if max(c) < 2
+    options.iterative = false;
 end
 if options.verbose
     fprintf(1,'%i clusters detected at inconsistency coefficient threshold %4.2f\n',max(c),inconsistency);

@@ -1,10 +1,12 @@
-function [coor,N,n,resnum,sequence] = rd_CA_trace(fname)
+function [coor,N,n,resnum,sequence] = rd_CA_trace(fname,chain_ID)
 % [coor,N,n] = rd_CA_trace(fname)
 %
 % Reads Calpha coordinates from a PDB file into an [N*n,3] array coor,
 % where N is the number of models and n the number of CA atoms per model
 % 
 % fname     file name, if no extension is given ' .pdb'  is appended
+% chain_ID  optional chain selector, if given, only the chain with this
+%           identifier is read
 %
 % resnum    residue number axis
 % sequence  sequence in single-letter code
@@ -15,6 +17,10 @@ function [coor,N,n,resnum,sequence] = rd_CA_trace(fname)
 % G. Jeschke, 24.12.2019
 
 global residue_defs
+
+if ~exist('chain_ID','var') || isempty(chain_ID)
+    chain_ID = '*';
+end
 
 N = 0;
 n = [];
@@ -39,7 +45,13 @@ while 1
     tline = fgetl(ifid);
     if ~ischar(tline), break, end
     if length(tline) >= 54 
-        if strcmpi(tline(1:4),'ATOM') && strcmpi(tline(14:15),'CA')
+        cid = tline(22);
+        if chain_ID == '*' || strcmpi(cid,chain_ID)
+            read_chain = true;
+        else
+            read_chain = false;
+        end
+        if strcmpi(tline(1:4),'ATOM') && strcmpi(tline(14:15),'CA') && read_chain
             cpoi = cpoi + 1;
             nc = nc + 1;
             coor(cpoi,1) = str2double(tline(31:38)); 

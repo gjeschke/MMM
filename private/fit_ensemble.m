@@ -63,7 +63,11 @@ for km = 1:length(model_list)
     else
         model_restraints = evaluate_model_restraints(model_list{km},restraints,options);
     end
-    [overlaps,DEER_fits] = get_DEER(model_restraints,restraints);
+    overlaps = [];
+    DEER_fits = {};
+    if isfield(restraints,'DEER')
+        [overlaps,DEER_fits] = get_DEER(model_restraints,restraints);
+    end
 %     if isempty(DEER_fits)
 %         disp('Aber hallo!');
 %     end
@@ -71,7 +75,7 @@ for km = 1:length(model_list)
     if isempty(overlaps) && ~valid
         continue
     end
-    if isempty(DEER_fits) && ~isempty(restraints.DEER(1).r)
+    if isempty(DEER_fits) && isfield(restraints,'DEER') && ~isempty(restraints.DEER(1).r)
         continue
     end
     n_DEER = length(overlaps);
@@ -143,7 +147,7 @@ end
 
 if options.interactive
     options.text_status.String = 'Iteration';
-    options.text_info_status.String = '· 1000';
+    options.text_info_status.String = '? 1000';
 end
 
 ensemble_size = mpoi;
@@ -476,39 +480,40 @@ n_DEER = 0;
 score_DEER = 1;
 DEER_valid = true;
 
-for k = 1:min(length(restraints.DEER),length(restraints0.DEER))
-    if ~isempty(restraints0.DEER(k).r) && restraints0.DEER(k).r ~=0 &&  restraints0.DEER(k).sigr ~=0  % this is a restraint to be tested
-        rax = restraints.DEER(1).rax;
-        distr = restraints.DEER(k).distr;
-        n_DEER = n_DEER + 1;
-        if ~isempty(distr)
-            distr = distr/sum(distr);
-            data = zeros(length(rax),3);
-            data(:,1) = rax.';
-            argr = (restraints.DEER(k).r-rax)/(sqrt(2)*restraints.DEER(k).sigr);
-            distr_sim = exp(-argr.^2);
-            distr_sim = distr_sim/sum(distr_sim);
-            if isfield(restraints.DEER(k),'distr_exp') && ~isempty(restraints.DEER(k).distr_exp)
-                data(:,2) = restraints.DEER(k).distr_exp.';
-                overlaps(n_DEER) = sum(min([restraints.DEER(k).distr_exp;distr]));
+if isfield(restraints,'DEER')
+    for k = 1:min(length(restraints.DEER),length(restraints0.DEER))
+        if ~isempty(restraints0.DEER(k).r) && restraints0.DEER(k).r ~=0 &&  restraints0.DEER(k).sigr ~=0  % this is a restraint to be tested
+            rax = restraints.DEER(1).rax;
+            distr = restraints.DEER(k).distr;
+            n_DEER = n_DEER + 1;
+            if ~isempty(distr)
+                distr = distr/sum(distr);
+                data = zeros(length(rax),3);
+                data(:,1) = rax.';
+                argr = (restraints.DEER(k).r-rax)/(sqrt(2)*restraints.DEER(k).sigr);
+                distr_sim = exp(-argr.^2);
+                distr_sim = distr_sim/sum(distr_sim);
+                if isfield(restraints.DEER(k),'distr_exp') && ~isempty(restraints.DEER(k).distr_exp)
+                    data(:,2) = restraints.DEER(k).distr_exp.';
+                    overlaps(n_DEER) = sum(min([restraints.DEER(k).distr_exp;distr]));
+                else
+                    data(:,2) = distr_sim.';
+                    overlaps(n_DEER) = sum(min([distr_sim;distr]));
+                end
+                data(:,3) = distr.';
+                fits{n_DEER} = data;            
+                score_DEER = score_DEER * overlaps(n_DEER);
             else
-                data(:,2) = distr_sim.';
-                overlaps(n_DEER) = sum(min([distr_sim;distr]));
+                DEER_valid = false;
+                break
             end
-            data(:,3) = distr.';
-            fits{n_DEER} = data;            
-            score_DEER = score_DEER * overlaps(n_DEER);
-        else
-            DEER_valid = false;
-            break
         end
     end
-end
-
-if ~DEER_valid
-    overlaps = [];
-    fits = {};
-    return
+    if ~DEER_valid
+        overlaps = [];
+        fits = {};
+        return
+    end
 end
 
 
@@ -548,15 +553,15 @@ if isfield(restraints,'pflex') && ~isempty(restraints.pflex) && isfield(restrain
             end
         end
     end
+    if ~DEER_valid
+        overlaps = [];
+        fits = {};
+        return
+    end
 end
 % score_DEER = 1 - score_DEER^(1/n_DEER);
 % fprintf(1,'Total DEER score : %5.3f\n',score_DEER);
 
-if ~DEER_valid
-    overlaps = [];
-    fits = {};
-    return
-end
 
 overlaps = real(overlaps(1:n_DEER));
 fits = fits(1:n_DEER);

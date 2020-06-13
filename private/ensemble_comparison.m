@@ -80,10 +80,14 @@ end
 
 if ~exist('chains1','var') || isempty(chains1)
     chains1 = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+    pch = 0;
     for kc = 1:length(model.structures{sind1})
-        chains1(kc) = model.structures{sind1}(kc).name(1);
+        if model.structures{sind1}(kc).seqtype > 0
+            pch = pch + 1;
+            chains1(pch) = model.structures{sind1}(kc).name(1);
+        end
     end
-    chains1 = chains1(1:length(model.structures{sind1}));
+    chains1 = chains1(1:pch);
 end
 
 if options.ensembles > 1

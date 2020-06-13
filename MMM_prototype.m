@@ -2601,7 +2601,7 @@ hMain.virgin=0;
 
 snum=model.current_structure;
 if isfield(model.info{snum},'resolution') && ~isempty(model.info{snum}.resolution),
-    resstring=sprintf('%4.2f Å',model.info{snum}.resolution);
+    resstring=sprintf('%4.2f ?',model.info{snum}.resolution);
 else
     resstring='not specified';
 end
@@ -4422,7 +4422,7 @@ end
 if message.error==0
     model.current_structure=snum1;
     if isfield(model.info{snum1},'resolution') && ~isempty(model.info{snum1}.resolution),
-        resstring=sprintf('%4.2f Å',model.info{snum1}.resolution);
+        resstring=sprintf('%4.2f ?',model.info{snum1}.resolution);
     else
         resstring='not specified';
     end
@@ -5614,9 +5614,9 @@ if fid == -1
     add_msg_board('Restraint echo file could not be written.');
 else
     if restraints.randomize
-        fprintf(fid,'site1    site2   r0 (Å)  sigr0 (Å)  rr (Å) sigrr (Å)  r (Å)  sigr (Å)\n');
+        fprintf(fid,'site1    site2   r0 (?)  sigr0 (?)  rr (?) sigrr (?)  r (?)  sigr (?)\n');
     else
-        fprintf(fid,'site1    site2   r0 (Å)  sigr0 (Å)  r (Å)  sigr (Å)\n');
+        fprintf(fid,'site1    site2   r0 (?)  sigr0 (?)  r (?)  sigr (?)\n');
     end
     if ~isempty(restraints.DEER(1).r)
         for k = 1:length(restraints.DEER)
@@ -5665,7 +5665,7 @@ if ~isempty(restraints.DEER(1).r)
         title(sprintf('%s: %s-%s',name,restraints.DEER(k).adr1,restraints.DEER(k).adr2));
         hold on
         plot(rax,distr,'k');
-        xlabel('r [Å]');
+        xlabel('r [?]');
         ylabel('P(r)');
         hold on
         argr = (restraints.DEER(k).r-rax)/(sqrt(2)*restraints.DEER(k).sigr);
@@ -5879,7 +5879,7 @@ function menu_jobs_test5_Callback(hObject, eventdata, handles)
 % save PTB1_CYANA_pair_rmsd_total pair_rmsd conformer_list
 
 
-mylist = dir('PTB1_200328*_rigiflex.pdb');
+mylist = dir('a*.pdb');
 fid = fopen('PTBP1_optimize.dat','wt');
 for k = 1:length(mylist)
     fprintf(fid,'%s\n',mylist(k).name);
@@ -5919,6 +5919,137 @@ function menu_jobs_test6_Callback(hObject, eventdata, handles)
 % hObject    handle to menu_jobs_test6 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+deer_names{1} = 'DEER_p15PAF_1_16';
+deer_names{2} = 'DEER_p15PAF_1_34';
+deer_names{3} = 'DEER_p15PAF_1_53';
+deer_names{4} = 'DEER_p15PAF_1_70';
+deer_names{5} = 'DEER_p15PAF_1_87';
+deer_names{6} = 'DEER_p15PAF_1_100';
+deer_names{7} = 'DEER_p15PAF_16_34';
+deer_names{8} = 'DEER_p15PAF_16_53';
+deer_names{9} = 'DEER_p15PAF_16_70';
+deer_names{10} = 'DEER_p15PAF_16_87';
+deer_names{11} = 'DEER_p15PAF_16_100';
+deer_names{12} = 'DEER_p15PAF_34_53';
+deer_names{13} = 'DEER_p15PAF_34_70';
+deer_names{14} = 'DEER_p15PAF_34_87';
+deer_names{15} = 'DEER_p15PAF_34_100';
+deer_names{16} = 'DEER_p15PAF_53_70';
+deer_names{17} = 'DEER_p15PAF_53_87';
+deer_names{18} = 'DEER_p15PAF_53_100';
+deer_names{19} = 'DEER_p15PAF_70_87';
+deer_names{20} = 'DEER_p15PAF_70_100';
+deer_names{21} = 'DEER_p15PAF_87_100';
+for k = 1:21
+    deer_names{k} = strcat('DeerLab\',deer_names{k});
+end
+
+mylist = dir('6AAA-*_distr.mat');
+load('pake_base40_MMM.mat');
+kernel=base-ones(size(base)); % kernel format for pcf2deer
+Pake_kernel = kernel;
+Pake_t = t;
+Pake_r = r;
+nh = round(length(mylist)/2);
+load(mylist(1).name);
+sum_distributions = distributions;
+lower_distributions = distributions;
+upper_distributions = zeros(size(distributions));
+[m,~] = size(distributions);
+for k = 2:length(mylist)
+    load(mylist(k).name);
+    sum_distributions = sum_distributions + distributions;
+    if k <= nh
+        lower_distributions = lower_distributions + distributions;
+    else
+        upper_distributions = upper_distributions + distributions;
+    end
+end
+for k = 1:m
+    figure(k); clf; hold on
+    sum_distributions(k,:) = sum_distributions(k,:)/sum(sum_distributions(k,:));
+    lower_distributions(k,:) = lower_distributions(k,:)/sum(lower_distributions(k,:));
+    upper_distributions(k,:) = upper_distributions(k,:)/sum(upper_distributions(k,:));
+    distr_lb = min([lower_distributions(k,:);upper_distributions(k,:)]);
+    distr_ub = max([lower_distributions(k,:);upper_distributions(k,:)]);
+    fill([rax'; flipud(rax')],[distr_ub'; flipud(distr_lb')],0.75*[1,1,1],'LineStyle','none')
+    plot(rax,sum_distributions(k,:),'k','LineWidth',1.5);
+    mod_depth = 0.2+0.2*rand;
+    distr=get_std_distr_MMM(rax,sum_distributions(k,:),Pake_r);
+    ff = get_formfactor_MMM(distr,Pake_kernel,Pake_t);
+    ff = ff*mod_depth+ones(size(ff))*(1-mod_depth);
+    Tdecay = (3+4*rand)*max(Pake_t);
+    bckg = exp(-Pake_t/Tdecay);
+    deer = ff.*bckg;
+    bckg = (1-mod_depth)*bckg;
+    figure(k+100); clf;
+    plot(Pake_t,deer,'k');
+    hold on;
+    plot(Pake_t,bckg,'r');
+    oname_distr = strcat(deer_names{k},'_distr.dat');
+    data = [rax',sum_distributions(k,:)',distr_lb',distr_ub'];
+    save(oname_distr,'data','-ascii');
+    oname_bckg = strcat(deer_names{k},'_bckg.dat');
+    data = [Pake_t',deer',bckg'];
+    save(oname_bckg,'data','-ascii');
+    oname_fit = strcat(deer_names{k},'_fit.dat');
+    cutoff = round(0.8*length(Pake_t));
+    data = [Pake_t(1:cutoff)',ff(1:cutoff)',ff(1:cutoff)'];
+    save(oname_fit,'data','-ascii');
+end
+
+return
+
+mylist = dir('6AAA-*.pdb');
+
+SAXS_datafile = 'p15_PAF_saxs_digitized.dat';
+
+SAXS_curve = load_SAXS_curve(SAXS_datafile);
+sm = max(SAXS_curve(:,1));
+options.sm = 10*sm;
+options.lm = 30;
+options.fb = 18;
+
+fprintf(1,'SAXS computation started...\n');
+
+sim_SAXS_curve = SAXS_curve;
+
+for k = 1:length(mylist)
+    oname = mylist(k).name;
+    fprintf(1,'Processing %s.\n',oname);
+    oname = strcat(oname(1:end-4),'_SAXS.mat');
+    [chi2,~,~,~,fit] = fit_SAXS_by_crysol(SAXS_datafile,mylist(k).name,options);
+    if isempty(chi2) || isnan(chi2)
+    else
+        sim_SAXS_curve(:,2) = fit(:,3);
+        save(oname,'sim_SAXS_curve','fit');
+    end
+end
+
+fprintf(1,'SAXS computation completed.\n');
+
+return
+
+restraints = rd_restraints('DEER_restraints_6AAA_200608.dat');
+
+fprintf(1,'Distance distribution computation started...\n');
+
+for k = 1:length(mylist)
+    add_pdb(mylist(k).name);
+    oname = mylist(k).name;
+    oname = strcat(oname(1:end-4),'_distr.mat');
+    [rax,distributions] = get_restraint_distributions(restraints);
+
+    save(oname,'rax','distributions');
+
+    clear global model
+    model = [];
+end
+
+fprintf(1,'Distance distribution computation completed.\n');
+
+return
 
 mylist = dir('PTB1_200328*.pdb');
 fid = fopen('PTBP1_RNA_conformers.dat','wt');

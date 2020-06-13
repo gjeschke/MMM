@@ -1224,10 +1224,13 @@ while 1
             end
             if ~isempty(c_id) % catch cases without SEQRES records
                 % residue information, occupancy is also stored, when needed
-                curr_res=sscanf(tline(23:26),'%i');
-                cr_tag=sprintf('%i',curr_res);
                 id0=id;
-                id=tag2id(cr_tag,structure(c_id).residues{curr_model}.residue_tags); % check, if this residue is already defined
+                id = '';
+                if length(tline) >= 26
+                    curr_res=sscanf(tline(23:26),'%i');
+                    cr_tag=sprintf('%i',curr_res);
+                    id=tag2id(cr_tag,structure(c_id).residues{curr_model}.residue_tags); % check, if this residue is already defined
+                end
                 if isempty(id), id=id0; end % catches wrong TER records, for instance of NMsim
                 structure(c_id).residues{curr_model}.info(id).terminal=1;
                 terminated_chains=[terminated_chains chain_tag ':'];

@@ -81,7 +81,7 @@ for km = 1:length(ensemble_list)
         s = load(fname);
         model_restraints = s.restraints;
     else
-        model_restraints = evaluate_model_restraints(ensemble_list{km},restraints,options);
+        model_restraints = evaluate_model_restraints(ensemble_list{options.ordering(km)},restraints,options);
     end
     % fprintf(1,'%s: %6.3f\n',fname,populations(km));
     DEER = display_DEER_single(km,model_restraints,populations,DEER,options);
@@ -186,14 +186,22 @@ for k = 1:DEER.core+DEER.flex
     if options.plot
         if DEER.all_flags(k)
             ftype = 'fit';
-            title(sprintf('%s-%s. o_{exp}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap_exp,DEER.mod_depths(k)));
+            if ~isnan(overlap_exp)
+                title(sprintf('%s-%s. o_{exp}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap_exp,DEER.mod_depths(k)));
+            else
+                title(sprintf('%s-%s. o_{Gauss}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap,DEER.mod_depths(k)));
+            end
             % title(sprintf('%s-%s. o_{res}: %5.3f, o_{exp}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap,overlap_exp,DEER.mod_depths(k)));
             % Restraint plotting in model was disabled
             % colr = get_color(overlap);
             % fprintf(fid,'plot %s.CA %s.CA 6 %5.3f %5.3f %5.3f :\n',adr1,adr2,colr);
         else
             ftype = 'control';
-            title(sprintf('%s-%s. o_{exp}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap_exp,DEER.mod_depths(k)));
+            if ~isnan(overlap_exp)
+                title(sprintf('%s-%s. o_{exp}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap_exp,DEER.mod_depths(k)));
+            else
+                title(sprintf('%s-%s. o_{Gauss}: %5.3f, mod.depth %5.3f',adr1,adr2,overlap,DEER.mod_depths(k)));
+            end
             % Restraint plotting in model was disabled
             % colr = get_color(overlap_exp);
             % fprintf(fid,'plot %s.CA %s.CA 6 %5.3f %5.3f %5.3f :\n',adr1,adr2,colr);

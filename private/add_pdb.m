@@ -1,4 +1,4 @@
-function [message,snum]=add_pdb(fname,idCode)
+function [message,snum]=add_pdb(fname,idCode,do_dssp)
 % function [message,snum]=add_pdb(fname,idCode)
 %
 % Adds a PDB structure to an MMM model by calling rd_pdb, the PDB
@@ -7,8 +7,9 @@ function [message,snum]=add_pdb(fname,idCode)
 %
 % fname         input file name or chain variable
 % idCode        optional PDB-like identifier code, is read from input file
-%               if not given, if fname stands for a chain variable, iDCode
+%               if not given or empty, if fname stands for a chain variable, iDCode
 %               is the info structure 
+% do_dssp       perform DSSP, defaults to true
 % message       error message structure with fields
 %               .error 0: no error, 1: PDB file does not exist, 2: PDB file
 %               corrupted
@@ -32,6 +33,10 @@ if isempty(model) || ~isfield(model,'structures') || isempty(model.structures),
     model.annotations=[];
 else
     snum=length(model.structures)+1;
+end
+
+if ~exist('do_dssp','var') || isempty(do_dssp)
+    do_dssp = true;
 end
 
 if ischar(fname)
@@ -63,11 +68,11 @@ model.info{snum}.organism(1)=upper(model.info{snum}.organism(1));
 model.info{snum}.remarks=info.remarks;
 model.info{snum}.class=info.class;
 model.info{snum}.depDate=info.depDate;
-if nargin<2,
+if nargin<2 || isempty(idCode)
     model.info{snum}.idCode=info.idCode;
 else
     model.info{snum}.idCode=idCode;
-end;
+end
 model.info{snum}.center=info.center;
 model.info{snum}.atoms=info.atoms;
 model.info{snum}.residues=info.residues;
@@ -75,10 +80,10 @@ model.info{snum}.B_range=info.B_range;
 model.info{snum}.SSbonds=info.SSbonds;
 model.info{snum}.Modeller_obj=info.Modeller_obj;
 model.info{snum}.Modeller_sid=info.Modeller_sid;
-if isfield(info,'cryst'),
+if isfield(info,'cryst')
     model.info{snum}.cryst=info.cryst;
 end;
-if ~isempty(strtrim(info.idCode)) || nargin>1
+if ~isempty(strtrim(info.idCode)) || (nargin>1 && ~isempty(idCode)) 
     stag=model.info{snum}.idCode;
     id=tag2id(stag,model.structure_tags);
     poi=1;
@@ -120,7 +125,7 @@ end;
 if isempty(dospath),
     dospath=which('dsspcmbi.exe');
 end;
-if ~isempty(dospath) && ~info.rotamers && ischar(fname), % suppress this if DSSP not known or MMM rotamer format or direct input
+if do_dssp && ~isempty(dospath) && ~info.rotamers && ischar(fname), % suppress this if DSSP not known or MMM rotamer format or direct input
     add_msg_board('DSSP geometry analysis is performed');
     infile=which(fname);
     poi=strfind(infile,'.pdb');
@@ -236,8 +241,8 @@ if ~isempty(info.sites),
         [m1,n1]=size(indices1);
         [m2,n2]=size(indices2);
         if m1==1 && n1==4 && m2==1 && n2==4, % valid residue address
-            text1=sprintf('S-S bond to %s with symmetry operator %s and length %5.2 Å',adr2,info.SSbonds(k).symop1,info.SSbonds(k).distance);
-            text2=sprintf('S-S bond to %s with symmetry operator %s and length %5.2 Å',adr1,info.SSbonds(k).symop2,info.SSbonds(k).distance);
+            text1=sprintf('S-S bond to %s with symmetry operator %s and length %5.2 ?',adr2,info.SSbonds(k).symop1,info.SSbonds(k).distance);
+            text2=sprintf('S-S bond to %s with symmetry operator %s and length %5.2 ?',adr1,info.SSbonds(k).symop2,info.SSbonds(k).distance);
             add_annotation(indices1,'S-S bond',text1,{'S-S-bonds'});
             add_annotation(indices2,'S-S bond',text2,{'S-S-bonds'});
         end;
@@ -362,7 +367,7 @@ end;
 set_ensemble_range(snum);
 
 if isfield(model.info{snum},'resolution') && ~isempty(model.info{snum}.resolution),
-    resstring=sprintf('%4.2f Å',model.info{snum}.resolution);
+    resstring=sprintf('%4.2f ?',model.info{snum}.resolution);
 else
     resstring='not specified';
 end;

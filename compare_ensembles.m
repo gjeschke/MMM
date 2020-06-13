@@ -111,6 +111,7 @@ function pushbutton_load_ensemble1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+global model
 
 [fname,pname]=uigetfile('*.dat','Load ensemble description from file');
 
@@ -120,34 +121,57 @@ ensemble_pdb = fullfile(pname,strcat(basname,'.pdb'));
 
 hfig = gcf;
 
+assemble = false;
 if isequal(fname,0) || isequal(pname,0)
     add_msg_board('Ensemble loading cancelled by user');
     return
 elseif ~exist(ensemble_pdb,'file')
     add_msg_board('PDB file of ensemble not found');
-    return    
-else
-    set(hfig,'Pointer','watch');
-    [file_list,pop] = rd_ensemble_description(fullfile(pname,fname));
-    if isempty(file_list)
-        add_msg_board('ERROR: Reading of ensemble file failed.');
+    add_msg_board('Trying to assemble from individual structures');
+    assemble = true;
+end
+set(hfig,'Pointer','watch');
+[file_list,pop] = rd_ensemble_description(fullfile(pname,fname));
+if isempty(file_list)
+    add_msg_board('ERROR: Reading of ensemble file failed.');
+    return
+end
+if assemble
+    [message,snum]=add_pdb(file_list{1},'',false);
+    if message.error
+        add_msg_board(sprintf('First conformer PDB file could not be read (%s)',message.text));
         return
     end
-    [message,snum] = add_pdb(ensemble_pdb);     
+    for kconf = 2:length(file_list)
+        [message,snumc]=add_pdb(file_list{kconf},'',false);
+        if message.error
+            add_msg_board(sprintf('First conformer PDB file could not be read (%s)',message.text));
+            return
+        end
+        for kchain = 1:length(model.structures{snum})
+            model.structures{snum}(kchain).xyz{kconf} = model.structures{snumc}(kchain).xyz{1};
+            model.structures{snum}(kchain).Bfactor{kconf} = model.structures{snumc}(kchain).Bfactor{1};
+            model.structures{snum}(kchain).Btensor{kconf} = model.structures{snumc}(kchain).Btensor{1};
+            model.structures{snum}(kchain).residues{kconf} = model.structures{snumc}(kchain).residues{1};
+            model.structures{snum}(kchain).atoms{kconf} = model.structures{snumc}(kchain).atoms{1};
+        end
+    end
+else
+    [message,snum] = add_pdb(ensemble_pdb,'',false);
     if message.error
         add_msg_board(sprintf('Ensemble PDB file could not be read (%s)',message.text));
         return
     end
-    handles.ensemble1.name = basname;
-    handles.ensemble1.file_list = file_list;
-    handles.ensemble1.pop = pop;
-    handles.ensemble1.snum = snum;
-    handles = setup_ensemble(handles,1);
-    handles.pushbutton_correlation1.Enable = 'on';
-    handles.pushbutton_restraint_plots.Enable = 'on';
-    handles.cross_std = [];
-    set(hfig,'Pointer','arrow');
 end
+handles.ensemble1.name = basname;
+handles.ensemble1.file_list = file_list;
+handles.ensemble1.pop = pop;
+handles.ensemble1.snum = snum;
+handles = setup_ensemble(handles,1);
+handles.pushbutton_correlation1.Enable = 'on';
+handles.pushbutton_restraint_plots.Enable = 'on';
+handles.cross_std = [];
+set(hfig,'Pointer','arrow');
 
 handles.text_ensemble1.String = basname;
 guidata(hObject,handles);
@@ -385,8 +409,8 @@ end
 options.mode = 'backbone';
 [sigma,pair_rmsd,ordering,densities] = ensemble_comparison(stag1,chains1,pop1,stag2,chains2,pop2,options);
 
-handles.text_cross_std.String = sprintf('%5.2f Å',sigma(3));
-handles.text_similarities.String = sprintf('%5.2f, %5.2f Å',densities(3),densities(4));
+handles.text_cross_std.String = sprintf('%5.2f ?',sigma(3));
+handles.text_similarities.String = sprintf('%5.2f, %5.2f ?',densities(3),densities(4));
 ensemble1_stdv = pair_rmsd(1);
 ensemble2_stdv = pair_rmsd(2);
 cross_stdv = pair_rmsd{3};
@@ -466,15 +490,24 @@ switch num
         return
 end
 
-nch = length(model.structures{snum});
+nch = 0;
+for k = 1:length(model.structures{snum})
+    if model.structures{snum}(k).seqtype > 0
+        nch = nch + 1;
+    end
+end
 nconf = length(model.structures{snum}(1).xyz);
 text_nconf.String = sprintf('%i',nconf);
 resnums = zeros(1,nch);
 seqtypes = zeros(1,nch);
-for k = 1:nch
-    chain_list{k} = model.structures{snum}(k).name;
-    resnums(k) = length(model.structures{snum}(k).residues{1}.info);
-    seqtypes(k) = model.structures{snum}(k).seqtype;
+pch = 0;
+for k = 1: length(model.structures{snum})
+    if model.structures{snum}(k).seqtype > 0
+        pch = pch + 1;
+        chain_list{pch} = model.structures{snum}(k).name;
+        resnums(pch) = length(model.structures{snum}(k).residues{1}.info);
+        seqtypes(pch) = model.structures{snum}(k).seqtype;
+    end
 end
 popup_chains.String = chain_list;
 popup_chains.String = popup_chains.String(1:nch);
@@ -485,8 +518,8 @@ options.mode = 'backbone';
 options.cluster_sorting = true;
 
 [sigma,pair_rmsd,ordering,densities] = ensemble_comparison(stag,[],pop,[],[],[],options);
-text_density.String = sprintf('%5.2f Å',densities(1));
-text_rmsd.String = sprintf('%5.2f Å',sigma);
+text_density.String = sprintf('%5.2f ?',densities(1));
+text_rmsd.String = sprintf('%5.2f ?',sigma);
 populations = pop(ordering{1});
 
 pair_rmsd = pair_rmsd{1};
@@ -803,7 +836,7 @@ if strcmpi(mode,'integer')
 elseif strcmpi(mode,'string')
     assignment = sprintf('Residues (%s,%s)',xaxis{x},yaxis{y});
 end
-handles.text_selection.String = sprintf('%s: %5.2f Å',assignment,my_data(y,x));
+handles.text_selection.String = sprintf('%s: %5.2f ?',assignment,my_data(y,x));
 
 
 % --- Executes on button press in pushbutton_copy.
@@ -834,17 +867,17 @@ switch sel
         my_data = handles.ensemble1.pair_rmsd;
         options.xlabel = 'Conformer number';
         options.ylabel = 'Conformer number';
-        options.title = 'Pair rmsd for ensemble 1 [Å]';
+        options.title = 'Pair rmsd for ensemble 1 [?]';
     case 2
         my_data = handles.ensemble2.pair_rmsd;
         options.xlabel = 'Conformer number';
         options.ylabel = 'Conformer number';
-        options.title = 'Pair rmsd for ensemble 2 [Å]';
+        options.title = 'Pair rmsd for ensemble 2 [?]';
     case 3
         my_data = handles.cross_std;
         options.xlabel = 'Conformer number';
         options.ylabel = 'Conformer number';
-        options.title = 'Cross standard deviation [Å]';
+        options.title = 'Cross standard deviation [?]';
     case 4
         my_data = handles.ensemble1.corr_isotropic;
         dist_matrix = handles.ensemble1.dmat;
@@ -1105,14 +1138,14 @@ else
         pair_info = load(fullfile(pname_list,fname_list));
         add_msg_board(sprintf('Evaluating fit quality for %i reduced rmsd ensembles',nc));
         fprintf(1,'--- Reduced rmsd ensembles ---\n');
-        fprintf(1,'#   SAS chi^2  DEER score   rmsd [Å]\n');
+        fprintf(1,'#   SAS chi^2  DEER score   rmsd [?]\n');
         options.plot = false;
         uniform_populations = ones(1,nc)/nc;
         kt = 0;
         poi = strfind(fname_list,'.mat');
         fname_log = strcat(fname_list(1:poi-1),'_control_fits.dat');
         fid = fopen(fullfile(pname_list,fname_log),'wt');
-        fprintf(fid,'%% SAS chi^2  DEER deficiency  rmsd [Å]\n');
+        fprintf(fid,'%% SAS chi^2  DEER deficiency  rmsd [?]\n');
         
         fit_options.threshold = 0; 
         fit_options.old_ensemble_size = nc;
@@ -1183,14 +1216,14 @@ else
         pair_info = load(fullfile(pname_list,fname_list));
         add_msg_board(sprintf('Evaluating fit quality for %i reduced rmsd ensembles',(nc*(nc-1))/2));
         fprintf(1,'--- Reduced rmsd ensembles ---\n');
-        fprintf(1,'#   SAS chi^2  DEER score   rmsd [Å]\n');
+        fprintf(1,'#   SAS chi^2  DEER score   rmsd [?]\n');
         options.plot = false;
         uniform_populations = ones(1,nc)/nc;
         kt = 0;
         poi = strfind(fname_list,'.mat');
         fname_log = strcat(fname_list(1:poi-1),'_partial_control_fits.dat');
         fid = fopen(fullfile(pname_list,fname_log),'wt');
-        fprintf(fid,'%% (k,l) SAS chi^2  DEER deficiency  rmsd [Å]\n');
+        fprintf(fid,'%% (k,l) SAS chi^2  DEER deficiency  rmsd [?]\n');
         
         fit_options.threshold = 0; 
         fit_options.old_ensemble_size = nc;
