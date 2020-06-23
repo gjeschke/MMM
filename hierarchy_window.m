@@ -22,7 +22,7 @@ function varargout = hierarchy_window(varargin)
 
 % Edit the above text to modify the response to help hierarchy_window
 
-% Last Modified by GUIDE v2.5 12-Jan-2018 12:48:24
+% Last Modified by GUIDE v2.5 17-Jun-2020 17:30:44
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -324,7 +324,7 @@ else
 end;
 
 if isfield(model.info{snum},'resolution') && ~isempty(model.info{snum}.resolution),
-    resstring=sprintf('%4.2f Å',model.info{snum}.resolution);
+    resstring=sprintf('%4.2f ?',model.info{snum}.resolution);
 else
     resstring='not specified';
 end;
@@ -1907,3 +1907,19 @@ pstr=sprintf('%i',v);
 set(handles.edit_seq_page,'String',pstr);
 handles=sequence_display(handles);
 guidata(hObject,handles);
+
+
+% --- Executes on button press in pushbutton_copy_sequence.
+function pushbutton_copy_sequence_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_copy_sequence (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+global model
+
+snum=model.current_structure;
+ctag=model.current_chain;
+cnum=tag2id(ctag,model.chain_tags{snum});
+sequence=model.structures{snum}(cnum).sequence;
+clipboard('copy',sequence);
+

@@ -5920,6 +5920,87 @@ function menu_jobs_test6_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+global model
+global hMain
+
+axes(handles.axes_model);
+cla reset;
+axis equal
+axis off
+set(gca,'Clipping','off');
+set(gcf,'Renderer','opengl');
+hold on
+hMain.camlight=camlight;
+guidata(handles.axes_model,hMain);
+hMain.virgin=0;
+
+clear global model
+model = [];
+global model
+
+path_orig = 'C:\Users\guje\Documents\projects\PTBP1_EMCV\CYANA_200401\yasara';
+path_target = 'C:\Users\guje\Documents\projects\PTBP1_EMCV\CYANA_200401\final_refit\yasara';
+fname = 'a10_23_corr_yasara.pdb';
+poi = strfind(fname,'_corr_yasara.pdb');
+add_pdb(fullfile(path_orig,fname));
+add_pdb(fullfile(path_target,fname));
+oname = sprintf('PTBP1_IRES_%s.pdb',fname(1:poi-1));
+
+fid = fopen(fullfile(path_target,oname),'wt');
+
+atnum = 0;
+for k = 58:531
+    adr = sprintf('[1](A)%i',k);
+    [err_msg,atnum] = wr_residue_to_PDB(fid,adr,atnum);
+    if err_msg.error
+        add_msg_board(sprintf('ERROR: %s',err_msg.text));
+        fclose(fid);
+        return
+    end
+end
+indices = resolve_address('[1](B)288');
+[~,xyz_template] = get_residue(indices,'xyz_backbone');
+indices = resolve_address('[2](B)288');
+[~,xyz_moving] = get_residue(indices,'xyz_backbone');
+[~,~,transmat]=rmsd_superimpose(xyz_template,xyz_moving);
+coor = model.structures{2}(2).xyz{1};
+model.structures{2}(2).xyz{1} = affine_trafo_coor(coor,transmat);
+adr = '[2](B)287';
+[err_msg,atnum] = wr_residue_to_PDB(fid,adr,atnum);
+if err_msg.error
+    add_msg_board(sprintf('ERROR: %s',err_msg.text));
+    fclose(fid);
+    return
+end
+for k = 288:370
+    adr = sprintf('[1](B)%i',k);
+    [err_msg,atnum] = wr_residue_to_PDB(fid,adr,atnum);
+    if err_msg.error
+        add_msg_board(sprintf('ERROR: %s',err_msg.text));
+        fclose(fid);
+        return
+    end
+end
+indices = resolve_address('[1](B)370');
+[~,xyz_template] = get_residue(indices,'xyz_backbone');
+indices = resolve_address('[2](B)370');
+[~,xyz_moving] = get_residue(indices,'xyz_backbone');
+[~,~,transmat]=rmsd_superimpose(xyz_template,xyz_moving);
+coor = model.structures{2}(2).xyz{1};
+model.structures{2}(2).xyz{1} = affine_trafo_coor(coor,transmat);
+adr = '[2](B)371';
+err_msg = wr_residue_to_PDB(fid,adr,atnum);
+if err_msg.error
+    add_msg_board(sprintf('ERROR: %s',err_msg.text));
+    fclose(fid);
+    return
+end
+fprintf(fid,'END   \n');
+fclose(fid);
+add_pdb(fullfile(path_target,oname));
+wr_pdb(fullfile(path_target,oname),'PTB1');
+return
+
 deer_names{1} = 'DEER_p15PAF_1_16';
 deer_names{2} = 'DEER_p15PAF_1_34';
 deer_names{3} = 'DEER_p15PAF_1_53';

@@ -83,6 +83,9 @@ for km = 1:length(ensemble_list)
     else
         model_restraints = evaluate_model_restraints(ensemble_list{options.ordering(km)},restraints,options);
     end
+    if ~isfield(model_restraints,'DEER')
+        model_restraints = evaluate_model_restraints(ensemble_list{options.ordering(km)},restraints,options);
+    end
     % fprintf(1,'%s: %6.3f\n',fname,populations(km));
     DEER = display_DEER_single(km,model_restraints,populations,DEER,options);
     if isfield(restraints,'SANS') && ~isempty(restraints.SANS)
@@ -139,7 +142,7 @@ if isfield(restraints,'SAXS') && ~isempty(restraints.SAXS)
             plot(fit(:,1),fit(:,3),'Color',[0.6,0,0]);
             title(sprintf('SAXS %s: chi^2 %5.2f\n',restraints.SAXS(ks).data,chi2));
             xlabel('Scattering vector s');
-            ylabel('Scattering amplitude [n.a.]');
+            ylabel('Scattering amplitude [a.u.]');
         end
     end
 end
@@ -158,17 +161,18 @@ for k = 1:DEER.core+DEER.flex
             plot(DEER.rax,DEER.groups_distr{kgrp}(k,:),'Color',options.groups(kgrp).color);
         end
     end
+    dr = DEER.rax(2)-DEER.rax(1);
     if options.plot
-        plot(DEER.rax,DEER.all_distr(k,:),'Color',[0.6,0,0]);
+        plot(DEER.rax,dr*DEER.all_distr(k,:),'Color',[0.6,0,0]);
     end
     axis_vec = DEER.axis_vecs(k,:);
     if 1.05*max(DEER.all_distr(k,:)) > axis_vec(4)
-        axis_vec(4) = 1.05*max(DEER.all_distr(k,:));
+        axis_vec(4) = 1.05*max(dr*DEER.all_distr(k,:));
     end
     overlap_exp = NaN;
     if sum(DEER.all_distr_exp(k,:)) > 10*eps
         overlap_exp = sum(min([DEER.all_distr_exp(k,:);DEER.all_distr(k,:)]));
-        ma = max(DEER.all_distr_exp(k,:));
+        ma = max(dr*DEER.all_distr_exp(k,:));
         if 1.05*ma > axis_vec(4)
             axis_vec(4) = 1.05*ma;
         end
@@ -267,6 +271,12 @@ color_Gaussian_restraint = [0,0.25,0];
 
 core = length(model_restraints.DEER);
 rax = model_restraints.DEER(1).rax;
+poi = 1;
+while isempty(rax) && poi < length(model_restraints.DEER)
+    poi = poi + 1;
+    rax = model_restraints.DEER(poi).rax;
+end
+    
 flex = 0;
 
 if DEER.initialize
@@ -285,6 +295,10 @@ if DEER.initialize
     DEER.core = core;
     DEER.flex = flex;
     DEER.rax = rax;
+end
+
+if isempty(rax)
+    return
 end
 
 
@@ -315,6 +329,9 @@ for k = 1:length(model_restraints.DEER)
     DEER.all_adr1{k} = model_restraints.DEER(k).adr1;
     DEER.all_adr2{k} = model_restraints.DEER(k).adr2;
     distr = model_restraints.DEER(k).distr;
+    if isempty(distr) || isempty(rax)
+        continue
+    end
     if options.plot
         figure(k);
         if km == 1
@@ -343,11 +360,12 @@ for k = 1:length(model_restraints.DEER)
         distr_sim = exp(-argr.^2);
         distr_sim = distr_sim/sum(distr_sim);
         DEER.all_distr_sim(k,:) = distr_sim;
+        dr = rax(2)-rax(1);
         if km == 1 && options.plot
-            plot(rax,distr_sim,'Color',color_Gaussian_restraint);
+            plot(rax,dr*distr_sim,'Color',color_Gaussian_restraint);
         end
         if options.individual && options.plot
-            plot(rax,populations(km)*distr,'Color',conformer_color(km,length(populations)));
+            plot(rax,dr*populations(km)*distr,'Color',conformer_color(km,length(populations)));
         end
         DEER.all_distr(k,:) = DEER.all_distr(k,:) + populations(km)*distr;
         for kgrp = 1:length(options.groups)
@@ -360,8 +378,8 @@ for k = 1:length(model_restraints.DEER)
         end
         if model_restraints.DEER(k).r ~=0 &&  model_restraints.DEER(k).sigr ~=0
             DEER.all_flags(k) = 1;
-            if 1.05*max(distr_sim) > axis_vec(4)
-                axis_vec(4) = 1.05*max(distr_sim);
+            if 1.05*max(dr*distr_sim) > axis_vec(4)
+                axis_vec(4) = 1.05*max(dr*distr_sim);
             end
         end
     end
@@ -407,11 +425,12 @@ if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex) && isfi
                 distr_sim = exp(-argr.^2);
                 distr_sim = distr_sim/sum(distr_sim);
                 DEER.all_distr_sim(pflex,:) = distr_sim;
+                dr = rax(2)-rax(1);
                 if km == 1 && options.plot
-                    plot(rax,distr_sim,'Color',color_Gaussian_restraint);
+                    plot(rax,dr*distr_sim,'Color',color_Gaussian_restraint);
                 end
                 if options.individual && options.plot
-                    plot(rax,populations(km)*distr,'Color',conformer_color(km,length(populations)));
+                    plot(rax,dr*populations(km)*distr,'Color',conformer_color(km,length(populations)));
                 end
                 DEER.all_distr(pflex,:) = DEER.all_distr(pflex,:) + populations(km)*distr;
                 for kgrp = 1:length(options.groups)
@@ -424,8 +443,8 @@ if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex) && isfi
                 end
                 if model_restraints.pflex(kl).DEER(k).r ~=0 &&  model_restraints.pflex(kl).DEER(k).sigr ~=0
                     DEER.all_flags(pflex) = 1;
-                    if 1.05*max(distr_sim) > axis_vec(4)
-                        axis_vec(4) = 1.05*max(distr_sim);
+                    if 1.05*max(dr*distr_sim) > axis_vec(4)
+                        axis_vec(4) = 1.05*max(dr*distr_sim);
                     end
                 end
                 DEER.all_adr1{pflex} = model_restraints.pflex(kl).DEER(k).adr1;
@@ -474,9 +493,10 @@ distr_lb = interp1(rexp,distr_lb,rax,'pchip',0);
 distr_lb = distr_lb/scal;
 distr_ub = interp1(rexp,distr_ub,rax,'pchip',0);
 distr_ub = distr_ub/scal;
+dr = rax(2)-rax(1);
 if options.plot
-    fill([rax'; flipud(rax')],[distr_ub'; flipud(distr_lb')],0.75*[1,1,1],'LineStyle','none')
-    plot(rax,distr_exp,'k','LineWidth',1.5);
+    fill([rax'; flipud(rax')],[dr*distr_ub'; flipud(dr*distr_lb')],0.75*[1,1,1],'LineStyle','none')
+    plot(rax,distr_exp*dr,'k','LineWidth',1.5);
     grid on
     box on
 end
@@ -485,7 +505,7 @@ axis_vec = [0,rmax,-0.1*ma,1.05*ma];
 if options.plot
     axis(axis_vec);
     xlabel('distance r [?]');
-    ylabel('P(r)');
+    ylabel('P(r) [?^{-1}]');
 end
 
 data = load(sprintf('%s_bckg.dat',deer_basname));
