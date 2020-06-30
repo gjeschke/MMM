@@ -19,7 +19,7 @@ end
 set(hMain.MMM,'Pointer','watch');
 drawnow
 
-commands=':atompair:attach:beacons:bckg:bilabel:blscan:camup:color:colorscheme:compact:copy:delete:detach:dihedrals:distance:domain:download:dssp:echo:helix:help:hide:inertiaframe:label:libcomp:libtest:lock:locrmsd:locorder:loop:mass:motion:mushroom:new:ortho:pdbload:persp:plot:radgyr:redo:refrmsd:remodel:repack:replace:report:rmsd:rotamers:SAS:scopy:select:sheet:show:statistics:symmetry:synonym:transparency:undo:undefine:unlock:unselect:view:wrseq:zoom:';
+commands=':atompair:attach:beacons:bckg:bilabel:blscan:camup:camrotate:color:colorscheme:compact:copy:delete:detach:dihedrals:distance:domain:download:dssp:echo:helix:help:hide:inertiaframe:label:libcomp:libtest:lock:locrmsd:locorder:loop:mass:motion:mushroom:new:ortho:pdbload:persp:plot:radgyr:redo:refrmsd:remodel:repack:replace:report:rmsd:rotamers:SAS:scopy:select:sheet:show:statistics:symmetry:synonym:transparency:undo:undefine:unlock:unselect:view:wrseq:zoom:';
 
 [cmd,args]=strtok(command_line); % separate command and arguments
 
@@ -71,6 +71,8 @@ switch cmd,
         handles=bilabel(handles,args);
     case 'blscan'
         handles=blscan(handles,args);
+    case 'camrotate'
+        handles=cam_rotate(handles,args);
     case 'camup'
         handles=def_camup(handles,args);
     case 'color' 
@@ -257,7 +259,7 @@ end
 
 dist = norm(xyz1-xyz2);
 
-add_msg_board(sprintf('Distance %s - %s is %5.2f Å',adr1,adr2,dist));
+add_msg_board(sprintf('Distance %s - %s is %5.2f ?',adr1,adr2,dist));
 
 
 function handles=set_background(handles,args)
@@ -654,7 +656,7 @@ for k=2:length(rotvec),
 end;
 str1=sprintf('%s)',str1);
 add_msg_board(str1);
-str2=sprintf('C_alpha S_delta distance: %4.1f Å.',CASD);
+str2=sprintf('C_alpha S_delta distance: %4.1f ?.',CASD);
 add_msg_board(str2);
 % clipboard('copy',[str1 ';' str2]);
 clipboard('copy',sprintf('%s\t%5.1f',character,CASD));
@@ -1295,7 +1297,7 @@ if isempty(args) || isempty(strtrim(args)),
     add_msg_board('Usage: SAS address tag radius');
     add_msg_board('where address must address a single structure, chain, coordinate set, or residue');
     add_msg_board('and tag is a tag for future access of the surface');
-    add_msg_board('radius is an optional argument for the probe radius, it defaults to 1.5 Å');
+    add_msg_board('radius is an optional argument for the probe radius, it defaults to 1.5 ?');
     return
 end;
 
@@ -1311,14 +1313,14 @@ else
     add_msg_board('Usage: SAS address tag radius');
     add_msg_board('where address must address a single structure, chain, coordinate set, or residue');
     add_msg_board('and tag is a tag for future access of the surface');
-    add_msg_board('radius is an optional argument for the probe radius, it defaults to 1.5 Å');
+    add_msg_board('radius is an optional argument for the probe radius, it defaults to 1.5 ?');
     return
 end;
 
 if length(myargs{1})>2,
     radius=str2double(char(myargs{1}(3)));
     if isnan(radius),
-        add_msg_board('Warning: Wrong probe radius argument. Reverting to default radius 1.5 Å');
+        add_msg_board('Warning: Wrong probe radius argument. Reverting to default radius 1.5 ?');
     end;
 else
     radius=1.5;
@@ -2692,6 +2694,39 @@ else
     end;
 end;
 
+function handles = cam_rotate(handles,args)
+
+global hMain
+
+if isempty(args) || isempty(strtrim(args))
+    add_msg_board('Usage: camrotate theta phi');
+    add_msg_board('(angles in degree)');
+    return
+end
+
+myargs=textscan(args,'%s');
+
+phi = 0;
+
+theta = str2double(char(myargs{1}(1)));
+
+if length(myargs{1}) > 1
+    phi = str2double(char(myargs{1}(2)));
+end
+
+command=sprintf('camrotate %s',strtrim(args));
+undo_cmd=sprintf('camrotate %s',sprintf('%4.1f %4.1f\n',-theta,-phi));
+handles=cmd_history(handles,command,undo_cmd);
+
+camorbit(hMain.axes_model,theta,phi);
+if isfield(hMain,'camlight') && ishandle(hMain.camlight)
+    camlight(hMain.camlight);
+else
+    hMain.camlight=camlight;
+end
+set_view;
+
+
 function handles=def_camup(handles,args)
 
 global hMain
@@ -3015,10 +3050,10 @@ switch mode
         [rax,distr]=get_distribution(label1(1).NOpos,label2(1).NOpos,0.1);
         distr = distr/sum(distr);
         rmean = 10*sum(rax.*distr);
-        add_msg_board(sprintf('Mean distance : %5.1f Å',rmean));
+        add_msg_board(sprintf('Mean distance : %5.1f ?',rmean));
         rdev = 10*rax - rmean;
         mom2 = sum(rdev.^2.*distr);
-        add_msg_board(sprintf('Std. deviation: %5.1f Å',sqrt(mom2)));
+        add_msg_board(sprintf('Std. deviation: %5.1f ?',sqrt(mom2)));
         if ~isempty(fname),
             fid = fopen(fname,'at');
             if fid == -1,
@@ -3069,8 +3104,8 @@ switch mode
         mrdev = 10*rax - mrmean;
         mstddev = sqrt(sum(mrdev.^2.*mdistr));
         msdiff = std(stddev);
-        add_msg_board(sprintf('Mean distance : %5.1f Å predicted with uncertainty %5.1f Å',mrmean,mdiff));
-        add_msg_board(sprintf('Std. deviation: %5.1f Å predicted with uncertainty %5.1f Å',mstddev,msdiff));
+        add_msg_board(sprintf('Mean distance : %5.1f ? predicted with uncertainty %5.1f ?',mrmean,mdiff));
+        add_msg_board(sprintf('Std. deviation: %5.1f ? predicted with uncertainty %5.1f ?',mstddev,msdiff));
         if ~isempty(fname),
             fid = fopen(fname,'at');
             if fid == -1,
@@ -3373,7 +3408,7 @@ sindices = zeros(length(label1),4);
 r = zeros(1,apoi);
 for k = 1:length(label1),
     for ka = 1:apoi,
-        r(ka) = norm(NOpos(k,:)-xyz_anchor(ka,:))/10; % conversion Å to nm
+        r(ka) = norm(NOpos(k,:)-xyz_anchor(ka,:))/10; % conversion ? to nm
     end;
     m = length(label1(k).rotamers); % number of rotamers
     z = label1(k).partition_function;
@@ -3775,7 +3810,7 @@ for k = 1:mods
     rmsd = rmsd + sum(sum(diff.^2));
 end
 rmsd = sqrt(rmsd/(m1*mods));
-add_msg_board(sprintf('Ensemble r.m.s.d. for selection %s is %4.2f Å',adr,rmsd)); 
+add_msg_board(sprintf('Ensemble r.m.s.d. for selection %s is %4.2f ?',adr,rmsd)); 
 
 function handles = ensemble_reference_rmsd(handles,args)
 
@@ -3920,12 +3955,12 @@ for k = 1:mods,
     diff = xyz - xyzc;
     rmsd = sqrt(sum(sum(diff.^2))/mc);
 %     [rmsd,coor2b,transmat]=rmsd_superimpose(xyz,xyzc);
-%     fprintf(1,'RMSD of both structures is: %4.2f Å\n',rmsd);
+%     fprintf(1,'RMSD of both structures is: %4.2f ?\n',rmsd);
     msq = msq + rmsd^2;
 end;
 rmsd = sqrt(msq/mods);
-add_msg_board(sprintf('Ensemble r.m.s.d. for selection %s with respect to %s is %4.2f Å',adr,refadr,rmsd)); 
-add_msg_board(sprintf('Ensemble rmsd_100 for selection %s with respect to %s is %4.2f Å',adr,refadr,rmsd/(1+log(sqrt(mc/100))))); 
+add_msg_board(sprintf('Ensemble r.m.s.d. for selection %s with respect to %s is %4.2f ?',adr,refadr,rmsd)); 
+add_msg_board(sprintf('Ensemble rmsd_100 for selection %s with respect to %s is %4.2f ?',adr,refadr,rmsd/(1+log(sqrt(mc/100))))); 
 
 function handles = local_rmsd(handles,args)
 
@@ -3971,7 +4006,7 @@ figure(1); clf;
 set(gca,'FontSize',12);
 plot(resnum,model.structures{snum}(cnum).CA_rmsd,'k.');
 xlabel('Residue number');
-ylabel('rmsd [Å]');
+ylabel('rmsd [?]');
 title(sprintf('Calpha ensemble rmsd for chain %s',adr));
 fname = sprintf('ensemble_CA_rmsd_%s.mat',adr);
 data = [resnum' model.structures{snum}(cnum).CA_rmsd'];
@@ -4187,7 +4222,7 @@ for k = 1:mods,
     natoms = natoms + mcc;
 end;
 radgyr = sqrt(rg2/natoms);
-add_msg_board(sprintf('Radius of gyration for selection %s is %4.2f Å',adr,radgyr)); 
+add_msg_board(sprintf('Radius of gyration for selection %s is %4.2f ?',adr,radgyr)); 
 
 save radgyr rgvec
 
@@ -4338,8 +4373,8 @@ if best == 0,
     add_msg_board('Compaction requires an ensemble of at least two conformations');
     return
 end;
-add_msg_board(sprintf('Representative model is no. %i with mean r.m.s.d. of %4.2f Å to all other models.',best,rms));
-add_msg_board(sprintf('Most remote model is no. %i with mean r.m.s.d. of %4.2f Å to all other models.',worst,maxr));
+add_msg_board(sprintf('Representative model is no. %i with mean r.m.s.d. of %4.2f ? to all other models.',best,rms));
+add_msg_board(sprintf('Most remote model is no. %i with mean r.m.s.d. of %4.2f ? to all other models.',worst,maxr));
 
 xyz = model.structures{model.current_structure}(rindices1(1)).xyz{best};
 

@@ -22,7 +22,7 @@ function varargout = ensemble_fit(varargin)
 
 % Edit the above text to modify the response to help ensemble_fit
 
-% Last Modified by GUIDE v2.5 21-Feb-2020 10:06:27
+% Last Modified by GUIDE v2.5 29-Jun-2020 11:14:26
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -471,91 +471,9 @@ if isequal(fname,0) || isequal(pname,0)
 else
     reset_user_paths(pname);
     general.restraint_files=pname;
-
-    hfig=gcf;
-    set(hfig,'Pointer','watch');
     
-    model_list = get_file_list(fullfile(pname,fname));
+    handles = load_conformer_list(handles,model_list);
     
-    [~,name] = fileparts(fname);
-    handles.basname = name;
-    handles.baspath = pname;
-    tested_file = sprintf('%s_tested.dat',name);
-    full_tested_file = fullfile(pname,tested_file);
-    handles.tested_file = full_tested_file;
-    
-    ensemble_file = sprintf('%s_ensemble.dat',name);
-    full_ensemble_file = fullfile(pname,ensemble_file);
-    handles.ensemble_file = full_ensemble_file;
-
-    tested_list = {};
-    if exist(full_tested_file,'file')
-        answer = questdlg(sprintf('Open file %s?                                           .',...
-            tested_file),'Read file of already tested conformers');
-        switch answer
-            case 'Yes'
-                tested_list = get_file_list(full_tested_file);
-            case 'No'
-                tested_list = {};
-            case 'Cancel'
-                add_msg_board('Model list loading cancelled by user');
-                cd(my_path);
-                set(hfig,'Pointer','arrow');
-                return
-            otherwise
-                add_msg_board('Model list loading cancelled by user');
-                cd(my_path);
-                set(hfig,'Pointer','arrow');
-                return
-        end
-    end
-    
-    ensemble_list = {};
-    if exist(full_ensemble_file,'file')
-        answer = questdlg(sprintf('Open file %s?                                                .',...
-            ensemble_file),'Read existing ensemble file');
-        switch answer
-            case 'Yes'
-                [ensemble_list,comments] = get_file_list(full_ensemble_file);
-                if ~isempty(comments)
-                    prev_iterations = str2double(comments{1});
-                    if ~isnan(prev_iterations)
-                        handles.ensemble_number = round(prev_iterations);
-                        handles.text_ensemble_number.String = sprintf('%i',handles.ensemble_number);
-                    end
-                end
-            case 'No'
-                ensemble_list = {};
-            case 'Cancel'
-                add_msg_board('Model list loading cancelled by user');
-                cd(my_path);
-                set(hfig,'Pointer','arrow');
-                return
-            otherwise
-                add_msg_board('Model list loading cancelled by user');
-                cd(my_path);
-                set(hfig,'Pointer','arrow');
-                return
-        end
-    end
-    
-    handles.model_list = model_list;
-    handles.tested_list = tested_list;
-    handles.ensemble_list = ensemble_list;
-
-    if ~isempty(handles.model_list)
-        handles.pushbutton_load_conformers.Enable = 'off';
-        if ~isempty(handles.restraints)
-            handles.pushbutton_run_iteration.Enable = 'on';
-        end
-    end
-
-    if ~isempty(handles.ensemble_list)
-        handles.pushbutton_check_ensemble.Enable = 'on';
-    end
-    
-set(hfig,'Pointer','arrow');
-
 end
 guidata(hObject,handles);
 
@@ -625,7 +543,9 @@ while autoiterate || iteration < 1
         if isempty(handles.ensemble_list)
             add_msg_board('ERROR: No ensemble. Check input data.');
         else
-            add_msg_board(sprintf('Ensemble appears to be fully converged after %i iteration(s).',iteration));
+            handles.text_current_status.String = 'Completed.';
+            handles.text_current_status.ForegroundColor = [0,0.7,0];
+            add_msg_board(sprintf('Ensemble is fully converged after %i iteration(s).',iteration));
         end
         set(hfig,'Pointer','arrow');
         guidata(hObject,handles);
@@ -750,8 +670,9 @@ mk_ensemble(handles.ensemble_list,handles.populations,handles.restraints,options
 stag = mk_address(snum);
 stag = stag(2:end-1);
 
-[sigma,pair_rmsd] = ensemble_comparison(stag,[],handles.populations,[],[],[],options);
-ermsd_str = sprintf('Ensemble rmsd is %5.2f Å',sigma);
+[sigma,pair_rmsd,ordering] = ensemble_comparison(stag,[],handles.populations,[],[],[],options);
+pop = handles.populations(ordering{1});
+ermsd_str = sprintf('Ensemble rmsd is %5.2f ?',sigma);
 add_msg_board(ermsd_str);
 axes(handles.axes_populations);
 cla
@@ -765,6 +686,17 @@ image(pair_rmsd{1},'CDataMapping','scaled');
 title(ermsd_str);
 colorbar;
 axis equal
+drawnow
+
+fname = sprintf('%s_ensemble_ordered.pdb',fullfile(handles.baspath,handles.basname));
+script_name = sprintf('%s_ensemble_ordered_transparency.mmm',fullfile(handles.baspath,handles.basname));
+wr_pdb(fname,handles.restraints.newID,ordering{1});
+ofid = fopen(script_name,'wt');
+pop = pop/max(pop);
+for k = 1:length(pop)
+    fprintf(ofid,'transparency (:){%i} %5.3f\n',k,pop(k));
+end
+fclose(ofid);
 
 set(hfig,'Pointer','arrow');
 
@@ -873,3 +805,122 @@ function checkbox_autoiterate_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of checkbox_autoiterate
+
+
+% --- Executes on button press in pushbutton_make_conformer_list.
+function pushbutton_make_conformer_list_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_make_conformer_list (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+prompt{1} = 'Conformer files:';
+defanswer{1} = [handles.restraints.newID '_m*.pdb'];
+fnames = inputdlg(prompt,'Specify conformer PDB files',[1,30],defanswer);
+poi = strfind(fnames{1},'*');
+poi2 = strfind(fnames{1},'_m*');
+if poi2 < poi
+    poi = poi2;
+end
+basname = fnames{1}(1:poi-1);
+mylist = dir(fnames{1});
+clist = sprintf('%s_conformers.dat',basname);
+fid = fopen(clist,'wt');
+for k = 1:length(mylist)
+    fprintf(fid,'%s\n',mylist(k).name);
+end
+fclose(fid);
+
+handles = load_conformer_list(handles,clist);
+handles.pushbutton_make_conformer_list.Enable = 'off';
+guidata(hObject,handles);
+
+function handles = load_conformer_list(handles,fname)
+
+hfig=gcf;
+set(hfig,'Pointer','watch');
+
+[pname,name] = fileparts(fname);
+if isempty(pname)
+    pname = pwd;
+end
+handles.basname = name;
+handles.baspath = pname;
+
+model_list = get_file_list(fullfile(pname,fname));
+
+tested_file = sprintf('%s_tested.dat',name);
+full_tested_file = fullfile(pname,tested_file);
+handles.tested_file = full_tested_file;
+
+ensemble_file = sprintf('%s_ensemble.dat',name);
+full_ensemble_file = fullfile(pname,ensemble_file);
+handles.ensemble_file = full_ensemble_file;
+
+tested_list = {};
+if exist(full_tested_file,'file')
+    answer = questdlg(sprintf('Open file %s?                                           .',...
+        tested_file),'Read file of already tested conformers');
+    switch answer
+        case 'Yes'
+            tested_list = get_file_list(full_tested_file);
+        case 'No'
+            tested_list = {};
+        case 'Cancel'
+            add_msg_board('Model list loading cancelled by user');
+            cd(my_path);
+            set(hfig,'Pointer','arrow');
+            return
+        otherwise
+            add_msg_board('Model list loading cancelled by user');
+            cd(my_path);
+            set(hfig,'Pointer','arrow');
+            return
+    end
+end
+
+ensemble_list = {};
+if exist(full_ensemble_file,'file')
+    answer = questdlg(sprintf('Open file %s?                                                .',...
+        ensemble_file),'Read existing ensemble file');
+    switch answer
+        case 'Yes'
+            [ensemble_list,comments] = get_file_list(full_ensemble_file);
+            if ~isempty(comments)
+                prev_iterations = str2double(comments{1});
+                if ~isnan(prev_iterations)
+                    handles.ensemble_number = round(prev_iterations);
+                    handles.text_ensemble_number.String = sprintf('%i',handles.ensemble_number);
+                end
+            end
+        case 'No'
+            ensemble_list = {};
+        case 'Cancel'
+            add_msg_board('Model list loading cancelled by user');
+            cd(my_path);
+            set(hfig,'Pointer','arrow');
+            return
+        otherwise
+            add_msg_board('Model list loading cancelled by user');
+            cd(my_path);
+            set(hfig,'Pointer','arrow');
+            return
+    end
+end
+
+handles.model_list = model_list;
+handles.tested_list = tested_list;
+handles.ensemble_list = ensemble_list;
+
+if ~isempty(handles.model_list)
+    handles.pushbutton_load_conformers.Enable = 'off';
+    if ~isempty(handles.restraints)
+        handles.pushbutton_run_iteration.Enable = 'on';
+    end
+end
+
+if ~isempty(handles.ensemble_list)
+    handles.pushbutton_check_ensemble.Enable = 'on';
+end
+
+set(hfig,'Pointer','arrow');
+

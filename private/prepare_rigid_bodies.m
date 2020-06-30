@@ -59,7 +59,7 @@ while 1
                         indices = resolve_address(char(args(kc+2)));
                         restraints.rb(rb_poi).chainid{kc} = char(args(kc+2));
                         if length(indices) ~= 2
-                            add_msg_board(sprintf('ERROR: Rigid-body definition in line %i contains a wrong chain address. Aborting.',nl));
+                            add_msg_board(sprintf('ERROR: Rigid-body definition contains a wrong chain address. Aborting.',nl));
                             fclose(fid);
                             return
                         end

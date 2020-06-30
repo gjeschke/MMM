@@ -35,6 +35,8 @@ function [restraints,failed] = rd_restraints_rigiflex(fname,unprocessed)
 %
 % ENSEMBLE      number of models in the final ensemble (first argument) and
 %               probability threshold (second argument)
+% MAXSIZE       maximum size of the complex, for upper limit of unspecified
+%               core restraints, defaults to 18 nm
 % UNITS         can be NM (nanometers, default) or A (Angstroem)
 % MAXTIME       maximum time for a computation step, corresponds to the
 %               full computation for rigid-body arrangements and model
@@ -73,7 +75,9 @@ clear restraints
 
 restraints.no_fitting = false;
 restraints.flex_time = 1;
+restraints.maxsize = 18;
 restraints.search = false;
+restraints.solution_file = '';
 restraints.search_range = [1 1e6];
 restraints.maxtrials = -1;
 restraints.ensemble = [];
@@ -185,7 +189,10 @@ while 1
                     restraints.rigi_distributions = true;
                 case 'MAXTRIALS'
                     mode=0;
-                    restraints.maxtrials=str2double(char(args(3)));
+                    restraints.maxtrials= str2double(char(args(3)));
+                case 'MAXSIZE'
+                    mode=0;
+                    restraints.maxsize = scale_units*str2double(char(args(3)));
                 case 'ENSEMBLE'
                     mode=0;
                     restraints.ensemble=str2double(char(args(3)));
@@ -459,7 +466,7 @@ while 1
                     mode=11;
                     submode = 0;
                     RNA_poi = RNA_poi + 1;
-                    restraints.RNA(RNA_poi).models = 20; % default setting
+                    restraints.RNA(RNA_poi).models = 1; % default setting
                     restraints.RNA(RNA_poi).prob = 0.5; % default setting
                     restraints.RNA(RNA_poi).chain_id = char(args(3));
                     if length(args) > 3
@@ -737,7 +744,7 @@ while 1
                     restraints.xlinks(xlink_poi).adr2 = adr2;
                     restraints.xlinks(xlink_poi).coor1 = coor1;
                     restraints.xlinks(xlink_poi).coor2 = coor2;
-                    restraints.xlinks(xlink_poi).maxr = 30;
+                    restraints.xlinks(xlink_poi).maxr = str2double(char(args(3)));
                     restraints.xlinks(xlink_poi).indices1 = ind1;
                     restraints.xlinks(xlink_poi).indices2 = ind2;
                     restraints.xlinks(xlink_poi).type = linker;           
@@ -1019,7 +1026,7 @@ for kr = 1:rb_poi %
         add_msg_board(sprintf('ERROR: Rigid body %i has %i reference points, but should have 3. Aborting.\n',kr,restraints.rb(kr).points));
         fclose(fid);
         return
-    end;
+    end
     for kp = 1:3
         coor(kp,:) = restraints.rb(kr).ref(kp,2:4);
         indices(kp,:) = restraints.rb(kr).indices(kp,:);

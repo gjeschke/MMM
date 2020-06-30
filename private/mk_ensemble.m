@@ -155,10 +155,10 @@ for k = 1:DEER.core+DEER.flex
     if options.plot
         figure(k); hold on;
     end
+    dr = DEER.rax(2) - DEER.rax(1);
     for kgrp = 1:length(options.groups)
-        DEER.groups_distr{kgrp}(k,:) = DEER.groups_distr{kgrp}(k,:)/sum(DEER.all_distr(k,:));
         if options.plot
-            plot(DEER.rax,DEER.groups_distr{kgrp}(k,:),'Color',options.groups(kgrp).color);
+            plot(DEER.rax,dr*DEER.groups_distr{kgrp}(k,:),'Color',options.groups(kgrp).color);
         end
     end
     dr = DEER.rax(2)-DEER.rax(1);
@@ -166,7 +166,7 @@ for k = 1:DEER.core+DEER.flex
         plot(DEER.rax,dr*DEER.all_distr(k,:),'Color',[0.6,0,0]);
     end
     axis_vec = DEER.axis_vecs(k,:);
-    if 1.05*max(DEER.all_distr(k,:)) > axis_vec(4)
+    if 1.05*max(dr*DEER.all_distr(k,:)) > axis_vec(4)
         axis_vec(4) = 1.05*max(dr*DEER.all_distr(k,:));
     end
     overlap_exp = NaN;
@@ -370,7 +370,7 @@ for k = 1:length(model_restraints.DEER)
         DEER.all_distr(k,:) = DEER.all_distr(k,:) + populations(km)*distr;
         for kgrp = 1:length(options.groups)
             if min(abs(options.groups(kgrp).conformers-km)) == 0
-                DEER.groups_distr{kgrp}(k,:) = DEER.groups_distr{kgrp}(k,:) + populations(km)*distr;
+                DEER.groups_distr{kgrp}(k,:) = DEER.groups_distr{kgrp}(k,:) + populations(km)*distr/sum(distr);
             end
         end
         if isfield(model_restraints.DEER(k),'file')
@@ -435,7 +435,7 @@ if isfield(model_restraints,'pflex') && ~isempty(model_restraints.pflex) && isfi
                 DEER.all_distr(pflex,:) = DEER.all_distr(pflex,:) + populations(km)*distr;
                 for kgrp = 1:length(options.groups)
                     if min(abs(options.groups(kgrp).conformers-km)) == 0
-                        DEER.groups_distr{kgrp}(pflex,:) = DEER.groups_distr{kgrp}(pflex,:) + populations(km)*distr;
+                        DEER.groups_distr{kgrp}(pflex,:) = DEER.groups_distr{kgrp}(pflex,:) + populations(km)*distr/sum(distr);
                     end
                 end
                 if isfield(model_restraints.pflex(kl).DEER(k),'file')

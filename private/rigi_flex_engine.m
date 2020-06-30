@@ -20,33 +20,36 @@ if ~isfield(restraints,'auxiliary')
 end
 
 solutions_given = false;
+soln_name = '';
 solutions = [];
 processed = [];
 soln_count = 0;
 reference_geometry = cell(1,50000);
 
 if isfield(restraints,'solutions') && ~isempty(restraints.solutions)
-    solutions_given = true;
-    poi = strfind(restraints.solutions,'.dat');
-    if isempty(poi)
-        soln_name = strcat(restraints.solutions,'_solutions.dat');
+    if ~restraints.search
+        poi = strfind(restraints.solutions,'.dat');
+        if isempty(poi)
+            soln_name = strcat(restraints.solutions,'_solutions.dat');
+        else
+            soln_name = restraints.solutions;
+        end
         proc_name = strcat(restraints.solutions,'_processed.dat');
-    else
-        soln_name = restraints.solutions;
-    end
-    solutions = load(soln_name);
-    solutions = round(solutions);
-    if exist(proc_name,'file')
-        processed = load(proc_name);
-        processed = round(processed);
-    else
-        processed = [];
+        solutions_given = true;
+        solutions = load(soln_name);
+        solutions = round(solutions);
+        if exist(proc_name,'file')
+            processed = load(proc_name);
+            processed = round(processed);
+        else
+            processed = [];
+        end
     end
 end
 
 skip_mode = true;
 
-if isfield(restraints,'solution_mode') && ~isempty(restraints.solution_mode)
+if isfield(restraints,'solution_mode') && ~isempty(restraints.solution_mode) && ~restraints.search
     switch lower(restraints.solution_mode)
         case 'single'
             add_msg_board('Warning: RigiFlex performs only the trials specified in the solution file');
@@ -93,6 +96,9 @@ max_extension = 180; % maximum distance between any two reference points [?]
 clash_threshold = 1.5*forgive; % a uniform van-der-Waals radius of 1.5 ? is assumed for heavy atoms
 clash_fail = 10000; %500; % maximum value of the clash cost function in testing for the unrefined model
 
+if isfield(restraints,'maxsize') && ~isempty(restraints.maxsize)
+    max_extension = 10*restraints.maxsize;
+end
 
 if isfield(restraints,'newID') && ~isempty(restraints.newID)
     PDBid = restraints.newID;
@@ -301,7 +307,11 @@ tic,
 probabilities = zeros(1,maxmodels);
 
 [pathstr,basname] = fileparts(fname);
-solutionname = fullfile(pathstr,strcat(basname,'_solutions.dat'));
+if isempty(soln_name) || ~restraints.search
+    solutionname = fullfile(pathstr,strcat(basname,'_solutions.dat'));
+else
+    solutionname = fullfile(pathstr,strcat(soln_name,'_solutions.dat'));
+end
 repname = fullfile(pathstr,strcat(basname,'_stemloops.dat'));
 geometryname = fullfile(pathstr,strcat(basname,'_geometry.mat'));
 fid = fopen(solutionname,'wt');
@@ -723,9 +733,6 @@ while runtime <= 3600*maxtime && bask < trials && success < maxmodels
         left_trials = left_trials - saxs_fail;
         % fprintf(1,'Stem link failures: %6.2f%%\n',100*stem_fail/left_trials);
         left_trials = left_trials - stem_fail;
-        if left_trials ~= success
-            fprintf(2,'Trial dissipation. Expected success: %i. Found success %i.\n',left_trials,success);
-        end
         if success > 0
             handles.text_time_per_model.String = sprintf('%12.1f',runtime/success);
         end

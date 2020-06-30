@@ -32,6 +32,10 @@ if ~exist('options','var') || isempty(options) || ~isfield(options,'verbose')
     options.verbose = false;
 end
 
+if ~isfield(options,'chain') || isempty(options.chain)
+    options.chain = 'A';
+end
+
 R0 = 2; % starting value for effective segment length
 nu = 0.6; % starting value for Flory exponent
 increments_per_Angstroem = 10;
@@ -122,7 +126,7 @@ if options.verbose
     kaxis = 1:n;
     Rgfct = R0*kaxis.^nu;
     plot(kaxis,Rgfct,'Color',[0.6,0,0],'LineWidth',2);
-    title(sprintf('Fit parameters R0 = %4.2f, nu = %5.3f',R0,nu));
+    title(sprintf('Fit parameters for chain %s R0 = %4.2f, nu = %5.3f',options.chain,R0,nu));
     xlabel('Segment length k');
     ylabel('Radius of gyration');
     figure;
@@ -130,7 +134,7 @@ if options.verbose
     hold on
     R2fct = R0_P*kaxis.^nu_P;
     plot(kaxis,R2fct,'Color',[0.6,0,0],'LineWidth',2);
-    title(sprintf('Fit parameters R0_P = %4.2f, nu_P = %5.3f',R0_P,nu_P));
+    title(sprintf('Fit parameters for chain %s R0_{ee} = %4.2f, \nu_{ee} = %5.3f',options.chain,R0_P,nu_P));
     xlabel('Segment length k');
     ylabel('Root mean square end-to-end distance');
 end

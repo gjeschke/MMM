@@ -125,6 +125,8 @@ handles.curr_model = 1;
 handles.curr_restraint = 1;
 handles.progress = 0;
 
+handles.pushbutton_run.String = 'Rigi';
+
 handles.plot_position = handles.axes_multi_plot.OuterPosition;
 
 
@@ -244,10 +246,10 @@ handles.text_xlinks_required.String = sprintf('(%i restraints)',ceil(handles.xli
 handles.edit_max_time.String = sprintf('%5.2f',handles.max_time);
 
 handles.restraints = restraints;
-if isfield(restraints,'solutions') && ~isempty(restraints.solutions)
-    handles.pushbutton_run.String = 'Run RigiFlex';
+if isfield(restraints,'solutions') && ~isempty(restraints.solutions) && ~restraints.search
+    handles.pushbutton_run.String = 'RigiFlex';
 else
-    handles.pushbutton_run.String = 'Run Rigi';
+    handles.pushbutton_run.String = 'Rigi';
 end
 set(handles.pushbutton_run,'Enable','on');
 set(handles.pushbutton_restraints,'Enable','off');
@@ -291,15 +293,24 @@ for runstep = 0:last_step
             options.display_xlinks = handles.radiobutton_crosslinks.Value;
             options.exhaustive = handles.checkbox_exhaustive.Value;
 
-            [filename, pathname] = uiputfile([handles.restraints.newID '.pdb'], 'Save final model as PDB');
-            if isequal(filename,0) || isequal(pathname,0)
-                add_msg_board('RigiFlex modelling cancelled by user');
-                return
+            if ~handles.restraints.search
+                [filename, pathname] = uiputfile([handles.restraints.newID '.pdb'], 'Save final model as PDB');
+                if isequal(filename,0) || isequal(pathname,0)
+                    add_msg_board('RigiFlex modelling cancelled by user');
+                    return
+                else
+                    reset_user_paths(pathname);
+                    general.pdb_files=pathname;
+                    fname = fullfile(pathname, filename);
+                    options.fname = fname;
+                end
             else
-                reset_user_paths(pathname);
-                general.pdb_files=pathname;
-                fname = fullfile(pathname, filename);
-                options.fname = fname;
+                if isempty(handles.restraints.solutions)
+                    soln_name = 'rigi';
+                else
+                    soln_name = handles.restraints.solutions;
+                end
+                options.fname = fullfile(pwd,soln_name);
             end
 
             set(gcf,'Pointer','watch');
@@ -333,23 +344,32 @@ for runstep = 0:last_step
                 restraints = handles.restraints;
                 save(result_name,'diagnostics','options','restraints','distributions','report_name');
                 handles.pushbutton_save.Enable =  'on';
-                handles.pushbutton_run.String = 'Run Flex';
+                handles.pushbutton_run.String = 'Flex';
                 if isfield(handles.restraints,'RNA') && isfield(handles.restraints.RNA,'bind') && ~isempty(handles.restraints.RNA.bind)
-                    handles.pushbutton_run.String = 'RNA links';
+                    handles.pushbutton_run.String = 'FlexRNA';
                     handles.progress = 1;
-                else
-                    handles.pushbutton_run.String = 'Run Flex';
+                elseif ~isempty(handles.restraints.pflex)
+                    handles.pushbutton_run.String = 'Flex';
                     handles.progress = 2;
                     if isfield(handles.restraints,'flex_time')
                         handles.max_time = handles.restraints.flex_time;
                         handles.edit_max_time.String = sprintf('%5.2f',handles.max_time);
                     end
+                else
+                    handles.progress = 3;
+                    handles.pushbutton_run.String = 'Done.';
+                    handles.pushbutton_run.Enable = 'off';
                 end
+            elseif handles.restraints.search
+                handles.progress = 3;
+                handles.pushbutton_run.String = 'Done.';
+                handles.pushbutton_run.Enable = 'off';
             else
                 add_msg_board('RigiFlex modeling run failed.');
                 handles.text_time_per_model.String = 'n.a.';
+                handles.pushbutton_run.String = 'Failed.';
+                handles.pushbutton_run.Enable = 'off';
             end
-
 
             handles.text_success.String = sprintf('%i',diagnostics.success);
             handles.text_time_left.String = 'Completed.';
@@ -683,8 +703,10 @@ for runstep = 0:last_step
             handles.progress = 2;
             if only_FlexRNA
                 handles.progress = 3;
+                handles.pushbutton_run.String = 'Done.';
+                handles.pushbutton_run.Enable = 'off';
             end
-            handles.pushbutton_run.String = 'Flex Peptide';
+            handles.pushbutton_run.String = 'Flex';
             guidata(hObject,handles);
 
         case 2 % Flex
@@ -862,14 +884,14 @@ for runstep = 0:last_step
             handles.flex_success = flex_success;
             handles.flex_saved = to_be_saved; 
             handles.progress = 3;
-            add_msg_board('Flex step completed.');
+            add_msg_board('Flex completed.');
             if isfield(handles.restraints,'build_time')
                 handles.max_time = handles.restraints.build_time;
                 handles.edit_max_time.String = sprintf('%5.2f',handles.max_time);
             end
             set(gcf,'Pointer','arrow');
             handles.progress = 3;
-            handles.pushbutton_run.String = 'Complete';
+            handles.pushbutton_run.String = 'Done.';
             handles.pushbutton_run.Enable = 'off';
             guidata(hObject,handles);
         otherwise

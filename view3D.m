@@ -272,15 +272,15 @@ pos  = get(hMain.axes_model,'cameraposition' );
 targ = get(hMain.axes_model,'cameratarget'   );
 dar  = get(hMain.axes_model,'dataaspectratio');
 up   = get(hMain.axes_model,'cameraupvector' );
-[newPos newUp] = camrotate(pos,targ,dar,up,-dx,-dy,coordsys,direction);
+[newPos, newUp] = camrotate(pos,targ,dar,up,-dx,-dy,coordsys,direction);
 set(hMain.axes_model,'cameraposition', newPos, 'cameraupvector', newUp);
 vdata.old_pt = new_pt;
 set(view3DObj,'UserData',vdata)
-if isfield(hMain,'camlight') && ishandle(hMain.camlight),
+if isfield(hMain,'camlight') && ishandle(hMain.camlight)
     camlight(hMain.camlight);
 else
     hMain.camlight=camlight;
-end;
+end
 
 
 
@@ -402,7 +402,6 @@ end
 % -------------------------------------------------------------------------
 % Update frame display
 function update_frame_display
-global hMain
 
 set_view;
 % cam_up=get(hMain.axes_model,'CameraUpVector');

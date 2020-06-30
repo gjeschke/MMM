@@ -170,7 +170,7 @@ if len_DEER > 0
     if isfield(restraints,'no_fitting') && restraints.no_fitting 
         fom_DEER = fit_multi_DEER(v0,all_DEER_fits,options);
         v = v0;
-        exitflag = -1;
+        exitflag = -3;
         fit_output.iterations= 0;
         fit_output.funccount = 0;
         fit_output.meshsize = NaN;
@@ -211,6 +211,8 @@ if len_DEER > 0
                 fprintf(log_fid,'ERROR: Optimization terminated by output or plot function.\n');
             case -2
                 fprintf(log_fid,'ERROR: No feasible solution found.\n');
+            case -3
+                fprintf(log_fid,'Warning: No fitting was requested in restraint file.\n');
         end
         fprintf(log_fid,'%i iterations and %i function evaluations were performed.\n',fit_output.iterations,fit_output.funccount);
         fprintf(log_fid,'Mesh size is at %12.4g, maximum constraint violation at %12.4g.\n',fit_output.meshsize,fit_output.maxconstraint);
@@ -255,7 +257,7 @@ if ~isempty(SAS_fits)
     if isfield(restraints,'no_fitting') && restraints.no_fitting 
         fom_SAS = fit_multi_SAS(v0,all_SAS_fits,options);
         v = v0;
-        exitflag = -1;
+        exitflag = -3;
         fit_output.iterations= 0;
         fit_output.funccount = 0;
         fit_output.meshsize = NaN;
@@ -294,6 +296,8 @@ if ~isempty(SAS_fits)
                 fprintf(log_fid,'ERROR: Optimization terminated by output or plot function.\n');
             case -2
                 fprintf(log_fid,'ERROR: No feasible solution found.\n');
+            case -3
+                fprintf(log_fid,'Warning: No fitting was requested in restraint file.\n');
         end
         fprintf(log_fid,'%i iterations and %i function evaluations were performed.\n',fit_output.iterations,fit_output.funccount);
         fprintf(log_fid,'Mesh size is at %12.4g, maximum constraint violation at %12.4g.\n',fit_output.meshsize,fit_output.maxconstraint);
@@ -352,7 +356,7 @@ if len_DEER > 0 && ~isempty(SAS_fits)
     if isfield(restraints,'no_fitting') && restraints.no_fitting 
         fom = fit_multi_SAS_DEER(v0,all_SAS_fits,all_DEER_fits,normalize,options);
         v = v0;
-        exitflag = -1;
+        exitflag = -3;
         fit_output.iterations= 0;
         fit_output.funccount = 0;
         fit_output.meshsize = NaN;
@@ -414,6 +418,8 @@ if len_DEER > 0 && ~isempty(SAS_fits)
                 fprintf(log_fid,'ERROR: Optimization terminated by output or plot function.\n');
             case -2
                 fprintf(log_fid,'ERROR: No feasible solution found.\n');
+            case -3
+                fprintf(log_fid,'Warning: No fitting was requested in restraint file.\n');
         end
         fprintf(log_fid,'%i iterations and %i function evaluations were performed.\n',fit_output.iterations,fit_output.funccount);
         fprintf(log_fid,'Mesh size is at %12.4g, maximum constraint violation at %12.4g.\n',fit_output.meshsize,fit_output.maxconstraint);

@@ -56,85 +56,91 @@ for chains = 1:length(chain_IDs)
         [coor,N,n,resaxis] = rd_CA_trace(ensemble_pdb,chain_IDs(chains));
     end
     set(hfig,'Pointer','arrow');
-
-    options.verbose = true;
-    options.resaxis = resaxis;
-    [C,R0,nu,raxis,Rg_distr,P,R0_ee,nu_ee] = local_compactness(coor,N,n,p,options);
-
-    add_msg_board(sprintf('Radius of gyration fit parameters: R0 = %4.2f ?, nu = %5.3f',R0,nu));
-    add_msg_board(sprintf('Root mean square segment length fit parameters: R0ee = %4.2f ?, nuee = %5.3f',R0_ee,nu_ee));
-
-    x = [resaxis(1) resaxis(end)];
-    if residue_type_axis
-        [tags,colors] = mk_color_list('aa_colors.def');
-        rgb = zeros(length(sequence),3);
-        for k = 1:length(sequence)
-            svgid = tag2id(sequence(k),tags);
-            svgcolor = id2tag(svgid,colors);
-            rgb(k,:) = svg2rgb(svgcolor);
+    
+    if ~isempty(resaxis)
+        
+        options.verbose = true;
+        options.resaxis = resaxis;
+        options.chain = chain_IDs(chains);
+        [C,R0,nu,raxis,Rg_distr,P,R0_ee,nu_ee] = local_compactness(coor,N,n,p,options);
+        
+        add_msg_board(sprintf('Radius of gyration fit parameters: R0 = %4.2f ?, nu = %5.3f',R0,nu));
+        add_msg_board(sprintf('Root mean square segment length fit parameters: R0ee = %4.2f ?, nuee = %5.3f',R0_ee,nu_ee));
+        
+        x = [resaxis(1) resaxis(end)];
+        if residue_type_axis
+            [tags,colors] = mk_color_list('aa_colors.def');
+            rgb = zeros(length(sequence),3);
+            for k = 1:length(sequence)
+                svgid = tag2id(sequence(k),tags);
+                svgcolor = id2tag(svgid,colors);
+                rgb(k,:) = svg2rgb(svgcolor);
+            end
         end
-    end
-
-    figure;
-    image(x,x,C,'CDataMapping','scaled');
-    hold on;
-    if residue_type_axis
-        for k = 1:length(sequence)
-            plot(resaxis(k),resaxis(1)-2,'.','MarkerSize',10,'Color',rgb(k,:));
-            plot(resaxis(1)-2,resaxis(k),'.','MarkerSize',10,'Color',rgb(k,:));
+        
+        figure;
+        image(x,x,C,'CDataMapping','scaled');
+        hold on;
+        if residue_type_axis
+            for k = 1:length(sequence)
+                plot(resaxis(k),resaxis(1)-2,'.','MarkerSize',10,'Color',rgb(k,:));
+                plot(resaxis(1)-2,resaxis(k),'.','MarkerSize',10,'Color',rgb(k,:));
+            end
         end
-    end
-    curr_axis = gca;
-    set(curr_axis,'CLim',[-1,1]);
-    set(curr_axis,'YDir','normal');
-    colorbar;
-    axis tight
-    xlabel('Residue number');
-    ylabel('Residue number');
-    axis equal
-    mymap = ones(51,3);
-    for k = 1:25
-        mymap(k,2:3) = k/26*[1,1];
-        mymap(k+26,1:2) = (25-k)/25*[1,1];
-    end
-    mymap = flipud(mymap);
-    colormap(mymap);
-    title('Relative deviation from random coil radius of gyration');
-    figure;
-    image(x,x,P,'CDataMapping','scaled');
-    hold on;
-    if residue_type_axis
-        for k = 1:length(sequence)
-            plot(resaxis(k),resaxis(1)-2,'.','MarkerSize',10,'Color',rgb(k,:));
-            plot(resaxis(1)-2,resaxis(k),'.','MarkerSize',10,'Color',rgb(k,:));
+        curr_axis = gca;
+        set(curr_axis,'CLim',[-1,1]);
+        set(curr_axis,'YDir','normal');
+        colorbar;
+        axis tight
+        xlabel('Residue number');
+        ylabel('Residue number');
+        axis equal
+        mymap = ones(51,3);
+        for k = 1:25
+            mymap(k,2:3) = k/26*[1,1];
+            mymap(k+26,1:2) = (25-k)/25*[1,1];
         end
+        mymap = flipud(mymap);
+        colormap(mymap);
+        title(sprintf('Relative deviation from random coil radius of gyration for chain %s',chain_IDs(chains)));
+        figure;
+        image(x,x,P,'CDataMapping','scaled');
+        hold on;
+        if residue_type_axis
+            for k = 1:length(sequence)
+                plot(resaxis(k),resaxis(1)-2,'.','MarkerSize',10,'Color',rgb(k,:));
+                plot(resaxis(1)-2,resaxis(k),'.','MarkerSize',10,'Color',rgb(k,:));
+            end
+        end
+        curr_axis = gca;
+        set(curr_axis,'CLim',[-1,1]);
+        set(curr_axis,'YDir','normal');
+        colorbar;
+        axis tight
+        xlabel('Residue number');
+        ylabel('Residue number');
+        axis equal
+        colormap(mymap);
+        title(sprintf('Relative deviation of root mean square distance for chain %s',chain_IDs(chains)));
+        figure;
+        [n1,n2] = size(Rg_distr);
+        plot(1,1,'k.');
+        plot(n1,n2,'k.');
+        image([1,n2],[raxis(1),raxis(end)],Rg_distr,'CDataMapping','scaled');
+        curr_axis = gca;
+        curr_axis.YDir = 'normal';
+        colorbar;
+        axis tight
+        xlabel('Segment length');
+        ylabel('Distribution of radius of gyration');
+        colormap bone
+        mymap = colormap;
+        mymap = flipud(mymap);
+        colormap(mymap);
+        title(sprintf('Variation of the radius of gyration for chain %s',chain_IDs(chains)));
+    else
+        add_msg_board(sprintf('Warning: Chain %s is not a peptide chain. Skipped.',chain_IDs(chains)));
     end
-    curr_axis = gca;
-    set(curr_axis,'CLim',[-1,1]);
-    set(curr_axis,'YDir','normal');
-    colorbar;
-    axis tight
-    xlabel('Residue number');
-    ylabel('Residue number');
-    axis equal
-    colormap(mymap);
-    title('Relative deviation of root mean square distance');
-    figure;
-    [n1,n2] = size(Rg_distr);
-    plot(1,1,'k.');
-    plot(n1,n2,'k.');
-    image([1,n2],[raxis(1),raxis(end)],Rg_distr,'CDataMapping','scaled');
-    curr_axis = gca;
-    curr_axis.YDir = 'normal';
-    colorbar;
-    axis tight
-    xlabel('Segment length');
-    ylabel('Distribution of radius of gyration');
-    colormap bone
-    mymap = colormap;
-    mymap = flipud(mymap);
-    colormap(mymap);
-    title('Variation of the radius of gyration');
 end
 
 function [file_list,pop] = rd_ensemble_description(fname)

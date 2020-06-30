@@ -22,7 +22,7 @@ function varargout = MMM_prototype(varargin)
 
 % Edit the above text to modify the response to help MMM_prototype
 
-% Last Modified by GUIDE v2.5 24-Dec-2019 09:27:32
+% Last Modified by GUIDE v2.5 29-Jun-2020 11:26:56
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -5940,7 +5940,7 @@ global model
 
 path_orig = 'C:\Users\guje\Documents\projects\PTBP1_EMCV\CYANA_200401\yasara';
 path_target = 'C:\Users\guje\Documents\projects\PTBP1_EMCV\CYANA_200401\final_refit\yasara';
-fname = 'a10_23_corr_yasara.pdb';
+fname = 'a9_97_corr_yasara.pdb';
 poi = strfind(fname,'_corr_yasara.pdb');
 add_pdb(fullfile(path_orig,fname));
 add_pdb(fullfile(path_target,fname));
@@ -6227,4 +6227,26 @@ function menu_ensembles_compactness_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 handles = compactness_analysis_interface(handles);
+guidata(hObject,handles);
+
+
+% --------------------------------------------------------------------
+function menu_jobs_run_script_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_jobs_run_script (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+global general
+
+currdir=pwd;
+cd(general.scripts);
+[fname,pname]=uigetfile('*.mmm','Run script file');
+if isequal(fname,0) || isequal(pname,0)
+    add_msg_board('Script loading cancelled by user');
+else
+    general.scripts=pname;
+    cd(currdir);
+    handles=run_script(handles,fullfile(pname,fname));
+end
+cd(currdir);
 guidata(hObject,handles);
