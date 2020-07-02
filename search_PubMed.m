@@ -52,10 +52,11 @@ function search_PubMed_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to search_PubMed (see VARARGIN)
 
-global MMM_icon
+% global MMM_icon
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 % Choose default command line output for search_PubMed
 handles.output = hObject;

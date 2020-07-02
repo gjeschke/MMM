@@ -55,10 +55,11 @@ function deer_window_OpeningFcn(hObject, eventdata, handles, varargin)
 % Choose default command line output for deer_window
 handles.output = hObject;
 
-global MMM_icon
+% global MMM_icon
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 handles.updated=0;
 handles.bckg_dim=3;
@@ -231,7 +232,7 @@ if trj_labels && sel<=trj_labels,
     z=sum(NOpos(:,3).*pop);
     name=handles.trajectory{sel};
     msg{1}=name;
-    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] Å',x,y,z);
+    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] ?',x,y,z);
 elseif isfield(model,'bisites') && sel <= length(handles.bilabels)+trj_labels,
     NOpos=handles.bilabels(sel-trj_labels).popcoor;
     pop=NOpos(:,4);
@@ -240,7 +241,7 @@ elseif isfield(model,'bisites') && sel <= length(handles.bilabels)+trj_labels,
     y=sum(NOpos(:,2).*pop);
     z=sum(NOpos(:,3).*pop);
     msg{1}=handles.bilabels(sel-trj_labels).adr;
-    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] Å',x,y,z);
+    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] ?',x,y,z);
 elseif isfield(model,'labels') && sel<=length(handles.bilabels) + length(model.labels)+trj_labels,
     NOpos=model.labels(sel-trj_labels).NOpos;
     pop=NOpos(:,4);
@@ -249,7 +250,7 @@ elseif isfield(model,'labels') && sel<=length(handles.bilabels) + length(model.l
     y=sum(NOpos(:,2).*pop);
     z=sum(NOpos(:,3).*pop);
     msg{1}=model.labels(sel-trj_labels-bilabels).adr;
-    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] Å',x,y,z);
+    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] ?',x,y,z);
 else
     if isfield(model,'labels'),
         asel=sel-length(model.labels)-bilabels-trj_labels;
@@ -263,7 +264,7 @@ else
     xyz=pop'*xyz;
     adr=mk_address(indices,true);
     msg{1}=adr;
-    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] Å',xyz(1),xyz(2),xyz(3));
+    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] ?',xyz(1),xyz(2),xyz(3));
 end;
 set(handles.text_coor,'String',msg);
 addresses=get(hObject,'String');
@@ -1201,7 +1202,7 @@ if ~isempty(handles.texp) && ~isempty(handles.vexp)
             plot(handles.tsim,vsim_F,'Color',handles.fit_color);
             set(handles.text_rmsd_flex,'String',sprintf('%8.5f',rmsmin_F));
             set(handles.text_rmsd_flex,'ForegroundColor',handles.fit_color);
-%            fprintf(1,'shift: %4.1f Å, r.m.s.d.: %8.5f, r.m.s.d. flex: %8.5f\n',dr,rmsmin,rmsmin_F);
+%            fprintf(1,'shift: %4.1f ?, r.m.s.d.: %8.5f, r.m.s.d. flex: %8.5f\n',dr,rmsmin,rmsmin_F);
         elseif moved
             plot(handles.tsim,vsim_D,'Color',handles.flex_color);
             set(handles.text_rmsd_flex,'String',sprintf('%8.5f',rmsmin_D));
@@ -1452,7 +1453,7 @@ if exist('trj_labels','var') && trj_labels>0,
     z=sum(NOpos(:,3).*pop);
     name=handles.trajectory{1};
     msg{1}=name;
-    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] Å',x,y,z);
+    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] ?',x,y,z);
 elseif bilabels > 0
     NOpos = handles.bilabels(1).popcoor;
     pop=NOpos(:,4);
@@ -1462,7 +1463,7 @@ elseif bilabels > 0
     z=sum(NOpos(:,3).*pop);
     name = handles.bilabels(1).adr;
     msg{1}=name;
-    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] Å',x,y,z);
+    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] ?',x,y,z);
 elseif labels>0,
     NOpos=model.labels(1).NOpos;
     pop=NOpos(:,4);
@@ -1472,7 +1473,7 @@ elseif labels>0,
     z=sum(NOpos(:,3).*pop);
     name=model.labels(1).adr;
     msg{1}=name;
-    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] Å',x,y,z);
+    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] ?',x,y,z);
 else
     indices=handles.atoms(1,:);
     [msg0,xyz]=get_atom(indices,'xyz');
@@ -1481,7 +1482,7 @@ else
     xyz=pop'*xyz;
     adr=mk_address(indices,true);
     msg{1}=adr;
-    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] Å',xyz(1),xyz(2),xyz(3));    
+    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] ?',xyz(1),xyz(2),xyz(3));    
 end;
 set(handles.text_coor,'String',msg);
 
@@ -1784,7 +1785,7 @@ ff1=ff1/max(ff1);
 handles.ff=ff1;
 handles.tsim=texp;
 [~,~,~,~,~,rmsd]=fit_primary(handles,texp,vexp,ff1);
-% fprintf(1,'dr= %4.2f Å, r.m.s.d.: %8.5f\n',dr,rmsd);
+% fprintf(1,'dr= %4.2f ?, r.m.s.d.: %8.5f\n',dr,rmsd);
 
 function [vsim_D,rmsmin_D,rax_D,distr_D] = fit_DEER_shifted(handles,texp,vexp)
 
@@ -1951,7 +1952,7 @@ else
     diff=sim-vexp;
     rmsd=sqrt(diff.^2/length(diff));
 end;
-% fprintf(1,'dr= %4.2f Å, r.m.s.d.: %8.5f\n',dr,rmsd);
+% fprintf(1,'dr= %4.2f ?, r.m.s.d.: %8.5f\n',dr,rmsd);
 
 function [vsim_D,rmsmin_D,rax_D,distr_D]=fit_formfactor_shifted(handles,texp,vexp)
 

@@ -55,13 +55,14 @@ function annotation_window_OpeningFcn(hObject, eventdata, handles, varargin)
 % Choose default command line output for annotation_window
 
 global geometry_settings
-global MMM_icon
+% global MMM_icon
 global model
 global hMain
 global annotation_keys
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 handles.output = hObject;
 
@@ -80,7 +81,7 @@ n1=length(info);
 info{n1+1}=sprintf('Mass: %6.1f g/mol',mass);
 [msg,xyz]=get_object(indices,'xyz');
 
-info{n1+2}=sprintf('Mean coordinates: %4.1f, %4.1f, %4.1f Å',mean(xyz,1));
+info{n1+2}=sprintf('Mean coordinates: %4.1f, %4.1f, %4.1f ?',mean(xyz,1));
 
 poi=n1+2;
 if length(indices)==1,
@@ -156,9 +157,9 @@ if n==4, % this is a residue and DSSP information should be displayed
         poi=poi+1;
         info{poi}=sprintf('DSSP secondary structure assignment: %s',secondary);
         poi=poi+1;
-        info{poi}=sprintf('DSSP water accessibility: %i Å^2 (ignores cofactors)',dssp.acc);
+        info{poi}=sprintf('DSSP water accessibility: %i ?^2 (ignores cofactors)',dssp.acc);
         poi=poi+1;
-        info{poi}=sprintf('Backbone dihedrals: phi = %6.1f°, psi = %6.1f°',dssp.phi,dssp.psi);
+        info{poi}=sprintf('Backbone dihedrals: phi = %6.1f?, psi = %6.1f?',dssp.phi,dssp.psi);
         poi=poi+1;
         info{poi}='see next page for hydrogen bonds of peptide carbon and amide nitrogen';
     end;

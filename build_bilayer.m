@@ -56,14 +56,15 @@ function build_bilayer_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 
 global model
-global MMM_icon
+% global MMM_icon
 global hMain
 
 handles.probe_radius=1.9; % based on L. Adamian, V. Nanda, W. F. De Grado, J. Liang
                   % Proteins, 2005, 59:496-509
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 load helpicon
 set(handles.pushbutton_help,'CData',cdata);
@@ -541,7 +542,7 @@ opt_d=handles.layer;
 for k=1:length(z_grid),
     if mod(k,2)==0,
         add_msg_board(sprintf('%i%% completed, best energy is %4.1f kcal/mol',round(100*(k-1)/length(z_grid)),minG));
-        add_msg_board(sprintf('optimum midpoint is %4.1f Å, optimum thickness %4.1f Å',opt_z,opt_d));
+        add_msg_board(sprintf('optimum midpoint is %4.1f ?, optimum thickness %4.1f ?',opt_z,opt_d));
         drawnow;
     end;
     z=z_grid(k);
@@ -568,7 +569,7 @@ if get(handles.checkbox_fit_normal,'Value'),
     opt_phi=handles.phi;
     for k=1:length(th_grid),
         add_msg_board(sprintf('%i%% completed, best energy is %4.1f kcal/mol',round(100*(k-1)/length(th_grid)),minG));
-        add_msg_board(sprintf('optimum theta is %4.1f°, optimum phi %4.1f°',180*opt_theta/pi,180*opt_phi/pi));
+        add_msg_board(sprintf('optimum theta is %4.1f?, optimum phi %4.1f?',180*opt_theta/pi,180*opt_phi/pi));
         drawnow;
         theta=th_grid(k);
         for kk=1:length(phi_grid),
@@ -582,8 +583,8 @@ if get(handles.checkbox_fit_normal,'Value'),
         end;
     end;
     add_msg_board('--- Bilayer grid search for membrane normal direction completed ---');
-    add_msg_board(sprintf('Preliminary membrane normal theta angle: %4.1f°',180*opt_theta/pi));
-    add_msg_board(sprintf('Preliminary membrane normal phi angle  : %4.1f°',180*opt_phi/pi));
+    add_msg_board(sprintf('Preliminary membrane normal theta angle: %4.1f?',180*opt_theta/pi));
+    add_msg_board(sprintf('Preliminary membrane normal phi angle  : %4.1f?',180*opt_phi/pi));
     drawnow
 end;
 v0=[opt_z,opt_d];
@@ -624,8 +625,8 @@ switch length(v1)
         handles.theta=v1(2);
         handles.phi=v1(3);
         add_msg_board(sprintf('Optimum midpoint z coordinate: %5.2f',v1(1)));
-        add_msg_board(sprintf('Optimum membrane normal angle theta: %4.1f°',180*v1(2)/pi));
-        add_msg_board(sprintf('Optimum membrane normal angle phi  : %4.1f°',180*v1(3)/pi));
+        add_msg_board(sprintf('Optimum membrane normal angle theta: %4.1f?',180*v1(2)/pi));
+        add_msg_board(sprintf('Optimum membrane normal angle phi  : %4.1f?',180*v1(3)/pi));
     case 4
         handles.z=v1(1);
         handles.layer=v1(2);
@@ -633,8 +634,8 @@ switch length(v1)
         handles.phi=v1(4);
         add_msg_board(sprintf('Optimum midpoint z coordinate: %5.2f',v1(1)));
         add_msg_board(sprintf('Optimum bilayer thickness    : %5.2f',v1(2)));
-        add_msg_board(sprintf('Optimum membrane normal angle theta: %4.1f°',180*v1(3)/pi));
-        add_msg_board(sprintf('Optimum membrane normal angle phi  : %4.1f°',180*v1(4)/pi));
+        add_msg_board(sprintf('Optimum membrane normal angle theta: %4.1f?',180*v1(3)/pi));
+        add_msg_board(sprintf('Optimum membrane normal angle phi  : %4.1f?',180*v1(4)/pi));
 end;
 set(gcf,'Pointer','arrow');
 

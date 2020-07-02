@@ -52,7 +52,7 @@ function fit_from_template_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to fit_from_template (see VARARGIN)
 
-global MMM_icon
+% global MMM_icon
 global hMain
 global model
 global ENM_param
@@ -85,8 +85,9 @@ drawnow;
 
 h = msgbox('Please be patient. This can take several minutes.','Anisotropic network model is computed');
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 load helpicon
 set(handles.pushbutton_help,'CData',cdata);
@@ -793,7 +794,7 @@ end;
 
 if test_mode,
     rmsd0=rmsd_superimpose(target(correspondence(2,:),:),network0(correspondence(1,:),:));
-    fprintf(1,'Initial structure r.m.s.d. %4.2f Å\n',rmsd0);
+    fprintf(1,'Initial structure r.m.s.d. %4.2f ?\n',rmsd0);
 else
     rmsd0=1e6;
 end;
@@ -1078,10 +1079,10 @@ for k=1:esize,
     add_msg_board(sprintf('Trial %i: New figure of merit : %6.4f',k,fom_vec(k)));
     add_msg_board(sprintf('Trial %i: New distance r.m.s.d: %6.4f',k,all_distance_rmsd(k)));
     if test_mode,
-        add_msg_board(sprintf('Trial %i: Initial r.m.s.d. w.r.t. target structure: %5.2f Å',k,rmsd0));
-        add_msg_board(sprintf('Trial %i: Final   r.m.s.d. w.r.t. target structure: %5.2f Å',k,all_rmsd(k)));
+        add_msg_board(sprintf('Trial %i: Initial r.m.s.d. w.r.t. target structure: %5.2f ?',k,rmsd0));
+        add_msg_board(sprintf('Trial %i: Final   r.m.s.d. w.r.t. target structure: %5.2f ?',k,all_rmsd(k)));
         add_msg_board(sprintf('Trial %i: Coverage of the structural change: %5.3f\n',k,all_coverage(k)));
-        fprintf(fid,'\nFinal   r.m.s.d. w.r.t. target structure: %5.2f Å\n',all_rmsd(k));
+        fprintf(fid,'\nFinal   r.m.s.d. w.r.t. target structure: %5.2f ?\n',all_rmsd(k));
         fprintf(fid,'Distance constraint r.m.s.d.     : %5.2f\n',all_distance_rmsd(k));
         fprintf(fid,'Coverage of the structural change: %5.3f\n',all_coverage(k));
     end;
@@ -1089,10 +1090,10 @@ end;
 
 if test_mode,
     if esize>1,
-        fprintf(fid,'\n\nMean final   r.m.s.d. w.r.t. target structure  : %5.2f Å\n',mean(all_rmsd));
-        fprintf(fid,'Std. dev. of r.m.s.d. w.r.t. target structure  : %5.2f Å\n',std(all_rmsd));
-        fprintf(fid,'Mean distance constraint r.m.s.d.              : %5.2f Å\n',mean(all_distance_rmsd));
-        fprintf(fid,'Std. dev. of distance constraint r.m.s.d.      : %5.2f Å\n',std(all_distance_rmsd));
+        fprintf(fid,'\n\nMean final   r.m.s.d. w.r.t. target structure  : %5.2f ?\n',mean(all_rmsd));
+        fprintf(fid,'Std. dev. of r.m.s.d. w.r.t. target structure  : %5.2f ?\n',std(all_rmsd));
+        fprintf(fid,'Mean distance constraint r.m.s.d.              : %5.2f ?\n',mean(all_distance_rmsd));
+        fprintf(fid,'Std. dev. of distance constraint r.m.s.d.      : %5.2f ?\n',std(all_distance_rmsd));
         fprintf(fid,'Mean coverage of the structural change         : %5.3f\n',mean(all_coverage));
         fprintf(fid,'Std. dev. of coverage of the structural change : %5.3f\n',std(all_coverage));
         fprintf(fid,'Worst        coverage of the structural change : %5.3f\n',min(all_coverage));
@@ -1101,8 +1102,8 @@ if test_mode,
         fprintf(fid,'Mean distance rmsd for best approach to target : %5.2f\n',mean(all_best_drmsd));
         fprintf(fid,'Mean collectivity of the fitted change         : %5.3f\n',mean(all_collectivity));
         fprintf(fid,'Std. dev. of collectivity of the fitted change : %5.3f\n\n',std(all_collectivity));
-        fprintf(fid,'Extracted fit    : Mean r.m.s.d. w.r.t. target : %5.2f Å\n',mean(all_rmsd));
-        fprintf(fid,'                 : Max. r.m.s.d. w.r.t. target : %5.2f Å\n',max(all_rmsd));
+        fprintf(fid,'Extracted fit    : Mean r.m.s.d. w.r.t. target : %5.2f ?\n',mean(all_rmsd));
+        fprintf(fid,'                 : Max. r.m.s.d. w.r.t. target : %5.2f ?\n',max(all_rmsd));
 
         diff=all_coverage-mean(all_coverage);
         [~,poi]=min(abs(diff));
@@ -1203,7 +1204,7 @@ network0=model.coarse(model.current_structure).Ca_coor;
 
 if test_mode,
     rmsd0=rmsd_superimpose(target(correspondence(2,:),:),network0(correspondence(1,:),:));
-    fprintf(1,'Initial structure r.m.s.d. %4.2f Å\n',rmsd0);
+    fprintf(1,'Initial structure r.m.s.d. %4.2f ?\n',rmsd0);
 end;
 
 direct=handles.direct;
@@ -1342,10 +1343,10 @@ for k=1:esize,
     add_msg_board(sprintf('Trial %i: New figure of merit : %6.4f',k,fom_vec(k)));
     add_msg_board(sprintf('Trial %i: New distance r.m.s.d: %6.4f',k,all_distance_rmsd(k)));
     if test_mode,
-        add_msg_board(sprintf('Trial %i: Initial r.m.s.d. w.r.t. target structure: %5.2f Å',k,rmsd0));
-        add_msg_board(sprintf('Trial %i: Final   r.m.s.d. w.r.t. target structure: %5.2f Å',k,all_rmsd(k)));
+        add_msg_board(sprintf('Trial %i: Initial r.m.s.d. w.r.t. target structure: %5.2f ?',k,rmsd0));
+        add_msg_board(sprintf('Trial %i: Final   r.m.s.d. w.r.t. target structure: %5.2f ?',k,all_rmsd(k)));
         add_msg_board(sprintf('Trial %i: Coverage of the structural change: %5.3f\n',k,all_coverage(k)));
-        fprintf(fid,'\nFinal   r.m.s.d. w.r.t. target structure: %5.2f Å\n',all_rmsd(k));
+        fprintf(fid,'\nFinal   r.m.s.d. w.r.t. target structure: %5.2f ?\n',all_rmsd(k));
         fprintf(fid,'Distance constraint r.m.s.d.     : %5.2f\n',all_distance_rmsd(k));
         fprintf(fid,'Coverage of the structural change: %5.3f\n',all_coverage(k));
     end;
@@ -2058,7 +2059,7 @@ dx=(NOall(:,1)-xmean);
 dy=(NOall(:,2)-ymean);
 dz=(NOall(:,3)-zmean);
 nNO=length(dx);
-rmsd=sqrt(0.005+nNO*sum(dx.^2.*pop+dy.^2.*pop+dz.^2.*pop)/(nNO-1))/10; % divided by 10 for Å -> nm
+rmsd=sqrt(0.005+nNO*sum(dx.^2.*pop+dy.^2.*pop+dz.^2.*pop)/(nNO-1))/10; % divided by 10 for ? -> nm
 
 % --- Executes on button press in checkbox_restraints.
 function checkbox_restraints_Callback(hObject, eventdata, handles)
@@ -2228,7 +2229,7 @@ if test_mode && overlap_mode,
     hold on;
     plot(sumoverlap,'r');
     axis([0,length(overlap)+1,-0.05,1.05]);
-    disp(sprintf('r.m.s.d. between the two structures is %5.3f Å',rmsd));
+    disp(sprintf('r.m.s.d. between the two structures is %5.3f ?',rmsd));
     disp(sprintf('Collectivity of structural change is %5.3f.',collectivity));
     disp(sprintf('Best mode %i has overlap %5.3f and correlation %5.3f with structural change.',bestmode,maxoverlap,correlation(bestmode)));
     disp(sprintf('%i modes cover 80%% of structural change.',num80));
@@ -2357,11 +2358,11 @@ model.fit.Ca_coor=network;
 model.fit.rmsd=rmsd;
 model.fit.fom=fom;
 model.fit.dxmat=dxmat;
-disp(sprintf('Final r.m.s.d. of distance restraints: %6.3f Å',rmsd));
+disp(sprintf('Final r.m.s.d. of distance restraints: %6.3f ?',rmsd));
 
 [rms,coor2]=rmsd_superimpose(target,network);
-disp(sprintf('Initial r.m.s.d. w.r.t. target structure: %6.3f Å',rmsd0));
-disp(sprintf('Final   r.m.s.d. w.r.t. target structure: %6.3f Å',rms));
+disp(sprintf('Initial r.m.s.d. w.r.t. target structure: %6.3f ?',rmsd0));
+disp(sprintf('Final   r.m.s.d. w.r.t. target structure: %6.3f ?',rms));
 
 disp_local_change(target,network);
 
@@ -2384,7 +2385,7 @@ axis equal
 
 load fit_1L97A_from_1L96
 rms=rmsd_superimpose(target,network_fit.Ca_coor);
-disp(sprintf('r.m.s.d. between fitted and target structure is %5.2f Å',rms));
+disp(sprintf('r.m.s.d. between fitted and target structure is %5.2f ?',rms));
 
 [rms,coor,transmat]=rmsd_superimpose(target(1:50,:),network_fit.Ca_coor(1:50,:));
 xyz=network_fit.Ca_coor;
@@ -2397,7 +2398,7 @@ plot3(xyz(:,1),xyz(:,2),xyz(:,3),'g','LineWidth',1);
 
 load coarse_grained_1L96
 rms=rmsd_superimpose(target,coarse.Ca_coor);
-disp(sprintf('r.m.s.d. between original and target structure is %5.2f Å',rms));
+disp(sprintf('r.m.s.d. between original and target structure is %5.2f ?',rms));
 [rms,coor,transmat]=rmsd_superimpose(target(1:50,:),coarse.Ca_coor(1:50,:));
 xyz=coarse.Ca_coor;
 [mm,nn]=size(xyz);
@@ -2744,7 +2745,7 @@ if test_mode,
     target_sel=target(correspondence(2,:),:);
     template_sel=network0(correspondence(1,:),:);
     [rmsd0,target_sel]=rmsd_superimpose(template_sel,target_sel);
-    fprintf(1,'Initial structure r.m.s.d. %4.2f Å\n',rmsd0);
+    fprintf(1,'Initial structure r.m.s.d. %4.2f ?\n',rmsd0);
 end;
 
 stored_basis=ENM_param.fit_basis;
@@ -2793,8 +2794,8 @@ if drive_mode>1,
     model.fit.Ca_coor=network;
     model.fit.rmsd=rmsd;
     [rms,coor2]=rmsd_superimpose(target(correspondence(2,:),:),network(correspondence(1,:),:));
-    add_msg_board(sprintf('Initial r.m.s.d. w.r.t. target structure: %6.3f Å',rmsd0));
-    add_msg_board(sprintf('Final   r.m.s.d. w.r.t. target structure: %6.3f Å',rms));
+    add_msg_board(sprintf('Initial r.m.s.d. w.r.t. target structure: %6.3f ?',rmsd0));
+    add_msg_board(sprintf('Final   r.m.s.d. w.r.t. target structure: %6.3f ?',rms));
     maxs=length(model.structures);
     newtag=sprintf('tr%i',maxs+1);
     [snum,message]=copy_structure(model.current_structure,newtag,network);

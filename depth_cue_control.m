@@ -57,10 +57,11 @@ handles.output = hObject;
 
 global hMain
 global model
-global MMM_icon
+% global MMM_icon
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 handles.old_bckg_color=hMain.color;
 hMain.depthcue_control=hObject;

@@ -58,11 +58,12 @@ handles.output = hObject;
 % declare global structure variables for all figures
 
 global hModel
-global MMM_icon
+% global MMM_icon
 global hMain
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 hModel.figure=handles.model_plot;
 hModel.context_background_black=handles.context_background_black;

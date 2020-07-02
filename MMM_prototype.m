@@ -61,7 +61,7 @@ handles.view_step=5;
 
 global hMain
 global MMM_info
-global MMM_icon
+% global MMM_icon
 global rootdir
 global third_party
 global general
@@ -183,9 +183,9 @@ if ~third_party.modeller
 end
 
 
-
-j = get(handles.MMM,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(handles.MMM,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 job_check
 

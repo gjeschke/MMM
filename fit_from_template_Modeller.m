@@ -52,7 +52,7 @@ function fit_from_template_Modeller_OpeningFcn(hObject, eventdata, handles, vara
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to fit_from_template_Modeller (see VARARGIN)
 
-global MMM_icon
+% global MMM_icon
 global hMain
 global model
 
@@ -89,8 +89,9 @@ drawnow;
 
 h = msgbox('Please be patient. This can take some time.','Coarse-grained model is computed');
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 load helpicon
 set(handles.pushbutton_help,'CData',cdata);
@@ -1144,7 +1145,7 @@ dx=(NOall(:,1)-xmean);
 dy=(NOall(:,2)-ymean);
 dz=(NOall(:,3)-zmean);
 nNO=length(dx);
-rmsd=sqrt(0.005+nNO*sum(dx.^2.*pop+dy.^2.*pop+dz.^2.*pop)/(nNO-1))/10; % divided by 10 for Å -> nm
+rmsd=sqrt(0.005+nNO*sum(dx.^2.*pop+dy.^2.*pop+dz.^2.*pop)/(nNO-1))/10; % divided by 10 for ? -> nm
 
 
 function [handles, all_constraint_rmsd] = update_3D_model(handles,snum,DEER)
@@ -1458,18 +1459,18 @@ if handles.test_mode,
         all_rmsd(k)=rms;
         coverage=(rms0-rms)/rms0;
         fprintf(fid,'\n*** Trial %i ***\n\n',k);
-        add_msg_board(sprintf('Trial %i: Initial r.m.s.d. w.r.t. target structure: %5.2f Å',k,rms0));
-        add_msg_board(sprintf('Trial %i: Final   r.m.s.d. w.r.t. target structure: %5.2f Å',k,rms));
+        add_msg_board(sprintf('Trial %i: Initial r.m.s.d. w.r.t. target structure: %5.2f ?',k,rms0));
+        add_msg_board(sprintf('Trial %i: Final   r.m.s.d. w.r.t. target structure: %5.2f ?',k,rms));
         add_msg_board(sprintf('Trial %i: Coverage of the structural change: %5.3f\n',k,coverage));
-        fprintf(fid,'\nFinal   r.m.s.d. w.r.t. target structure: %5.2f Å\n',rms);
+        fprintf(fid,'\nFinal   r.m.s.d. w.r.t. target structure: %5.2f ?\n',rms);
         fprintf(fid,'Distance constraint r.m.s.d.     : %5.2f\n',all_distance_rmsd(k));
         fprintf(fid,'Coverage of the structural change: %5.3f\n',coverage);
         all_coverage(k)=coverage;
     end;
-    fprintf(fid,'\n\nMean final   r.m.s.d. w.r.t. target structure  : %5.2f Å\n',mean(all_rmsd));
-    fprintf(fid,'Std. dev. of r.m.s.d. w.r.t. target structure  : %5.2f Å\n',std(all_rmsd));
-    fprintf(fid,'Mean distance constraint r.m.s.d.              : %5.2f Å\n',mean(all_distance_rmsd));
-    fprintf(fid,'Std. dev. of distance constraint r.m.s.d.      : %5.2f Å\n',std(all_distance_rmsd));
+    fprintf(fid,'\n\nMean final   r.m.s.d. w.r.t. target structure  : %5.2f ?\n',mean(all_rmsd));
+    fprintf(fid,'Std. dev. of r.m.s.d. w.r.t. target structure  : %5.2f ?\n',std(all_rmsd));
+    fprintf(fid,'Mean distance constraint r.m.s.d.              : %5.2f ?\n',mean(all_distance_rmsd));
+    fprintf(fid,'Std. dev. of distance constraint r.m.s.d.      : %5.2f ?\n',std(all_distance_rmsd));
     fprintf(fid,'Mean coverage of the structural change         : %5.3f\n',mean(all_coverage));
     fprintf(fid,'Std. dev. of coverage of the structural change : %5.3f\n',std(all_coverage));
     fprintf(fid,'Worst        coverage of the structural change : %5.3f\n',min(all_coverage));
@@ -3806,7 +3807,7 @@ for kp=1:length(weightings.DEER),
         end;
     end;
 end;
-fprintf(fid,'\nParametrization result for ensemble size %i with uncertainty %5.2f Å\n\n',esize,10*uncertainty);
+fprintf(fid,'\nParametrization result for ensemble size %i with uncertainty %5.2f ?\n\n',esize,10*uncertainty);
 n_direct=length(handles.direct);
 n_DEER=length(handles.DEER);
 fprintf(fid,'%i Calpha constraints\n',n_direct);

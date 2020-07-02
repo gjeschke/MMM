@@ -56,11 +56,12 @@ function sites_window_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 
 global model
-global MMM_icon
+% global MMM_icon
 global hMain
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 handles.output = hObject;
 

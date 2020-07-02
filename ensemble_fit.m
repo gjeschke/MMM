@@ -52,7 +52,7 @@ function ensemble_fit_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to ensemble_fit (see VARARGIN)
 
-global MMM_icon
+% global MMM_icon
 global hMain
 
 % Choose default command line output for ensemble_fit
@@ -108,8 +108,9 @@ ylabel('Population');
 handles.restraints = [];
 handles.model_list = {};
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 load helpicon
 set(handles.pushbutton_help,'CData',cdata);
@@ -472,7 +473,7 @@ else
     reset_user_paths(pname);
     general.restraint_files=pname;
     
-    handles = load_conformer_list(handles,model_list);
+    handles = load_conformer_list(handles,fullfile(pname,fname));
     
 end
 guidata(hObject,handles);
@@ -839,14 +840,14 @@ function handles = load_conformer_list(handles,fname)
 hfig=gcf;
 set(hfig,'Pointer','watch');
 
-[pname,name] = fileparts(fname);
+[pname,name,ext] = fileparts(fname);
 if isempty(pname)
     pname = pwd;
 end
 handles.basname = name;
 handles.baspath = pname;
 
-model_list = get_file_list(fullfile(pname,fname));
+model_list = get_file_list(fullfile(pname,strcat(name,ext)));
 
 tested_file = sprintf('%s_tested.dat',name);
 full_tested_file = fullfile(pname,tested_file);

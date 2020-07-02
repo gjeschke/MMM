@@ -55,10 +55,11 @@ function ENDOR_window_OpeningFcn(hObject, eventdata, handles, varargin)
 % Choose default command line output for ENDOR_window
 handles.output = hObject;
 
-global MMM_icon
+% global MMM_icon
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 handles.libration=0.5; % libration broadening of spin label position 
 
@@ -327,10 +328,10 @@ fprintf(wfile,'\n%s\n','### Simulation ###');
 fprintf(wfile,'%s%5.0f ns\n','Interpulse delay (manual input): ',handles.tau);
 fprintf(wfile,'%s%5.0f us\n','Radiofrequency pulse length (manual input): ',handles.trf);
 if ~isempty(handles.rmean),
-    fprintf(wfile,'%s%4.1f Å\n','mean distance: ',handles.rmean);
+    fprintf(wfile,'%s%4.1f ?\n','mean distance: ',handles.rmean);
 end;
 if ~isempty(handles.stddev),
-    fprintf(wfile,'%s%4.1f Å\n','std. deviation: ',handles.stddev);
+    fprintf(wfile,'%s%4.1f ?\n','std. deviation: ',handles.stddev);
 end;
 if ~isempty(handles.rmsd),
     fprintf(wfile,'%s%9.6f\n','r.m.s. error of fit: ',handles.rmsd);
@@ -387,7 +388,7 @@ if isfield(model,'labels') && sel<=length(model.labels),
     z=sum(NOpos(:,3).*pop);
     name=model.labels(sel).adr;
     indices=resolve_address(name);
-    position=sprintf('at [%6.2f,%6.2f,%6.2f] Å',x,y,z);
+    position=sprintf('at [%6.2f,%6.2f,%6.2f] ?',x,y,z);
     handles.Scoor=[NOpos(:,1:3),pop];
 else
     if isfield(model,'labels'),
@@ -403,7 +404,7 @@ else
     xyz=pop'*xyz;
     adr=mk_address(indices);
     name=adr;
-    position=sprintf('at [%6.2f,%6.2f,%6.2f] Å',xyz(1),xyz(2),xyz(3));
+    position=sprintf('at [%6.2f,%6.2f,%6.2f] ?',xyz(1),xyz(2),xyz(3));
 end;
 set(handles.text_coor,'String',position);
 set(handles.text_paramagnetic,'String',name);
@@ -865,7 +866,7 @@ if labels>0,
     z=sum(NOpos(:,3).*pop);
     name=model.labels(1).adr;
     indices=resolve_address(name);
-    position=sprintf('at [%6.2f,%6.2f,%6.2f] Å',x,y,z);
+    position=sprintf('at [%6.2f,%6.2f,%6.2f] ?',x,y,z);
 else
     indices=handles.atoms(1,:);
     [msg0,xyz]=get_atom(indices,'xyz');
@@ -875,7 +876,7 @@ else
     xyz=pop'*xyz;
     adr=mk_address(indices);
     name=adr;
-    position=sprintf('at [%6.2f,%6.2f,%6.2f] Å',xyz(1),xyz(2),xyz(3));    
+    position=sprintf('at [%6.2f,%6.2f,%6.2f] ?',xyz(1),xyz(2),xyz(3));    
 end;
 set(handles.text_coor,'String',position);
 set(handles.text_paramagnetic,'String',name);
@@ -1094,11 +1095,11 @@ handles.rsim=rax;
 handles.dsim=full_distr;
 ndistr=full_distr/sum(full_distr);
 rmean=sum(ndistr.*rax);
-set(handles.text_mean,'String',sprintf('<r> = %4.1f Å',rmean));
+set(handles.text_mean,'String',sprintf('<r> = %4.1f ?',rmean));
 handles.rmean=rmean;
 dr=rax-rmean;
 stddev=sqrt(sum(dr.^2.*ndistr));
-set(handles.text_stddev,'String',sprintf('sr = %4.1f Å',stddev));
+set(handles.text_stddev,'String',sprintf('sr = %4.1f ?',stddev));
 handles.stddev=stddev;
 rfilled=rax(full_distr>=0.01*max(full_distr));
 rmin=min([min(rfilled) rmin0]);
@@ -1256,7 +1257,7 @@ fmin=-length(dipevo2)/(2*fill*max(tdip));          % s. Schweiger/Jeschke book p
 fmax=(length(dipevo2)-1)/(2*fill*max(tdip));
 % frequency axis divided by factor 2, as DEER detects splittings, 
 % but ENDOR detects frequencies
-% multiplied by factor 1000 since distance axis is in Å instead of nm
+% multiplied by factor 1000 since distance axis is in ? instead of nm
 frqax=1000*abs(reduce)*linspace(fmin,fmax,length(spc))/2; 
 % and now go to kHz frequency axis
 frqax=1000*frqax;

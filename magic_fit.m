@@ -53,10 +53,11 @@ function magic_fit_OpeningFcn(hObject, eventdata, handles, varargin)
 % varargin   command line arguments to magic_fit (see VARARGIN)
 
 global model
-global MMM_icon
+% global MMM_icon
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 load helpicon
 set(handles.pushbutton_help,'CData',cdata);
@@ -600,7 +601,7 @@ end;
 coor2b=[];
 if m>0 && n>0,
     [rmsd,coor2b,transmat]=rmsd_superimpose(coor0,coor1);
-    add_msg_board(sprintf('RMSD of both structures is: %4.2f Å',rmsd));
+    add_msg_board(sprintf('RMSD of both structures is: %4.2f ?',rmsd));
 else
     add_msg_board('Warning! No transformation performed as selections do not match.');
     transmat=[];

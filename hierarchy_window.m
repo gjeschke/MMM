@@ -56,7 +56,7 @@ function hierarchy_window_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 
 global hMain
-global MMM_icon
+% global MMM_icon
 % global proteopedia_icon
 global PDBwiki_icon
 global model
@@ -71,8 +71,9 @@ end
 handles.snum = model.current_structure;
 handles.page = 1;
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 mhandles=guidata(hMain.figure);
 locked=get(mhandles.uitoggletool_lock,'State');

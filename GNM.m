@@ -52,7 +52,7 @@ function GNM_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to GNM (see VARARGIN)
 
-global MMM_icon
+% global MMM_icon
 global hMain
 global model
 global ENM_param
@@ -66,8 +66,9 @@ drawnow;
 
 h = msgbox('Please be patient. This can take several minutes.','Gaussian network model is computed');
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 load helpicon
 set(handles.pushbutton_help,'CData',cdata);

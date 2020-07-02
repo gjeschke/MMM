@@ -53,10 +53,11 @@ function site_scan_nucleotides_OpeningFcn(hObject, eventdata, handles, varargin)
 % varargin   command line arguments to site_scan_nucleotides (see VARARGIN)
 
 global hMain
-global MMM_icon
+% global MMM_icon
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 % Choose default command line output for site_scan
 handles.output = hObject;

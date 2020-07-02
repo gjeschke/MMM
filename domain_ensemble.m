@@ -52,15 +52,16 @@ function domain_ensemble_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to domain_ensemble (see VARARGIN)
 
-global MMM_icon
+% global MMM_icon
 global hMain
 global model
 
 % Choose default command line output for domain_ensemble
 handles.output = hObject;
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 load helpicon
 set(handles.pushbutton_help,'CData',cdata);
@@ -1068,7 +1069,7 @@ if auxiliary
                     restrain(k).r_beacon(kr).par1 = -lb(k1,k2);
                     restrain(k).r_beacon(kr).par2 = -ub(k1,k2);
                     resa = restraints.res1 + k1 - 1;
-                    fprintf(1,'(%i,%i): [%4.2f,%4.2f] Å\n',resa,restrain(k).r_beacon(kr).resb,lb(k1,k2),ub(k1,k2));
+                    fprintf(1,'(%i,%i): [%4.2f,%4.2f] ?\n',resa,restrain(k).r_beacon(kr).resb,lb(k1,k2),ub(k1,k2));
                 else
                     fprintf(1,'Setting auxiliary internal restraint:');
                     kr = length(restrain(k1).r_intern)+1;
@@ -1087,7 +1088,7 @@ if auxiliary
                     restrain(k).r_intern(kr).par1 = -lb(k1,k2);
                     restrain(k).r_intern(kr).par2 = -ub(k1,k2);
                     resa = restraints.res1 + k1 - 1;
-                    fprintf(1,'(%i,%i): [%4.2f,%4.2f] Å\n',resa,restrain(k).r_beacon(kr).resb,lb(k1,k2),ub(k1,k2));
+                    fprintf(1,'(%i,%i): [%4.2f,%4.2f] ?\n',resa,restrain(k).r_beacon(kr).resb,lb(k1,k2),ub(k1,k2));
                 end
             end
         end
@@ -1340,7 +1341,7 @@ while kMC <= ntrials
                 bb0 = coor;
             elseif  isempty(restraints.anchorN) && isempty(restraints.anchorC),
                 [rms,coor] = rmsd_superimpose(bb0,coor);
-                add_msg_board(sprintf('Model superimposes onto first model with rmsd of %4.1f Å',rms));
+                add_msg_board(sprintf('Model superimposes onto first model with rmsd of %4.1f ?',rms));
             end
             loopname = write_pdb_backbone(coor,restraints.sequence,fname,success,res1,directory);
             [pmodel,status,result] = make_SCWRL4_sidegroups(loopname,directory);
@@ -1534,7 +1535,7 @@ fprintf(fid_report,'%5.2f%% of all trials had restraint violations.\n',100*err_c
 fprintf(fid_report,'This is a success rate of %6.1f ppm.\n',1e6*(1-err_count(6)/kMC));
 fprintf(fid_report,'%5.2f%% of all trials had internal loop backbone clashes.\n',100*(err_count(3)+err_count(8))/kMC);
 fprintf(fid_report,'%5.2f%% of all trials hand backbone clashes with the protein.\n',100*(err_count(5)+err_count(7))/kMC);
-fprintf(fid_report,'The sidegroup clash threshold was %4.1f Å.\n',min_approach);
+fprintf(fid_report,'The sidegroup clash threshold was %4.1f ?.\n',min_approach);
 fprintf(fid_report,'%5.2f%% of the backbone models lead to internal sidegroup clashes.\n',100*err_count(11)/err_count(1));
 fprintf(fid_report,'%5.2f%% of the backbone models lead to sidegroup clashes with the protein.\n',100*err_count(10)/err_count(1));
 if closed_loop,
@@ -1599,7 +1600,7 @@ handles.copy = false;
 handles.snum_vec = snum_vec;
 
 fprintf(fid_report,'--- Distribution shifts and overlaps ---\n\n');
-fprintf(fid_report,'Shift [Å]\tOverlap\n');
+fprintf(fid_report,'Shift [?]\tOverlap\n');
 for kd = 1:handles.n_restraints
     [overlap,shift] = get_overlap(handles.rax,handles.distributions{kd},handles.restraint_distr{kd});
     fprintf(fid_report,'%5.2f\t%5.3f\n',shift,overlap);
@@ -1788,7 +1789,7 @@ dx=(NOall(:,1)-xmean);
 dy=(NOall(:,2)-ymean);
 dz=(NOall(:,3)-zmean);
 nNO=length(dx);
-rmsd=sqrt(0.005+nNO*sum(dx.^2.*pop+dy.^2.*pop+dz.^2.*pop)/(nNO-1))/10; % divided by 10 for Å -> nm
+rmsd=sqrt(0.005+nNO*sum(dx.^2.*pop+dy.^2.*pop+dz.^2.*pop)/(nNO-1))/10; % divided by 10 for ? -> nm
 
 function [res,chain_model] = separate_address(adr)
 
@@ -1838,7 +1839,7 @@ function [restrain,number,bnumber] = mk_beacon_restraint(restrain,NO,res_loop,xy
 
 scale_units = 10;
 
-grace = 0.5; % 5 Å uncertainty of label position
+grace = 0.5; % 5 ? uncertainty of label position
 
 k = res_loop - res1 + 1;
 kr = length(restrain(k).r_beacon)+1;
@@ -1864,7 +1865,7 @@ function [restrain,number,bnumber] = mk_internal_restraint(restrain,NO1,NO2,resa
 
 scale_units = 10;
 
-grace = 0.5; % 5 Å uncertainty of label position
+grace = 0.5; % 5 ? uncertainty of label position
 
 if resa < resb, % restraint must be stored at the later site
     exch = resa;
@@ -2202,7 +2203,7 @@ if m2 > 0
 
     approach_prot = min_dist;
     if min_dist < min_approach
-    %    fprintf(2,'Minimum sidegroup distance to protein is %6.2f Å\n',min_dist);
+    %    fprintf(2,'Minimum sidegroup distance to protein is %6.2f ?\n',min_dist);
        pclash = 1;
        cd(my_dir);
        return
@@ -2225,7 +2226,7 @@ for k1 = 1:poi-1
 end
 approach_loop = min_dist;
 if min_dist < min_approach
-%    fprintf(2,'Minimum heavy-atom distance: %6.2f Å at (%i,%i)\n',min_dist,we_clash);
+%    fprintf(2,'Minimum heavy-atom distance: %6.2f ? at (%i,%i)\n',min_dist,we_clash);
     iclash = 1;
 end
 
@@ -2439,7 +2440,7 @@ for k = 1:length(restrain)
 %                 plot(rax,sim_distr,'r');
 %                 ma = max([max(exp_distr),max(sim_distr)]);
 %                 axis([0,80,-0.1*ma,1.1*ma]);
-                fprintf(fid_report,'Beacon restraint [%5.2f, %5.2f] Å to residue %i fulfilled at <r> = %5.2f\n',...
+                fprintf(fid_report,'Beacon restraint [%5.2f, %5.2f] ? to residue %i fulfilled at <r> = %5.2f\n',...
                     restrain(k).r_beacon(kr).par1,restrain(k).r_beacon(kr).par2,restrain(k).r_beacon(kr).resb,rmean);
             case 'bounds'
                 poi = poi + 1;
@@ -2449,10 +2450,10 @@ for k = 1:length(restrain)
                 exp_distr = exp_distr/sum(exp_distr);
                 restraint_distr{dispoi} = restraint_distr{dispoi} + p_model*exp_distr;
                 if rmean >= restrain(k).r_beacon(kr).par1 && rmean <= restrain(k).r_beacon(kr).par2
-                    fprintf(fid_report,'Beacon restraint [%5.2f, %5.2f] Å to residue %i fulfilled at <r> = %5.2f\n',...
+                    fprintf(fid_report,'Beacon restraint [%5.2f, %5.2f] ? to residue %i fulfilled at <r> = %5.2f\n',...
                         restrain(k).r_beacon(kr).par1,restrain(k).r_beacon(kr).par2,restrain(k).r_beacon(kr).resb,rmean);
                 else
-                    fprintf(fid_report,'Beacon restraint [%5.2f, %5.2f] Å to residue %i violated at <r> = %5.2f\n',...
+                    fprintf(fid_report,'Beacon restraint [%5.2f, %5.2f] ? to residue %i violated at <r> = %5.2f\n',...
                         restrain(k).r_beacon(kr).par1,restrain(k).r_beacon(kr).par2,restrain(k).r_beacon(kr).resb,rmean);
                 end
         end
@@ -2515,7 +2516,7 @@ for k = 1:length(restrain)
 %                 plot(rax,sim_distr,'r');
 %                 ma = max([max(exp_distr),max(sim_distr)]);
 %                 axis([0,80,-0.1*ma,1.1*ma]);
-                fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] Å to residue %i fulfilled at <r> = %5.2f\n',...
+                fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] ? to residue %i fulfilled at <r> = %5.2f\n',...
                     restrain(k).r_intern(kr).par1,restrain(k).r_intern(kr).par2,restrain(k).r_intern(kr).resb,rmean);
             case 'bounds'
                 poi = poi + 1;
@@ -2526,10 +2527,10 @@ for k = 1:length(restrain)
                 restraint_distr{dispoi} = restraint_distr{dispoi} + p_model*exp_distr;
                 descriptors{dispoi} = sprintf('Internal restraint %i-%i with bounds (%5.2f,%5.2f)',resnum,restrain(k).r_intern(kr).resb,restrain(k).r_intern(kr).par1,restrain(k).r_intern(kr).par2);
                 if rmean >= restrain(k).r_intern(kr).par1 && rmean <= restrain(k).r_intern(kr).par2,
-                    fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] Å to residue %i fulfilled at <r> = %5.2f\n',...
+                    fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] ? to residue %i fulfilled at <r> = %5.2f\n',...
                         restrain(k).r_intern(kr).par1,restrain(k).r_intern(kr).par2,restrain(k).r_intern(kr).resb,rmean);
                 else
-                    fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] Å to residue %i violated at <r> = %5.2f\n',...
+                    fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] ? to residue %i violated at <r> = %5.2f\n',...
                         restrain(k).r_intern(kr).par1,restrain(k).r_intern(kr).par2,restrain(k).r_intern(kr).resb,rmean);
                 end
         end
@@ -2581,7 +2582,7 @@ for k = 1:length(restrain)
 %                 plot(rax,sim_distr,'r');
 %                 ma = max([max(exp_distr),max(sim_distr)]);
 %                 axis([0,80,-0.1*ma,1.1*ma]);
-                fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] Å fulfilled at <r> = %5.2f\n',...
+                fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] ? fulfilled at <r> = %5.2f\n',...
                     restrain(k).depth(kr).par1,restrain(k).depth(kr).par2,rmean);
             case 'bounds'
                 poi = poi + 1;
@@ -2593,10 +2594,10 @@ for k = 1:length(restrain)
                 restraint_distr{dispoi} = restraints-Distr{distpoi} + p_model*exp_distr;
                 descriptors{dispoi} = sprintf('Depth restraint %i with bounds = %5.2f,%5.2f',resnum,restrain(k).r_depth(kr).par1,restrain(k).r_depth(kr).par2);
                 if rmean >= restrain(k).depth(kr).par1 && rmean <= restrain(k).depth(kr).par2
-                    fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] Å fulfilled at <r> = %5.2f\n',...
+                    fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] ? fulfilled at <r> = %5.2f\n',...
                         restrain(k).depth(kr).par1,restrain(k).depth(kr).par2,rmean);
                 else
-                    fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] Å violated at <r> = %5.2f\n',...
+                    fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] ? violated at <r> = %5.2f\n',...
                         restrain(k).depth(kr).par1,restrain(k).depth(kr).par2,rmean);
                 end
         end
@@ -2636,7 +2637,7 @@ for k = 1:length(restrain)
 %                 plot(rax,sim_distr,'r');
 %                 ma = max([max(exp_distr),max(sim_distr)]);
 %                 axis([0,80,-0.1*ma,1.1*ma]);
-                fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] Å fulfilled at <r> = %5.2f\n',...
+                fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] ? fulfilled at <r> = %5.2f\n',...
                     restrain(k).oligomer(kr).par1,restrain(k).oligomer(kr).par2,rmean);
             case 'bounds'
                 poi = poi + 1;
@@ -2647,10 +2648,10 @@ for k = 1:length(restrain)
                 restraint_distr{dispoi} = restraint_distr{dispoi} + p_model*exp_distr;
                 descriptors{dispoi} = sprintf('Oligomer restraint %i (n = %i) with <r_{sim}> = %5.2f',resnum,restrain(k).oligomer(kr).n,rmean);
                 if rmean >= restrain(k).oligomer(kr).par1 && rmean <= restrain(k).oligomer(kr).par2,
-                    fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] Å fulfilled at <r> = %5.2f\n',...
+                    fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] ? fulfilled at <r> = %5.2f\n',...
                         restrain(k).oligomer(kr).par1,restrain(k).oligomer(kr).par2,rmean);
                 else
-                    fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] Å violated at <r> = %5.2f\n',...
+                    fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] ? violated at <r> = %5.2f\n',...
                         restrain(k).oligomer(kr).par1,restrain(k).oligomer(kr).par2,rmean);
                 end
         end
@@ -2715,14 +2716,14 @@ for k = 1:length(restrain),
 %                 plot(rax,sim_distr,'r');
 %                 ma = max([max(exp_distr),max(sim_distr)]);
 %                 axis([0,80,-0.1*ma,1.1*ma]);
-                fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] Å to residue %i fulfilled at <r> = %5.2f\n',...
+                fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] ? to residue %i fulfilled at <r> = %5.2f\n',...
                     restrain(k).r_intern(kr).par1,restrain(k).r_intern(kr).par2,restrain(k).r_intern(kr).resb,rmean);
             case 'bounds'
                 if rmean >= restrain(k).r_intern(kr).par1 && rmean <= restrain(k).r_intern(kr).par2,
-                    fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] Å to residue %i fulfilled at <r> = %5.2f\n',...
+                    fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] ? to residue %i fulfilled at <r> = %5.2f\n',...
                         restrain(k).r_intern(kr).par1,restrain(k).r_intern(kr).par2,restrain(k).r_intern(kr).resb,rmean);
                 else
-                    fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] Å to residue %i violated at <r> = %5.2f\n',...
+                    fprintf(fid_report,'Internal restraint [%5.2f, %5.2f] ? to residue %i violated at <r> = %5.2f\n',...
                         restrain(k).r_intern(kr).par1,restrain(k).r_intern(kr).par2,restrain(k).r_intern(kr).resb,rmean);
                 end
         end
@@ -2766,14 +2767,14 @@ for k = 1:length(restrain),
 %                 plot(rax,sim_distr,'r');
 %                 ma = max([max(exp_distr),max(sim_distr)]);
 %                 axis([0,80,-0.1*ma,1.1*ma]);
-                fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] Å fulfilled at <r> = %5.2f\n',...
+                fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] ? fulfilled at <r> = %5.2f\n',...
                     restrain(k).depth(kr).par1,restrain(k).depth(kr).par2,rmean);
             case 'bounds'
                 if rmean >= restrain(k).depth(kr).par1 && rmean <= restrain(k).depth(kr).par2,
-                    fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] Å fulfilled at <r> = %5.2f\n',...
+                    fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] ? fulfilled at <r> = %5.2f\n',...
                         restrain(k).depth(kr).par1,restrain(k).depth(kr).par2,rmean);
                 else
-                    fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] Å violated at <r> = %5.2f\n',...
+                    fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] ? violated at <r> = %5.2f\n',...
                         restrain(k).depth(kr).par1,restrain(k).depth(kr).par2,rmean);
                 end
         end
@@ -2813,14 +2814,14 @@ for k = 1:length(restrain),
 %                 plot(rax,sim_distr,'r');
 %                 ma = max([max(exp_distr),max(sim_distr)]);
 %                 axis([0,80,-0.1*ma,1.1*ma]);
-                fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] Å fulfilled at <r> = %5.2f\n',...
+                fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] ? fulfilled at <r> = %5.2f\n',...
                     restrain(k).oligomer(kr).par1,restrain(k).oligomer(kr).par2,rmean);
             case 'bounds'
                 if rmean >= restrain(k).oligomer(kr).par1 && rmean <= restrain(k).oligomer(kr).par2,
-                    fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] Å fulfilled at <r> = %5.2f\n',...
+                    fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] ? fulfilled at <r> = %5.2f\n',...
                         restrain(k).oligomer(kr).par1,restrain(k).oligomer(kr).par2,rmean);
                 else
-                    fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] Å violated at <r> = %5.2f\n',...
+                    fprintf(fid_report,'Oligomer restraint [%5.2f, %5.2f] ? violated at <r> = %5.2f\n',...
                         restrain(k).oligomer(kr).par1,restrain(k).oligomer(kr).par2,rmean);
                 end
         end
@@ -2956,7 +2957,7 @@ elseif handles.plot_nr <= handles.n_restraints
     set(handles.text_overlap_distr,'String',sprintf('%5.3f',overlap));
     set(handles.text_shift_distr,'String',sprintf('%5.2f',shift));
     set(gca,'FontSize',8);
-    xlabel('Distance [Å]');
+    xlabel('Distance [?]');
     ylabel('Probability density');
     sc = max(handles.restraint_distr{handles.plot_nr});
     title(handles.descriptors{handles.plot_nr});
@@ -2966,7 +2967,7 @@ else
     sc = max(handles.monitor_distr{handles.plot_nr-handles.n_restraints});
     hold on;
     set(gca,'FontSize',8);
-    xlabel('Distance [Å]');
+    xlabel('Distance [?]');
     ylabel('Probability density');
     title(handles.monitor_descr{handles.plot_nr-handles.n_restraints});
     set(handles.text_axes_title,'String','Distance distribution in the ensemble');

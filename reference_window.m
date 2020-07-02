@@ -56,12 +56,13 @@ function reference_window_OpeningFcn(hObject, eventdata, handles, varargin)
 
 global model
 global hMain
-global MMM_icon
+% global MMM_icon
 global dummy_reference
 global reference_formats
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 handles.output = hObject;
 

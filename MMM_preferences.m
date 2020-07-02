@@ -56,14 +56,15 @@ function MMM_preferences_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 
 global web_adr
-global MMM_icon
+% global MMM_icon
 global browser
 global third_party
 global general
 global ENM_param
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 set(handles.edit_SFX,'String',web_adr.SFX);
 set(handles.edit_Modeller_call,'String',third_party.modeller_version);

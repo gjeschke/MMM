@@ -55,7 +55,7 @@ function select_sites_OpeningFcn(hObject, eventdata, handles, varargin)
 % Choose default command line output for select_sites
 handles.output = hObject;
 
-global MMM_icon
+% global MMM_icon
 global hMain
 global model
 
@@ -65,8 +65,9 @@ if ~isfield(model,'sites') || isempty(model.sites)
     return;
 end;
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 load helpicon
 set(handles.pushbutton_help,'CData',cdata);
@@ -675,7 +676,7 @@ dx=(NOall(:,1)-xmean);
 dy=(NOall(:,2)-ymean);
 dz=(NOall(:,3)-zmean);
 nNO=length(dx);
-rmsd=sqrt(0.005+nNO*sum(dx.^2.*pop+dy.^2.*pop+dz.^2.*pop)/(nNO-1))/10; % divided by 10 for Å -> nm
+rmsd=sqrt(0.005+nNO*sum(dx.^2.*pop+dy.^2.*pop+dz.^2.*pop)/(nNO-1))/10; % divided by 10 for ? -> nm
 
 
 % --- Executes on button press in pushbutton_clear.
@@ -1658,11 +1659,11 @@ function [rm,sr] = analyze_distribution(NOpos1,NOpos2)
 
 pop1=NOpos1(:,4);
 n1=length(pop1);
-xyz1=NOpos1(:,1:3)/10; % divided by 10 for Å -> nm
+xyz1=NOpos1(:,1:3)/10; % divided by 10 for ? -> nm
 
 pop2=NOpos2(:,4);
 n2=length(pop2);
-xyz2=NOpos2(:,1:3)/10; % divided by 10 for Å -> nm
+xyz2=NOpos2(:,1:3)/10; % divided by 10 for ? -> nm
 
 xyz1sq = repmat(sum(xyz1.^2,2),1,n2);
 xyz2sq = repmat(sum(xyz2.^2,2),1,n1).';
@@ -1679,10 +1680,10 @@ sr = sqrt(0.01+n1*n2*sum(pop.*dr.^2)/(sum(pop)*(n1*n2-1)));
 % 
 % pop1=NOpos1(:,4);
 % n1=length(pop1);
-% xyz1=NOpos1(:,1:3)/10; % divided by 10 for Å -> nm
+% xyz1=NOpos1(:,1:3)/10; % divided by 10 for ? -> nm
 % pop2=NOpos2(:,4);
 % n2=length(pop2);
-% xyz2=NOpos2(:,1:3)/10; % divided by 10 for Å -> nm
+% xyz2=NOpos2(:,1:3)/10; % divided by 10 for ? -> nm
 % rij=zeros(1,n1*n2);
 % popij=rij;
 % poi=0;

@@ -56,10 +56,11 @@ function ensemble_flexibility_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 
 global model
-global MMM_icon
+% global MMM_icon
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 load helpicon
 set(handles.pushbutton_help,'CData',cdata);
@@ -860,7 +861,7 @@ end;
 %     plot([info.resnums(1)+offset,info.resnums(end)+offset],[core_level,core_level],':','Color',handles.plot_colors(chain,:));
 % end;
 xlabel('Residue number');
-ylabel('Local r.m.s.d. [Å]');
+ylabel('Local r.m.s.d. [?]');
 guidata(handles.axes_flexibility,handles);
 
 

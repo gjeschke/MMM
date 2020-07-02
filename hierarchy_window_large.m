@@ -56,12 +56,13 @@ function hierarchy_window_large_OpeningFcn(hObject, eventdata, handles, varargin
 handles.output = hObject;
 
 global hMain
-global MMM_icon
+% global MMM_icon
 % global proteopedia_icon
 global PDBwiki_icon
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 mhandles=guidata(hMain.figure);
 locked=get(mhandles.uitoggletool_lock,'State');
@@ -310,7 +311,7 @@ else
 end;
 
 if isfield(model.info{snum},'resolution') && ~isempty(model.info{snum}.resolution),
-    resstring=sprintf('%4.2f Å',model.info{snum}.resolution);
+    resstring=sprintf('%4.2f ?',model.info{snum}.resolution);
 else
     resstring='not specified';
 end;

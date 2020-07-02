@@ -56,11 +56,12 @@ function assign_TM_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 
 global model
-global MMM_icon
+% global MMM_icon
 global hMain
 
-j = get(hObject,'javaframe');    
-j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
+% Old version with MMM figure icon, blocked because of warning
+% j = get(hObject,'javaframe');    
+% j.setFigureIcon(javax.swing.ImageIcon(im2java(MMM_icon)));  %create a java image and set the figure icon
 
 load helpicon
 set(handles.pushbutton_help,'CData',cdata);
@@ -306,7 +307,7 @@ end;
 p0=mp0/nTM;
 vec=mvec/nTM;
 nvec=vec/norm(vec);
-add_msg_board(sprintf('Approximate membrane normal has a tilt of %5.1f° with respect to current z axis.',180*acos(nvec(3))/pi));
+add_msg_board(sprintf('Approximate membrane normal has a tilt of %5.1f? with respect to current z axis.',180*acos(nvec(3))/pi));
 h=plot3([p0(1)-vec(1)/2,p0(1)+vec(1)/2],[p0(2)-vec(2)/2,p0(2)+vec(2)/2],[p0(3)-vec(3)/2,p0(3)+vec(3)/2],'r','LineWidth',2);
 handles.gobjects=[handles.gobjects h];
 
