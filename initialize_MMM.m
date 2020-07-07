@@ -52,7 +52,7 @@ addpath(genpath(gowhere(1:end-6)));
 MMM_info.title='MMM version 2018.2';
 MMM_info.authors='G. Jeschke, Ye. Polyhach, S. Stoll';
 MMM_info.date='10.11.2018';
-MMM_info.institution='ETH Zürich, D-CHAB & Univ. Washington, Dept. Chem.';
+MMM_info.institution='ETH Z?rich, D-CHAB & Univ. Washington, Dept. Chem.';
 MMM_info.contact{1}='gjeschke@ethz.ch';
 MMM_info.contact{2}='yevhen.polyhach@phys.chem.ethz.ch';
 MMM_info.contact{3}='stst@uw.edu';
@@ -231,13 +231,13 @@ geometry_settings.atom_context=3.5;
 geometry_settings.residue_context=8;
 geometry_settings.chain_context=40;
 
-glass_transitions.protein=175; % see W. Doster, Eur Biophys J (2008) 37:591–602
+glass_transitions.protein=175; % see W. Doster, Eur Biophys J (2008) 37:591?602
 
 % Membrane profiles 
 membrane_profiles.O2.mindel=9.0; % [usec^{-1}]
 membrane_profiles.O2.maxdel=16.9; % [usec^{-1}]
-membrane_profiles.O2.d0=9.8; % [Å]
-membrane_profiles.O2.lambda=1.4; % [Å]
+membrane_profiles.O2.d0=9.8; % [?]
+membrane_profiles.O2.lambda=1.4; % [?]
 
 % Computation of effective accessible volume of spin labels
 eav.NiEDDA.name='NiEDDA';
@@ -249,7 +249,7 @@ eav.NiEDDA.sig=5.55;
 eav.NiEDDA.bulk=0;
 eav.NiEDDA.amp=10;
 eav.NiEDDA.buffer=10;
-eav.NiEDDA.offset=-30; % offset of layer with maximum relaxivity from bilayer centre in Å, must be negative when non-zero
+eav.NiEDDA.offset=-30; % offset of layer with maximum relaxivity from bilayer centre in ?, must be negative when non-zero
 eav.O2.name='O2';
 eav.O2.decay_length=1.0;
 eav.O2.blocking_radius=2.5;
@@ -259,7 +259,7 @@ eav.O2.sig=4.5;
 eav.O2.bulk=2.0;
 eav.O2.buffer=2;
 eav.O2.amp=47;
-eav.O2.offset=0; % offset of layer with maximum relaxivity from bilayer centre in Å
+eav.O2.offset=0; % offset of layer with maximum relaxivity from bilayer centre in ?
 eav.water.name='D2O';
 eav.water.decay_length=3;
 eav.water.blocking_radius=2.5;
@@ -280,7 +280,6 @@ rotamer_libraries(1).tc='R1A';
 rotamer_libraries(1).T=[175,298];
 rotamer_libraries(1).files=':R1A_175K_UFF_216_CASD:R1A_298K_UFF_216_r1_CASD:';
 rotamer_libraries(1).MC='R1A_298K_UFF_216_r#_CASD';
-% rotamer_libraries(1).files=':R1A_175K_090619:R1A_298K_090619:'; 
 rotamer_libraries(1).type='peptide';
 rotamer_libraries(1).exclude=':H2:OXT:HXT:H:'; % for peptides, these atoms are defined in the rotamer, but not attached
 rotamer_libraries(1).download{1} = '';
@@ -418,7 +417,7 @@ rotamer_libraries(17).download{1} = '';
 rotamer_libraries(18).label='GPymiMTA';
 rotamer_libraries(18).tc='GPM';
 rotamer_libraries(18).T=298;
-rotamer_libraries(18).files=':GPM_298K_UFF_432.mat:';
+rotamer_libraries(18).files=':GPM_298K_UFF_432:';
 rotamer_libraries(18).type='peptide';
 rotamer_libraries(18).exclude=':H2:OXT:HXT:H:';
 rotamer_libraries(18).download{1} = '';
@@ -510,12 +509,6 @@ ligand_libraries(3).V_ksi = 10000; % J/mol
 ligand_libraries(3).res=':HCU:HCU:';
 ligand_libraries(3).type='peptide';
 
-% ligand_libraries(3).label='fake';
-% ligand_libraries(3).tc='NTA';
-% ligand_libraries(3).files=':dHis_Cu_NTA_sym:dHis_Cu_NTA_asym:';
-% ligand_libraries(3).dist = [2.6,3.0,3.3];
-% ligand_libraries(3).res=':R1A:R1A:';
-% ligand_libraries(3).type='peptide';
 
 Modeller_info.label_codes='!;';
 Modeller_info.het_codes='i$z3obmh';
@@ -557,8 +550,8 @@ load uff_parameters % universal force field as implemented in Towhee
 % note that part of these parameters are overwritten by user preferences
 % that are processeed by set_ANM
 
-ENM_param.gamma=2.06; % generic force constant divided by k_B T in Å^{-2}
-ENM_param.rc=7.3; % cutoff distance in Å, should be 7.3
+ENM_param.gamma=2.06; % generic force constant divided by k_B T in ?^{-2}
+ENM_param.rc=7.3; % cutoff distance in ?, should be 7.3
 ENM_param.rc_ANM=sqrt(3)*ENM_param.rc; % cutoff distance for anisotropic network model
 ENM_param.p_GNM=2; % exponent for distance-dependent force constants GNM
 ENM_param.p_GNM_gamma=2.06; % exponent for distance-dependent force constants GNM
@@ -576,7 +569,7 @@ ENM_param.fix_local=2; % number of neighbors to which distances are fixed during
 		               % distances
                        % 3 stabilizes local secondary structure (not yet
                        % implemented)
-ENM_param.tol_local=0.05; % tolerance (r.m.s.d. in Å) for local distortions
+ENM_param.tol_local=0.05; % tolerance (r.m.s.d. in ?) for local distortions
 ENM_param.fix_force=10; % see Zheng/Brooks (2006), below Eq. (4)
 ENM_param.sec_force=0.02; % see Zheng/Brooks (2006), below Eq. (4), different 
                         % restoring force for second neighbor
