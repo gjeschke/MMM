@@ -691,6 +691,7 @@ drawnow
 
 fname = sprintf('%s_ensemble_ordered.pdb',fullfile(handles.baspath,handles.basname));
 script_name = sprintf('%s_ensemble_ordered_transparency.mmm',fullfile(handles.baspath,handles.basname));
+handles.restraints.newID = 'HNR1';
 wr_pdb(fname,handles.restraints.newID,ordering{1});
 ofid = fopen(script_name,'wt');
 pop = pop/max(pop);

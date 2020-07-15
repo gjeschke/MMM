@@ -22,7 +22,7 @@ function varargout = MMM_prototype(varargin)
 
 % Edit the above text to modify the response to help MMM_prototype
 
-% Last Modified by GUIDE v2.5 29-Jun-2020 11:26:56
+% Last Modified by GUIDE v2.5 14-Jul-2020 13:20:14
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -6250,3 +6250,26 @@ else
 end
 cd(currdir);
 guidata(hObject,handles);
+
+
+% --------------------------------------------------------------------
+function menu_FRET_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_FRET (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function menu_FRET_rotamers_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_FRET_rotamers (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function menu_FRET_distribution_efficiency_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_FRET_distribution_efficiency (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+FRET_window;
