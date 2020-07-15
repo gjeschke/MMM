@@ -2228,11 +2228,11 @@ elseif handles.range(2)+0.05<=max(handles.rsim)
     handles=range_update(handles);
     % Update handles structure
     guidata(hObject, handles);
-end;
+end
 
 function handles=range_update(handles)
 
-if isfield(handles,'left_crsr') && ~ishandle(handles.left_crsr)
+if isfield(handles,'left_crsr') && ishandle(handles.left_crsr)
     set(handles.left_crsr,'XData',[handles.range(1) handles.range(1)]);
 else
     axes(handles.axes_distribution);
@@ -2240,7 +2240,7 @@ else
 end
 set(handles.edit_lower,'String',sprintf('%4.2f',handles.range(1)));
 
-if isfield(handles,'right_crsr') && ~ishandle(handles.right_crsr)
+if isfield(handles,'right_crsr') && ishandle(handles.right_crsr)
     set(handles.right_crsr,'XData',[handles.range(2) handles.range(2)]);
 else
     axes(handles.axes_distribution);
