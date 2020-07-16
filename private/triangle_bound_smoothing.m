@@ -20,7 +20,7 @@ function [lower_bounds,upper_bounds,err]=triangle_bound_smoothing(lower_bounds,u
 %
 % (c) G. Jeschke 2008
 
-if ~exist('silent','var'), silent=0; end;
+if ~exist('silent','var'), silent= true; end
 
 err=0;
 [m,n]=size(lower_bounds);

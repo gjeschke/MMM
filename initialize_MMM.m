@@ -282,6 +282,7 @@ rotamer_libraries(1).files=':R1A_175K_UFF_216_CASD:R1A_298K_UFF_216_r1_CASD:';
 rotamer_libraries(1).MC='R1A_298K_UFF_216_r#_CASD';
 rotamer_libraries(1).type='peptide';
 rotamer_libraries(1).exclude=':H2:OXT:HXT:H:'; % for peptides, these atoms are defined in the rotamer, but not attached
+rotamer_libraries(1).class = 'nitroxide';
 rotamer_libraries(1).download{1} = '';
 
 rotamer_libraries(2).label='IA-PROXYL';
@@ -290,6 +291,7 @@ rotamer_libraries(2).T=[175,298];
 rotamer_libraries(2).files=':IA1_175K_090814:IA1_298K_090814:';
 rotamer_libraries(2).type='peptide';
 rotamer_libraries(2).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(2).class = 'nitroxide';
 rotamer_libraries(2).download{1} = '';
 
 rotamer_libraries(3).label = 'IAP-4TU';
@@ -298,6 +300,7 @@ rotamer_libraries(3).T = 298;
 rotamer_libraries(3).files = ':TUP_298K_UFF_72:';
 rotamer_libraries(3).type = 'nucleotide';
 rotamer_libraries(3).exclude = ':N1:C2:O2:N3:H3:C4:O4:C5:H5:C6:H6:N4:H42:H41:'; % for uracil anc cytosine, these atoms come from the rotamer or are not present
+rotamer_libraries(3).class = 'nitroxide';
 rotamer_libraries(3).download{1} = '';
 
 rotamer_libraries(4).label='MA-PROXYL';
@@ -306,6 +309,7 @@ rotamer_libraries(4).T=[175,298];
 rotamer_libraries(4).files=':MalP_175K_UFF_108:MA1_298K_UFF_sticky_108:';
 rotamer_libraries(4).type='peptide';
 rotamer_libraries(4).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(4).class = 'nitroxide';
 rotamer_libraries(4).download{1} = '';
 
 rotamer_libraries(5).label='Br-MTSL';
@@ -316,6 +320,7 @@ rotamer_libraries(5).T= 298;
 rotamer_libraries(5).files=':R7A_298K_UFF_216_r1_CASD:';
 rotamer_libraries(5).type='peptide';
 rotamer_libraries(5).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(5).class = 'nitroxide';
 rotamer_libraries(5).download{1} = '';
 
 rotamer_libraries(6).label='M8DOTA-Gd';
@@ -324,6 +329,7 @@ rotamer_libraries(6).T=298;
 rotamer_libraries(6).files=':M8D_298K_UFF_1944_r2:';
 rotamer_libraries(6).type='peptide';
 rotamer_libraries(6).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(6).class = 'gadolinium';
 rotamer_libraries(6).download{1} = 'https://dl.dropboxusercontent.com/s/3cq2gy2zrafcv90/M8D_298K_UFF_1944_r2.zip';
 
 rotamer_libraries(7).label = 'MTS-4TU';
@@ -332,6 +338,7 @@ rotamer_libraries(7).T = 298;
 rotamer_libraries(7).files = ':TUM_298K_UFF_192:';
 rotamer_libraries(7).type = 'nucleotide';
 rotamer_libraries(7).exclude = ':N1:C2:O2:N3:H3:C4:O4:C5:H5:C6:H6:N4:H42:H41:'; % for uracil and cytosine, these atoms come from the rotamer or are not present
+rotamer_libraries(7).class = 'nitroxide';
 rotamer_libraries(7).download{1} = '';
 
 rotamer_libraries(8).label = 'R5-TP';
@@ -340,6 +347,7 @@ rotamer_libraries(8).T = 298;
 rotamer_libraries(8).files = ':R5T_298K_UFF_360:';
 rotamer_libraries(8).type = 'nucleotide';
 rotamer_libraries(8).exclude = ':OP1:'; % this atom comes from the rotamer (as an S atom)
+rotamer_libraries(8).class = 'nitroxide';
 rotamer_libraries(8).download{1} = '';
 
 rotamer_libraries(9).label = 'CNC-NO';
@@ -348,6 +356,7 @@ rotamer_libraries(9).T = 298;
 rotamer_libraries(9).files = ':CNR_298K_UFF_144:';
 rotamer_libraries(9).type = 'cofactor';
 rotamer_libraries(9).exclude = ':O8R:'; % this atom comes from the rotamer
+rotamer_libraries(9).class = 'nitroxide';
 rotamer_libraries(9).download{1} = '';
 
 rotamer_libraries(10).label='DOTA-Gd';
@@ -356,6 +365,7 @@ rotamer_libraries(10).T=298;
 rotamer_libraries(10).files=':GMO_298K_UFF_648:';
 rotamer_libraries(10).type='peptide';
 rotamer_libraries(10).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(10).class = 'gadolinium';
 rotamer_libraries(10).download{1} = 'https://dl.dropboxusercontent.com/s/us9oic9qexm83bv/GMO_298K_UFF_648.zip';
 
 rotamer_libraries(11).label='DTPA-Gd';
@@ -364,6 +374,7 @@ rotamer_libraries(11).T=298;
 rotamer_libraries(11).files=':GTO_298K_UFF_2430:'; %':GTO_298K_UFF_noH_T6_648:';
 rotamer_libraries(11).type='peptide';
 rotamer_libraries(11).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(11).class = 'gadolinium';
 rotamer_libraries(11).download{1} = 'https://dl.dropboxusercontent.com/s/j4scb7jj85dy0xd/GTO_298K_UFF_2430.zip';
 
 rotamer_libraries(12).label='HF-K1';
@@ -372,6 +383,7 @@ rotamer_libraries(12).T=298;
 rotamer_libraries(12).files=':RUA_298K_UFF_288:';
 rotamer_libraries(12).type='peptide';
 rotamer_libraries(12).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(12).class = 'nitroxide';
 rotamer_libraries(12).download{1} = '';
 
 rotamer_libraries(13).label='R5-TPT';
@@ -380,6 +392,7 @@ rotamer_libraries(13).T=298;
 rotamer_libraries(13).files=':RTT_298K_UFF_576:';
 rotamer_libraries(13).type='nucleotide';
 rotamer_libraries(13).exclude=':O5'':OP1:OP2:P:H05'':H5'':H5''''';
+rotamer_libraries(13).class = 'nitroxide';
 rotamer_libraries(13).download{1} = '';
 
 rotamer_libraries(14).label='Tormyshev-Trityl';
@@ -388,6 +401,7 @@ rotamer_libraries(14).T=298;
 rotamer_libraries(14).files=':TMT_298K_UFF_3888_r2:';
 rotamer_libraries(14).type='peptide';
 rotamer_libraries(14).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(14).class = 'trityl';
 rotamer_libraries(14).download{1} = 'https://dl.dropboxusercontent.com/s/3t7mfq00threzt0/TMT_298K_UFF_3888_r2.zip';
 
 rotamer_libraries(15).label='V1';
@@ -396,6 +410,7 @@ rotamer_libraries(15).T=298;
 rotamer_libraries(15).files=':V1A_298K_UFF_72_r3:';
 rotamer_libraries(15).type='peptide';
 rotamer_libraries(15).exclude=':H2:OXT:HXT:H:'; % for peptides, these atoms are defined in the rotamer, but not attached
+rotamer_libraries(15).class = 'nitroxide';
 rotamer_libraries(15).download{1} = '';
 
 rotamer_libraries(16).label='cNox@Tyr';
@@ -404,6 +419,7 @@ rotamer_libraries(16).T=298;
 rotamer_libraries(16).files=':Nc1_298K_UFF_128_r1:';
 rotamer_libraries(16).type='peptide';
 rotamer_libraries(16).exclude=':H2:OXT:HO2:H:'; % for peptides, these atoms are defined in the rotamer, but not attached
+rotamer_libraries(16).class = 'nitroxide';
 rotamer_libraries(16).download{1} = '';
 
 rotamer_libraries(17).label='lNox@Tyr';
@@ -412,6 +428,7 @@ rotamer_libraries(17).T=298;
 rotamer_libraries(17).files=':Nx1_298K_UFF_256_r1:';
 rotamer_libraries(17).type='peptide';
 rotamer_libraries(17).exclude=':H2:OXT:HO2:H:'; % for peptides, these atoms are defined in the rotamer, but not attached
+rotamer_libraries(17).class = 'nitroxide';
 rotamer_libraries(17).download{1} = '';
 
 rotamer_libraries(18).label='GPymiMTA';
@@ -420,6 +437,7 @@ rotamer_libraries(18).T=298;
 rotamer_libraries(18).files=':GPM_298K_UFF_432:';
 rotamer_libraries(18).type='peptide';
 rotamer_libraries(18).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(18).class = 'gadolinium';
 rotamer_libraries(18).download{1} = '';
 
 rotamer_libraries(19).label='dHis-Cu';
@@ -428,6 +446,7 @@ rotamer_libraries(19).T= 298;
 rotamer_libraries(19).files=':HCU_298K_UFF_12_r5:';
 rotamer_libraries(19).type='peptide';
 rotamer_libraries(19).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(19).class = 'histidine';
 rotamer_libraries(19).download{1} = '';
 
 rotamer_libraries(20).label='DZD';
@@ -436,6 +455,7 @@ rotamer_libraries(20).T= 298;
 rotamer_libraries(20).files=':DZD_298K_UFF_216:';
 rotamer_libraries(20).type='peptide';
 rotamer_libraries(20).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(20).class = 'nitroxide';
 rotamer_libraries(20).download{1} = '';
 
 rotamer_libraries(21).label='IAG';
@@ -444,6 +464,7 @@ rotamer_libraries(21).T= 298;
 rotamer_libraries(21).files=':GDI_298K_UFF_f09_2461:';
 rotamer_libraries(21).type='peptide';
 rotamer_libraries(21).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(22).class = 'nitroxide';
 rotamer_libraries(21).download{1} = 'https://dl.dropboxusercontent.com/s/z0gmxykc0070esl/GDI_298K_UFF_f09_2461.zip';
 
 rotamer_libraries(22).label='MAG';
@@ -452,6 +473,7 @@ rotamer_libraries(22).T= 298;
 rotamer_libraries(22).files=':GDM_298K_UFF_f09_1367:';
 rotamer_libraries(22).type='peptide';
 rotamer_libraries(22).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(22).class = 'nitroxide';
 rotamer_libraries(22).download{1} = 'https://dl.dropboxusercontent.com/s/7ihhihqtrku05ar/GDM_298K_UFF_f09_1367.zip';
 
 rotamer_libraries(23).label='DZC';
@@ -460,6 +482,7 @@ rotamer_libraries(23).T= 298;
 rotamer_libraries(23).files=':DZC_298K_UFF_216_r4:';
 rotamer_libraries(23).type='peptide';
 rotamer_libraries(23).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(23).class = 'nitroxide';
 rotamer_libraries(23).download{1} = 'https://dl.dropboxusercontent.com/s/nk0v2u3glrvr0a4/DZC_298K_UFF_216_r4.zip';
 
 rotamer_libraries(24).label='GM1';
@@ -468,6 +491,7 @@ rotamer_libraries(24).T= 298;
 rotamer_libraries(24).files=':GM1_298K_UFF_8192_r5:';
 rotamer_libraries(24).type='peptide';
 rotamer_libraries(24).exclude=':H2:HO2:OXT:';
+rotamer_libraries(24).class = 'nitroxide';
 rotamer_libraries(24).download{1} = 'https://dl.dropboxusercontent.com/s/tbpu2lzw8z2kp1b/GM1_298K_UFF_8192_r5.zip';
 
 rotamer_libraries(25).label = 'R3P';
@@ -475,6 +499,7 @@ rotamer_libraries(25).tc = 'R3P';
 rotamer_libraries(25).T = 298;
 rotamer_libraries(25).files = ':R3P_298K_UFF_512:';
 rotamer_libraries(25).type = 'nucleotide';
+rotamer_libraries(25).class = 'nitroxide';
 rotamer_libraries(25).exclude = ':O3'':HO3'':'; % this atom comes from the rotamer
 
 rotamer_libraries(26).label = 'R5P';
@@ -482,6 +507,7 @@ rotamer_libraries(26).tc = 'R5P';
 rotamer_libraries(26).T = 298;
 rotamer_libraries(26).files = ':R5P_298K_UFF_2048:';
 rotamer_libraries(26).type = 'nucleotide';
+rotamer_libraries(26).class = 'nitroxide';
 rotamer_libraries(26).exclude = ':C5'':H5'':H5'''':O5'':HO5'':'; % these atoms come from the rotamer
 
 

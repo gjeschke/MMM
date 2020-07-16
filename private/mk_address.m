@@ -1,4 +1,4 @@
-function address=mk_address(indices,name)
+function address = mk_address(indices,name)
 % Makes the address string for given indices,
 % for index arrays, a cell string is returned
 %

@@ -22,7 +22,7 @@ function varargout = FRET_window(varargin)
 
 % Edit the above text to modify the response to help deer_window
 
-% Last Modified by GUIDE v2.5 14-Jul-2020 15:10:34
+% Last Modified by GUIDE v2.5 15-Jul-2020 18:42:53
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -56,10 +56,33 @@ function deer_window_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 handles.eventdata = eventdata;
 
+% ### Defines the FRET efficiency matrix as an empty matrix ###
 
-handles.updated = 0;
+handles.FRET_efficiency_matrix = [];
+
+% ### set the defaults of model parameters ###
+
 handles.exp_FRET_efficiency = 0.5;
 set(handles.edit_exp_FRET_efficiency,'String',sprintf('%5.3f',handles.exp_FRET_efficiency));
+handles.diff_const_lower_bound = 0;
+set(handles.edit_diff_const_lower_bound,'String',sprintf('%5.3f',handles.diff_const_lower_bound));
+handles.diff_const_upper_bound = 0.4;
+set(handles.edit_diff_const_upper_bound,'String',sprintf('%5.3f',handles.diff_const_upper_bound));
+handles.exci_donor_lifetime = 0.4;
+set(handles.edit_exci_donor_lifetime,'String',sprintf('%5.3f',handles.exci_donor_lifetime));
+handles.diffusion_grid_size = 5;
+set(handles.edit_diffusion_grid_size,'String',sprintf('%i',handles.diffusion_grid_size));
+handles.diff_matrix_size = 70;
+set(handles.edit_diff_matrix_size,'String',sprintf('%i',handles.diff_matrix_size));
+handles.F_radius = 6;
+set(handles.edit_F_radius,'String',sprintf('%5.3f',handles.F_radius));
+handles.error_F_radius = 2;
+set(handles.edit_error_F_radius,'String',sprintf('%5.2f',handles.error_F_radius));
+handles.R0_grid_points = 5;
+set(handles.edit_R0_grid_points,'String',sprintf('%i',handles.R0_grid_points));
+
+handles.updated = 0;
+
 handles.sel_distr = 1;
 handles.range = [2,8];
 handles.chromophore_pair = [];
@@ -90,6 +113,17 @@ s = load('helpicon.mat');
 set(handles.pushbutton_help,'CData',s.cdata);
 
 set(handles.edit_exp_FRET_efficiency,'Enable','on');
+
+% Disable diffusion model edits and update button
+
+handles.edit_diff_const_lower_bound.Enable= 'off';
+handles.edit_diff_const_upper_bound.Enable= 'off';
+handles.edit_exci_donor_lifetime.Enable= 'off';
+handles.edit_diffusion_grid_size.Enable= 'off';
+handles.edit_diff_matrix_size.Enable= 'off';
+handles.pushbutton_update_model.Enable= 'off';
+handles.edit_error_F_radius.Enable= 'off';
+handles.edit_R0_grid_points.Enable= 'off';
 
 if ~success
     msgbox('Model must feature at least two chromophores. Use FRET rotamer computation first.','FRET simulation impossible','error');
@@ -353,13 +387,24 @@ function checkbox_diffusion_model_Callback(hObject, eventdata, handles)
 
 % Hint: get(hObject,'Value') returns toggle state of checkbox_diffusion_model
 
+handles.eventdata = eventdata;
 if hObject.Value
     handles.text_static_dynamic.String = 'Dynamic computation';
     handles.text_static_dynamic.Tooltip = 'Relative diffusion of chromophores is modelled';
+    enabled = 'on';
 else
     handles.text_static_dynamic.String = 'Static computation';
-    handles.text_static_dynamic.Tooltip = 'Relative diffusion of chromophores is not considered';    
+    handles.text_static_dynamic.Tooltip = 'Relative diffusion of chromophores is not considered'; 
+    enabled = 'off';
 end
+handles.edit_diff_const_lower_bound.Enable= enabled;
+handles.edit_diff_const_upper_bound.Enable= enabled;
+handles.edit_exci_donor_lifetime.Enable= enabled;
+handles.edit_diffusion_grid_size.Enable= enabled;
+handles.edit_diff_matrix_size.Enable= enabled;
+handles.pushbutton_update_model.Enable= enabled;
+handles.edit_error_F_radius.Enable= enabled;
+handles.edit_R0_grid_points.Enable= enabled;
 handles = update_plots(handles);
 guidata(hObject,handles);
 
@@ -435,9 +480,13 @@ function handles = update_plots(handles)
 
 global model
 
-col1=[0,1,0];
-col2=[0,0,1];
+% set colors for display of individual distributions, when more than two
+% chromophores are selected, maybe such selection should be blicked for
+% FRET
+col1=[0,1,0]; % color green 
+col2=[0,0,1]; % color blue
 
+% The following part plots distance distributions
 if handles.copy_distr
     figure(1); clf;
     set(gca,'FontSize',16);
@@ -673,6 +722,7 @@ if numlab>1
     end
 end
 
+% The following part plots the rmsd matrix or diagram
 if handles.copy_FRET
     figure(2); clf;
     set(gca,'FontSize',16);
@@ -683,14 +733,15 @@ else
     hold on;
 end
 
-% ### only a dummy image is plotted here, you need to plot the R0/D plot
-% ###
-
 if handles.checkbox_plot_rmsd.Value
-    C = imread('ngc6543a.jpg');
-    image(C);
-    xlabel('R0 (nm)');
-    ylabel('Diff. const. (nm^2/ns)');
+    if ~isempty(handles.FRET_efficiency_matrix)
+        % ### compute rmsd matrix and plot it ###
+        xlabel('R0 (nm)');
+        ylabel('Diff. const. (nm^2/ns)');
+    end
+    % ### only a dummy image is plotted here, you need to plot the R0/D plot
+    % ###    C = imread('ngc6543a.jpg');
+    image(C); % ### needs to be removed
 else
     % ### please check whether you want to plot something if the checkbox is
     % inactive, this would go here ###
@@ -854,34 +905,6 @@ webcall(entry,'-helpbrowser');
 guidata(hObject, handles);
 
 
-% --- Executes on button press in pushbutton_range_analysis.
-function pushbutton_range_analysis_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton_range_analysis (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-global hMain
-
-numlab=length(handles.labels);
-
-if numlab~=2
-    add_msg_board('Error: Range analysis requires exactly two labels.');
-    return
-else
-    label_list = get(handles.listbox_label,'String');
-    adr1 = label_list{handles.labels(1)};
-    adr2 = label_list{handles.labels(2)};
-    set(handles.FRET,'Pointer','watch');
-    [~,fname] = analyze_range(handles,adr1,adr2);
-    set(handles.FRET,'Pointer','arrow');
-    if ~isempty(fname)
-        hMain.report_file=fname;
-        report_editor;
-    end
-end
-% Update handles structure
-guidata(hObject, handles);
-
 function edit_lower_Callback(hObject, eventdata, handles)
 % hObject    handle to edit_lower (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -1033,236 +1056,6 @@ else
 end
 set(handles.edit_upper,'String',sprintf('%4.2f',handles.range(2)));
 
-
-function [pairs,fname]=analyze_range(handles,adr1,adr2)
-% Analyze which rotamer pairs contribute to distance distribution in the
-% range speciefied by handles.range
-
-global model
-global general
-
-pairs=[];
-fname='';
-
-rotamers1=0;
-rotamers2=0;
-
-library1='';
-library2='';
-if isfield(model,'labels')
-    for k=1:length(model.labels)
-        if strcmp(model.labels(k).adr,adr1)
-            NOpos1=model.labels(k).NOpos;
-            [significant1,n1]=size(NOpos1);
-            rotamers1=true;
-            [library1,NOpos1] = find_library_NOpos(adr1);
-        end
-        if strcmp(model.labels(k).adr,adr2)
-            NOpos2=model.labels(k).NOpos;
-            [significant2,n2]=size(NOpos2);
-            rotamers2=true;
-            [library2,NOpos2] = find_library_NOpos(adr2);
-        end
-    end
-end
-if ~isempty(library1)
-    char_table1 = rotamer_char_table(library1);
-end
-if ~isempty(library2)
-    char_table2 = rotamer_char_table(library2);
-end
-
-if ~rotamers1 && ~rotamers2
-    add_msg_board('Error: For range analysis, at least one site must be a spin label with rotamers');
-    return
-end
-
-[pairs,popsum] = pairs_in_range(handles.range,NOpos1,NOpos2); % range must be supplied in nm
-
-if isempty(pairs)
-    add_msg_board('No rotamer pairs contribute to distance distribution in selected range.');
-else
-    frac=sum(pairs(:,3))/popsum;
-    add_msg_board(sprintf('Selected range corresponds to %6.1f%% of total pair population',100*frac));
-    [sortpop,poppoi]=sort(pairs(:,3),'descend');
-    sortpop=sortpop/sum(sortpop);
-    [~,significant]=min(abs(cumsum(sortpop)-0.99));
-    add_msg_board(sprintf('%i pairs contribute in this range, %i of those contribute 99%% population of the range',length(poppoi),significant));
-    spairs=pairs(poppoi(1:significant),:); % leading 99% of pairs sorted by descending population
-    poi1=0;
-    [m1,~]=size(NOpos1);
-    rot1=zeros(m1,2);
-    for k=1:m1 % analyze site 1
-        cpairs=find(spairs(:,1)==NOpos1(k,5));
-        if ~isempty(cpairs)
-            pops=sum(spairs(cpairs,3));
-            poi1=poi1+1;
-            rot1(poi1,1)=NOpos1(k,5);
-            rot1(poi1,2)=pops;
-        end
-    end
-    rot1=rot1(1:poi1,:);
-    add_msg_board(sprintf('At site 1: %i out of %i rotamers contribute in selected range.',poi1,m1));
-    poi2=0;
-    [m2,~]=size(NOpos2);
-    rot2=zeros(m2,2);
-    for k=1:m2 % analyze site 2
-        cpairs=find(spairs(:,2)==NOpos2(k,5));
-        if ~isempty(cpairs)
-            pops=sum(spairs(cpairs,3));
-            poi2=poi2+1;
-            rot2(poi2,1)=NOpos2(k,5);
-            rot2(poi2,2)=pops;
-        end
-    end
-    rot2=rot2(1:poi2,:);
-    add_msg_board(sprintf('At site 2: %i out of %i rotamers contribute in selected range.',poi2,m2));
-    fname=[general.tmp_files 'chi1_chi2_analysis.dat'];
-    fid=fopen(fname,'w');
-    fprintf(fid,'--- MMM chi1/chi2 analysis of rotamers ---\nSite 1: %s, Site 2: %s\ncontributions to the distance range [%4.2f, %4.2f] nm\n\n',adr1,adr2,handles.range(1),handles.range(2));
-    fprintf(fid,'Selected range corresponds to %6.1f%% of total pair population\n',100*frac);
-    fprintf(fid,'%i pairs contribute in this range,\n%i of those contribute 99%% population of the range\n\n',length(poppoi),significant);
-    fprintf(fid,'At %s: %i out of %i rotamers contribute in selected range.\n',adr1,poi1,m1);
-    if ~isempty(library1)
-        fprintf(fid,'The chi1/chi2 analysis of rotamers at %s follows:\n\n',adr1);
-        fprintf(fid,'rotamer   total population (%%)   pop. in range (%%)\n');
-        [pops,chi1_chi2]=chi1_chi2_analysis(NOpos1,rot1,char_table1);
-        [m,~]=size(pops);
-        for k=1:m
-            fprintf(fid,'(%s) %15.1f%20.1f\n',chi1_chi2{k},100*pops(k,1)/sum(pops(:,1)),100*pops(k,2)/sum(pops(:,2)));
-        end
-    end
-    fprintf(fid,'\nAt %s: %i out of %i rotamers contribute in selected range.\n',adr2,poi2,m2);
-    if ~isempty(library2)
-        [pops,chi1_chi2]=chi1_chi2_analysis(NOpos2,rot2,char_table2);
-        fprintf(fid,'The chi1/chi2 analysis of rotamers at %s follows:\n\n',adr2);
-        fprintf(fid,'rotamer   total population (%%)   pop. in range (%%)\n');
-        [m,~]=size(pops);
-        for k=1:m
-            fprintf(fid,'(%s) %15.1f%20.1f\n',chi1_chi2{k},100*pops(k,1)/sum(pops(:,1)),100*pops(k,2)/sum(pops(:,2)));
-        end
-    end
-    fclose(fid);
-    % Now color rotamers in range
-    rotlist=NOpos1(:,5);
-    poplist=NOpos1(:,4);
-    [~,poppoi]=sort(poplist,'descend');
-    attached1=rotlist(poppoi(1:significant1)); % list of numbers of significant rotamers
-    for k=1:length(attached1)
-        rotamer=attached1(k);
-        in_range=sum(find(spairs(:,1)==rotamer));
-        if in_range
-            loctag=get_loctag(k);
-            locadr=sprintf('%s.:%s',adr1,loctag);
-            set_object(locadr,'color',{[0,0,0]});
-        end
-    end
-    rotlist=NOpos2(:,5);
-    poplist=NOpos2(:,4);
-    [~,poppoi]=sort(poplist,'descend');
-    attached2=rotlist(poppoi(1:significant2)); % list of numbers of significant rotamers
-    for k=1:length(attached2)
-        rotamer=attached2(k);
-        in_range=sum(find(spairs(:,2)==rotamer));
-        if in_range
-            loctag=get_loctag(k);
-            locadr=sprintf('%s.:%s',adr2,loctag);
-            set_object(locadr,'color',{[0,0,0]});
-        end
-    end
-end
-
-function [library,NOpos] = find_library_NOpos(adr)
-% returns the rotamer library for a labeled residue at a given address
-% empty string is returned, if residue is not found or library was not
-% stored
-
-global model
-
-library='';
-NOpos=[];
-indices=resolve_address(adr);
-if isempty(indices) || length(indices)~=4,
-    return;
-end;
-
-
-nscan=length(model.sites);
-for k=1:nscan,
-    if isfield(model.sites{k},'library'),
-        currlib=model.sites{k}.library;
-    else
-        currlib='';
-    end;    
-    for kc=1:length(model.sites{k}),
-        for kk=1:length(model.sites{k}(kc).residue),
-            diff=sum(abs(indices-model.sites{k}(kc).residue(kk).indices));
-            if diff==0,
-                library=currlib;
-                NOpos=model.sites{k}(kc).residue(kk).NOpos;
-            end
-        end;
-    end;
-end;
-
-function [pops,chi1_chi2]=chi1_chi2_analysis(NOpos,rot,char_table)
-% Populations of chi1-chi2 rotamer groups in full distribution NOpos and
-% range-selected distribution rot, the character table char_table for the
-% corresponding rotamer library must be provided
-
-chi1_chi2{1}='m,m';
-chi1_chi2{2}='m,t';
-chi1_chi2{3}='m,p';
-chi1_chi2{4}='t,m';
-chi1_chi2{5}='t,t';
-chi1_chi2{6}='t,p';
-chi1_chi2{7}='p,m';
-chi1_chi2{8}='p,t';
-chi1_chi2{9}='p,p';
-
-pops=zeros(9,2);
-
-[m,n]=size(NOpos);
-
-for k=1:m,
-    indy=NOpos(k,5);
-    character=char_table{indy};
-    short_char=character(1:3);
-    for kk=1:9,
-        if strcmp(short_char,chi1_chi2{kk}),
-            pops(kk,1)=pops(kk,1)+NOpos(k,4);
-        end;
-    end;
-end;
-
-[mr,nr]=size(rot);
-
-for k=1:mr,
-    indy=rot(k,1);
-    character=char_table{indy};
-    short_char=character(1:3);
-    for kk=1:9,
-        if strcmp(short_char,chi1_chi2{kk}),
-            pops(kk,2)=pops(kk,2)+rot(k,2);
-        end;
-    end;
-end;
-
-function loctag=get_loctag(rotamer)
-% return the location tag for a numbered rotamer
-
-loctags0=':A:B:C:D:E:F:G:H:I:J:K:L:M:N:O:P:Q:R:S:T:U:V:W:X:Y:Z:';
-
-locid=mod(rotamer,26);
-if locid==0, locid=26; end
-locmid=floor((rotamer-1)/26);
-if locmid>0
-    loctag=strcat(id2tag(locmid,loctags0),id2tag(locid,loctags0));
-else
-    loctag=id2tag(locid,loctags0);
-end
-
-
 % --- Executes on button press in togglebutton_expand.
 function togglebutton_expand_Callback(hObject, eventdata, handles)
 % hObject    handle to togglebutton_expand (see GCBO)
@@ -1322,6 +1115,10 @@ function pushbutton_AV_Callback(hObject, eventdata, handles)
 handles.eventdata = eventdata;
 % ### extension should be adapted, multiple ###
 [filename,pathname] = uigetfile('.add','Load AV distance distribution');
+if filename == 0
+    add_msg_board('Loading AV file cancelled by user.');
+    return
+end
 fname = fullfile(pathname, filename);
 set(handles.FRET,'Pointer','watch');
 drawnow
@@ -1390,7 +1187,13 @@ function edit_diff_const_lower_bound_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of edit_diff_const_lower_bound as a double
 
 handles.eventdata = eventdata;
+
 % ### &&& specify edit field &&& ###
+[v,handles] = edit_update_MMM(handles,hObject,0,2,0.4,'%5.3f',0);
+if v ~= handles.diff_const_lower_bound
+    handles.diff_const_lower_bound = v;
+    handles.FRET_efficiency_matrix = [];
+end
 handles = update_plots(handles);
 guidata(hObject,handles);
 
@@ -1419,6 +1222,11 @@ function edit_diff_const_upper_bound_Callback(hObject, eventdata, handles)
 
 handles.eventdata = eventdata;
 % ### &&& specify edit field &&& ###
+[v,handles] = edit_update_MMM(handles,hObject,0,2,0.4,'%5.3f',0);
+if v ~= handles.diff_const_upper_bound
+    handles.diff_const_upper_bound = v;
+    handles.FRET_efficiency_matrix = [];
+end
 handles = update_plots(handles);
 guidata(hObject,handles);
 
@@ -1447,6 +1255,11 @@ function edit_exci_donor_lifetime_Callback(hObject, eventdata, handles)
 
 handles.eventdata = eventdata;
 % ### &&& specify edit field &&& ###
+[v,handles] = edit_update_MMM(handles,hObject,0,10,0.4,'%5.3f',0);
+if v ~= handles.diff_const_lower_bound
+    handles.exci_donor_lifetime = v;
+    handles.FRET_efficiency_matrix = [];
+end
 handles = update_plots(handles);
 guidata(hObject,handles);
 
@@ -1475,6 +1288,11 @@ function edit_diffusion_grid_size_Callback(hObject, eventdata, handles)
 
 handles.eventdata = eventdata;
 % ### &&& specify edit field &&& ###
+[v,handles] = edit_update_MMM(handles,hObject,5,20,5,'%i',1);
+if v ~= handles.diffusion_grid_size
+    handles.diffusion_grid_size = v;
+    handles.FRET_efficiency_matrix = [];
+end
 handles = update_plots(handles);
 guidata(hObject,handles);
 
@@ -1503,6 +1321,11 @@ function edit_diff_matrix_size_Callback(hObject, eventdata, handles)
 
 handles.eventdata = eventdata;
 % ### &&& specify edit field &&& ###
+[v,handles] = edit_update_MMM(handles,hObject,5,80,20,'%i',1);
+if v ~= handles.diff_matrix_size
+    handles.diff_matrix_size = v;
+    handles.FRET_efficiency_matrix = [];
+end
 handles = update_plots(handles);
 guidata(hObject,handles);
 
@@ -1534,22 +1357,9 @@ handles = update_plots(handles);
 guidata(hObject,handles);
 
 
-function edit_sim_FRET_efficiency_Callback(hObject, eventdata, handles)
-% hObject    handle to edit_sim_FRET_efficiency (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit_sim_FRET_efficiency as text
-%        str2double(get(hObject,'String')) returns contents of edit_sim_FRET_efficiency as a double
-
-handles.eventdata = eventdata;
-% ### &&& specify edit field &&& ###
-handles = update_plots(handles);
-guidata(hObject,handles);
-
 % --- Executes during object creation, after setting all properties.
-function edit_sim_FRET_efficiency_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit_sim_FRET_efficiency (see GCBO)
+function text_sim_FRET_efficiency_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to text_sim_FRET_efficiency (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1571,6 +1381,11 @@ function edit_F_radius_Callback(hObject, eventdata, handles)
 
 handles.eventdata = eventdata;
 % ### &&& specify edit field &&& ###
+[v,handles] = edit_update_MMM(handles,hObject,0.5,20,6,'%5.2f',0);
+if v ~= handles.F_radius
+    handles.F_radius = v;
+    handles.FRET_efficiency_matrix = [];
+end
 handles = update_plots(handles);
 guidata(hObject,handles);
 
@@ -1598,6 +1413,12 @@ function edit_error_F_radius_Callback(hObject, eventdata, handles)
 
 handles.eventdata = eventdata;
 % ### &&& specify edit field &&& ###
+[v,handles] = edit_update_MMM(handles,hObject,0.1,99,2,'%5.2f',0);
+if v ~= handles.error_F_radius
+    handles.error_F_radius = v;
+    handles.FRET_efficiency_matrix = [];
+end
+handles.FRET_efficiency_matrix = [];
 handles = update_plots(handles);
 guidata(hObject,handles);
 
@@ -1625,6 +1446,11 @@ function edit_R0_grid_points_Callback(hObject, eventdata, handles)
 
 handles.eventdata = eventdata;
 % ### &&& specify edit field &&& ###
+[v,handles] = edit_update_MMM(handles,hObject,5,100,20,'%i',1);
+if v ~= handles.R0_grid_points
+    handles.R0_grid_points = v;
+    handles.FRET_efficiency_matrix = [];
+end
 handles = update_plots(handles);
 guidata(hObject,handles);
 

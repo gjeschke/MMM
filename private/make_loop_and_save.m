@@ -81,7 +81,7 @@ for k = 1:length(restrain)
 end
 [~,~,err] = triangle_bound_smoothing(lower_bounds,upper_bounds);
 if err
-    return;
+    auxiliary = false;
 end
 
 if auxiliary
@@ -127,7 +127,7 @@ if auxiliary
                     restrain(k).r_beacon(kr).par1 = -lb(k1,k2);
                     restrain(k).r_beacon(kr).par2 = -ub(k1,k2);
                     resa = restraints.res1 + k1 - 1;
-                    fprintf(1,'(%i,%i): [%4.2f,%4.2f] Å\n',resa,restrain(k).r_beacon(kr).resb,lb(k1,k2),ub(k1,k2));
+                    fprintf(1,'(%i,%i): [%4.2f,%4.2f] ?\n',resa,restrain(k).r_beacon(kr).resb,lb(k1,k2),ub(k1,k2));
                 else
                     fprintf(1,'Setting auxiliary internal restraint:');
                     kr = length(restrain(k1).r_intern)+1;
@@ -146,7 +146,7 @@ if auxiliary
                     restrain(k).r_intern(kr).par1 = -lb(k1,k2);
                     restrain(k).r_intern(kr).par2 = -ub(k1,k2);
                     resa = restraints.res1 + k1 - 1;
-                    fprintf(1,'(%i,%i): [%4.2f,%4.2f] Å\n',resa,restrain(k).r_beacon(kr).resb,lb(k1,k2),ub(k1,k2));
+                    fprintf(1,'(%i,%i): [%4.2f,%4.2f] ?\n',resa,restrain(k).r_beacon(kr).resb,lb(k1,k2),ub(k1,k2));
                 end
             end
         end
@@ -367,7 +367,7 @@ while kMC <= ntrials
                 bb0 = coor;
             elseif  isempty(restraints.anchorN) && isempty(restraints.anchorC)
                 [rms,coor] = rmsd_superimpose(bb0,coor);
-                add_msg_board(sprintf('Model superimposes onto first model with rmsd of %4.1f Å',rms));
+                add_msg_board(sprintf('Model superimposes onto first model with rmsd of %4.1f ?',rms));
             end
             loopname = write_pdb_backbone(coor,restraints.sequence,fname,success,res1,directory);
             pmodel = make_SCWRL4_sidegroups(loopname,directory);
@@ -451,7 +451,7 @@ fprintf(fid_report,'%5.2f%% of all trials had restraint violations.\n',100*err_c
 fprintf(fid_report,'This is a success rate of %6.1f ppm.\n',1e6*(1-err_count(6)/kMC));
 fprintf(fid_report,'%5.2f%% of all trials had internal loop backbone clashes.\n',100*(err_count(3)+err_count(8))/kMC);
 fprintf(fid_report,'%5.2f%% of all trials hand backbone clashes with the protein.\n',100*(err_count(5)+err_count(7))/kMC);
-fprintf(fid_report,'The sidegroup clash threshold was %4.1f Å.\n',min_approach);
+fprintf(fid_report,'The sidegroup clash threshold was %4.1f ?.\n',min_approach);
 fprintf(fid_report,'%5.2f%% of the backbone models lead to internal sidegroup clashes.\n',100*err_count(11)/err_count(1));
 fprintf(fid_report,'%5.2f%% of the backbone models lead to sidegroup clashes with the protein.\n',100*err_count(10)/err_count(1));
 if closed_loop
@@ -589,7 +589,7 @@ if m2 > 0
 
     approach_prot = min_dist;
     if min_dist < min_approach
-    %    fprintf(2,'Minimum sidegroup distance to protein is %6.2f Å\n',min_dist);
+    %    fprintf(2,'Minimum sidegroup distance to protein is %6.2f ?\n',min_dist);
        pclash = 1;
        cd(my_dir);
        return
@@ -612,7 +612,7 @@ for k1 = 1:poi-1
 end
 approach_loop = min_dist;
 if min_dist < min_approach
-%    fprintf(2,'Minimum heavy-atom distance: %6.2f Å at (%i,%i)\n',min_dist,we_clash);
+%    fprintf(2,'Minimum heavy-atom distance: %6.2f ? at (%i,%i)\n',min_dist,we_clash);
     iclash = 1;
 end
 

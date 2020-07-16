@@ -22,7 +22,7 @@ function varargout = MMM_prototype(varargin)
 
 % Edit the above text to modify the response to help MMM_prototype
 
-% Last Modified by GUIDE v2.5 14-Jul-2020 13:20:14
+% Last Modified by GUIDE v2.5 16-Jul-2020 09:27:43
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -6265,6 +6265,55 @@ function menu_FRET_rotamers_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+global hMain
+
+residues=zeros(10000,4);
+
+% check whether the user has selected any chains or chain models
+allindices = resolve_address('*'); % get indices of all selected objects
+
+poi=0;
+if ~isempty(allindices)
+    [m,~]=size(allindices);
+    for k=1:m
+        cindices=allindices(k,:);
+        cindices=cindices(cindices>0);
+        if length(cindices)==4 % user selected residue
+            poi=poi+1;
+            residues(poi,:)=cindices;
+        end
+    end
+end
+
+residues=residues(1:poi,:);
+
+type = selection_type(residues);
+
+if isempty(residues)
+    msgbox('At least one residue must be selected.','No residue selected for site scan','warn');
+    add_msg_board('Site scan cancelled since no residues are selected.');
+else
+    hMain.site_scan_residue=1;
+    if strcmp(type,'peptide')
+        site_scan_chromophores;
+    elseif strcmp(type,'nucleotide')
+        add_msg_board('ERROR: Nucleotides not yet supported for chromophore site scan.');
+    elseif strcmp(type,'nonstandard')
+        add_msg_board('ERROR: Cofactors not yet supported for chromophore site scan.');
+    else
+        add_msg_board('ERROR: Only peptide residues must be selected for chromophore site scan.');
+        hMain.site_scan = 0;
+    end
+    if ~hMain.site_scan
+        add_msg_board('Site scan cancelled.');
+    else
+        hMain.site_scan_type = 'chromophore_peptide';
+        labeling_site_scan(residues);
+    end
+    hMain.site_scan_residue=0;
+end
+
+guidata(hObject,handles);
 
 % --------------------------------------------------------------------
 function menu_FRET_distribution_efficiency_Callback(hObject, eventdata, handles)

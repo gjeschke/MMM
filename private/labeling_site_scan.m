@@ -45,13 +45,15 @@ if mm==1 && hMain.site_scan_inter>0 && ~hMain.site_scan_residue,
     add_msg_board('### Warning ### Only one chain model. No inter-chain analysis.');
 end;
 
-if hMain.site_scan_residue,
-    if strcmp(hMain.site_scan_type,'peptide'),
+if hMain.site_scan_residue
+    if strcmp(hMain.site_scan_type,'peptide')
         labeling_conditions;
-    elseif strcmp(hMain.site_scan_type,'nucleotide'),
+    elseif strcmp(hMain.site_scan_type,'nucleotide')
         labeling_conditions_nucleotides;
-    elseif strcmp(hMain.site_scan_type,'cofactor'),
+    elseif strcmp(hMain.site_scan_type,'cofactor')
         labeling_conditions_cofactors(indices);
+    elseif strcmp(hMain.site_scan_type,'chromophore_peptide')
+        labeling_conditions_chromophore(indices);
     else
         add_msg_board('ERROR: Unknown type of site scan. Cancelled.');
         return
@@ -101,33 +103,33 @@ else
     res_tags=':';
     oo=0;
     sel_residues=hMain.residue_pattern;
-    if ischar(sel_residues), % nucleotide case or cofactor case
-        if sel_residues == '*',
+    if ischar(sel_residues) % nucleotide case or cofactor case
+        if sel_residues == '*'
             res_tags = ':*:';
             res_string = '*';
-        end;
-        if strfind(sel_residues,'D'), % desoxyribose labeling
+        end
+        if strfind(sel_residues,'D') % desoxyribose labeling
             all_DNA = true;
         else
             all_DNA = false;
-        end;
-        if strfind(sel_residues,'R'), % ribose labeling
+        end
+        if strfind(sel_residues,'R') % ribose labeling
             all_RNA = true;
         else
             all_RNA = false;
-        end;
-        if isempty(sel_residues),
+        end
+        if isempty(sel_residues)
             add_msg_board('### Warning ### No residue types selected. No nucleotide site scan');
             return
         else
-            for k=1:length(sel_residues),
+            for k=1:length(sel_residues)
                 oo=oo+1;
                 res_string=sprintf('%s"%s",',res_string,sel_residues(k));
                 res_tags=sprintf('%s%s:',res_tags,upper(sel_residues(k)));
-            end;
-        end;
+            end
+        end
     else % amino acid case
-        if sum(sel_residues)<1,
+        if sum(sel_residues)<1
             add_msg_board('### Warning ### No residue types selected. No amino acid site scan');
             return
         else
@@ -229,6 +231,8 @@ else
                         end;
                     case 'cofactor'
                         id = 1;
+                    case 'chromophore_peptide'
+                        id=tag2id(name,res_tags);
                 end;
                 if ~isempty(id),
                     mmm=mmm+1;
@@ -277,7 +281,8 @@ else
             new_labels=new_labels+length(calc_positions);
             sites(k).residue=calc_positions;
             sites(k).library=libraries{k};
-            for kk=1:length(calc_positions),
+            sites(k).class = rot_lib.class;
+            for kk=1:length(calc_positions)
                 text=sprintf('rotamers computed: %s using library %s at a temperature of %4.0f K',calc_positions(kk).label,libraries{k},T(k));
                 add_annotation(calc_positions(kk).indices,'Spin',text,{'rotamers computed'});
                 numr=length(calc_positions(kk).rotamers);
@@ -346,7 +351,7 @@ dx=(NOall(:,1)-xmean);
 dy=(NOall(:,2)-ymean);
 dz=(NOall(:,3)-zmean);
 nNO=length(dx);
-rmsd=sqrt(0.005+nNO*sum(dx.^2.*pop+dy.^2.*pop+dz.^2.*pop)/(nNO-1))/10; % divided by 10 for Å -> nm
+rmsd=sqrt(0.005+nNO*sum(dx.^2.*pop+dy.^2.*pop+dz.^2.*pop)/(nNO-1))/10; % divided by 10 for ? -> nm
 
 function rmsd=NOpos_rmsdz(NOall)
 % in nm(!)
@@ -356,7 +361,7 @@ pop=pop/sum(pop);
 zmean=sum(NOall(:,3).*pop);
 dz=(NOall(:,3)-zmean);
 nNO=length(dz);
-rmsd=sqrt(0.005/3+nNO*sum(dz.^2.*pop)/(nNO-1))/10; % divided by 10 for Å -> nm
+rmsd=sqrt(0.005/3+nNO*sum(dz.^2.*pop)/(nNO-1))/10; % divided by 10 for ? -> nm
 
 function download_url = get_download_url(libname)
 
