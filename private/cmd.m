@@ -2976,116 +2976,150 @@ function handles=distance(handles,args)
 
 global hMain
 global rotamer_libraries
+global general
 
 command=sprintf('distance %s',strtrim(args));
 undo_cmd='noundo';
 [handles]=cmd_history(handles,command,undo_cmd);
 
-if isempty(args) || isempty(strtrim(args)),
+if isempty(args) || isempty(strtrim(args))
     add_msg_board('Usage: distance adr1 adr2 label [filename]');
+	add_msg_board('or Usage: distance adr1 adr2 label1;label2 [filename]');
     add_msg_board('Only residue addresses are allowed.');
     return
-end;
+end
 
 myargs=textscan(args,'%s');
-if length(myargs{1}) < 3,
+if length(myargs{1}) < 3
     add_msg_board('ERROR: Command requires at least three arguments.');
     return
-end;
+end
 
 
 adr1=char(myargs{1}(1));
 adr2=char(myargs{1}(2));
-label=char(myargs{1}(3));
+label=strsplit(char(myargs{1}(3)),';'); % parsed to cell for case of one/two label types
 
 rindices1 = resolve_address(adr1);
 [m1,n1] = size(rindices1);
-if m1 ~= 1 || n1 ~=4,
+if m1 ~= 1 || n1 ~=4
     add_msg_board(sprintf('ERROR: Address %s is not a unique residue specification.',adr1));
     return;
-end;
+end
 rindices2 = resolve_address(adr2);
 [m2,n2] = size(rindices2);
-if m2 ~= 1 || n2 ~=4,
+if m2 ~= 1 || n2 ~=4
     add_msg_board(sprintf('ERROR: Address %s is not a unique residue specification.',adr2));
     return
-end;
+end
 
-mode = '';
-rot_lib_name = '';
+mode = cell(size(label));
+rot_lib_name = cell(size(label));
+for ii = 1:length(label)
+    for k = 1:length(rotamer_libraries)
+        if strcmpi(label{ii},rotamer_libraries(k).tc) || strcmpi(label{ii},rotamer_libraries(k).label)
+            id = 0;
+            for kk = 1:length(rotamer_libraries(k).T)
+                if rotamer_libraries(k).T(kk) == 298
+                    id = kk;
+                end
+            end
+            if id >0
+                rot_lib_name{ii} = id2tag(id,rotamer_libraries(k).files);
+                mode{ii} = 'single';
+            end
+            if isfield(rotamer_libraries(k),'MC') && ~isempty(rotamer_libraries(k).MC)
+                rot_lib_name{ii} = rotamer_libraries(k).MC;
+                mode{ii} = 'MC';
+            end
+        end
+    end
 
-for k = 1:length(rotamer_libraries),
-    if strcmpi(label,rotamer_libraries(k).tc) || strcmpi(label,rotamer_libraries(k).label),
-        id = 0;
-        for kk = 1:length(rotamer_libraries(k).T),
-            if rotamer_libraries(k).T(kk) == 298,
-                id = kk;
-            end;
-        end;
-        if id >0,
-            rot_lib_name = id2tag(id,rotamer_libraries(k).files);
-            mode = 'single';
-        end;
-        if isfield(rotamer_libraries(k),'MC') && ~isempty(rotamer_libraries(k).MC),
-            rot_lib_name = rotamer_libraries(k).MC;
-            mode = 'MC';
-        end;
-    end;
-end;
+    if isempty(rot_lib_name{ii}) && ~isempty(label{ii})
+        %test for special rotamer libraries
+        libdir=dir(strcat(general.rootdir,'rotamer_libraries'));
+        id=0;
+        for k=1:length(libdir)
+            [~,name,ext] = fileparts(libdir(k).name);
+            if strcmpi(ext,'.mat')
+                id=id+1;
+                if strcmpi(label{ii},name)
+                    rot_lib_name{ii} = name;
+                end
+            end
+        end
+        if id==0
+            add_msg_board(sprintf('ERROR: Library for label %s not found.',label{ii}));
+            return;
+        else
+            mode{ii} = 'single';
+        end
+    end
+end
 
-if length(myargs{1}) > 3,
+if length(label) == 2 && ~strcmp(mode{1},mode{2})
+    add_msg_board('ERROR: Two different MC-modes for the labels is not supported.');
+    return;
+end
+
+if length(myargs{1}) > 3
     fname = char(myargs{1}(4));
 else
     fname = '';
-end;
+end
 
 set(hMain.MMM,'Pointer','watch');
 drawnow
 
-switch mode
+switch mode{1}
     case 'single'
-        load(rot_lib_name);
+        load(rot_lib_name{1});
         label1 = rotamer_populations(rindices1,rot_lib);
+        load(rot_lib_name{end});
         label2 = rotamer_populations(rindices2,rot_lib);
         [rax,distr]=get_distribution(label1(1).NOpos,label2(1).NOpos,0.1);
         distr = distr/sum(distr);
         rmean = 10*sum(rax.*distr);
-        add_msg_board(sprintf('Mean distance : %5.1f ?',rmean));
+        add_msg_board(sprintf('Mean distance : %5.1f Å',rmean));
         rdev = 10*rax - rmean;
         mom2 = sum(rdev.^2.*distr);
-        add_msg_board(sprintf('Std. deviation: %5.1f ?',sqrt(mom2)));
-        if ~isempty(fname),
+        add_msg_board(sprintf('Std. deviation: %5.1f Å',sqrt(mom2)));
+        if ~isempty(fname)
             fid = fopen(fname,'at');
-            if fid == -1,
+            if fid == -1
                 add_msg_board('ERROR: Output file could not be opened.');
                 return;
-            end;
-            for k = 1:length(rax),
+            end
+            fprintf(fid,'# distance %s %s Labels %s %s\n',adr1,adr2,rot_lib_name{1},rot_lib_name{end}); % write file header
+            for k = 1:length(rax)
                 fprintf(fid,'%6.2f%8.4f\n',rax(k),distr(k));
-            end;
+            end
             fclose(fid);
-        end;
+        end
     case 'MC'
-        poi = strfind(rot_lib_name,'#');
-        for k = 1:5,
-            clib = sprintf('%s%i%s',rot_lib_name(1:poi-1),k,rot_lib_name(poi+1:end));
-            load(clib);
+        poi1 = strfind(rot_lib_name{1},'#');
+        poi2 = strfind(rot_lib_name{end},'#');
+        for k = 1:5
+            clib1 = sprintf('%s%i%s',rot_lib_name{1}(1:poi1-1),k,rot_lib_name{1}(poi1+1:end));
+            clib2 = sprintf('%s%i%s',rot_lib_name{end}(1:poi2-1),k,rot_lib_name{end}(poi2+1:end));
+            load(clib1);
             label1 = rotamer_populations(rindices1,rot_lib);
+            load(clib2);
             label2 = rotamer_populations(rindices2,rot_lib);
-            if isempty(label1) || isempty(label2),
+            if isempty(label1) || isempty(label2)
                 add_msg_board('ERROR: Site is too tight to be labelled with all libraries.');
                 return
-            end;
+            end
             NOpos1{k} = label1.NOpos;
             NOpos2{k} = label2.NOpos;
-        end;
+        end
         [rax,distr]=get_distribution(NOpos1{1},NOpos2{1},0.1);
         distributions = zeros(25,length(distr));
         rmean = zeros(1,25);
         stddev = zeros(1,25);
         mdistr = zeros(size(distr));
-        for k1 = 1:5,
-            for k2 = 1:5,
+        for k1 = 1:5
+            for k2 = 1:5
                 no = 5*(k1-1)+k2;
                 [~,distr]=get_distribution(NOpos1{k1},NOpos2{k2},0.1);
                 distr = distr/sum(distr);
@@ -3096,34 +3130,35 @@ switch mode
                 rdev = 10*rax - rmean(no);
                 stddev(no) = sqrt(sum(rdev.^2.*distr));
                 % fprintf(1,'%i: sr = %8.4f\n',no,stddev(no));
-            end;
-        end;
+            end
+        end
         mdistr = mdistr/sum(mdistr);
         mrmean = 10*sum(rax.*mdistr);
         mdiff = std(rmean);
         mrdev = 10*rax - mrmean;
         mstddev = sqrt(sum(mrdev.^2.*mdistr));
         msdiff = std(stddev);
-        add_msg_board(sprintf('Mean distance : %5.1f ? predicted with uncertainty %5.1f ?',mrmean,mdiff));
-        add_msg_board(sprintf('Std. deviation: %5.1f ? predicted with uncertainty %5.1f ?',mstddev,msdiff));
-        if ~isempty(fname),
+        add_msg_board(sprintf('Mean distance : %5.1f Å predicted with uncertainty %5.1f Å',mrmean,mdiff));
+        add_msg_board(sprintf('Std. deviation: %5.1f Å predicted with uncertainty %5.1f Å',mstddev,msdiff));
+        if ~isempty(fname)
             fid = fopen(fname,'at');
-            if fid == -1,
+            if fid == -1
                 add_msg_board('ERROR: Output file could not be opened.');
                 return;
-            end;
-            for k = 1:length(rax),
+            end
+            fprintf(fid,'# distance %s %s Labels %s %s\n',adr1,adr2,rot_lib_name{1},rot_lib_name{end}); % write file header
+            for k = 1:length(rax)
                 fprintf(fid,'%6.2f',rax(k));
-                for kk = 1:25,
+                for kk = 1:25
                     fprintf(fid,'%8.4f',distributions(kk,k));
-                end;
+                end
                 fprintf(fid,'\n');
-            end;
+            end
             fclose(fid);
-        end;
+        end
     otherwise
         add_msg_board(sprintf('ERROR: No rotamer library for label %s.',label));
-end;
+end
 set(hMain.MMM,'Pointer','arrow');
 drawnow
 
