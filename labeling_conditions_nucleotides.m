@@ -297,7 +297,7 @@ lib_list{1} = '<No nucleotide label found>';
 lib_indices = zeros(1,libs);
 poi = 0;
 for k=1:libs,
-    if strcmp(rotamer_libraries(k).type,'nucleotide')
+    if strcmp(rotamer_libraries(k).type,'nucleotide') && ~strcmp(rotamer_libraries(k).class,'chromophore')
         poi = poi + 1;
         lib_list{poi}=rotamer_libraries(k).label;
         lib_indices(poi) = k;
