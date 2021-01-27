@@ -324,7 +324,11 @@ else
     end;
     model.sites{scan}=sites;
     if ~isempty(html_name) && new_labels>0,
-        labeling_analysis(sites,html_name);
+        if strncmpi(sites.class,'chromophore',11)
+            labeling_analysis_chromophore(sites,html_name);
+        else
+            labeling_analysis(sites,html_name);
+        end
     end;
     needed_time=etime(clock,starting_time);
     hour=floor(needed_time/3600);
