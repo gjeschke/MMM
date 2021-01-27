@@ -1,0 +1,444 @@
+% Do not edit!
+% This file exists only for information and as a template for additional definitions.
+% Actual color definitions are in the binary file colors.mat
+begin aliceblue
+	 rgb 240 248 255
+end aliceblue
+begin antiquewhite
+	 rgb 250 235 215
+end antiquewhite
+begin aqua
+	 rgb   0 255 255
+end aqua
+begin aquamarine
+	 rgb 127 255 212
+end aquamarine
+begin azure
+	 rgb 240 255 255
+end azure
+begin beige
+	 rgb 245 245 220
+end beige
+begin bisque
+	 rgb 255 228 196
+end bisque
+begin black
+	 rgb   0   0   0
+end black
+begin blanchedalmond
+	 rgb 255 235 205
+end blanchedalmond
+begin blue
+	 rgb   0   0 255
+end blue
+begin blueviolet
+	 rgb 138  43 226
+end blueviolet
+begin brown
+	 rgb 165  42  42
+end brown
+begin burlywood
+	 rgb 222 184 135
+end burlywood
+begin cadetblue
+	 rgb  95 158 160
+end cadetblue
+begin chartreuse
+	 rgb 127 255   0
+end chartreuse
+begin chocolate
+	 rgb 210 105  30
+end chocolate
+begin coral
+	 rgb 255 127  80
+end coral
+begin cornflowerblue
+	 rgb 100 149 237
+end cornflowerblue
+begin cornsilk
+	 rgb 255 248 220
+end cornsilk
+begin crimson
+	 rgb 220  20  60
+end crimson
+begin cyan
+	 rgb   0 255 255
+end cyan
+begin darkblue
+	 rgb   0   0 139
+end darkblue
+begin darkcyan
+	 rgb   0 139 139
+end darkcyan
+begin darkgoldenrod
+	 rgb 184 134  11
+end darkgoldenrod
+begin darkgray
+	 rgb 169 169 169
+end darkgray
+begin darkgreen
+	 rgb   0 100   0
+end darkgreen
+begin darkgrey
+	 rgb 169 169 169
+end darkgrey
+begin darkkhaki
+	 rgb 189 183 107
+end darkkhaki
+begin darkmagenta
+	 rgb 139   0 139
+end darkmagenta
+begin darkolivegreen
+	 rgb  85 107  47
+end darkolivegreen
+begin darkorange
+	 rgb 255 140   0
+end darkorange
+begin darkorchid
+	 rgb 153  50 204
+end darkorchid
+begin darkred
+	 rgb 139   0   0
+end darkred
+begin darksalmon
+	 rgb 233 150 122
+end darksalmon
+begin darkseagreen
+	 rgb 143 188 143
+end darkseagreen
+begin darkslateblue
+	 rgb  72  61 139
+end darkslateblue
+begin darkslategray
+	 rgb  47  79  79
+end darkslategray
+begin darkslategrey
+	 rgb  47  79  79
+end darkslategrey
+begin darkturquoise
+	 rgb   0 206 209
+end darkturquoise
+begin darkviolet
+	 rgb 148   0 211
+end darkviolet
+begin deeppink
+	 rgb 255  20 147
+end deeppink
+begin deepskyblue
+	 rgb   0 191 255
+end deepskyblue
+begin dimgray
+	 rgb 105 105 105
+end dimgray
+begin dimgrey
+	 rgb 105 105 105
+end dimgrey
+begin dodgerblue
+	 rgb  30 144 255
+end dodgerblue
+begin firebrick
+	 rgb 178  34  34
+end firebrick
+begin floralwhite
+	 rgb 255 250 240
+end floralwhite
+begin forestgreen
+	 rgb  34 139  34
+end forestgreen
+begin fuchsia
+	 rgb 255   0 255
+end fuchsia
+begin gainsboro
+	 rgb 220 220 220
+end gainsboro
+begin ghostwhite
+	 rgb 248 248 255
+end ghostwhite
+begin gold
+	 rgb 255 215   0
+end gold
+begin goldenrod
+	 rgb 218 165  32
+end goldenrod
+begin gray
+	 rgb 128 128 128
+end gray
+begin green
+	 rgb   0 128   0
+end green
+begin greenyellow
+	 rgb 173 255  47
+end greenyellow
+begin grey
+	 rgb 128 128 128
+end grey
+begin honeydew
+	 rgb 240 255 240
+end honeydew
+begin hotpink
+	 rgb 255 105 180
+end hotpink
+begin indianred
+	 rgb 205  92  92
+end indianred
+begin indigo
+	 rgb  75   0 130
+end indigo
+begin ivory
+	 rgb 255 255 240
+end ivory
+begin khaki
+	 rgb 240 230 140
+end khaki
+begin lavender
+	 rgb 230 230 250
+end lavender
+begin lavenderblush
+	 rgb 255 240 245
+end lavenderblush
+begin lawngreen
+	 rgb 124 252   0
+end lawngreen
+begin lemonchiffon
+	 rgb 255 250 205
+end lemonchiffon
+begin lightblue
+	 rgb 173 216 230
+end lightblue
+begin lightcoral
+	 rgb 240 128 128
+end lightcoral
+begin lightcyan
+	 rgb 224 255 255
+end lightcyan
+begin lightgoldenrodyellow
+	 rgb 250 250 210
+end lightgoldenrodyellow
+begin lightgray
+	 rgb 211 211 211
+end lightgray
+begin lightgreen
+	 rgb 144 238 144
+end lightgreen
+begin lightgrey
+	 rgb 211 211 211
+end lightgrey
+begin lightpink
+	 rgb 255 182 193
+end lightpink
+begin lightsalmon
+	 rgb 255 160 122
+end lightsalmon
+begin lightseagreen
+	 rgb  32 178 170
+end lightseagreen
+begin lightskyblue
+	 rgb 135 206 250
+end lightskyblue
+begin lightslategray
+	 rgb 119 136 153
+end lightslategray
+begin lightslategrey
+	 rgb 119 136 153
+end lightslategrey
+begin lightsteelblue
+	 rgb 176 196 222
+end lightsteelblue
+begin lightyellow
+	 rgb 255 255 224
+end lightyellow
+begin lime
+	 rgb   0 255   0
+end lime
+begin limegreen
+	 rgb  50 205  50
+end limegreen
+begin linen
+	 rgb 250 240 230
+end linen
+begin magenta
+	 rgb 255   0 255
+end magenta
+begin maroon
+	 rgb 128   0   0
+end maroon
+begin mediumaquamarine
+	 rgb 102 205 170
+end mediumaquamarine
+begin mediumblue
+	 rgb   0   0 205
+end mediumblue
+begin mediumorchid
+	 rgb 186  85 211
+end mediumorchid
+begin mediumpurple
+	 rgb 147 112 219
+end mediumpurple
+begin mediumseagreen
+	 rgb  60 179 113
+end mediumseagreen
+begin mediumslateblue
+	 rgb 123 104 238
+end mediumslateblue
+begin mediumspringgreen
+	 rgb   0 250 154
+end mediumspringgreen
+begin mediumturquoise
+	 rgb  72 209 204
+end mediumturquoise
+begin mediumvioletred
+	 rgb 199  21 133
+end mediumvioletred
+begin midnightblue
+	 rgb  25  25 112
+end midnightblue
+begin mintcream
+	 rgb 245 255 250
+end mintcream
+begin mistyrose
+	 rgb 255 228 225
+end mistyrose
+begin moccasin
+	 rgb 255 228 181
+end moccasin
+begin navajowhite
+	 rgb 255 222 173
+end navajowhite
+begin navy
+	 rgb   0   0 128
+end navy
+begin oldlace
+	 rgb 253 245 230
+end oldlace
+begin olive
+	 rgb 128 128   0
+end olive
+begin olivedrab
+	 rgb 107 142  35
+end olivedrab
+begin orange
+	 rgb 255 165   0
+end orange
+begin orangered
+	 rgb 255  69   0
+end orangered
+begin orchid
+	 rgb 218 112 214
+end orchid
+begin palegoldenrod
+	 rgb 238 232 170
+end palegoldenrod
+begin palegreen
+	 rgb 152 251 152
+end palegreen
+begin paleturquoise
+	 rgb 175 238 238
+end paleturquoise
+begin palevioletred
+	 rgb 219 112 147
+end palevioletred
+begin papayawhip
+	 rgb 255 239 213
+end papayawhip
+begin peachpuff
+	 rgb 255 218 185
+end peachpuff
+begin peru
+	 rgb 205 133  63
+end peru
+begin pink
+	 rgb 255 192 203
+end pink
+begin plum
+	 rgb 221 160 221
+end plum
+begin powderblue
+	 rgb 176 224 230
+end powderblue
+begin purple
+	 rgb 128   0 128
+end purple
+begin red
+	 rgb 255   0   0
+end red
+begin rosybrown
+	 rgb 188 143 143
+end rosybrown
+begin royalblue
+	 rgb  65 105 225
+end royalblue
+begin saddlebrown
+	 rgb 139  69  19
+end saddlebrown
+begin salmon
+	 rgb 250 128 114
+end salmon
+begin sandybrown
+	 rgb 244 164  96
+end sandybrown
+begin seagreen
+	 rgb  46 139  87
+end seagreen
+begin seashell
+	 rgb 255 245 238
+end seashell
+begin sienna
+	 rgb 160  82  45
+end sienna
+begin silver
+	 rgb 192 192 192
+end silver
+begin skyblue
+	 rgb 135 206 235
+end skyblue
+begin slateblue
+	 rgb 106  90 205
+end slateblue
+begin slategray
+	 rgb 112 128 144
+end slategray
+begin slategrey
+	 rgb 112 128 144
+end slategrey
+begin snow
+	 rgb 255 250 250
+end snow
+begin springgreen
+	 rgb   0 255 127
+end springgreen
+begin steelblue
+	 rgb  70 130 180
+end steelblue
+begin tan
+	 rgb 210 180 140
+end tan
+begin teal
+	 rgb   0 128 128
+end teal
+begin thistle
+	 rgb 216 191 216
+end thistle
+begin tomato
+	 rgb 255  99  71
+end tomato
+begin turquoise
+	 rgb  64 224 208
+end turquoise
+begin violet
+	 rgb 238 130 238
+end violet
+begin wheat
+	 rgb 245 222 179
+end wheat
+begin white
+	 rgb 255 255 255
+end white
+begin whitesmoke
+	 rgb 245 245 245
+end whitesmoke
+begin yellow
+	 rgb 255 255   0
+end yellow
+begin yellowgreen
+	 rgb 154 205  50
+end yellowgreen

@@ -1,0 +1,970 @@
+% Do not edit!
+% This file exists only for information and as a template for additional definitions.
+% Actual standard residue definitions are in the binary file residues.mat
+begin Ala
+	 sc A
+	 name Alanine
+	 codons GCU GCC GCA GCG 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 OXT O 16
+	 atom 7 H H 1
+	 atom 8 H2 H 1
+	 atom 9 HA H 1
+	 atom 10 HB1 H 1
+	 atom 11 HB2 H 1
+	 atom 12 HB3 H 1
+	 atom 13 HXT H 1
+	 bonds 1 2 7 8 
+	 bonds 2 1 3 5 9 
+	 bonds 3 2 4 6 
+	 bonds 4 3 
+	 bonds 5 2 10 11 12 
+	 bonds 6 3 13 
+	 bonds 7 1 
+	 bonds 8 1 
+	 bonds 9 2 
+	 bonds 10 5 
+	 bonds 11 5 
+	 bonds 12 5 
+	 bonds 13 6 
+end Ala
+begin Arg
+	 sc R
+	 name Arginine
+	 codons CGU CGC CGA CGG AGA AGG 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG C 12
+	 atom 7 CD C 12
+	 atom 8 NE N 14
+	 atom 9 CZ C 12
+	 atom 10 NH1 N 14
+	 atom 11 NH2 N 14
+	 atom 12 OXT O 16
+	 atom 13 H H 1
+	 atom 14 H2 H 1
+	 atom 15 HA H 1
+	 atom 16 HB2 H 1
+	 atom 17 HB3 H 1
+	 atom 18 HG2 H 1
+	 atom 19 HG3 H 1
+	 atom 20 HD2 H 1
+	 atom 21 HD3 H 1
+	 atom 22 HE H 1
+	 atom 23 HH11 H 1
+	 atom 24 HH12 H 1
+	 atom 25 HH21 H 1
+	 atom 26 HH22 H 1
+	 atom 27 HXT H 1
+	 bonds 1 2 13 14 
+	 bonds 2 1 3 5 15 
+	 bonds 3 2 4 12 
+	 bonds 4 3 
+	 bonds 5 2 6 16 17 
+	 bonds 6 5 7 18 19 
+	 bonds 7 6 8 20 21 
+	 bonds 8 7 9 22 
+	 bonds 9 8 10 11 
+	 bonds 10 9 23 24 
+	 bonds 11 9 25 26 
+	 bonds 12 3 27 
+	 bonds 13 1 
+	 bonds 14 1 
+	 bonds 15 2 
+	 bonds 16 5 
+	 bonds 17 5 
+	 bonds 18 6 
+	 bonds 19 6 
+	 bonds 20 7 
+	 bonds 21 7 
+	 bonds 22 8 
+	 bonds 23 10 
+	 bonds 24 10 
+	 bonds 25 11 
+	 bonds 26 11 
+	 bonds 27 12 
+end Arg
+begin Asn
+	 sc N
+	 name Asparagine
+	 codons AAU AAC 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG C 12
+	 atom 7 OD1 O 16
+	 atom 8 ND2 N 14
+	 atom 9 OXT O 16
+	 atom 10 H H 1
+	 atom 11 H2 H 1
+	 atom 12 HA H 1
+	 atom 13 HB2 H 1
+	 atom 14 HB3 H 1
+	 atom 15 HD21 H 1
+	 atom 16 HD22 H 1
+	 atom 17 HXT H 1
+	 bonds 1 2 10 11 
+	 bonds 2 1 3 5 12 
+	 bonds 3 2 4 9 
+	 bonds 4 3 
+	 bonds 5 2 6 13 14 
+	 bonds 6 5 7 8 
+	 bonds 7 6 
+	 bonds 8 6 15 16 
+	 bonds 9 3 17 
+	 bonds 10 1 
+	 bonds 11 1 
+	 bonds 12 2 
+	 bonds 13 5 
+	 bonds 14 5 
+	 bonds 15 8 
+	 bonds 16 8 
+	 bonds 17 9 
+end Asn
+begin Asp
+	 sc D
+	 name Aspartate
+	 codons GAU GAC 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG C 12
+	 atom 7 OD1 O 16
+	 atom 8 OD2 O 16
+	 atom 9 OXT O 16
+	 atom 10 H H 1
+	 atom 11 H2 H 1
+	 atom 12 HA H 1
+	 atom 13 HB2 H 1
+	 atom 14 HB3 H 1
+	 atom 15 HD2 H 1
+	 atom 16 HXT H 1
+	 bonds 1 2 10 11 
+	 bonds 2 1 3 5 12 
+	 bonds 3 2 4 9 
+	 bonds 4 3 
+	 bonds 5 2 6 13 14 
+	 bonds 6 5 7 8 
+	 bonds 7 6 
+	 bonds 8 6 15 
+	 bonds 9 3 16 
+	 bonds 10 1 
+	 bonds 11 1 
+	 bonds 12 2 
+	 bonds 13 5 
+	 bonds 14 5 
+	 bonds 15 8 
+	 bonds 16 9 
+end Asp
+begin Cys
+	 sc C
+	 name Cysteine
+	 codons UGU UGC 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 SG S 32
+	 atom 7 OXT O 16
+	 atom 8 H H 1
+	 atom 9 H2 H 1
+	 atom 10 HA H 1
+	 atom 11 HB2 H 1
+	 atom 12 HB3 H 1
+	 atom 13 HG H 1
+	 atom 14 HXT H 1
+	 bonds 1 2 8 9 
+	 bonds 2 1 3 5 10 
+	 bonds 3 2 4 7 
+	 bonds 4 3 
+	 bonds 5 2 6 11 12 
+	 bonds 6 5 13 
+	 bonds 7 3 14 
+	 bonds 8 1 
+	 bonds 9 1 
+	 bonds 10 2 
+	 bonds 11 5 
+	 bonds 12 5 
+	 bonds 13 6 
+	 bonds 14 7 
+end Cys
+begin Gln
+	 sc Q
+	 name Glutamine
+	 codons CAA CAG 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG C 12
+	 atom 7 CD C 12
+	 atom 8 OE1 O 16
+	 atom 9 NE2 N 14
+	 atom 10 OXT O 16
+	 atom 11 H H 1
+	 atom 12 H2 H 1
+	 atom 13 HA H 1
+	 atom 14 HB2 H 1
+	 atom 15 HB3 H 1
+	 atom 16 HG2 H 1
+	 atom 17 HG3 H 1
+	 atom 18 HE21 H 1
+	 atom 19 HE22 H 1
+	 atom 20 HXT H 1
+	 bonds 1 2 11 12 
+	 bonds 2 1 3 5 13 
+	 bonds 3 2 4 10 
+	 bonds 4 3 
+	 bonds 5 2 6 14 15 
+	 bonds 6 5 7 16 17 
+	 bonds 7 6 8 9 
+	 bonds 8 7 
+	 bonds 9 7 18 19 
+	 bonds 10 3 20 
+	 bonds 11 1 
+	 bonds 12 1 
+	 bonds 13 2 
+	 bonds 14 5 
+	 bonds 15 5 
+	 bonds 16 6 
+	 bonds 17 6 
+	 bonds 18 9 
+	 bonds 19 9 
+	 bonds 20 10 
+end Gln
+begin Glu
+	 sc E
+	 name Glutamate
+	 codons GAA GAG 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG C 12
+	 atom 7 CD C 12
+	 atom 8 OE1 O 16
+	 atom 9 OE2 O 16
+	 atom 10 OXT O 16
+	 atom 11 H H 1
+	 atom 12 H2 H 1
+	 atom 13 HA H 1
+	 atom 14 HB2 H 1
+	 atom 15 HB3 H 1
+	 atom 16 HG2 H 1
+	 atom 17 HG3 H 1
+	 atom 18 HE2 H 1
+	 atom 19 HXT H 1
+	 bonds 1 2 11 12 
+	 bonds 2 1 3 5 13 
+	 bonds 3 2 4 10 
+	 bonds 4 3 
+	 bonds 5 2 6 14 15 
+	 bonds 6 5 7 16 17 
+	 bonds 7 6 8 9 
+	 bonds 8 7 
+	 bonds 9 7 18 
+	 bonds 10 3 19 
+	 bonds 11 1 
+	 bonds 12 1 
+	 bonds 13 2 
+	 bonds 14 5 
+	 bonds 15 5 
+	 bonds 16 6 
+	 bonds 17 6 
+	 bonds 18 9 
+	 bonds 19 10 
+end Glu
+begin Gly
+	 sc G
+	 name Glycine
+	 codons GGU GGC GGA GGG 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 OXT O 16
+	 atom 6 H H 1
+	 atom 7 H2 H 1
+	 atom 8 HA2 H 1
+	 atom 9 HA3 H 1
+	 atom 10 HXT H 1
+	 bonds 1 2 6 7 
+	 bonds 2 1 3 8 9 
+	 bonds 3 2 4 5 
+	 bonds 4 3 
+	 bonds 5 3 10 
+	 bonds 6 1 
+	 bonds 7 1 
+	 bonds 8 2 
+	 bonds 9 2 
+	 bonds 10 5 
+end Gly
+begin His
+	 sc H
+	 name Histidine
+	 codons CAU CAC 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG C 12
+	 atom 7 ND1 N 14
+	 atom 8 CD2 C 12
+	 atom 9 CE1 C 12
+	 atom 10 NE2 N 14
+	 atom 11 OXT O 16
+	 atom 12 H H 1
+	 atom 13 H2 H 1
+	 atom 14 HA H 1
+	 atom 15 HB2 H 1
+	 atom 16 HB3 H 1
+	 atom 17 HD1 H 1
+	 atom 18 HD2 H 1
+	 atom 19 HE1 H 1
+	 atom 20 HE2 H 1
+	 atom 21 HXT H 1
+	 bonds 1 2 12 13 
+	 bonds 2 1 3 5 14 
+	 bonds 3 2 4 11 
+	 bonds 4 3 
+	 bonds 5 2 6 15 16 
+	 bonds 6 5 7 8 
+	 bonds 7 6 9 17 
+	 bonds 8 6 10 18 
+	 bonds 9 7 10 19 
+	 bonds 10 8 9 20 
+	 bonds 11 3 21 
+	 bonds 12 1 
+	 bonds 13 1 
+	 bonds 14 2 
+	 bonds 15 5 
+	 bonds 16 5 
+	 bonds 17 7 
+	 bonds 18 8 
+	 bonds 19 9 
+	 bonds 20 10 
+	 bonds 21 11 
+end His
+begin Ile
+	 sc I
+	 name Isoleucine
+	 codons AUU AUC AUA 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG1 C 12
+	 atom 7 CG2 C 12
+	 atom 8 CD1 C 12
+	 atom 9 OXT O 16
+	 atom 10 H H 1
+	 atom 11 H2 H 1
+	 atom 12 HA H 1
+	 atom 13 HB H 1
+	 atom 14 HG12 H 1
+	 atom 15 HG13 H 1
+	 atom 16 HG21 H 1
+	 atom 17 HG22 H 1
+	 atom 18 HG23 H 1
+	 atom 19 HD11 H 1
+	 atom 20 HD12 H 1
+	 atom 21 HD13 H 1
+	 atom 22 HXT H 1
+	 bonds 1 2 10 11 
+	 bonds 2 1 3 5 12 
+	 bonds 3 2 4 9 
+	 bonds 4 3 
+	 bonds 5 2 6 7 13 
+	 bonds 6 5 8 14 15 
+	 bonds 7 5 16 17 18 
+	 bonds 8 6 19 20 21 
+	 bonds 9 3 22 
+	 bonds 10 1 
+	 bonds 11 1 
+	 bonds 12 2 
+	 bonds 13 5 
+	 bonds 14 6 
+	 bonds 15 6 
+	 bonds 16 7 
+	 bonds 17 7 
+	 bonds 18 7 
+	 bonds 19 8 
+	 bonds 20 8 
+	 bonds 21 8 
+	 bonds 22 9 
+end Ile
+begin Leu
+	 sc L
+	 name Leucine
+	 codons UUA UUG CUU CUC CUA CUG 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG C 12
+	 atom 7 CD1 C 12
+	 atom 8 CD2 C 12
+	 atom 9 OXT O 16
+	 atom 10 H H 1
+	 atom 11 H2 H 1
+	 atom 12 HA H 1
+	 atom 13 HB2 H 1
+	 atom 14 HB3 H 1
+	 atom 15 HG H 1
+	 atom 16 HD11 H 1
+	 atom 17 HD12 H 1
+	 atom 18 HD13 H 1
+	 atom 19 HD21 H 1
+	 atom 20 HD22 H 1
+	 atom 21 HD23 H 1
+	 atom 22 HXT H 1
+	 bonds 1 2 10 11 
+	 bonds 2 1 3 5 12 
+	 bonds 3 2 4 9 
+	 bonds 4 3 
+	 bonds 5 2 6 13 14 
+	 bonds 6 5 7 8 15 
+	 bonds 7 6 16 17 18 
+	 bonds 8 6 19 20 21 
+	 bonds 9 3 22 
+	 bonds 10 1 
+	 bonds 11 1 
+	 bonds 12 2 
+	 bonds 13 5 
+	 bonds 14 5 
+	 bonds 15 6 
+	 bonds 16 7 
+	 bonds 17 7 
+	 bonds 18 7 
+	 bonds 19 8 
+	 bonds 20 8 
+	 bonds 21 8 
+	 bonds 22 9 
+end Leu
+begin Lys
+	 sc K
+	 name Lysine
+	 codons AAA AAG 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG C 12
+	 atom 7 CD C 12
+	 atom 8 CE C 12
+	 atom 9 NZ N 14
+	 atom 10 OXT O 16
+	 atom 11 H H 1
+	 atom 12 H2 H 1
+	 atom 13 HA H 1
+	 atom 14 HB2 H 1
+	 atom 15 HB3 H 1
+	 atom 16 HG2 H 1
+	 atom 17 HG3 H 1
+	 atom 18 HD2 H 1
+	 atom 19 HD3 H 1
+	 atom 20 HE2 H 1
+	 atom 21 HE3 H 1
+	 atom 22 HZ1 H 1
+	 atom 23 HZ2 H 1
+	 atom 24 HZ3 H 1
+	 atom 25 HXT H 1
+	 bonds 1 2 11 12 
+	 bonds 2 1 3 5 13 
+	 bonds 3 2 4 10 
+	 bonds 4 3 
+	 bonds 5 2 6 14 15 
+	 bonds 6 5 7 16 17 
+	 bonds 7 6 8 18 19 
+	 bonds 8 7 9 20 21 
+	 bonds 9 8 22 23 24 
+	 bonds 10 3 25 
+	 bonds 11 1 
+	 bonds 12 1 
+	 bonds 13 2 
+	 bonds 14 5 
+	 bonds 15 5 
+	 bonds 16 6 
+	 bonds 17 6 
+	 bonds 18 7 
+	 bonds 19 7 
+	 bonds 20 8 
+	 bonds 21 8 
+	 bonds 22 9 
+	 bonds 23 9 
+	 bonds 24 9 
+	 bonds 25 10 
+end Lys
+begin Met
+	 sc M
+	 name Methionine
+	 codons AUG 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG C 12
+	 atom 7 SD S 32
+	 atom 8 CE C 12
+	 atom 9 OXT O 16
+	 atom 10 H H 1
+	 atom 11 H2 H 1
+	 atom 12 HA H 1
+	 atom 13 HB2 H 1
+	 atom 14 HB3 H 1
+	 atom 15 HG2 H 1
+	 atom 16 HG3 H 1
+	 atom 17 HE1 H 1
+	 atom 18 HE2 H 1
+	 atom 19 HE3 H 1
+	 atom 20 HXT H 1
+	 bonds 1 2 10 11 
+	 bonds 2 1 3 5 12 
+	 bonds 3 2 4 9 
+	 bonds 4 3 
+	 bonds 5 2 6 13 14 
+	 bonds 6 5 7 15 16 
+	 bonds 7 6 8 
+	 bonds 8 7 17 18 19 
+	 bonds 9 3 20 
+	 bonds 10 1 
+	 bonds 11 1 
+	 bonds 12 2 
+	 bonds 13 5 
+	 bonds 14 5 
+	 bonds 15 6 
+	 bonds 16 6 
+	 bonds 17 8 
+	 bonds 18 8 
+	 bonds 19 8 
+	 bonds 20 9 
+end Met
+begin Phe
+	 sc F
+	 name Phenylalanine
+	 codons UUU UUC 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG C 12
+	 atom 7 CD1 C 12
+	 atom 8 CD2 C 12
+	 atom 9 CE1 C 12
+	 atom 10 CE2 C 12
+	 atom 11 CZ C 12
+	 atom 12 OXT O 16
+	 atom 13 H H 1
+	 atom 14 H2 H 1
+	 atom 15 HA H 1
+	 atom 16 HB2 H 1
+	 atom 17 HB3 H 1
+	 atom 18 HD1 H 1
+	 atom 19 HD2 H 1
+	 atom 20 HE1 H 1
+	 atom 21 HE2 H 1
+	 atom 22 HZ H 1
+	 atom 23 HXT H 1
+	 bonds 1 2 13 14 
+	 bonds 2 1 3 5 15 
+	 bonds 3 2 4 12 
+	 bonds 4 3 
+	 bonds 5 2 6 16 17 
+	 bonds 6 5 7 8 
+	 bonds 7 6 9 18 
+	 bonds 8 6 10 19 
+	 bonds 9 7 11 20 
+	 bonds 10 8 11 21 
+	 bonds 11 9 10 22 
+	 bonds 12 3 23 
+	 bonds 13 1 
+	 bonds 14 1 
+	 bonds 15 2 
+	 bonds 16 5 
+	 bonds 17 5 
+	 bonds 18 7 
+	 bonds 19 8 
+	 bonds 20 9 
+	 bonds 21 10 
+	 bonds 22 11 
+	 bonds 23 12 
+end Phe
+begin Pro
+	 sc P
+	 name Proline
+	 codons CCU CCC CCA CCG 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG C 12
+	 atom 7 CD C 12
+	 atom 8 OXT O 16
+	 atom 9 H H 1
+	 atom 10 HA H 1
+	 atom 11 HB2 H 1
+	 atom 12 HB3 H 1
+	 atom 13 HG2 H 1
+	 atom 14 HG3 H 1
+	 atom 15 HD2 H 1
+	 atom 16 HD3 H 1
+	 atom 17 HXT H 1
+	 bonds 1 2 7 9 
+	 bonds 2 1 3 5 10 
+	 bonds 3 2 4 8 
+	 bonds 4 3 
+	 bonds 5 2 6 11 12 
+	 bonds 6 5 7 13 14 
+	 bonds 7 1 6 15 16 
+	 bonds 8 3 17 
+	 bonds 9 1 
+	 bonds 10 2 
+	 bonds 11 5 
+	 bonds 12 5 
+	 bonds 13 6 
+	 bonds 14 6 
+	 bonds 15 7 
+	 bonds 16 7 
+	 bonds 17 8 
+end Pro
+begin Ser
+	 sc S
+	 name Serine
+	 codons UCU UCC UCA UCG AGU AGC 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 OG O 16
+	 atom 7 OXT O 16
+	 atom 8 H H 1
+	 atom 9 H2 H 1
+	 atom 10 HA H 1
+	 atom 11 HB2 H 1
+	 atom 12 HB3 H 1
+	 atom 13 HG H 1
+	 atom 14 HXT H 1
+	 bonds 1 2 8 9 
+	 bonds 2 1 3 5 10 
+	 bonds 3 2 4 7 
+	 bonds 4 3 
+	 bonds 5 2 6 11 12 
+	 bonds 6 5 13 
+	 bonds 7 3 14 
+	 bonds 8 1 
+	 bonds 9 1 
+	 bonds 10 2 
+	 bonds 11 5 
+	 bonds 12 5 
+	 bonds 13 6 
+	 bonds 14 7 
+end Ser
+begin Thr
+	 sc T
+	 name Threonine
+	 codons ACU ACC ACA ACG 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 OG1 O 16
+	 atom 7 CG2 C 12
+	 atom 8 OXT O 16
+	 atom 9 H H 1
+	 atom 10 H2 H 1
+	 atom 11 HA H 1
+	 atom 12 HB H 1
+	 atom 13 HG1 H 1
+	 atom 14 HG21 H 1
+	 atom 15 HG22 H 1
+	 atom 16 HG23 H 1
+	 atom 17 HXT H 1
+	 bonds 1 2 9 10 
+	 bonds 2 1 3 5 11 
+	 bonds 3 2 4 8 
+	 bonds 4 3 
+	 bonds 5 2 6 7 12 
+	 bonds 6 5 13 
+	 bonds 7 5 14 15 16 
+	 bonds 8 3 17 
+	 bonds 9 1 
+	 bonds 10 1 
+	 bonds 11 2 
+	 bonds 12 5 
+	 bonds 13 6 
+	 bonds 14 7 
+	 bonds 15 7 
+	 bonds 16 7 
+	 bonds 17 8 
+end Thr
+begin Trp
+	 sc W
+	 name Tryptophan
+	 codons UGG 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG C 12
+	 atom 7 CD1 C 12
+	 atom 8 CD2 C 12
+	 atom 9 NE1 N 14
+	 atom 10 CE2 C 12
+	 atom 11 CE3 C 12
+	 atom 12 CZ2 C 12
+	 atom 13 CZ3 C 12
+	 atom 14 CH2 C 12
+	 atom 15 OXT O 16
+	 atom 16 H H 1
+	 atom 17 H2 H 1
+	 atom 18 HA H 1
+	 atom 19 HB2 H 1
+	 atom 20 HB3 H 1
+	 atom 21 HD1 H 1
+	 atom 22 HE1 H 1
+	 atom 23 HE3 H 1
+	 atom 24 HZ2 H 1
+	 atom 25 HZ3 H 1
+	 atom 26 HH2 H 1
+	 atom 27 HXT H 1
+	 bonds 1 2 16 17 
+	 bonds 2 1 3 5 18 
+	 bonds 3 2 4 15 
+	 bonds 4 3 
+	 bonds 5 2 6 19 20 
+	 bonds 6 5 7 8 
+	 bonds 7 6 9 21 
+	 bonds 8 6 10 11 
+	 bonds 9 7 10 22 
+	 bonds 10 8 9 12 
+	 bonds 11 8 13 23 
+	 bonds 12 10 14 24 
+	 bonds 13 11 14 25 
+	 bonds 14 12 13 26 
+	 bonds 15 3 27 
+	 bonds 16 1 
+	 bonds 17 1 
+	 bonds 18 2 
+	 bonds 19 5 
+	 bonds 20 5 
+	 bonds 21 7 
+	 bonds 22 9 
+	 bonds 23 11 
+	 bonds 24 12 
+	 bonds 25 13 
+	 bonds 26 14 
+	 bonds 27 15 
+end Trp
+begin Tyr
+	 sc Y
+	 name Tyrosine
+	 codons UAU UAC 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG C 12
+	 atom 7 CD1 C 12
+	 atom 8 CD2 C 12
+	 atom 9 CE1 C 12
+	 atom 10 CE2 C 12
+	 atom 11 CZ C 12
+	 atom 12 OH O 16
+	 atom 13 OXT O 16
+	 atom 14 H H 1
+	 atom 15 H2 H 1
+	 atom 16 HA H 1
+	 atom 17 HB2 H 1
+	 atom 18 HB3 H 1
+	 atom 19 HD1 H 1
+	 atom 20 HD2 H 1
+	 atom 21 HE1 H 1
+	 atom 22 HE2 H 1
+	 atom 23 HH H 1
+	 atom 24 HXT H 1
+	 bonds 1 2 14 15 
+	 bonds 2 1 3 5 16 
+	 bonds 3 2 4 13 
+	 bonds 4 3 
+	 bonds 5 2 6 17 18 
+	 bonds 6 5 7 8 
+	 bonds 7 6 9 19 
+	 bonds 8 6 10 20 
+	 bonds 9 7 11 21 
+	 bonds 10 8 11 22 
+	 bonds 11 9 10 12 
+	 bonds 12 11 23 
+	 bonds 13 3 24 
+	 bonds 14 1 
+	 bonds 15 1 
+	 bonds 16 2 
+	 bonds 17 5 
+	 bonds 18 5 
+	 bonds 19 7 
+	 bonds 20 8 
+	 bonds 21 9 
+	 bonds 22 10 
+	 bonds 23 12 
+	 bonds 24 13 
+end Tyr
+begin Val
+	 sc V
+	 name Valine
+	 codons GUU GUC GUA GUG 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG1 C 12
+	 atom 7 CG2 C 12
+	 atom 8 OXT O 16
+	 atom 9 H H 1
+	 atom 10 H2 H 1
+	 atom 11 HA H 1
+	 atom 12 HB H 1
+	 atom 13 HG11 H 1
+	 atom 14 HG12 H 1
+	 atom 15 HG13 H 1
+	 atom 16 HG21 H 1
+	 atom 17 HG22 H 1
+	 atom 18 HG23 H 1
+	 atom 19 HXT H 1
+	 bonds 1 2 9 10 
+	 bonds 2 1 3 5 11 
+	 bonds 3 2 4 8 
+	 bonds 4 3 
+	 bonds 5 2 6 7 12 
+	 bonds 6 5 13 14 15 
+	 bonds 7 5 16 17 18 
+	 bonds 8 3 19 
+	 bonds 9 1 
+	 bonds 10 1 
+	 bonds 11 2 
+	 bonds 12 5 
+	 bonds 13 6 
+	 bonds 14 6 
+	 bonds 15 6 
+	 bonds 16 7 
+	 bonds 17 7 
+	 bonds 18 7 
+	 bonds 19 8 
+end Val
+begin Asx
+	 sc B
+	 name AsparX
+	 codons AAU AAC GAU GAC 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG C 12
+	 atom 7 XD1 X 0
+	 atom 8 XD2 X 0
+	 atom 9 HA H 1
+	 atom 10 H H 1
+	 atom 11 HB1 H 1
+	 atom 12 HB2 H 1
+	 atom 13 HG H 1
+	 bonds 1 2 
+	 bonds 2 1 3 5 9 
+	 bonds 3 2 4 10 
+	 bonds 4 3 
+	 bonds 5 2 6 11 12 
+	 bonds 6 5 7 8 13 
+	 bonds 7 6 
+	 bonds 8 6 
+	 bonds 9 2 
+	 bonds 10 3 
+	 bonds 11 5 
+	 bonds 12 5 
+	 bonds 13 6 
+end Asx
+begin Glx
+	 sc Z
+	 name GlutaX
+	 codons CAA CAG GAA GAG 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 CB C 12
+	 atom 6 CG C 12
+	 atom 7 CD C 12
+	 atom 8 XE1 X 0
+	 atom 9 XE2 X 0
+	 atom 10 HA H 1
+	 atom 11 H H 1
+	 atom 12 HB1 H 1
+	 atom 13 HB2 H 1
+	 atom 14 HG1 H 1
+	 atom 15 HG2 H 1
+	 atom 16 HD H 1
+	 bonds 1 2 
+	 bonds 2 1 3 5 10 
+	 bonds 3 2 4 11 
+	 bonds 4 3 
+	 bonds 5 2 6 12 13 
+	 bonds 6 5 7 14 15 
+	 bonds 7 6 8 9 16 
+	 bonds 8 7 
+	 bonds 9 7 
+	 bonds 10 2 
+	 bonds 11 3 
+	 bonds 12 5 
+	 bonds 13 5 
+	 bonds 14 6 
+	 bonds 15 6 
+	 bonds 16 7 
+end Glx
+begin Xaa
+	 sc X
+	 name Any
+	 codons *** 
+	 atom 1 N N 14
+	 atom 2 CA C 12
+	 atom 3 C C 12
+	 atom 4 O O 16
+	 atom 5 OXT O 16
+	 atom 6 H H 1
+	 atom 7 H2 H 1
+	 atom 8 HA2 H 1
+	 atom 9 HA3 H 1
+	 atom 10 HXT H 1
+	 bonds 1 2 6 7 
+	 bonds 2 1 3 8 9 
+	 bonds 3 2 4 5 
+	 bonds 4 3 
+	 bonds 5 3 10 
+	 bonds 6 1 
+	 bonds 7 1 
+	 bonds 8 2 
+	 bonds 9 2 
+	 bonds 10 5 
+end Xaa

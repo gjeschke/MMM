@@ -1,0 +1,945 @@
+% Do not edit!
+% This file exists only for information and as a template for additional definitions.
+% Actual element definitions are in the binary file PSE.mat
+begin H
+	 name Hydrogen
+	 Mass 1.0079
+	 isotope 1 99.985
+	 isotope 2 0.015
+	 covalent 0.23
+	 vdW 1.09
+	 color ghostwhite
+end H
+begin He
+	 name Helium
+	 Mass 4.0026
+	 isotope 3 0.000137
+	 isotope 4 99.999863
+	 covalent 1.50
+	 vdW 1.40
+	 color grey
+end He
+begin Li
+	 name Lithium
+	 Mass 6.941
+	 isotope 6 7.5
+	 isotope 7 92.5
+	 covalent 0.68
+	 vdW 1.82
+	 color darkgreen
+end Li
+begin Be
+	 name Beryllium
+	 Mass 9.01218
+	 isotope 9 100
+	 covalent 0.35
+	 vdW 2.00
+	 color gold
+end Be
+begin B
+	 name Boron
+	 Mass 10.81
+	 isotope 10 19.9
+	 isotope 11 80.1
+	 covalent 0.83
+	 vdW 2.00
+	 color lavender
+end B
+begin C
+	 name Carbon
+	 Mass 12.011
+	 isotope 12 98.9
+	 isotope 13 1.1
+	 covalent 0.68
+	 vdW 1.70
+	 color darkgrey
+end C
+begin N
+	 name Nitrogen
+	 Mass 14.0067
+	 isotope 14 99.634
+	 isotope 15 0.366
+	 covalent 0.68
+	 vdW 1.55
+	 color blue
+end N
+begin O
+	 name Oxygen
+	 Mass 15.9994
+	 isotope 16 99.762
+	 isotope 17 0.038
+	 isotope 18 0.2
+	 covalent 0.68
+	 vdW 1.52
+	 color red
+end O
+begin F
+	 name Fluorine
+	 Mass 18.9984
+	 isotope 19 100
+	 covalent 0.64
+	 vdW 1.47
+	 color greenyellow
+end F
+begin Ne
+	 name Neon
+	 Mass 20.179
+	 isotope 20 90.48
+	 isotope 21 0.27
+	 isotope 22 9.25
+	 covalent 1.50
+	 vdW 1.54
+	 color grey
+end Ne
+begin Na
+	 name Sodium
+	 Mass 22.98977
+	 isotope 23 100
+	 covalent 0.97
+	 vdW 2.27
+	 color darkgreen
+end Na
+begin Mg
+	 name Magnesium
+	 Mass 24.305
+	 isotope 24 78.99
+	 isotope 25 10
+	 isotope 26 11.01
+	 covalent 1.10
+	 vdW 1.73
+	 color gold
+end Mg
+begin Al
+	 name Aluminium
+	 Mass 26.98154
+	 isotope 27 100
+	 covalent 1.35
+	 vdW 2.00
+	 color gainsboro
+end Al
+begin Si
+	 name Silicon
+	 Mass 28.086
+	 isotope 28 92.23
+	 isotope 29 4.67
+	 isotope 30 3.1
+	 covalent 1.20
+	 vdW 2.10
+	 color lightsteelblue
+end Si
+begin P
+	 name Phosphorus
+	 Mass 30.97376
+	 isotope 31 100
+	 covalent 1.05
+	 vdW 1.80
+	 color indigo
+end P
+begin S
+	 name Sulfur
+	 Mass 32.06
+	 isotope 32 95.02
+	 isotope 33 0.75
+	 isotope 34 4.21
+	 isotope 36 0.02
+	 covalent 1.02
+	 vdW 1.80
+	 color orange
+end S
+begin Cl
+	 name Chlorine
+	 Mass 35.453
+	 isotope 35 75.77
+	 isotope 37 24.23
+	 covalent 0.99
+	 vdW 1.75
+	 color green
+end Cl
+begin Ar
+	 name Argon
+	 Mass 39.948
+	 isotope 36 0.337
+	 isotope 38 0.063
+	 isotope 40 99.6
+	 covalent 1.51
+	 vdW 1.88
+	 color grey
+end Ar
+begin K
+	 name Potassium
+	 Mass 39.098
+	 isotope 39 93.2581
+	 isotope 40 0.0117
+	 isotope 41 6.7302
+	 covalent 1.33
+	 vdW 2.75
+	 color darkgreen
+end K
+begin Ca
+	 name Calcium
+	 Mass 40.08
+	 isotope 40 96.941
+	 isotope 42 0.647
+	 isotope 43 0.135
+	 isotope 44 2.086
+	 isotope 46 0.004
+	 isotope 48 0.187
+	 covalent 0.99
+	 vdW 2.00
+	 color gold
+end Ca
+begin Sc
+	 name Scandium
+	 Mass 44.9559
+	 isotope 45 100
+	 covalent 1.44
+	 vdW 2.00
+	 color thistle
+end Sc
+begin Ti
+	 name Titanium
+	 Mass 47.9
+	 isotope 46 8
+	 isotope 47 7.3
+	 isotope 48 73.8
+	 isotope 49 5.5
+	 isotope 50 5.4
+	 covalent 1.47
+	 vdW 2.00
+	 color thistle
+end Ti
+begin V
+	 name Vanadium
+	 Mass 50.9414
+	 isotope 50 0.25
+	 isotope 51 99.75
+	 covalent 1.33
+	 vdW 2.00
+	 color thistle
+end V
+begin Cr
+	 name Chromium
+	 Mass 51.996
+	 isotope 50 4.345
+	 isotope 52 83.789
+	 isotope 53 9.501
+	 isotope 54 2.365
+	 covalent 1.35
+	 vdW 2.00
+	 color thistle
+end Cr
+begin Mn
+	 name Manganese
+	 Mass 54.938
+	 isotope 55 100
+	 covalent 1.35
+	 vdW 2.00
+	 color thistle
+end Mn
+begin Fe
+	 name Iron
+	 Mass 55.847
+	 isotope 54 5.8
+	 isotope 56 91.72
+	 isotope 57 2.2
+	 isotope 58 0.28
+	 covalent 1.34
+	 vdW 2.00
+	 color thistle
+end Fe
+begin Co
+	 name Cobalt
+	 Mass 58.9332
+	 isotope 59 100
+	 covalent 1.33
+	 vdW 2.00
+	 color thistle
+end Co
+begin Ni
+	 name Nickel
+	 Mass 58.7
+	 isotope 58 68.077
+	 isotope 60 26.223
+	 isotope 61 1.14
+	 isotope 62 3.634
+	 isotope 64 0.926
+	 covalent 1.50
+	 vdW 1.63
+	 color thistle
+end Ni
+begin Cu
+	 name Copper
+	 Mass 63.546
+	 isotope 63 69.17
+	 isotope 65 30.83
+	 covalent 1.52
+	 vdW 1.40
+	 color thistle
+end Cu
+begin Zn
+	 name Zinc
+	 Mass 65.38
+	 isotope 64 48.6
+	 isotope 66 27.9
+	 isotope 67 4.1
+	 isotope 68 18.8
+	 isotope 70 0.6
+	 covalent 1.45
+	 vdW 1.39
+	 color thistle
+end Zn
+begin Ga
+	 name Gallium
+	 Mass 69.72
+	 isotope 69 60.108
+	 isotope 71 39.892
+	 covalent 1.22
+	 vdW 1.87
+	 color gainsboro
+end Ga
+begin Ge
+	 name Germanium
+	 Mass 72.59
+	 isotope 70 21.23
+	 isotope 72 27.66
+	 isotope 73 7.73
+	 isotope 74 35.94
+	 isotope 76 7.44
+	 covalent 1.17
+	 vdW 2.00
+	 color lightsteelblue
+end Ge
+begin As
+	 name Arsenic
+	 Mass 74.9216
+	 isotope 75 100
+	 covalent 1.21
+	 vdW 1.85
+	 color darkslateblue
+end As
+begin Se
+	 name Selenium
+	 Mass 78.96
+	 isotope 74 0.89
+	 isotope 76 9.36
+	 isotope 77 7.63
+	 isotope 78 23.78
+	 isotope 80 49.61
+	 isotope 82 8.73
+	 covalent 1.22
+	 vdW 1.90
+	 color goldenrod
+end Se
+begin Br
+	 name Bromine
+	 Mass 79.904
+	 isotope 79 50.69
+	 isotope 81 49.31
+	 covalent 1.21
+	 vdW 1.85
+	 color maroon
+end Br
+begin Kr
+	 name Krypton
+	 Mass 83.8
+	 isotope 78 0.35
+	 isotope 80 2.25
+	 isotope 82 11.6
+	 isotope 83 11.5
+	 isotope 84 57
+	 isotope 86 17.3
+	 covalent 1.50
+	 vdW 2.02
+	 color grey
+end Kr
+begin Rb
+	 name Rubidium
+	 Mass 85.4678
+	 isotope 85 72.165
+	 isotope 87 27.835
+	 covalent 1.47
+	 vdW 2.00
+	 color darkgreen
+end Rb
+begin Sr
+	 name Strontium
+	 Mass 87.62
+	 isotope 84 0.56
+	 isotope 86 9.86
+	 isotope 87 7
+	 isotope 88 82.58
+	 covalent 1.12
+	 vdW 2.00
+	 color gold
+end Sr
+begin Yt
+	 name Yttrium
+	 Mass 88.9059
+	 isotope 89 100
+	 covalent 1.78
+	 vdW 2.00
+	 color thistle
+end Yt
+begin Zr
+	 name Zirconium
+	 Mass 91.22
+	 isotope 90 51.45
+	 isotope 91 11.22
+	 isotope 92 17.15
+	 isotope 94 17.38
+	 isotope 96 2.8
+	 covalent 1.56
+	 vdW 2.00
+	 color thistle
+end Zr
+begin Nb
+	 name Niobium
+	 Mass 92.9064
+	 isotope 93 100
+	 covalent 1.48
+	 vdW 2.00
+	 color thistle
+end Nb
+begin Mo
+	 name Molybdenum
+	 Mass 95.94
+	 isotope 92 14.84
+	 isotope 94 9.25
+	 isotope 95 15.92
+	 isotope 96 16.68
+	 isotope 97 9.55
+	 isotope 98 24.13
+	 isotope 100 9.63
+	 covalent 1.47
+	 vdW 2.00
+	 color thistle
+end Mo
+begin Tc
+	 name Technetium
+	 Mass 98.9062
+	 isotope  
+	 isotope  
+	 isotope  
+	 covalent 1.35
+	 vdW 2.00
+	 color thistle
+end Tc
+begin Ru
+	 name Ruthenium
+	 Mass 101.07
+	 isotope 96 5.52
+	 isotope 98 1.88
+	 isotope 99 12.7
+	 isotope 100 12.6
+	 isotope 101 17
+	 isotope 102 31.6
+	 isotope 104 18.7
+	 covalent 1.40
+	 vdW 2.00
+	 color thistle
+end Ru
+begin Rh
+	 name Rhodium
+	 Mass 102.9055
+	 isotope 103 100
+	 covalent 1.45
+	 vdW 2.00
+	 color thistle
+end Rh
+begin Pd
+	 name Palladium
+	 Mass 106.4
+	 isotope 102 1.02
+	 isotope 104 11.14
+	 isotope 105 22.33
+	 isotope 106 27.33
+	 isotope 108 26.46
+	 isotope 110 11.72
+	 covalent 1.50
+	 vdW 1.63
+	 color thistle
+end Pd
+begin Ag
+	 name Silver
+	 Mass 107.868
+	 isotope 107 51.839
+	 isotope 109 48.161
+	 covalent 1.59
+	 vdW 1.72
+	 color thistle
+end Ag
+begin Cd
+	 name Cadmium
+	 Mass 112.4
+	 isotope 106 1.25
+	 isotope 108 0.89
+	 isotope 110 12.49
+	 isotope 111 12.8
+	 isotope 112 24.13
+	 isotope 113 12.22
+	 isotope 114 28.73
+	 isotope 116 7.49
+	 covalent 1.69
+	 vdW 1.58
+	 color thistle
+end Cd
+begin In
+	 name Indium
+	 Mass 114.82
+	 isotope 113 4.3
+	 isotope 115 95.7
+	 covalent 1.63
+	 vdW 1.93
+	 color gainsboro
+end In
+begin Sn
+	 name Tin
+	 Mass 118.69
+	 isotope 112 0.97
+	 isotope 114 0.65
+	 isotope 115 0.34
+	 isotope 116 14.53
+	 isotope 117 7.68
+	 isotope 118 24.23
+	 isotope 119 8.59
+	 isotope 120 32.59
+	 isotope 122 4.63
+	 isotope 124 5.79
+	 covalent 1.46
+	 vdW 2.17
+	 color lightsteelblue
+end Sn
+begin Sb
+	 name Antimony
+	 Mass 121.75
+	 isotope 121 57.36
+	 isotope 123 42.64
+	 covalent 1.46
+	 vdW 2.00
+	 color darkslateblue
+end Sb
+begin Te
+	 name Tellurium
+	 Mass 127.6
+	 isotope 120 0.096
+	 isotope 122 2.603
+	 isotope 123 0.908
+	 isotope 124 4.816
+	 isotope 125 7.139
+	 isotope 126 18.95
+	 isotope 128 31.69
+	 isotope 130 33.8
+	 covalent 1.47
+	 vdW 2.06
+	 color goldenrod
+end Te
+begin I
+	 name Iodine
+	 Mass 126.9045
+	 isotope 127 100
+	 covalent 1.40
+	 vdW 1.98
+	 color purple
+end I
+begin Xe
+	 name Xenon
+	 Mass 131.3
+	 isotope 124 0.1
+	 isotope 126 0.09
+	 isotope 128 1.91
+	 isotope 129 26.4
+	 isotope 130 4.1
+	 isotope 131 21.2
+	 isotope 132 26.9
+	 isotope 134 10.4
+	 isotope 136 8.9
+	 covalent 1.50
+	 vdW 2.16
+	 color grey
+end Xe
+begin Cs
+	 name Caesium
+	 Mass 132.9054
+	 isotope 133 100
+	 covalent 1.67
+	 vdW 2.00
+	 color darkgreen
+end Cs
+begin Ba
+	 name Barium
+	 Mass 137.34
+	 isotope 130 0.106
+	 isotope 132 0.101
+	 isotope 134 2.417
+	 isotope 135 6.592
+	 isotope 136 7.854
+	 isotope 137 11.23
+	 isotope 138 71.7
+	 covalent 1.34
+	 vdW 2.00
+	 color gold
+end Ba
+begin La
+	 name Lanthanum
+	 Mass 138.9055
+	 isotope 138 0.0902
+	 isotope 139 99.9098
+	 covalent 1.87
+	 vdW 2.00
+	 color thistle
+end La
+begin Ce
+	 name Cerium
+	 Mass 140.12
+	 isotope 136 0.19
+	 isotope 138 0.25
+	 isotope 140 88.48
+	 isotope 142 11.08
+	 covalent 1.83
+	 vdW 2.00
+	 color linen
+end Ce
+begin Pr
+	 name Praseodynium
+	 Mass 140.9077
+	 isotope 141 100
+	 covalent 1.82
+	 vdW 2.00
+	 color linen
+end Pr
+begin Nd
+	 name Neodymium
+	 Mass 144.24
+	 isotope 142 27.13
+	 isotope 143 12.18
+	 isotope 144 23.8
+	 isotope 145 8.3
+	 isotope 146 17.19
+	 isotope 148 5.76
+	 isotope 150 5.64
+	 covalent 1.81
+	 vdW 2.00
+	 color linen
+end Nd
+begin Pm
+	 name Promethium
+	 Mass 147
+	 isotope  
+	 covalent 1.80
+	 vdW 2.00
+	 color linen
+end Pm
+begin Sm
+	 name Samarium
+	 Mass 150.4
+	 isotope 144 3.1
+	 isotope 147 15
+	 isotope 148 11.3
+	 isotope 149 13.8
+	 isotope 150 7.4
+	 isotope 152 26.7
+	 isotope 154 22.7
+	 covalent 1.80
+	 vdW 2.00
+	 color linen
+end Sm
+begin Eu
+	 name Europium
+	 Mass 151.96
+	 isotope 151 47.8
+	 isotope 153 52.2
+	 covalent 1.99
+	 vdW 2.00
+	 color linen
+end Eu
+begin Gd
+	 name Gadolinium
+	 Mass 157.25
+	 isotope 152 0.2
+	 isotope 154 2.18
+	 isotope 155 14.8
+	 isotope 156 20.47
+	 isotope 157 15.65
+	 isotope 158 24.84
+	 isotope 160 21.86
+	 covalent 1.79
+	 vdW 2.00
+	 color linen
+end Gd
+begin Tb
+	 name Terbium
+	 Mass 158.9254
+	 isotope 159 100
+	 covalent 1.76
+	 vdW 2.00
+	 color linen
+end Tb
+begin Dy
+	 name Dysprosium
+	 Mass 162.5
+	 isotope 156 0.06
+	 isotope 158 0.1
+	 isotope 160 2.34
+	 isotope 161 18.9
+	 isotope 162 25.5
+	 isotope 163 24.9
+	 isotope 164 28.2
+	 covalent 1.75
+	 vdW 2.00
+	 color linen
+end Dy
+begin Ho
+	 name Holmium
+	 Mass 164.9304
+	 isotope 165 100
+	 covalent 1.74
+	 vdW 2.00
+	 color linen
+end Ho
+begin Er
+	 name Erbium
+	 Mass 167.26
+	 isotope 162 0.14
+	 isotope 164 1.61
+	 isotope 166 33.6
+	 isotope 167 22.95
+	 isotope 168 26.8
+	 isotope 170 14.9
+	 covalent 1.73
+	 vdW 2.00
+	 color linen
+end Er
+begin Tm
+	 name Thulium
+	 Mass 168.9342
+	 isotope 169 100
+	 covalent 1.72
+	 vdW 2.00
+	 color linen
+end Tm
+begin Yt
+	 name Ytterbium
+	 Mass 173.04
+	 isotope 168 0.13
+	 isotope 170 3.05
+	 isotope 171 14.3
+	 isotope 172 21.9
+	 isotope 173 16.12
+	 isotope 174 31.8
+	 isotope 176 12.7
+	 covalent 1.94
+	 vdW 2.00
+	 color linen
+end Yt
+begin Lu
+	 name Lutetium
+	 Mass 174.97
+	 isotope 175 97.41
+	 isotope 176 2.59
+	 covalent 1.72
+	 vdW 2.00
+	 color linen
+end Lu
+begin Hf
+	 name Hafnium
+	 Mass 178.49
+	 isotope 174 0.162
+	 isotope 176 5.206
+	 isotope 177 18.606
+	 isotope 178 27.297
+	 isotope 179 13.629
+	 isotope 180 35.1
+	 covalent 1.57
+	 vdW 2.00
+	 color thistle
+end Hf
+begin Ta
+	 name Tantalum
+	 Mass 180.9479
+	 isotope 180 0.012
+	 isotope 181 99.988
+	 covalent 1.43
+	 vdW 2.00
+	 color thistle
+end Ta
+begin W
+	 name Tungsten
+	 Mass 183.85
+	 isotope 180 0.13
+	 isotope 182 26.3
+	 isotope 183 14.3
+	 isotope 184 30.67
+	 isotope 186 28.6
+	 covalent 1.37
+	 vdW 2.00
+	 color thistle
+end W
+begin Re
+	 name Rhenium
+	 Mass 186.207
+	 isotope 185 37.4
+	 isotope 187 62.6
+	 covalent 1.35
+	 vdW 2.00
+	 color thistle
+end Re
+begin Os
+	 name Osmium
+	 Mass 190.2
+	 isotope 184 0.02
+	 isotope 186 1.58
+	 isotope 187 1.6
+	 isotope 188 13.3
+	 isotope 189 16.1
+	 isotope 190 26.4
+	 isotope 192 41
+	 covalent 1.37
+	 vdW 2.00
+	 color thistle
+end Os
+begin Ir
+	 name Iridium
+	 Mass 192.22
+	 isotope 191 37.3
+	 isotope 193 62.7
+	 covalent 1.32
+	 vdW 2.00
+	 color thistle
+end Ir
+begin Pt
+	 name Platinum
+	 Mass 195.09
+	 isotope 190 0.01
+	 isotope 192 0.79
+	 isotope 194 32.9
+	 isotope 195 33.8
+	 isotope 196 25.3
+	 isotope 198 7.2
+	 covalent 1.50
+	 vdW 1.72
+	 color thistle
+end Pt
+begin Au
+	 name Gold
+	 Mass 196.9665
+	 isotope 197 100
+	 covalent 1.50
+	 vdW 1.66
+	 color thistle
+end Au
+begin Hg
+	 name Mercury
+	 Mass 200.59
+	 isotope 196 0.15
+	 isotope 198 9.97
+	 isotope 199 16.87
+	 isotope 200 23.1
+	 isotope 201 13.18
+	 isotope 202 29.86
+	 isotope 204 6.87
+	 covalent 1.70
+	 vdW 1.55
+	 color thistle
+end Hg
+begin Tl
+	 name Thallium
+	 Mass 204.37
+	 isotope 203 29.524
+	 isotope 205 70.476
+	 covalent 1.55
+	 vdW 1.96
+	 color gainsboro
+end Tl
+begin Pb
+	 name Lead
+	 Mass 207.2
+	 isotope 204 1.4
+	 isotope 206 24.1
+	 isotope 207 22.1
+	 isotope 208 52.4
+	 covalent 1.54
+	 vdW 2.02
+	 color lightsteelblue
+end Pb
+begin Bi
+	 name Bismuth
+	 Mass 208.9804
+	 isotope 209 100
+	 covalent 1.54
+	 vdW 2.00
+	 color darkslateblue
+end Bi
+begin Po
+	 name Polonium
+	 Mass 210
+	 isotope  
+	 covalent 1.68
+	 vdW 2.00
+	 color goldenrod
+end Po
+begin At
+	 name Astatine
+	 Mass 210
+	 isotope  
+	 covalent 1.21
+	 vdW 2.00
+	 color maroon
+end At
+begin Rn
+	 name Radon
+	 Mass 222
+	 isotope  
+	 covalent 1.50
+	 vdW 2.00
+	 color grey
+end Rn
+begin Fr
+	 name Francium
+	 Mass 223
+	 isotope  
+	 covalent 1.50
+	 vdW 2.00
+	 color darkgreen
+end Fr
+begin Ra
+	 name Radium
+	 Mass 226.0254
+	 isotope  
+	 covalent 1.50
+	 vdW 2.00
+	 color gold
+end Ra
+begin Ac
+	 name Actinium
+	 Mass 227
+	 isotope  
+	 covalent 1.88
+	 vdW 2.00
+	 color thistle
+end Ac
+begin Th
+	 name Thorium
+	 Mass 232.0381
+	 isotope 232 100
+	 covalent 1.79
+	 vdW 2.00
+	 color linen
+end Th
+begin Pa
+	 name Protactinium
+	 Mass 231.0359
+	 isotope  
+	 covalent 1.61
+	 vdW 2.00
+	 color linen
+end Pa
+begin U
+	 name Uranium
+	 Mass 238.029
+	 isotope 234 0.0055
+	 isotope 235 0.72
+	 isotope 238 99.2745
+	 covalent 1.58
+	 vdW 1.86
+	 color linen
+end U
