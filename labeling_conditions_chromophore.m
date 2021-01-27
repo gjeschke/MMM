@@ -189,7 +189,7 @@ lib_indices = zeros(1,libs);
 poi = 0;
 for k=1:libs
     % ### here, class must be cahnged to 'chromophore' ###
-    if strcmp(rotamer_libraries(k).type,'peptide') && strcmp(rotamer_libraries(k).class,'nitroxide')
+    if strcmp(rotamer_libraries(k).type,'peptide') && strcmp(rotamer_libraries(k).class,'chromophore')
         poi = poi + 1;
         lib_list{poi}=rotamer_libraries(k).label;
         lib_indices(poi) = k;
@@ -263,7 +263,7 @@ for k=1:length(libdir)
         s = load(libdir(k).name);
         % ### class needs to be changed to 'chromophore' here
         if isfield(s,'rot_lib') && isfield(s.rot_lib,'class')...
-                && strcmp(s.rot_lib.class,'nitroxide')
+                && strcmp(s.rot_lib.class,'chromophore')
             poi=poi+1;
             liblist{poi}=name;
         end
