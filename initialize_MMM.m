@@ -49,9 +49,9 @@ gowhere=which('MMM.m');
 addpath(genpath(gowhere(1:end-6)));
 
 % information on current release
-MMM_info.title='MMM version 2018.2';
+MMM_info.title='MMM version 2021.1';
 MMM_info.authors='G. Jeschke, Ye. Polyhach, S. Stoll';
-MMM_info.date='10.11.2018';
+MMM_info.date='12.01.2021';
 MMM_info.institution='ETH Z?rich, D-CHAB & Univ. Washington, Dept. Chem.';
 MMM_info.contact{1}='gjeschke@ethz.ch';
 MMM_info.contact{2}='yevhen.polyhach@phys.chem.ethz.ch';
@@ -510,6 +510,77 @@ rotamer_libraries(26).type = 'nucleotide';
 rotamer_libraries(26).class = 'nitroxide';
 rotamer_libraries(26).exclude = ':C5'':H5'':H5'''':O5'':HO5'':'; % these atoms come from the rotamer
 
+rotamer_libraries(27).label='Cy3b_1024';
+rotamer_libraries(27).tc='Cy3';
+rotamer_libraries(27).T= 298;
+rotamer_libraries(27).files=':Cy3_298K_UFF_1024_r1:';
+rotamer_libraries(27).type='peptide';
+rotamer_libraries(27).exclude=':H2:HO2:OXT:';
+rotamer_libraries(27).class = 'chromophore';
+rotamer_libraries(27).download{1} = 'https://dl.dropboxusercontent.com/s/oescxafbqlcz2r6/Cy3_298K_UFF_1024_r1.zip';
+
+rotamer_libraries(28).label='Cy3b_2048';
+rotamer_libraries(28).tc='Cy3';
+rotamer_libraries(28).T= 298;
+rotamer_libraries(28).files=':Cy3_298K_UFF_2048_r1:';
+rotamer_libraries(28).type='peptide';
+rotamer_libraries(28).exclude=':H2:HO2:OXT:';
+rotamer_libraries(28).class = 'chromophore';
+rotamer_libraries(28).download{1} = 'https://dl.dropboxusercontent.com/s/3gcjeapde485d1a/Cy3_298K_UFF_2048_r1.zip';
+
+rotamer_libraries(29).label='Cy3b_4096';
+rotamer_libraries(29).tc='Cy3';
+rotamer_libraries(29).T= 298;
+rotamer_libraries(29).files=':Cy3_298K_UFF_4096_r1:';
+rotamer_libraries(29).type='peptide';
+rotamer_libraries(29).exclude=':H2:HO2:OXT:';
+rotamer_libraries(29).class = 'chromophore';
+rotamer_libraries(29).download{1} = 'https://dl.dropboxusercontent.com/s/zq6g20mjvdliz4a/Cy3_298K_UFF_4096_r1.zip';
+
+rotamer_libraries(30).label='Cy3b_8192';
+rotamer_libraries(30).tc='Cy3';
+rotamer_libraries(30).T= 298;
+rotamer_libraries(30).files=':Cy3_298K_UFF_8192_r1:';
+rotamer_libraries(30).type='peptide';
+rotamer_libraries(30).exclude=':H2:HO2:OXT:';
+rotamer_libraries(30).class = 'chromophore';
+rotamer_libraries(30).download{1} = 'https://dl.dropboxusercontent.com/s/9eiwz5018996ve0/Cy3_298K_UFF_8192_r1.zip';
+
+rotamer_libraries(31).label='CF660R_1024';
+rotamer_libraries(31).tc='CF6';
+rotamer_libraries(31).T= 298;
+rotamer_libraries(31).files=':CF6_298K_UFF_1024_r1:';
+rotamer_libraries(31).type='peptide';
+rotamer_libraries(31).exclude=':H2:HO2:OXT:';
+rotamer_libraries(31).class = 'chromophore';
+rotamer_libraries(31).download{1} = 'https://dl.dropboxusercontent.com/s/wodxn0b895nii3p/CF6_298K_UFF_1024_r1.zip';
+
+rotamer_libraries(32).label='CF660R_2048';
+rotamer_libraries(32).tc='CF6';
+rotamer_libraries(32).T= 298;
+rotamer_libraries(32).files=':CF6_298K_UFF_2048_r1:';
+rotamer_libraries(32).type='peptide';
+rotamer_libraries(32).exclude=':H2:HO2:OXT:';
+rotamer_libraries(32).class = 'chromophore';
+rotamer_libraries(32).download{1} = 'https://dl.dropboxusercontent.com/s/9gcbf77ooo48b9l/CF6_298K_UFF_2048_r1.zip';
+
+rotamer_libraries(33).label='CF660R_4096';
+rotamer_libraries(33).tc='CF6';
+rotamer_libraries(33).T= 298;
+rotamer_libraries(33).files=':CF6_298K_UFF_4096_r1:';
+rotamer_libraries(33).type='peptide';
+rotamer_libraries(33).exclude=':H2:HO2:OXT:';
+rotamer_libraries(33).class = 'chromophore';
+rotamer_libraries(33).download{1} = 'https://dl.dropboxusercontent.com/s/84b5ivaxxvjhwet/CF6_298K_UFF_4096_r1.zip';
+
+rotamer_libraries(34).label='CF660R_8192';
+rotamer_libraries(34).tc='CF6';
+rotamer_libraries(34).T= 298;
+rotamer_libraries(34).files=':CF6_298K_UFF_8192_r1:';
+rotamer_libraries(34).type='peptide';
+rotamer_libraries(34).exclude=':H2:HO2:OXT:';
+rotamer_libraries(34).class = 'chromophore';
+rotamer_libraries(34).download{1} = 'https://dl.dropboxusercontent.com/s/nxfpkrujk2jfoe7/CF6_298K_UFF_8192_r1.zip';
 
 ligand_libraries(1).label='dHisCuIDA';
 ligand_libraries(1).tc='IDA';
