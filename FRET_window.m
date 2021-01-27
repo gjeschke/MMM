@@ -59,24 +59,25 @@ handles.eventdata = eventdata;
 % ### Defines the FRET efficiency matrix as an empty matrix ###
 
 handles.FRET_efficiency_matrix = [];
+handles.FRET_efficiency_static = [];
 
 % ### set the defaults of model parameters ###
 
-handles.exp_FRET_efficiency = 0.5;
+handles.exp_FRET_efficiency = 0.0;
 set(handles.edit_exp_FRET_efficiency,'String',sprintf('%5.3f',handles.exp_FRET_efficiency));
-handles.diff_const_lower_bound = 0;
+handles.diff_const_lower_bound = 0.1;
 set(handles.edit_diff_const_lower_bound,'String',sprintf('%5.3f',handles.diff_const_lower_bound));
-handles.diff_const_upper_bound = 0.4;
+handles.diff_const_upper_bound = 1.0;
 set(handles.edit_diff_const_upper_bound,'String',sprintf('%5.3f',handles.diff_const_upper_bound));
-handles.exci_donor_lifetime = 0.4;
+handles.exci_donor_lifetime = 2.5;
 set(handles.edit_exci_donor_lifetime,'String',sprintf('%5.3f',handles.exci_donor_lifetime));
 handles.diffusion_grid_size = 5;
 set(handles.edit_diffusion_grid_size,'String',sprintf('%i',handles.diffusion_grid_size));
 handles.diff_matrix_size = 70;
 set(handles.edit_diff_matrix_size,'String',sprintf('%i',handles.diff_matrix_size));
-handles.F_radius = 6;
+handles.F_radius = 6.0;
 set(handles.edit_F_radius,'String',sprintf('%5.3f',handles.F_radius));
-handles.error_F_radius = 2;
+handles.error_F_radius = 7.0;
 set(handles.edit_error_F_radius,'String',sprintf('%5.2f',handles.error_F_radius));
 handles.R0_grid_points = 5;
 set(handles.edit_R0_grid_points,'String',sprintf('%i',handles.R0_grid_points));
@@ -122,8 +123,8 @@ handles.edit_exci_donor_lifetime.Enable= 'off';
 handles.edit_diffusion_grid_size.Enable= 'off';
 handles.edit_diff_matrix_size.Enable= 'off';
 handles.pushbutton_update_model.Enable= 'off';
-handles.edit_error_F_radius.Enable= 'off';
-handles.edit_R0_grid_points.Enable= 'off';
+handles.edit_error_F_radius.Enable= 'on';
+handles.edit_R0_grid_points.Enable= 'on';
 
 if ~success
     msgbox('Model must feature at least two chromophores. Use FRET rotamer computation first.','FRET simulation impossible','error');
@@ -175,7 +176,7 @@ name = handles.site_list(sel).adr;
 msg{1} = name;
 codedstring = '\u212b';
 AA = sprintf(strrep(codedstring, '\u', '\x'));
-msg{2} = sprintf('at [%6.2f,%6.2f,%6.2f] %s',x,y,z,AA);
+msg{2} = sprintf('%s at [%6.2f,%6.2f,%6.2f] %s',handles.site_list(sel).label,x,y,z,AA);
 set(handles.text_coor,'String',msg);
 addresses = get(hObject,'String');
 adr = addresses{sel};
@@ -315,6 +316,7 @@ if removal
     handles.ff_multi = [];
     handles.tweak_distr = [];
     handles.tweak_rax = [];
+    handles.FRET_efficiency_matrix = [];
     if npoi == 2
         ind1 = resolve_address(handles.site_list(handles.labels(1)).adr);
         ind2 = resolve_address(handles.site_list(handles.labels(2)).adr);
@@ -348,7 +350,13 @@ label_list = get(handles.listbox_label,'String');
 if isfield(handles,'rsim')
     labstring='';
     for k=1:length(handles.labels)
-        labstring=sprintf('%s%s_',labstring,label_list{handles.labels(k)});
+        str = label_list{handles.labels(k)};
+        % Remove '; ' if present
+        s=strfind(str,'; ');
+        if ~isempty(s)
+            str=str(1:s(length(s))-1);
+        end
+        labstring=sprintf('%s%s_',labstring,str);
     end
     suggestion=[labstring 'res.txt']; 
     [fname,pname]=uiputfile('*.txt','Save results',suggestion);
@@ -403,9 +411,12 @@ handles.edit_exci_donor_lifetime.Enable= enabled;
 handles.edit_diffusion_grid_size.Enable= enabled;
 handles.edit_diff_matrix_size.Enable= enabled;
 handles.pushbutton_update_model.Enable= enabled;
-handles.edit_error_F_radius.Enable= enabled;
-handles.edit_R0_grid_points.Enable= enabled;
-handles = update_plots(handles);
+% handles.edit_error_F_radius.Enable= enabled;
+% handles.edit_R0_grid_points.Enable= enabled;
+
+if strncmpi(enabled,'off',3)
+    handles = update_plots(handles);
+end
 guidata(hObject,handles);
 
 
@@ -477,11 +488,14 @@ end
 
 function handles = update_plots(handles)
 % Display update
+text_static_dynamic_str = handles.text_static_dynamic.String;
+handles.text_static_dynamic.String = 'Updating ...';
+guidata(handles.text_static_dynamic, handles);
 
 global model
 
 % set colors for display of individual distributions, when more than two
-% chromophores are selected, maybe such selection should be blicked for
+% chromophores are selected, maybe such selection should be blocked for
 % FRET
 col1=[0,1,0]; % color green 
 col2=[0,0,1]; % color blue
@@ -502,7 +516,7 @@ else
 end
 hold on;
 
-xlabel('distance (nm');
+xlabel('distance (nm)');
 ylabel('Probability density (1/nm)');
 if ~isempty(handles.labels) && ~isempty(handles.site_list)
     lab_string = handles.site_list(handles.labels(1)).adr;
@@ -681,12 +695,15 @@ if numlab>1
     
     % ### Here you need to compute minimimum and optimum R0 from the
     % distance distribution ###
-    tmax_min = 2*((rmean+stddev)/5)^3; % ### DEER example
-    handles.R0_min = tmax_min; % ### DEER example
-    tmax_opt = 2*((rmean+stddev)/3.2)^3; % ### DEER example
-    handles.R0_opt = tmax_opt; % ### DEER example
-    set(handles.text_minimum_R0,'String',sprintf('%3.1f us',tmax_min));
-    set(handles.text_optimum_R0,'String',sprintf('%3.1f us',tmax_opt));
+    ndistr_norm = ndistr./max(ndistr);
+    min_ind = find(ndistr_norm >= 0.1,1,'first');
+    max_ind = find(ndistr_norm >= 0.1,1,'last');
+    R0_min = rax(max_ind)/1.5; % upper end = 1.5*R0
+    handles.R0_min = R0_min; %
+    R0_opt = (rax(max_ind) + rax(min_ind))/2; % middle
+    handles.R0_opt = R0_opt; %
+    set(handles.text_minimum_R0,'String',sprintf('%3.1f nm',R0_min));
+    set(handles.text_optimum_R0,'String',sprintf('%3.1f nm',R0_opt));
     
     rfilled=rax(full_distr>0.01*max(full_distr));
     rmin=min([min(rfilled) rmin0]);
@@ -696,6 +713,7 @@ if numlab>1
     rmax=rmax+bsl;
     dmax=1.1*max(full_distr);
     plot(rax,full_distr,'r','LineWidth',1);
+    box on;
     if ~isempty(handles.tweak_distr) && ~isempty(handles.tweak_rax)
         plot(handles.tweak_rax,handles.tweak_distr,'r:','LineWidth',2);
         dmax=1.1*max([max(full_distr) max(handles.tweak_distr)]);
@@ -715,7 +733,7 @@ if numlab>1
     else
         axis([rmin,rmax,dmin,dmax]);
     end
-    if isfield(handles,'AV_rax') && isfield(handles,'AVdistr')...
+    if isfield(handles,'AV_rax') && isfield(handles,'AV_distr')...
             && handles.checkbox_display_AV.Value
         sc = max(full_distr)/max(handles.AV_distr);
         plot(handles.AV_rax,sc*handles.AV_distr,':','Color',[0 0.75 0.25],'LineWidth',1.5);
@@ -725,33 +743,165 @@ end
 % The following part plots the rmsd matrix or diagram
 if handles.copy_FRET
     figure(2); clf;
+    cla reset;
     set(gca,'FontSize',16);
     hold on;
 else
     axes(handles.axes_FRET);
-    cla;
+    cla reset;
     hold on;
 end
 
-if handles.checkbox_plot_rmsd.Value
-    if ~isempty(handles.FRET_efficiency_matrix)
-        % ### compute rmsd matrix and plot it ###
-        xlabel('R0 (nm)');
-        ylabel('Diff. const. (nm^2/ns)');
+% needed parameters - delete later
+R0 = handles.F_radius; %6.0; %6; % in nm
+kD = 1/handles.exci_donor_lifetime; %1/2.7; %1/3.0; % % Ranjit, Levitus, 2012
+r_limit = [0.1 10];
+deltaR0 = handles.F_radius.*[1-handles.error_F_radius/100 1+handles.error_F_radius/100]; %R0.*[0.93 1.07];
+deltaDiff = [handles.diff_const_lower_bound handles.diff_const_upper_bound]; %[0.1 2*diff]; % 0 for static case will be added
+nEffGrid = handles.R0_grid_points;
+nDiffGrid = handles.diffusion_grid_size;
+            
+if numlab == 2
+    if nEffGrid >= 2
+        R0vec = linspace(deltaR0(1), deltaR0(2), nEffGrid);
+    else
+        R0vec = R0;
     end
-    % ### only a dummy image is plotted here, you need to plot the R0/D plot
-    % ###    C = imread('ngc6543a.jpg');
-    image(C); % ### needs to be removed
-else
-    % ### please check whether you want to plot something if the checkbox is
-    % inactive, this would go here ###
-end
 
+    diffvec = linspace(deltaDiff(1), deltaDiff(2), nDiffGrid);
+    if handles.checkbox_diffusion_model.Value && isempty(handles.FRET_efficiency_matrix)
+        handles.FRET_efficiency_matrix = zeros(nEffGrid,nDiffGrid);
+        handles.FRET_RMSD_matrix = [];
+        for j = 1:nEffGrid
+            for jj = 1:nDiffGrid
+                handles.FRET_efficiency_matrix(j,jj) = get_meanE(R0vec(j), kD, [rax' ndistr'], r_limit(1), r_limit(2), diffvec(jj), handles.diff_matrix_size); % dynamic FRET av.
+            end
+        end
+    elseif ~handles.checkbox_diffusion_model.Value && isempty(handles.FRET_efficiency_static)
+        handles.FRET_efficiency_static = zeros(size(R0vec));
+        handles.FRET_RMSD_static = [];
+        for j = 1:length(R0vec)
+            handles.FRET_efficiency_static(j) = get_meanE_StaticLimit(R0vec(j), [rax' ndistr']); % static FRET av.
+        end
+    end
+    
+    if handles.checkbox_plot_rmsd.Value
+        if handles.checkbox_diffusion_model.Value && ~isempty(handles.FRET_efficiency_matrix)
+            % ### compute rmsd matrix and plot it ###
+            handles.FRET_RMSD_matrix = rmsd(handles.FRET_efficiency_matrix,handles.exp_FRET_efficiency);
+            if length(R0vec) == 1
+                plot(diffvec,handles.FRET_RMSD_matrix,'*r');
+                ylabel('RMSD(<E_{exp}>, <E_{calc}>)');
+                xlabel('Diff. const. (nm^2/ns)');
+            else
+                [X,Y] = meshgrid(R0vec,diffvec);
+                contourf(X,Y,handles.FRET_RMSD_matrix',60,'LineStyle','none'); %,'ShowText','on');
+                box on;
+                [~, c2] = caxis;
+                caxis([0.0 c2]); % before [0 0.6]
+                colormap(jet);
+                cbar = colorbar;
+                cbar.Label.String = 'RMSD';
+                xlabel('R0 (nm)');
+                ylabel('Diff. const. (nm^2/ns)');
+            end
+            [~, min_ind] = min(handles.FRET_RMSD_matrix(:));
+            [ind1, ind2] = ind2sub(size(handles.FRET_RMSD_matrix),min_ind);
+            hold on;
+            if length(R0vec) == 1
+                plot(diffvec(ind2),handles.FRET_RMSD_matrix(ind1,ind2),'xr','LineWidth',1.5);
+                legend('<E_{calc}>','<E_{sim}>','Location','best');
+            else
+                plot(R0vec(ind1),diffvec(ind2),'xr','LineWidth',1.5); % Test: works
+            end
+            hold off;
+            min_rmsd_str = num2str(handles.FRET_RMSD_matrix(ind1,ind2),3);
+            sim_FRET_str = num2str(handles.FRET_efficiency_matrix(ind1,ind2),3);
+            diff_str = num2str(diffvec(ind2),3);
+            best_R0_str = num2str(R0vec(ind1),3);
+        else
+            % 1D case
+            handles.FRET_RMSD_static = rmsd(handles.FRET_efficiency_static,handles.exp_FRET_efficiency);
+            plot(R0vec, handles.FRET_RMSD_static,'*r');
+            ylabel('RMSD(<E_{exp}>, <E_{calc}>)');
+            xlabel('R0 (nm)');
+            [~, min_ind] = min(handles.FRET_RMSD_static);
+%             [ind1, ind2] = ind2sub(size(handles.FRET_RMSD_matrix),min_ind);
+            hold on;
+            plot(R0vec(min_ind),handles.FRET_RMSD_static(min_ind),'xr','LineWidth',1.5);
+            hold off;
+            legend('<E_{calc}>','<E_{sim}>','Location','best');
+            min_rmsd_str = num2str(handles.FRET_RMSD_static(min_ind),3);
+            sim_FRET_str = num2str(handles.FRET_efficiency_static(min_ind),3);
+            diff_str = 'n.a.';
+%             [~, min_ind] = min(handles.FRET_RMSD_static(:));
+            best_R0_str = num2str(R0vec(min_ind),3);
+        end
+        box on;
+        
+        % ### only a dummy image is plotted here, you need to plot the R0/D plot
+        % ###    C = imread('ngc6543a.jpg');
+%         image(C); % ### needs to be removed
+    else
+        if handles.checkbox_diffusion_model.Value && ~isempty(handles.FRET_efficiency_matrix)
+            if  length(R0vec) == 1
+                plot([handles.diff_const_lower_bound handles.diff_const_upper_bound],[handles.exp_FRET_efficiency handles.exp_FRET_efficiency],'b','MarkerFaceColor','b');
+                hold on;
+                plot(diffvec,handles.FRET_efficiency_matrix,'*r');
+                ylabel('E_{FRET}');
+                xlabel('Diff. const. (nm^2/ns)');
+                ind = round(size(handles.FRET_efficiency_matrix)./2);
+                plot(diffvec(ind(2)),handles.FRET_efficiency_matrix(ind(1),ind(2)),'xr','LineWidth',1.5);
+                legend('<E_{exp}>','<E_{calc}>','<E_{sim}>','Location','best');
+            else
+                % 2D plot
+                [X,Y] = meshgrid(R0vec,diffvec);
+                contourf(X,Y,handles.FRET_efficiency_matrix',60,'LineStyle','none');
+                box on;
+                colormap(jet);
+                cbar = colorbar;
+                cbar.Label.String = 'E_{FRET}';
+                xlabel('R0 (nm)');
+                ylabel('Diff. const. (nm^2/ns)');
+                ind = round(size(handles.FRET_efficiency_matrix)./2);
+                hold on;
+                plot(R0vec(ind(1)),diffvec(ind(2)),'xr','LineWidth',1.5);
+            end
+            box on;
+            hold off; 
+            sim_FRET_str = num2str(handles.FRET_efficiency_matrix(ind(1),ind(2)),3);
+        else
+            % 1D plot
+            plot([R0vec(1) R0vec(end)], [handles.exp_FRET_efficiency handles.exp_FRET_efficiency],'b','MarkerFaceColor','b');
+            hold on;
+            plot(R0vec, handles.FRET_efficiency_static,'*r');
+            ylabel('<E_{FRET}>');
+            xlabel('R0 (nm)');
+            box on;
+            ind = round(length(handles.FRET_efficiency_static)/2);
+            plot(R0vec(ind),handles.FRET_efficiency_static(ind),'xr','LineWidth',1.5);
+            hold off;
+            legend('<E_{exp}>','<E_{calc}>','<E_{sim}>','Location','best');
+            sim_FRET_str = num2str(handles.FRET_efficiency_static(ind),3);
+        end
+        min_rmsd_str = 'n.a.';
+        diff_str = 'n.a.';
+        best_R0_str = 'n.a.';
+    end
+    handles.text_minimum_rmsd.String = min_rmsd_str;
+    handles.text_fitted_diffusion_constant.String = diff_str;
+    handles.text_best_R0.String = best_R0_str;
+    handles.text_sim_FRET_efficiency.String = sim_FRET_str;
+elseif numlab > 2
+    msgbox('FRET computation only implemented for two chromophores.','warn');
+end
 
 handles.copy_distr = false;
 handles.copy_FRET = false;
 
+handles.text_static_dynamic.String = text_static_dynamic_str;
 % Update handles structure
+guidata(handles.text_static_dynamic, handles);
 guidata(handles.listbox_label, handles);
 
 function [handles,success] = mk_chromophore_list(handles)
@@ -761,9 +911,9 @@ function [handles,success] = mk_chromophore_list(handles)
 
 global model
 
-% ### for testing only, we use nitroxide labels ###
+% ### for testing only, we use 'nitroxide' labels ###
 % this needs to be replace by 'chromophore'
-label_class = 'nitroxide';
+label_class = 'chromophore';
 
 success=0;
 sitelistpoi = 0;
@@ -821,7 +971,7 @@ if sitelistpoi > 0
     msg{1}=name;
     codedstring = '\u212b';
     AA = sprintf(strrep(codedstring, '\u', '\x'));
-    msg{2}=sprintf('at [%6.2f,%6.2f,%6.2f] %s',x,y,z,AA);
+    msg{2}=sprintf('%s at [%6.2f,%6.2f,%6.2f] %s',handles.site_list(1).label,x,y,z,AA);
 end
 set(handles.text_coor,'String',msg);
 
@@ -1114,17 +1264,26 @@ function pushbutton_AV_Callback(hObject, eventdata, handles)
 
 handles.eventdata = eventdata;
 % ### extension should be adapted, multiple ###
-[filename,pathname] = uigetfile('.add','Load AV distance distribution');
-if filename == 0
-    add_msg_board('Loading AV file cancelled by user.');
+[filename,pathname] = uigetfile('.xyz','Load two AV distributions - Select two files','MultiSelect','on');
+if ~iscell(filename)
+    if filename == 0
+        add_msg_board('Loading AV file cancelled by user.');
+    else
+        add_msg_board('Please select two files. Canceled.');
+    end
     return
+else
+    if numel(filename) ~= 2
+        add_msg_board('Please select two files. Canceled.');
+        return
+    end
 end
 fname = fullfile(pathname, filename);
 set(handles.FRET,'Pointer','watch');
 drawnow
 % ### the following must be replaced by a reader that provides distanance
 % axis rax and distance distribution disrt form an AV file ###
-[rax,distr] = rd_PRONOX(fname);
+[rax,distr] = rd_AV(fname);
 % ### end of section to be edited
 set(handles.FRET,'Pointer','arrow');
 handles.AV_rax = rax;
@@ -1189,12 +1348,13 @@ function edit_diff_const_lower_bound_Callback(hObject, eventdata, handles)
 handles.eventdata = eventdata;
 
 % ### &&& specify edit field &&& ###
-[v,handles] = edit_update_MMM(handles,hObject,0,2,0.4,'%5.3f',0);
+[v,handles] = edit_update_MMM(handles,hObject,0.01,2,0.4,'%5.3f',0);
 if v ~= handles.diff_const_lower_bound
     handles.diff_const_lower_bound = v;
     handles.FRET_efficiency_matrix = [];
 end
-handles = update_plots(handles);
+set(handles.pushbutton_update_model,'Enable','on');
+%handles = update_plots(handles);
 guidata(hObject,handles);
 
 
@@ -1222,12 +1382,13 @@ function edit_diff_const_upper_bound_Callback(hObject, eventdata, handles)
 
 handles.eventdata = eventdata;
 % ### &&& specify edit field &&& ###
-[v,handles] = edit_update_MMM(handles,hObject,0,2,0.4,'%5.3f',0);
+[v,handles] = edit_update_MMM(handles,hObject,0,3,0.4,'%5.3f',0);
 if v ~= handles.diff_const_upper_bound
     handles.diff_const_upper_bound = v;
     handles.FRET_efficiency_matrix = [];
 end
-handles = update_plots(handles);
+set(handles.pushbutton_update_model,'Enable','on');
+%handles = update_plots(handles);
 guidata(hObject,handles);
 
 
@@ -1260,7 +1421,8 @@ if v ~= handles.diff_const_lower_bound
     handles.exci_donor_lifetime = v;
     handles.FRET_efficiency_matrix = [];
 end
-handles = update_plots(handles);
+set(handles.pushbutton_update_model,'Enable','on');
+%handles = update_plots(handles);
 guidata(hObject,handles);
 
 
@@ -1288,12 +1450,13 @@ function edit_diffusion_grid_size_Callback(hObject, eventdata, handles)
 
 handles.eventdata = eventdata;
 % ### &&& specify edit field &&& ###
-[v,handles] = edit_update_MMM(handles,hObject,5,20,5,'%i',1);
+[v,handles] = edit_update_MMM(handles,hObject,2,20,5,'%i',1);
 if v ~= handles.diffusion_grid_size
     handles.diffusion_grid_size = v;
     handles.FRET_efficiency_matrix = [];
 end
-handles = update_plots(handles);
+set(handles.pushbutton_update_model,'Enable','on');
+%handles = update_plots(handles);
 guidata(hObject,handles);
 
 
@@ -1321,12 +1484,13 @@ function edit_diff_matrix_size_Callback(hObject, eventdata, handles)
 
 handles.eventdata = eventdata;
 % ### &&& specify edit field &&& ###
-[v,handles] = edit_update_MMM(handles,hObject,5,80,20,'%i',1);
+[v,handles] = edit_update_MMM(handles,hObject,20,300,70,'%i',1);
 if v ~= handles.diff_matrix_size
     handles.diff_matrix_size = v;
     handles.FRET_efficiency_matrix = [];
 end
-handles = update_plots(handles);
+set(handles.pushbutton_update_model,'Enable','on');
+%handles = update_plots(handles);
 guidata(hObject,handles);
 
 
@@ -1351,8 +1515,9 @@ function pushbutton_update_model_Callback(hObject, eventdata, handles)
 
 handles.eventdata = eventdata;
 % ### at this point you need to call the model update computation ###
-% you best privide handles as an input and report back the results as field
+% you best provide handles as an input and report back the results as field
 % of structure handles
+set(handles.pushbutton_update_model,'Enable','off');
 handles = update_plots(handles);
 guidata(hObject,handles);
 
@@ -1385,6 +1550,7 @@ handles.eventdata = eventdata;
 if v ~= handles.F_radius
     handles.F_radius = v;
     handles.FRET_efficiency_matrix = [];
+    handles.FRET_efficiency_static = [];
 end
 handles = update_plots(handles);
 guidata(hObject,handles);
@@ -1413,12 +1579,12 @@ function edit_error_F_radius_Callback(hObject, eventdata, handles)
 
 handles.eventdata = eventdata;
 % ### &&& specify edit field &&& ###
-[v,handles] = edit_update_MMM(handles,hObject,0.1,99,2,'%5.2f',0);
+[v,handles] = edit_update_MMM(handles,hObject,0.1,99,7,'%5.2f',0);
 if v ~= handles.error_F_radius
     handles.error_F_radius = v;
     handles.FRET_efficiency_matrix = [];
+    handles.FRET_efficiency_static = [];
 end
-handles.FRET_efficiency_matrix = [];
 handles = update_plots(handles);
 guidata(hObject,handles);
 
@@ -1446,10 +1612,16 @@ function edit_R0_grid_points_Callback(hObject, eventdata, handles)
 
 handles.eventdata = eventdata;
 % ### &&& specify edit field &&& ###
-[v,handles] = edit_update_MMM(handles,hObject,5,100,20,'%i',1);
+[v,handles] = edit_update_MMM(handles,hObject,1,100,20,'%i',1);
 if v ~= handles.R0_grid_points
     handles.R0_grid_points = v;
     handles.FRET_efficiency_matrix = [];
+    handles.FRET_efficiency_static = [];
+end
+if v == 1
+    set(handles.edit_error_F_radius,'Enable','off');
+else
+    set(handles.edit_error_F_radius,'Enable','on');
 end
 handles = update_plots(handles);
 guidata(hObject,handles);
@@ -1494,3 +1666,7 @@ poi = strfind(adr,';');
 if ~isempty(poi)
     adr = adr(1:poi-1);
 end
+
+function rmsd_val = rmsd(x,y)
+% standard RMSD computation    
+    rmsd_val = sqrt(abs(x.^2-y.^2));
