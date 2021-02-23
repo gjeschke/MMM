@@ -324,7 +324,7 @@ else
     end;
     model.sites{scan}=sites;
     if ~isempty(html_name) && new_labels>0,
-        if strncmpi(sites.class,'chromophore',11)
+        if strncmpi(sites(1).class,'chromophore',11)
             labeling_analysis_chromophore(sites,html_name);
         else
             labeling_analysis(sites,html_name);

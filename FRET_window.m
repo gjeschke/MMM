@@ -166,7 +166,8 @@ handles.eventdata = eventdata;
 sel = get(hObject,'Value');
 kscan = handles.site_list(sel).item(1);
 kres = handles.site_list(sel).item(2);
-NOpos = model.sites{kscan}.residue(kres).NOpos;
+ksites = handles.site_list(sel).item(2);
+NOpos = model.sites{kscan}(ksites).residue(kres).NOpos;
 pop = NOpos(:,4);
 pop = pop/sum(pop);
 x = sum(NOpos(:,1).*pop);
@@ -487,12 +488,15 @@ end
 
 
 function handles = update_plots(handles)
+
+global model
+
+set(handles.FRET,'Pointer','watch');
+
 % Display update
 text_static_dynamic_str = handles.text_static_dynamic.String;
 handles.text_static_dynamic.String = 'Updating ...';
 guidata(handles.text_static_dynamic, handles);
-
-global model
 
 % set colors for display of individual distributions, when more than two
 % chromophores are selected, maybe such selection should be blocked for
@@ -665,7 +669,7 @@ if numlab>1
             else
                 [rax,act_distr] = pair_distribution(handles,adr1,adr2,currlabel,currlabel2);
             end
-            set(handles.FRET,'Pointer','arrow');
+            % set(handles.FRET,'Pointer','arrow');
             h=plot(rax,act_distr,'Color',col);
             set(h,'ButtonDownFcn',{@pair_ButtonDownFcn,poi});
             if isempty(r0)
@@ -900,6 +904,9 @@ handles.copy_distr = false;
 handles.copy_FRET = false;
 
 handles.text_static_dynamic.String = text_static_dynamic_str;
+
+set(handles.FRET,'Pointer','arrow');
+
 % Update handles structure
 guidata(handles.text_static_dynamic, handles);
 guidata(handles.listbox_label, handles);
@@ -929,16 +936,18 @@ if ~isfield(model,'sites') || isempty(model.sites)
 end
 
 for kscan = 1:length(model.sites) % loop over all site scans
-    if strcmpi(model.sites{kscan}.class,label_class) % only for selected label class
-        for kres = 1:length(model.sites{kscan}.residue) % loop over sites in scan
-            sitelistpoi = sitelistpoi + 1;
-            adr = mk_address(model.sites{kscan}.residue(kres).indices,true);
-            label_list{sitelistpoi} = adr;
-            site_list(sitelistpoi).type = 'label';
-            site_list(sitelistpoi).item = [kscan,kres];
-            site_list(sitelistpoi).chain = model.sites{kscan}.residue(kres).indices(2);
-            site_list(sitelistpoi).adr = adr;
-            site_list(sitelistpoi).label = model.sites{kscan}.residue(kres).label;
+    for ksites = 1:length(model.sites{kscan})
+        if strcmpi(model.sites{kscan}(ksites).class,label_class) % only for selected label class
+            for kres = 1:length(model.sites{kscan}(ksites).residue) % loop over sites in scan
+                sitelistpoi = sitelistpoi + 1;
+                adr = mk_address(model.sites{kscan}(ksites).residue(kres).indices,true);
+                label_list{sitelistpoi} = adr;
+                site_list(sitelistpoi).type = 'label';
+                site_list(sitelistpoi).item = [kscan,kres,ksites];
+                site_list(sitelistpoi).chain = model.sites{kscan}(ksites).residue(kres).indices(2);
+                site_list(sitelistpoi).adr = adr;
+                site_list(sitelistpoi).label = model.sites{kscan}(ksites).residue(kres).label;
+            end
         end
     end
 end
@@ -961,7 +970,8 @@ set(handles.listbox_label,'Value',1);
 if sitelistpoi > 0
     kscan = site_list(1).item(1);
     kres = site_list(1).item(2);
-    NOpos = model.sites{kscan}.residue(kres).NOpos;
+    ksites = site_list(1).item(3);
+    NOpos = model.sites{kscan}(ksites).residue(kres).NOpos;
     pop = NOpos(:,4);
     pop = pop/sum(pop);
     x = sum(NOpos(:,1).*pop);
@@ -1007,17 +1017,19 @@ NOpos1 = [];
 NOpos2 = [];
 
 for kscan = 1:length(model.sites)
-    for kres = 1:length(model.sites{kscan}.residue)
-        if strcmpi(label1,model.sites{kscan}.residue(kres).label)
-            di = model.sites{kscan}.residue(kres).indices - ind1;
-            if sum(abs(di)) == 0
-                NOpos1 =  model.sites{kscan}.residue(kres).NOpos;
+    for ksites = 1:length(model.sites{kscan})
+        for kres = 1:length(model.sites{kscan}(ksites).residue)
+            if strcmpi(label1,model.sites{kscan}(ksites).residue(kres).label)
+                di = model.sites{kscan}(ksites).residue(kres).indices - ind1;
+                if sum(abs(di)) == 0
+                    NOpos1 =  model.sites{kscan}(ksites).residue(kres).NOpos;
+                end
             end
-        end
-        if strcmpi(label2,model.sites{kscan}.residue(kres).label)
-            di = model.sites{kscan}.residue(kres).indices - ind2;
-            if sum(abs(di)) == 0
-                NOpos2 =  model.sites{kscan}.residue(kres).NOpos;
+            if strcmpi(label2,model.sites{kscan}(ksites).residue(kres).label)
+                di = model.sites{kscan}(ksites).residue(kres).indices - ind2;
+                if sum(abs(di)) == 0
+                    NOpos2 =  model.sites{kscan}(ksites).residue(kres).NOpos;
+                end
             end
         end
     end
