@@ -634,7 +634,7 @@ function pushbutton_close_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-DEER_CloseRequestFcn(handles.FRET, eventdata, handles);
+DEER_CloseRequestFcn(handles.DEER, eventdata, handles);
 
 
 function set_bckg_edit(hObject,handles,dim)
