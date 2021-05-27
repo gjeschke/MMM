@@ -5920,227 +5920,16 @@ function menu_jobs_test6_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-global model
-global hMain
 
-axes(handles.axes_model);
-cla reset;
-axis equal
-axis off
-set(gca,'Clipping','off');
-set(gcf,'Renderer','opengl');
-hold on
-hMain.camlight=camlight;
-guidata(handles.axes_model,hMain);
-hMain.virgin=0;
-
-clear global model
-model = [];
-global model
-
-path_orig = 'C:\Users\guje\Documents\projects\PTBP1_EMCV\CYANA_200401\yasara';
-path_target = 'C:\Users\guje\Documents\projects\PTBP1_EMCV\CYANA_200401\final_refit\yasara';
-fname = 'a9_97_corr_yasara.pdb';
-poi = strfind(fname,'_corr_yasara.pdb');
-add_pdb(fullfile(path_orig,fname));
-add_pdb(fullfile(path_target,fname));
-oname = sprintf('PTBP1_IRES_%s.pdb',fname(1:poi-1));
-
-fid = fopen(fullfile(path_target,oname),'wt');
-
-atnum = 0;
-for k = 58:531
-    adr = sprintf('[1](A)%i',k);
-    [err_msg,atnum] = wr_residue_to_PDB(fid,adr,atnum);
-    if err_msg.error
-        add_msg_board(sprintf('ERROR: %s',err_msg.text));
-        fclose(fid);
-        return
-    end
-end
-indices = resolve_address('[1](B)288');
-[~,xyz_template] = get_residue(indices,'xyz_backbone');
-indices = resolve_address('[2](B)288');
-[~,xyz_moving] = get_residue(indices,'xyz_backbone');
-[~,~,transmat]=rmsd_superimpose(xyz_template,xyz_moving);
-coor = model.structures{2}(2).xyz{1};
-model.structures{2}(2).xyz{1} = affine_trafo_coor(coor,transmat);
-adr = '[2](B)287';
-[err_msg,atnum] = wr_residue_to_PDB(fid,adr,atnum);
-if err_msg.error
-    add_msg_board(sprintf('ERROR: %s',err_msg.text));
-    fclose(fid);
-    return
-end
-for k = 288:370
-    adr = sprintf('[1](B)%i',k);
-    [err_msg,atnum] = wr_residue_to_PDB(fid,adr,atnum);
-    if err_msg.error
-        add_msg_board(sprintf('ERROR: %s',err_msg.text));
-        fclose(fid);
-        return
-    end
-end
-indices = resolve_address('[1](B)370');
-[~,xyz_template] = get_residue(indices,'xyz_backbone');
-indices = resolve_address('[2](B)370');
-[~,xyz_moving] = get_residue(indices,'xyz_backbone');
-[~,~,transmat]=rmsd_superimpose(xyz_template,xyz_moving);
-coor = model.structures{2}(2).xyz{1};
-model.structures{2}(2).xyz{1} = affine_trafo_coor(coor,transmat);
-adr = '[2](B)371';
-err_msg = wr_residue_to_PDB(fid,adr,atnum);
-if err_msg.error
-    add_msg_board(sprintf('ERROR: %s',err_msg.text));
-    fclose(fid);
-    return
-end
-fprintf(fid,'END   \n');
-fclose(fid);
-add_pdb(fullfile(path_target,oname));
-wr_pdb(fullfile(path_target,oname),'PTB1');
-return
-
-deer_names{1} = 'DEER_p15PAF_1_16';
-deer_names{2} = 'DEER_p15PAF_1_34';
-deer_names{3} = 'DEER_p15PAF_1_53';
-deer_names{4} = 'DEER_p15PAF_1_70';
-deer_names{5} = 'DEER_p15PAF_1_87';
-deer_names{6} = 'DEER_p15PAF_1_100';
-deer_names{7} = 'DEER_p15PAF_16_34';
-deer_names{8} = 'DEER_p15PAF_16_53';
-deer_names{9} = 'DEER_p15PAF_16_70';
-deer_names{10} = 'DEER_p15PAF_16_87';
-deer_names{11} = 'DEER_p15PAF_16_100';
-deer_names{12} = 'DEER_p15PAF_34_53';
-deer_names{13} = 'DEER_p15PAF_34_70';
-deer_names{14} = 'DEER_p15PAF_34_87';
-deer_names{15} = 'DEER_p15PAF_34_100';
-deer_names{16} = 'DEER_p15PAF_53_70';
-deer_names{17} = 'DEER_p15PAF_53_87';
-deer_names{18} = 'DEER_p15PAF_53_100';
-deer_names{19} = 'DEER_p15PAF_70_87';
-deer_names{20} = 'DEER_p15PAF_70_100';
-deer_names{21} = 'DEER_p15PAF_87_100';
-for k = 1:21
-    deer_names{k} = strcat('DeerLab\',deer_names{k});
-end
-
-mylist = dir('6AAA-*_distr.mat');
-load('pake_base40_MMM.mat');
-kernel=base-ones(size(base)); % kernel format for pcf2deer
-Pake_kernel = kernel;
-Pake_t = t;
-Pake_r = r;
-nh = round(length(mylist)/2);
-load(mylist(1).name);
-sum_distributions = distributions;
-lower_distributions = distributions;
-upper_distributions = zeros(size(distributions));
-[m,~] = size(distributions);
-for k = 2:length(mylist)
-    load(mylist(k).name);
-    sum_distributions = sum_distributions + distributions;
-    if k <= nh
-        lower_distributions = lower_distributions + distributions;
-    else
-        upper_distributions = upper_distributions + distributions;
-    end
-end
-for k = 1:m
-    figure(k); clf; hold on
-    sum_distributions(k,:) = sum_distributions(k,:)/sum(sum_distributions(k,:));
-    lower_distributions(k,:) = lower_distributions(k,:)/sum(lower_distributions(k,:));
-    upper_distributions(k,:) = upper_distributions(k,:)/sum(upper_distributions(k,:));
-    distr_lb = min([lower_distributions(k,:);upper_distributions(k,:)]);
-    distr_ub = max([lower_distributions(k,:);upper_distributions(k,:)]);
-    fill([rax'; flipud(rax')],[distr_ub'; flipud(distr_lb')],0.75*[1,1,1],'LineStyle','none')
-    plot(rax,sum_distributions(k,:),'k','LineWidth',1.5);
-    mod_depth = 0.2+0.2*rand;
-    distr=get_std_distr_MMM(rax,sum_distributions(k,:),Pake_r);
-    ff = get_formfactor_MMM(distr,Pake_kernel,Pake_t);
-    ff = ff*mod_depth+ones(size(ff))*(1-mod_depth);
-    Tdecay = (3+4*rand)*max(Pake_t);
-    bckg = exp(-Pake_t/Tdecay);
-    deer = ff.*bckg;
-    bckg = (1-mod_depth)*bckg;
-    figure(k+100); clf;
-    plot(Pake_t,deer,'k');
-    hold on;
-    plot(Pake_t,bckg,'r');
-    oname_distr = strcat(deer_names{k},'_distr.dat');
-    data = [rax',sum_distributions(k,:)',distr_lb',distr_ub'];
-    save(oname_distr,'data','-ascii');
-    oname_bckg = strcat(deer_names{k},'_bckg.dat');
-    data = [Pake_t',deer',bckg'];
-    save(oname_bckg,'data','-ascii');
-    oname_fit = strcat(deer_names{k},'_fit.dat');
-    cutoff = round(0.8*length(Pake_t));
-    data = [Pake_t(1:cutoff)',ff(1:cutoff)',ff(1:cutoff)'];
-    save(oname_fit,'data','-ascii');
-end
-
-return
-
-mylist = dir('6AAA-*.pdb');
-
-SAXS_datafile = 'p15_PAF_saxs_digitized.dat';
-
-SAXS_curve = load_SAXS_curve(SAXS_datafile);
-sm = max(SAXS_curve(:,1));
-options.sm = 10*sm;
-options.lm = 30;
-options.fb = 18;
-
-fprintf(1,'SAXS computation started...\n');
-
-sim_SAXS_curve = SAXS_curve;
-
-for k = 1:length(mylist)
-    oname = mylist(k).name;
-    fprintf(1,'Processing %s.\n',oname);
-    oname = strcat(oname(1:end-4),'_SAXS.mat');
-    [chi2,~,~,~,fit] = fit_SAXS_by_crysol(SAXS_datafile,mylist(k).name,options);
-    if isempty(chi2) || isnan(chi2)
-    else
-        sim_SAXS_curve(:,2) = fit(:,3);
-        save(oname,'sim_SAXS_curve','fit');
-    end
-end
-
-fprintf(1,'SAXS computation completed.\n');
-
-return
-
-restraints = rd_restraints('DEER_restraints_6AAA_200608.dat');
-
-fprintf(1,'Distance distribution computation started...\n');
-
-for k = 1:length(mylist)
-    add_pdb(mylist(k).name);
-    oname = mylist(k).name;
-    oname = strcat(oname(1:end-4),'_distr.mat');
-    [rax,distributions] = get_restraint_distributions(restraints);
-
-    save(oname,'rax','distributions');
-
-    clear global model
-    model = [];
-end
-
-fprintf(1,'Distance distribution computation completed.\n');
-
-return
-
-mylist = dir('PTB1_200328*.pdb');
-fid = fopen('PTBP1_RNA_conformers.dat','wt');
+mylist = dir('PTB1_210308_b3*.pdb');
+fid = fopen('PTBP1_210308_b3_conformers.dat','wt');
 for k = 1:length(mylist)
     fprintf(fid,'%s\n',mylist(k).name);
 end
 fclose(fid);
 
-conformer_list = get_file_list('PTBP1_RNA_conformers.dat');
-tested_list = get_file_list('yasara_tested.dat');
+conformer_list = get_file_list('PTBP1_210308_b3_conformers.dat');
+tested_list = get_file_list('yasara_loops.dat');
 for kc = 1:length(conformer_list)
     to_be_tested = true;
     for kp = 1:length(tested_list)
@@ -6154,16 +5943,16 @@ for kc = 1:length(conformer_list)
         fprintf(1,'We will process: %s\n',fname);
         seqs{1} = 'NSVQSGNLALAASAAAVDAGMAMAGQS';
         Nanchors{1} = '(A)154';
-        Canchors{1} = '(B)182';
+        Canchors{1} = '(C)182';
         seqs{2} = 'DSQPSLDQTMAAAFGLSVPNVHGALAPLAIPSAAAAAAAAGRIAIPGLAGAGN';
         Nanchors{2} = '(A)283';
-        Canchors{2} = '(C)337';
+        Canchors{2} = '(E)337';
         options.console = false;
-        options.optimize = true;
+        options.optimize = false;
         tic,
         insert_yasara_loop(fname,Nanchors,Canchors,seqs,options);
         toc,       
-        fid = fopen('yasara_tested.dat','at');
+        fid = fopen('yasara_loops.dat','at');
         fprintf(fid,'%s\n',fname);
         fclose(fid);
     end

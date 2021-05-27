@@ -2727,7 +2727,7 @@ switch handles.progress
         handles.text_ri9.String = '% protein side chain clashes';
         handles.text_ri10.String = '% loop closure failures';
         handles.text_ri11.String = '% Ramachandran mismatch';
-    case 2
+    case 3
         handles.text_ri2.String = 'combinations will be tested';
         handles.text_ri3.String = 'models assembled';
         handles.text_ri4.String = 'backbone models found';

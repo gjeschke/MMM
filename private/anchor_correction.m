@@ -30,4 +30,4 @@ for k = 1:m
     tm = tm1*tm2;
     ccoor = [ecoor(k,2:4) 1]*tm';
     ecoor(k,2:4) = ccoor(1:3);
-end;
+end

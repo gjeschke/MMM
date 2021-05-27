@@ -920,8 +920,14 @@ for k=1:length(DEER),
             end;
         end;
     end;
-    if poi>=3, % found sufficient number of points to determine local rotation and translation
-        [rms,coor2b,transmat]=rmsd_superimpose(local_template(1:poi,:),local_template_0(1:poi,:));
+    if poi>3 % found sufficient number of points to determine local rotation and translation
+        [~,~,transmat]=rmsd_superimpose(local_template(1:poi,:),local_template_0(1:poi,:));
+        xyz=[xyz 1];
+        xyz=transmat*xyz';
+        xyz=xyz';
+        DEER(k).xyz1=xyz(1:3);
+    elseif poi == 3
+        [~, ~, transmat] = superimpose_3points(local_template(1:poi,:),local_template_0(1:poi,:));
         xyz=[xyz 1];
         xyz=transmat*xyz';
         xyz=xyz';
@@ -949,8 +955,14 @@ for k=1:length(DEER),
             end;
         end;
     end;
-    if poi>=3, % found sufficient number of points to determine local rotation and translation
-        [rms,coor2b,transmat]=rmsd_superimpose(local_template(1:poi,:),local_template_0(1:poi,:));
+    if poi>3, % found sufficient number of points to determine local rotation and translation
+        [~,~,transmat]=rmsd_superimpose(local_template(1:poi,:),local_template_0(1:poi,:));
+        xyz=[xyz 1];
+        xyz=transmat*xyz';
+        xyz=xyz';
+        DEER(k).xyz2=xyz(1:3);
+    elseif poi == 3
+        [~, ~, transmat] = superimpose_3points(local_template(1:poi,:),local_template_0(1:poi,:));
         xyz=[xyz 1];
         xyz=transmat*xyz';
         xyz=xyz';
@@ -983,7 +995,11 @@ for k=1:m, % loop over residues
     rigid=[candidates(poi(1:loc)) k];
     coor0=network0(rigid,:);
     coor=network(rigid,:);
-    [rms,coor0b,transmat]=rmsd_superimpose(coor,coor0);
+    if length(rigid) > 3
+        [~,~,transmat]=rmsd_superimpose(coor,coor0);
+    else
+        [~, ~, transmat] = superimpose_3points(coor,coor0);
+    end
     transmat(1:3,4)=[0;0;0];
     for kk=1:nb,
         xyz=[basis0(basn+1:basn+3,kk);1];

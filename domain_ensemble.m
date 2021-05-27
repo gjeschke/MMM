@@ -2559,7 +2559,7 @@ for k = 1:length(restrain)
         fprintf(fid_report,'Monitored distance to residue %i is <r> = %5.2f\n',monitor(k).r_intern(kr).resb,rmean);
     end
 
-    for kr = 1:length(restrain(k).depth),
+    for kr = 1:length(restrain(k).depth)
         NO_pos = get_NO_pos(rindices,restrain(k).depth(kr).label_type,restrain(k).depth(kr).label_T);
         [rax,sim_distr]=get_distribution_z(NO_pos,0.05);        
         sim_distr = sim_distr/sum(sim_distr);
@@ -2587,12 +2587,11 @@ for k = 1:length(restrain)
             case 'bounds'
                 poi = poi + 1;
                 dispoi = dispoi + 1;
-                restraint_distr{dispoi} = restraint_distr{dispoi} + p_model*exp_distr;
                 distributions{dispoi} = distributions{dispoi} + p_model*sim_distr;
                 exp_distr = (rax>=restrain(k).depth(kr).par1) & (rax<= restrain(k).depth(kr).par2);
                 exp_distr = exp_distr/sum(exp_distr);
-                restraint_distr{dispoi} = restraints-Distr{distpoi} + p_model*exp_distr;
-                descriptors{dispoi} = sprintf('Depth restraint %i with bounds = %5.2f,%5.2f',resnum,restrain(k).r_depth(kr).par1,restrain(k).r_depth(kr).par2);
+                restraint_distr{dispoi} = restraint_distr{dispoi} + p_model*exp_distr;
+                descriptors{dispoi} = sprintf('Depth restraint %i with bounds = %5.2f,%5.2f',resnum,restrain(k).depth(kr).par1,restrain(k).depth(kr).par2);
                 if rmean >= restrain(k).depth(kr).par1 && rmean <= restrain(k).depth(kr).par2
                     fprintf(fid_report,'Depth restraint [%5.2f, %5.2f] ? fulfilled at <r> = %5.2f\n',...
                         restrain(k).depth(kr).par1,restrain(k).depth(kr).par2,rmean);
@@ -2603,7 +2602,7 @@ for k = 1:length(restrain)
         end
     end
 
-    for kr = 1:length(monitor(k).depth),
+    for kr = 1:length(monitor(k).depth)
         NO_pos = get_NO_pos(rindices,monitor(k).depth(kr).label_type,monitor(k).depth(kr).label_T);
         [rax,sim_distr]=get_distribution_z(NO_pos,0.05);        
         sim_distr = sim_distr/sum(sim_distr);

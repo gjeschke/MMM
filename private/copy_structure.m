@@ -188,11 +188,12 @@ for k=1:m,
             end;
         end;
     end;
-    if poi>=3, % found sufficient number of points to determine local rotation and translation
+    if poi>3, % found sufficient number of points to determine local rotation and translation
         % rotmat=opt_rot(local_template(1:poi,:),local_template_0(1:poi,:));
-        [rms,coor2b,transmat]=rmsd_superimpose(local_template(1:poi,:),local_template_0(1:poi,:));
-%         transmat2(1:3,1:3)=rotmat'; % rotate to new model frame
-%         transmat2(4,4)=1; 
+        [~,~,transmat]=rmsd_superimpose(local_template(1:poi,:),local_template_0(1:poi,:));
+        set_residue(cindices,'transform',transmat);
+    elseif poi == 3
+        [~,~,transmat]=superimpose_3points(local_template(1:poi,:),local_template_0(1:poi,:));
         set_residue(cindices,'transform',transmat);
     else
         set_residue(cindices,'transform',transmat1);
