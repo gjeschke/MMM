@@ -52,8 +52,10 @@ SAXS_poi = 0;
 mode=0;
 scale_units=1;
 
+nl = 0;
 while 1
     tline = fgetl(fid);
+    nl = nl + 1;
     if ~ischar(tline) || mode<0, break, end
     if ~isempty(tline)
         k = strfind(tline,'%'); % remove comments
@@ -387,14 +389,14 @@ while 1
                     restraints.DEER(DEER_poi).T = 298;
                     restraints.DEER(DEER_poi).type = [type1 type2];
                     argpoi = 0;
-                    if type1 == 1
+                    if type1 == 1 || type1 == 3
                         restraints.DEER(DEER_poi).adr1=char(args(1));
                         argpoi = argpoi + 1;
                     elseif type1 == 2
                         restraints.DEER(DEER_poi).adr1 = [char(args(1)) '|' char(args(2))];
                         argpoi = argpoi + 2;
                     end
-                    if type2 == 1
+                    if type2 == 1 || type2 == 3
                         restraints.DEER(DEER_poi).adr2=char(args(argpoi+1));
                         argpoi = argpoi + 1;
                     elseif type1 == 2
@@ -531,12 +533,21 @@ function [label_std,type] = check_label(label)
 % checks if a rotamer library exists for a requested spin label and returns
 % the MMM-internal three-letter code for this label
 % an empty string is returned, if the label does not exist
+% type 1  spin label
+% type 2  ligand
+% type 3  atom
 
 global rotamer_libraries
 global ligand_libraries
 
 label_std = '';
 type = 0;
+
+poi = strfind(lower(label),'atom.');
+if ~isempty(poi) % this is an atom request
+    type = 3;
+    label_std = label(poi+5:end);
+end
 
 for k = 1:length(rotamer_libraries)
     if strcmpi(label,rotamer_libraries(k).label) || strcmpi(label,rotamer_libraries(k).tc)

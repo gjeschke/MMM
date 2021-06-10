@@ -1541,9 +1541,41 @@ else
             end;
             if ~f1,
                 add_msg_board(sprintf('Warning: Residue for first label of restraint %i not in network model.',k));
+                min_approach = 1e6;
+                closest = 0;
+                atom_xyz = handles.DEER(k).xyz1;
+                for l2=1:length(model.coarse(snum).indices)
+                    dxyz = norm(atom_xyz - model.coarse(snum).Ca_coor(l2,:));
+                    if dxyz < min_approach
+                        min_approach = dxyz;
+                        closest = l2;
+                    end
+                end
+                handles.DEER(k).res1=closest;
+                x=[handles.DEER(k).xyz1(1) model.coarse(snum).Ca_coor(closest,1)];
+                y=[handles.DEER(k).xyz1(2) model.coarse(snum).Ca_coor(closest,2)];
+                z=[handles.DEER(k).xyz1(3) model.coarse(snum).Ca_coor(closest,3)];
+                handles.DEER(k).rl2=line(x,y,z,'Parent',handles.restraint_graphics,'Color','b','LineWidth',1);
+                add_msg_board(sprintf('Approximating by the closest Calpha atom at %5.1f %s',min_approach,197));
             end;
             if ~f2,
                 add_msg_board(sprintf('Warning: Residue for second label of restraint %i not in network model.',k));
+                min_approach = 1e6;
+                closest = 0;
+                atom_xyz = handles.DEER(k).xyz2;
+                for l2=1:length(model.coarse(snum).indices)
+                    dxyz = norm(atom_xyz - model.coarse(snum).Ca_coor(l2,:));
+                    if dxyz < min_approach
+                        min_approach = dxyz;
+                        closest = l2;
+                    end
+                end
+                handles.DEER(k).res2=closest;
+                x=[handles.DEER(k).xyz2(1) model.coarse(snum).Ca_coor(closest,1)];
+                y=[handles.DEER(k).xyz2(2) model.coarse(snum).Ca_coor(closest,2)];
+                z=[handles.DEER(k).xyz2(3) model.coarse(snum).Ca_coor(closest,3)];
+                handles.DEER(k).rl2=line(x,y,z,'Parent',handles.restraint_graphics,'Color','b','LineWidth',1);
+                add_msg_board(sprintf('Approximating by the closest Calpha atom at %5.1f %s',min_approach,197));
             end;
         end;
         dvec=dvec/sqrt(sum(sum(dvec.^2)));
@@ -1809,15 +1841,29 @@ for k=1:length(to_do_list),
     if ~strcmp(to_do_list{k},' ')
         if type_list(k) == 1
             command=sprintf('rotamers %s %s %i',to_do_list{k},label_list{k},T_list(k));
-        elseif type_list(k) == 2;
+            hMain.store_undo=false;
+            cmd(hMain,command);
+        elseif type_list(k) == 2
             compadr = to_do_list{k};
             spoi = strfind(compadr,'|');
             adr1 = compadr(1:spoi-1);
             adr2 = compadr(spoi+1:end);
             command=sprintf('bilabel %s %s %s %i',adr1,adr2,label_list{k});
+            hMain.store_undo=false;
+            cmd(hMain,command);
+        elseif type_list(k) == 3
+            indices = resolve_address(to_do_list{k});
+            atom_adr = sprintf('%s.%s',to_do_list{k},label_list{k});
+            [~,xyz] = get_object(atom_adr,'coor');
+            j = length(model.sites);
+            res = length(model.sites{j}(1).residue) + 1;
+            model.sites{j}(1).residue(res).label = label_list{k};
+            model.sites{j}(1).residue(res).T = 298;
+            model.sites{j}(1).residue(res).indices = indices;
+            model.sites{j}(1).residue(res).NOpos = [xyz 1];
+            model.sites{j}(1).residue(res).rotamers(1).pop = 1;
+            model.sites{j}(1).residue(res).rotamers(1).coor = xyz;
         end
-        hMain.store_undo=false;
-        cmd(hMain,command);
     end;
 end;
 
@@ -2010,14 +2056,18 @@ for k0=1:length(sites),
             poi=poi+1;
             labels(poi).indices=sites{k0}(k1).residue(k).indices;
             id=tag2id(sites{k0}(k1).residue(k).label,label_defs.restags);
-            labels(poi).name=label_defs.residues(id).short_name;
+            if ~isempty(id)
+                labels(poi).name=label_defs.residues(id).short_name;
+            else
+                labels(poi).name = sites{k0}(k1).residue(k).label;
+            end
             labels(poi).T=sites{k0}(k1).residue(k).T;
             NOpos=model.sites{k0}(k1).residue(k).NOpos;
             x=sum(NOpos(:,1).*NOpos(:,4));
             y=sum(NOpos(:,2).*NOpos(:,4));
             z=sum(NOpos(:,3).*NOpos(:,4));
             labels(poi).xyz=[x y z];
-            labels(poi).rmsd=NOpos_rmsd(NOpos);
+            labels(poi).rmsd = NOpos_rmsd(NOpos);
         end;
     end;
 end;
@@ -2060,6 +2110,9 @@ dy=(NOall(:,2)-ymean);
 dz=(NOall(:,3)-zmean);
 nNO=length(dx);
 rmsd=sqrt(0.005+nNO*sum(dx.^2.*pop+dy.^2.*pop+dz.^2.*pop)/(nNO-1))/10; % divided by 10 for ? -> nm
+if rmsd < 1e-2
+    rmsd = 1e-2;
+end
 
 % --- Executes on button press in checkbox_restraints.
 function checkbox_restraints_Callback(hObject, eventdata, handles)
@@ -2130,9 +2183,17 @@ for k=1:length(DEER),
     end;
     if ~f1,
         add_msg_board(sprintf('Warning: Residue for first label of restraint %i not in network model.',k));
+        x=[handles.DEER(k).xyz1(1) network(handles.DEER(k).res1,1)];
+        y=[handles.DEER(k).xyz1(2) network(handles.DEER(k).res1,2)];
+        z=[handles.DEER(k).xyz1(3) network(handles.DEER(k).res1,3)];
+        set(handles.DEER(k).rl2,'XData',x,'YData',y,'ZData',z);
     end;
     if ~f2,
         add_msg_board(sprintf('Warning: Residue for second label of restraint %i not in network model.',k));
+        x=[handles.DEER(k).xyz1(1) network(handles.DEER(k).res2,1)];
+        y=[handles.DEER(k).xyz1(2) network(handles.DEER(k).res2,2)];
+        z=[handles.DEER(k).xyz1(3) network(handles.DEER(k).res2,3)];
+        set(handles.DEER(k).rl2,'XData',x,'YData',y,'ZData',z);
     end;
 end;
 axes(handles.axes_plot);
