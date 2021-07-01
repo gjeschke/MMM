@@ -1045,6 +1045,18 @@ for k=1:esize,
     else
         [snum1,message]=copy_structure(model.current_structure,newtag,networks{k},k,snum);
     end;
+    for kr = 1:length(DEER)
+        if DEER(kr).type(1) == 3
+            locadr = sprintf('[%s]{%i}%s',newtag,k,DEER(kr).atom_adr{1});
+            argin{1} = DEER(kr).xyz1;
+            set_object(locadr,'xyz',argin);
+        end
+        if length(DEER(kr).type) > 1 && DEER(kr).type(2) == 3
+            locadr = sprintf('[%s]{%i}%s',newtag,k,DEER(kr).atom_adr{2});
+            argin{1} = DEER(kr).xyz2;
+            set_object(locadr,'xyz',argin);
+        end
+    end
     if repack,
         newtag2=sprintf('tp%i',maxs+1);
         [snum1,infile]=repacked_copy(snum,newtag2,k);
@@ -1891,6 +1903,14 @@ for k=1:length(restraints.DEER),
     DEER(k).adr1=adr1;
     DEER(k).adr2=adr2;
     DEER(k).type = restraints.DEER(k).type;
+    if DEER(k).type(1) == 3
+        labelname = complabel(restraints.DEER(k).label,1);
+        DEER(k).atom_adr{1} = sprintf('%s.%s:A',adr1,labelname);
+    end
+    if length(DEER(k).type) > 1 && DEER(k).type(2) == 3
+        labelname = complabel(restraints.DEER(k).label,2);
+        DEER(k).atom_adr{2} = sprintf('%s.%s:A',adr2,labelname);
+    end
     f1=false;
     f2=false;
     for l=1:length(labels)
