@@ -927,6 +927,7 @@ parallel_flag=true;
 exclude_mode=handles.exclude;
 ivec0=1:length(handles.DEER);
 DEER0=handles.DEER;
+atoms = handles.atoms;
 uncertainty=handles.uncertainty;
 displacements=handles.displacements;
 [mi,maxbas]=min(abs(handles.inv_nu-handles.tif));
@@ -1044,24 +1045,30 @@ for k=1:esize,
         [snum,message]=copy_structure(model.current_structure,newtag,networks{k});
     else
         [snum1,message]=copy_structure(model.current_structure,newtag,networks{k},k,snum);
-    end;
-    for kr = 1:length(DEER)
-        if DEER(kr).type(1) == 3
-            locadr = sprintf('[%s]{%i}%s',newtag,k,DEER(kr).atom_adr{1});
-            argin{1} = DEER(kr).xyz1;
-            set_object(locadr,'xyz',argin);
-        end
-        if length(DEER(kr).type) > 1 && DEER(kr).type(2) == 3
-            locadr = sprintf('[%s]{%i}%s',newtag,k,DEER(kr).atom_adr{2});
-            argin{1} = DEER(kr).xyz2;
-            set_object(locadr,'xyz',argin);
-        end
     end
-    if repack,
-        newtag2=sprintf('tp%i',maxs+1);
+    newatoms = update_atoms(atoms,network0,networks{k},model);
+    for ka = 1:length(newatoms)        
+        locadr = sprintf('[%s]{%i}%s:A',newtag,k,newatoms(ka).adr);
+        argin{1} = newatoms(ka).xyz;
+        set_object(locadr,'xyz',argin);
+    end
+%     for kr = 1:length(DEER)
+%         if DEER(kr).type(1) == 3
+%             locadr = sprintf('[%s]{%i}%s',newtag,k,DEER(kr).atom_adr{1});
+%             argin{1} = DEER(kr).xyz1;
+%             set_object(locadr,'xyz',argin);
+%         end
+%         if length(DEER(kr).type) > 1 && DEER(kr).type(2) == 3
+%             locadr = sprintf('[%s]{%i}%s',newtag,k,DEER(kr).atom_adr{2});
+%             argin{1} = DEER(kr).xyz2;
+%             set_object(locadr,'xyz',argin);
+%         end
+%     end
+    if repack
+        newtag2 = sprintf('tp%i',maxs+1);
         [snum1,infile]=repacked_copy(snum,newtag2,k);
-    end;
-end;
+    end
+end
 
 DEER=DEERs{end};
 network=networks{end};
@@ -1124,6 +1131,9 @@ if test_mode,
     end;
     fclose(fid);
 end;
+
+model.current_structure = snum;
+wr_pdb('fit_from_template_result','MMM0');
 
 if test_mode,
     finame=sprintf('%s_ensemble_20_fit_info',handles.target);
@@ -1482,7 +1492,13 @@ else
         add_msg_board('Processing of direct constraints cancelled.');
         return
     end;
-    handles.direct=direct;
+    handles.direct = direct;
+    [atoms,cancelled]=process_atom_specifications(restraints);
+    if cancelled,
+        add_msg_board('Processing of atom specifications cancelled.');
+        return
+    end;
+    handles.atoms=atoms;
     [displacements,cancelled]=process_displacement_restraints(restraints);
     if cancelled,
         add_msg_board('Processing of displacement constraints cancelled.');
@@ -2016,6 +2032,51 @@ for k=1:md,
         return;
     end;
 end;
+
+function [atoms,cancelled]=process_atom_specifications(restraints)
+
+global model
+
+cancelled=false;
+if ~isfield(restraints,'atoms')
+    atoms=[];
+    return;
+end
+
+snum=model.current_structure;
+
+md=length(restraints.atoms);
+atoms(md).xyz = [];
+atoms(md).adr = '';
+atoms(md).res = [];
+
+Ca_coor = model.coarse(snum).Ca_coor;
+[m,~] = size(Ca_coor);
+
+for k=1:md
+    adr = restraints.atoms(k).adr;
+    ind = resolve_address(adr);
+    if isempty(ind)
+        add_msg_board(sprintf('ERROR: Specified atom %s does not exist in template structure.',adr));
+        cancelled = true;
+        atoms = [];
+        return;
+    end
+    [~,xyz] = get_location([ind 1],'xyz');
+    atoms(k).adr = adr;
+    atoms(k).xyz = xyz;
+    mindist = 1e6;
+    poi = 0;
+    for kk=1:m
+        dist = norm(xyz-Ca_coor(kk,:));
+        if dist < mindist
+           mindist = dist;
+           poi = kk;
+        end
+    end
+    atoms(k).res = poi;
+end
+
 
 function [displacements,cancelled]=process_displacement_restraints(restraints)
 
@@ -3058,5 +3119,48 @@ else
         indices = [ind1;ind2];
     else
         indices = [];
+    end
+end
+
+function atoms = update_atoms(atoms,network0,network,model)
+% updates mean spin label cocordinates after a change of C_alpha
+% coordinates of the network
+
+[maxnum,~]=size(network);
+scarce=0;
+% update of label coordinates
+for k = 1:length(atoms)
+    xyz =atoms(k).xyz;
+    l = atoms(k).res;
+    cindices = model.coarse(model.current_structure).indices; % actual indices of residues in network
+    local_template = zeros(5,3);
+    local_template_0 = zeros(5,3);
+    % make a local template to fit rotation and translation
+    poi=0;
+    for kk=-2:2
+        if l+kk>0 && l+kk<=maxnum % is addressed residue a network point?
+            diff=cindices(l+kk,4)-cindices(l,4);
+            if diff==kk % is addressed residue part of a continuous segment?
+                poi=poi+1;
+                local_template(poi,:)=network(l+kk,:);
+                local_template_0(poi,:)=network0(l+kk,:);
+            end
+        end
+    end
+    if poi>3 % found sufficient number of points to determine local rotation and translation
+        [~,~,transmat] = rmsd_superimpose(local_template(1:poi,:),local_template_0(1:poi,:));
+        xyz = [xyz 1]; %#ok<AGROW>
+        xyz = transmat*xyz';
+        xyz = xyz';
+        atoms(k).xyz = xyz(1:3);
+    elseif poi == 3
+        [~, ~, transmat] = superimpose_3points(local_template(1:poi,:),local_template_0(1:poi,:));
+        xyz = [xyz 1]; %#ok<AGROW>
+        xyz = transmat*xyz';
+        xyz = xyz';
+        atoms(k).xyz = xyz(1:3);
+    else
+        atoms(k).xyz = xyz + network(l,:) - network0(l,:);
+        scarce=scarce+1;
     end
 end

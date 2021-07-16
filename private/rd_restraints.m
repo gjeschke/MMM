@@ -35,6 +35,7 @@ restraints.max_time = 1; % default
 
 DEER_poi=0;
 direct_poi=0;
+atom_poi = 0;
 align_poi=0;
 helix_poi=0;
 strand_poi=0;
@@ -213,6 +214,8 @@ while 1
                     end
                 case 'DIRECT'
                     mode=2;
+                case 'DRAG' % non-peptide residues to be dragged along with an elastic network
+                    mode=17;
                 case 'LOCATE'
                     mode=8;
                     if length(args)>2
@@ -522,6 +525,16 @@ while 1
                     pprop_poi = pprop_poi+1;
                     restraints.pprop(pprop_poi).adr=char(args(1));
                     restraints.pprop(pprop_poi).prop=str2double(char(args(2)));
+                case 17 % residues to be dragged along with elastic network, atom addresses are stored
+                    adr = char(args(1));
+                    [~,indices] = get_object(adr,'children');
+                    [mi,~] = size(indices);
+                    for ki = 1:mi
+                        [~,ctag,~,resnum,~,atag] = mk_address_parts(indices(ki,:));
+                        adr = sprintf('(%s)%i.%s',ctag,resnum,atag);
+                        atom_poi = atom_poi + 1;
+                        restraints.atoms(atom_poi).adr = adr;
+                    end
             end
         end
     end
