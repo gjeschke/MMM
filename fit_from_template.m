@@ -1038,9 +1038,9 @@ snum=model.current_structure;
 set(hMain.figure,'Pointer','arrow');
 
 handles.fit_info=fit_info;
+maxs=length(model.structures);
+newtag=sprintf('tr%i',maxs+1);
 for k=1:esize,
-    maxs=length(model.structures);
-    newtag=sprintf('tr%i',maxs+1);
     if k==1,
         [snum,message]=copy_structure(model.current_structure,newtag,networks{k});
     else

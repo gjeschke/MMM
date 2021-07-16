@@ -68,7 +68,7 @@ if nargin>4,
 end;
 
 exists=tag2id(id,model.structure_tags);
-if ~isempty(exists),
+if ~isempty(exists) && nargin < 4
     message.error=2;
     message.text='Structure identifier already exists.';
     add_msg_board('Error while copying structure');
