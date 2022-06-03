@@ -1,7 +1,7 @@
 function [coor,errcode,restrain,p_model,k] = mk_loop_model(sequence, anchorN, anchorC, anchorNp, anchorCn, prot_coor, restrain, Rama_res, rescodes, min_prob, n_restraints)
 % Generates a closed loop model conforming to residue-specific Ramachandran plots
 % backbone based on: H. Sugeta, T. Miyazawa, Biopolymers, 1967, 5, 673-679.
-% residue-specific Ramachandran plots from: S. Hovmöller, T. Zhou, T.
+% residue-specific Ramachandran plots from: S. Hovm?ller, T. Zhou, T.
 % Ohlson, Acta Cryst. D, 2002, 58, 768-776.
 %
 % Input:
@@ -11,13 +11,13 @@ function [coor,errcode,restrain,p_model,k] = mk_loop_model(sequence, anchorN, an
 %           loop, one residue before the first until the last residue, and
 %           for a non-anchored loop only the loop residues
 % anchorN   backbone coordinates of N-terminal anchor residue in the order
-%           N, CA, C, O (Cartesian in Å) 
+%           N, CA, C, O (Cartesian in ?) 
 % anchorC   backbone coordinates of C-terminal anchor residue in the order
-%           N, CA, C, O (Cartesian in Å) 
+%           N, CA, C, O (Cartesian in ?) 
 % anchorNp  backbone coor. of the residue before the N-terminal anchor 
-%           residue in the order N, CA, C, O (Cartesian in Å) 
+%           residue in the order N, CA, C, O (Cartesian in ?) 
 % anchorCn  backbone coordinates of the residue after the C-terminal anchor
-%           residue in the order N, CA, C, O (Cartesian in Å) 
+%           residue in the order N, CA, C, O (Cartesian in ?) 
 % prot_xyz  protein coordinates for clash test
 % restrain  set of restraints to be tested or enforced, loop residues,
 %           format restrain(k).[type] with .[type] being
@@ -110,7 +110,7 @@ clash_threshold_lp = 2.0; % (was 2.5) minimum distance between loop and protein 
 
 p_model = 1; % default probability of an unrestrained model
 
-% alpha-helical region according to Hovmöller et al.
+% alpha-helical region according to Hovm?ller et al.
 alpha_phi_LB = -89;
 alpha_phi_UB = -39;
 alpha_psi_LB = -66;
@@ -118,7 +118,7 @@ alpha_psi_UB = -16;
 alpha_phi_psi_LB = -115; 
 alpha_phi_psi_UB = -95; 
 
-% beta_sheet region according to Hovmöller et al.
+% beta_sheet region according to Hovm?ller et al.
 beta_phi_LB = -130;
 beta_phi_UB = -105;
 beta_phi_UB_proline = -80;
@@ -367,10 +367,10 @@ while k <= kend1,
             so = soc; co = coc;
         end;
     end;
-    if restrain(k-1).cis,
-        so = soc;
-        co = coc;
-    end;
+%     if restrain(k-1).cis,
+%         so = soc;
+%         co = coc;
+%     end;
     if restrain(k-1).secondary,
         att_sec = 1;
         if restrain(k-1).secondary == 1, % alpha-helix
@@ -716,10 +716,10 @@ while k<ngap+1 && failed < maxattempts,
                 so = soc; co = coc;
             end;
         end;
-        if restrain(k-1).cis,
-            so = soc;
-            co = coc;
-        end;
+%         if restrain(k-1).cis,
+%             so = soc;
+%             co = coc;
+%         end;
         if restrain(k-1).secondary,
             att_sec = 1;
             if restrain(k-1).secondary == 1, % alpha-helix
@@ -1000,7 +1000,7 @@ backbone(4*(ngap+2)-2,:) = acoor';
 R0 = anchorC(2,:) - acoor'; % difference vector
 steps = 3*ngap + 1; 
 dR0 = R0/steps;
-% fprintf(1,'Atom coordinate shift: %5.3f Å\n',norm(dR0));
+% fprintf(1,'Atom coordinate shift: %5.3f ?\n',norm(dR0));
 for k = 1:steps,
     res = 2 + floor(k/3); % number of residue to be corrected, starts with first gap residue 2
     poi = 4*(res-1) + 1 + mod(k,3);
@@ -1089,10 +1089,10 @@ if min_dist < clash_threshold_lp,
     else
         errcode = 4;
     end;
-%     fprintf(2,'Loop clashes with protein (minimum approach %4.2f Å).\n',min_dist);
+%     fprintf(2,'Loop clashes with protein (minimum approach %4.2f ?).\n',min_dist);
     return
 else
-%     fprintf(1,'Closest loop aproach to protein is %4.2f Å.\n',min_dist);
+%     fprintf(1,'Closest loop aproach to protein is %4.2f ?.\n',min_dist);
 end;
 
 

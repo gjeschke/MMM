@@ -582,6 +582,30 @@ rotamer_libraries(34).exclude=':H2:HO2:OXT:';
 rotamer_libraries(34).class = 'chromophore';
 rotamer_libraries(34).download{1} = 'https://dl.dropboxusercontent.com/s/nxfpkrujk2jfoe7/CF6_298K_UFF_8192_r1.zip';
 
+rotamer_libraries(35).label='Maleimido-Trityl-Ox063';
+rotamer_libraries(35).tc='MTO';
+rotamer_libraries(35).T=298;
+rotamer_libraries(35).files=':MTO_298K_UFF_944:';
+rotamer_libraries(35).type='peptide';
+rotamer_libraries(35).exclude=':H2:OXT:H:';
+rotamer_libraries(35).class = 'trityl';
+
+rotamer_libraries(36).label='BrPy-DO3A-Gd';
+rotamer_libraries(36).tc='GBH';
+rotamer_libraries(36).T=298;
+rotamer_libraries(36).files=':GBH_298K_UFF_360:';
+rotamer_libraries(36).type='peptide';
+rotamer_libraries(36).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(36).class = 'gadolinium';
+
+rotamer_libraries(37).label='BrPy-DO3MA-Gd';
+rotamer_libraries(37).tc='GBM';
+rotamer_libraries(37).T=298;
+rotamer_libraries(37).files=':GBM_298K_UFF_360:';
+rotamer_libraries(37).type='peptide';
+rotamer_libraries(37).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(37).class = 'gadolinium';
+
 ligand_libraries(1).label='dHisCuIDA';
 ligand_libraries(1).tc='IDA';
 ligand_libraries(1).files=':dHis_Cu_IDA_asym:';

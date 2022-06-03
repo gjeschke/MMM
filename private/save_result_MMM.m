@@ -39,6 +39,7 @@ function handles=save_result_MMM(handles,bas_name,path)
     end;
 
     fname_distr=[path bas_name '_distr.dat'];
+    fname_distr_anyrotamers=[path bas_name '_anyrotamers_distr.dat'];
     fname_bckg=[path bas_name '_bckg.dat'];
     fname_fit=[path bas_name '_fit.dat'];
     fname_res=[path bas_name '_res.txt'];
@@ -77,6 +78,15 @@ function handles=save_result_MMM(handles,bas_name,path)
         end;
         save(fname_distr,'data1','-ascii');
     end;
+    if ~isempty(handles.tweak_distr)
+        anyrotamers = interp1(handles.tweak_rax,handles.tweak_distr,r,'pchip',0);
+        if ~isempty(distr),
+            data4=[r' distr' anyrotamers'];
+        else
+            data4=[r' anyrotamers'];
+        end
+        save(fname_distr_anyrotamers,'data4','-ascii');
+    end
 
     rms=handles.rmsd;
 

@@ -515,17 +515,17 @@ if isfield(handles,'rsim')
     s=strfind(fname,'.');
     if ~isempty(s)
         fname=fname(1:s(length(s))-1);
-    end;
+    end
     % Remove suffix '_res', if present
     s=strfind(fname,'_res');
-    if ~isempty(s),
+    if ~isempty(s)
         fname=fname(1:s(length(s))-1);
-    end;
+    end
     handles=save_result_MMM(handles,fname,pname);
 
 else
     msgbox('Select spin system with at least two labels before saving.','Nothing to save','warn')
-end;
+end
 
 cd(my_path);
 guidata(hObject,handles);

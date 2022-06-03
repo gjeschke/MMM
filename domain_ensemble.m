@@ -1119,7 +1119,8 @@ elseif isfield(handles.restraints,'seed')
         add_msg_board(sprintf('Random number seed value of %i is set.',handles.restraints.seed));
     end
 else
-    rng('shuffle'); % initialize random number generator to be able to obtain different ensembles in subsequent runs
+    rng(0);
+    % rng('shuffle'); % initialize random number generator to be able to obtain different ensembles in subsequent runs
 end
 
 pmodel = handles.p_model;
@@ -1280,7 +1281,7 @@ p_anchorNp = restraints.anchorNp;
 n_restraints = handles.n_restraints;
 
 rescodes = zeros(1,length(sequence));
-for k = 1:length(sequence),
+for k = 1:length(sequence)
     rescodes(k) = strfind(residue_defs.single_letter_code,sequence(k));
 end
 

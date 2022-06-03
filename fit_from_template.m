@@ -66,6 +66,7 @@ handles.darken=0.75; % darken chain colorscheme colors for better visibility and
 handles.animation.fps=15;
 handles.animation.amp=1;
 handles.animation.res=handles.animation.fps;
+
 handles.animation.cycles=5;
 handles.animation.scaling=3;
 handles.animation.rotation=1;
