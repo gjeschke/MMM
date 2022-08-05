@@ -53,18 +53,18 @@ ff=(1-depth)*ones(1,ndat); % initialize form factor (unmodulated part)
 % load orientation grid
 switch lower(gridsize),
     case 'small'
-        load grid_small 
+        my_grid = load('grid_small'); 
     case 'medium'
-        load grid_medium 
+        my_grid = load('grid_medium'); 
     case 'large'
-        load grid_large 
+        my_grid = load('grid_large'); 
     case 'very_large'
-        load grid_very_large 
+        my_grid = load('grid_very_large'); 
     otherwise
-        load grid_medium
+        my_grid = load('grid_medium');
 end;
-B0=grid(1:3,:);
-weights=grid(4,:);
+B0=my_grid.grid(1:3,:);
+weights=my_grid.grid(4,:);
 weights=weights'/sum(weights); % renormalize weights
 nori=length(weights);
 
