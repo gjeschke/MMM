@@ -170,8 +170,7 @@ end;
 % get information on the label type
 labnum=tag2id(label,label_defs.restags);
 atags=label_defs.residues(labnum).atoms;
-NR_tag=id2tag(1,label_defs.residues(labnum).frame);
-OR_tag=id2tag(2,label_defs.residues(labnum).frame);
+spin_density = label_defs.residues(labnum).spin_density;
 info.name=label_defs.residues(labnum).tc;
 mylabel.adr=mk_address(indices);
 mylabel.name=label_defs.residues(labnum).short_name;
@@ -251,11 +250,12 @@ for rotamer=1:length(rotamers),
                 if k==C, C_new=newatoms; end;
             end;
         end;
-        if strcmpi(atag,NR_tag) || strcmpi(atag,OR_tag),
-            mylabel.NOpos(rotamer,1:3)=mylabel.NOpos(rotamer,1:3)+ncoor(k,:)/2;
-            mylabel.NOpos(rotamer,4)=rotamers(rotamer).pop;
-        end;
     end;
+    [sc,~] = size(spin_density);
+    mylabel.NOpos(rotamer,4)=rotamers(rotamer).pop;
+    for sd = 1:sc
+        mylabel.NOpos(rotamer,1:3)=mylabel.NOpos(rotamer,1:3)+spin_density(sd,2)*ncoor(spin_density(sd,1),:);
+    end
     ncoor(N,1:3)=coor1(1,1:3);
     ncoor(CA,1:3)=coor1(2,1:3);
     ncoor(C,1:3)=coor1(3,1:3);
@@ -820,8 +820,8 @@ global graph_settings
 global residue_defs
 
 % parameters for colorscheme difference
-mindiff=0.2; % minimum per residue r.m.s.d. (Å) for reporting a difference in the message board
-maxdiff=3; % per residue r.m.s.d. (Å) corresponding to upper end of color scale (red)
+mindiff=0.2; % minimum per residue r.m.s.d. (?) for reporting a difference in the message board
+maxdiff=3; % per residue r.m.s.d. (?) corresponding to upper end of color scale (red)
 diffgrades=20; % number of shadings (color grades) in the color scale
 report_missing=true; % flag that indicates whether residues missing in the 
                      % reference structure are reported in message board
@@ -1012,7 +1012,7 @@ switch scheme
                 adr1=mk_address(indices,true);
                 adr2=mk_address(dindices,true);
                 if rms>mindiff,
-                    add_msg_board(sprintf('Residue %s coordinate difference to residue %s is %5.1f Å',adr1,adr2,rms));
+                    add_msg_board(sprintf('Residue %s coordinate difference to residue %s is %5.1f ?',adr1,adr2,rms));
                 end;
                 dgrade=1+round((diffgrades-1)*rms/maxdiff);
                 if dgrade>diffgrades, dgrade=diffgrades; end;
