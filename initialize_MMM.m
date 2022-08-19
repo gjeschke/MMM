@@ -606,6 +606,14 @@ rotamer_libraries(37).type='peptide';
 rotamer_libraries(37).exclude=':H2:OXT:HXT:H:';
 rotamer_libraries(37).class = 'gadolinium';
 
+rotamer_libraries(38).label='MTS-ox063';
+rotamer_libraries(38).tc='TMO';
+rotamer_libraries(38).T=298;
+rotamer_libraries(38).files=':TMO_298K_UFF_1024_r1:';
+rotamer_libraries(38).type='peptide';
+rotamer_libraries(38).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(38).class = 'trityl';
+
 ligand_libraries(1).label='dHisCuIDA';
 ligand_libraries(1).tc='IDA';
 ligand_libraries(1).files=':dHis_Cu_IDA_asym:';
