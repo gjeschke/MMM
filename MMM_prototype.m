@@ -881,6 +881,14 @@ end
 cd(currdir);
 guidata(hObject,handles);
 
+function execute_script_callback(hObject, eventdata, handles)
+% hObject    handle to button_script (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+handles = run_script(handles,eventdata);
+guidata(hObject,handles);
+
 % --- Executes during object creation, after setting all properties.
 function button_cam_zoom_out_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to button_cam_zoom_out (see GCBO)
@@ -1582,7 +1590,6 @@ if isfield(hMain,'camlight')
 end
 hMain.store_undo=old_undo;
 
-fclose('all');
 guidata(handles.edit_command_line,handles);
 
 % --------------------------------------------------------------------

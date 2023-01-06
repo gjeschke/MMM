@@ -19,7 +19,7 @@ end
 set(hMain.MMM,'Pointer','watch');
 drawnow
 
-commands=':atompair:attach:beacons:bckg:bilabel:blscan:camup:camrotate:color:colorscheme:compact:copy:delete:detach:dihedrals:distance:domain:download:dssp:echo:helix:help:hide:inertiaframe:label:libcomp:libtest:lock:locrmsd:locorder:loop:mass:motion:mushroom:new:ortho:pdbload:persp:plot:radgyr:redo:refrmsd:remodel:repack:replace:report:rmsd:rotamers:SAS:scopy:select:sheet:show:statistics:symmetry:synonym:transparency:undo:undefine:unlock:unselect:view:wrseq:zoom:';
+commands=':atompair:attach:beacons:bckg:bilabel:blscan:camup:camrotate:color:colorscheme:compact:copy:delete:density:detach:dihedrals:distance:domain:download:dssp:echo:helix:help:hide:inertiaframe:label:libcomp:libtest:lock:locrmsd:locorder:loop:mass:motion:mushroom:new:ortho:pdbload:persp:plot:radgyr:redo:refrmsd:remodel:repack:replace:report:rmsd:rotamers:SAS:scopy:select:sheet:show:statistics:symmetry:synonym:transparency:undo:undefine:unlock:unselect:view:wrseq:zoom:';
 
 [cmd,args]=strtok(command_line); % separate command and arguments
 
@@ -82,9 +82,11 @@ switch cmd,
     case 'compact'
         handles = ensemble_compact(handles,args);
     case 'copy' 
-        handles=copy_3D(handles);
+        handles=copy_3D(handles,args);
     case 'delete'
         handles=delete_cmd(handles,args);
+    case 'density' 
+        handles = display_density(handles,args);
     case 'detach'
         handles=detach(handles);
     case 'dihedrals'
@@ -1145,10 +1147,12 @@ else
 end;
 
 
-function handles=copy_3D(handles)
+function handles=copy_3D(handles,args)
 
 global hMain
 global hModel
+
+args = split(strtrim(args));
 
 if ~hMain.detached,
     add_msg_board('ERROR: Visualization can be copied to clipboard only when model window is detached.');
@@ -1156,6 +1160,7 @@ if ~hMain.detached,
     return
 end;
 
+hModel.figure.WindowState = 'fullscreen';
 add_msg_board('Copying. Please be patient...');
 if hMain.atom_graphics_auto,
     switch_it=true;
@@ -1163,7 +1168,17 @@ if hMain.atom_graphics_auto,
 else
     switch_it=false;
 end;
-print(hModel.figure,'-dbitmap');
+if ~isempty(args) && ~isempty(args{1})
+    format = 'png';
+    if length(args) > 1
+        format = args{2};
+    end
+    print(hModel.figure,args{1},sprintf('-d%s',format),'-r300');
+    % saveas(hModel.figure,args{1},format);
+else
+    print(hModel.figure,'-dbitmap');
+end
+hModel.figure.WindowState = 'normal';
 if switch_it,
     adjust_atom_graphics(true);
 end;
@@ -1845,6 +1860,7 @@ function handles = new_model(handles,args)
 global model
 global hMain
 global MMM_info
+global hModel
 
 old_undo = hMain.store_undo;
 if ~isempty(args)
@@ -1886,7 +1902,8 @@ end
 
 
 % initialize display
-axes(handles.axes_model);
+figure(hMain.figure);
+axes(hMain.axes_model);
 cla reset;
 axis equal
 axis off
@@ -4556,3 +4573,84 @@ adr2f = char(myargs{1}(4));
 
 replace_section(adr1i,adr1f,adr2i,adr2f);
 
+function handles = display_density(handles,args)
+
+global model
+
+args = split(strtrim(args));
+data = load(args{1});
+[yg,xg,zg]=meshgrid(data.y,data.x,data.z);
+data.cube=data.cube/max(max(max(data.cube)));
+sdens=sum(sum(sum(data.cube)));
+level0 = 0.5;
+if length(args) > 1
+    level0 = str2double(args{2});
+end
+level=0.9985;
+for k = 1:99
+    mask = (data.cube>=k/100);
+    test = sum(sum(sum(mask.*data.cube)));
+    if test <= level0*sdens
+        level=k/100;
+        break;
+    end
+end
+opacity = 0.5;
+if length(args) > 2
+    opacity = str2double(args{3});
+end
+rgb = [0.75,0,0];
+if length(args) == 4
+    rgb = svg2rgb(args{4});
+elseif length(args) >= 6
+    rgb = [str2double(args{4}),str2double(args{5}),str2double(args{6})];
+end
+p = patch(isosurface(xg,yg,zg,data.cube,level));
+set(p, 'FaceColor', rgb, 'EdgeColor', 'none','FaceAlpha',opacity,'FaceLighting','gouraud','Clipping','off');
+set(p, 'CDataMapping','direct','AlphaDataMapping','none');
+
+dg.gobjects = p;
+dg.tag = ['MMMx:' args{1}];
+dg.color = rgb;
+dg.level = level;
+dg.transparency = opacity;
+dg.active=true;
+
+if isfield(model,'surfaces') && ~isempty(model.surfaces)
+    model.surfaces(end+1) = dg;
+else
+    if isfield(model,'surfaces')
+        model = rmfield(model,'surfaces');
+    end
+    model.surfaces(1) = dg;
+end
+
+id = [];
+poi = 0;
+if isfield(model,'density_tags')
+    id = tag2id(dg.tag,model.density_tags);
+    if isfield(model,'densities')
+        poi=length(model.densities);
+        if poi == 0
+            model = rmfield(model,'densities');
+             model.density_tags=':';
+        end
+    end
+else
+    model.density_tags=':';
+end
+
+if ~isempty(id)
+    id = id(1);
+else
+    id = poi+1;
+end
+
+
+model.density_tags=sprintf('%s%s:',model.density_tags,dg.tag);
+model.densities{id}.x = data.x;
+model.densities{id}.y = data.y;
+model.densities{id}.z = data.z;
+model.densities{id}.tag = dg.tag;
+model.densities{id}.cube = data.cube;
+add_msg_board(sprintf('Density %s created from file %s',dg.tag,args{1}));
