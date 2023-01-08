@@ -177,9 +177,24 @@ if get(handles.checkbox_normalize,'Value'),
     end;
 end;
 
+cube_tag = handles.popupmenu_tag.String{handles.popupmenu_tag.Value};
+poi = strfind(cube_tag,':');
+if ~isempty(poi)
+    cube_type = cube_tag(1:poi-1);
+else
+    cube_type = 'unknown';
+end
+
 axes(hMain.axes_model);
-[xg,yg,zg]=meshgrid(x,y,z);
-p = patch(isosurface(xg,yg,zg,cube,level));
+switch cube_type
+    case 'MMMx'
+        [xg,yg,zg]=meshgrid(y,x,z);
+        p = patch(isosurface(yg,xg,zg,cube,level));
+    otherwise
+        [xg,yg,zg]=meshgrid(x,y,z);
+        p = patch(isosurface(xg,yg,zg,cube,level));
+end
+    
 set(p, 'FaceColor', handles.rgb, 'EdgeColor', 'none','FaceAlpha',handles.falpha,'FaceLighting','gouraud','Clipping','off');
 set(p, 'CDataMapping','direct','AlphaDataMapping','none');
 set(handles.figure1,'Pointer','arrow');
