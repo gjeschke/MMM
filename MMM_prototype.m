@@ -867,8 +867,10 @@ function button_script_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global general
+global hMain
 
 currdir=pwd;
+hMain.remote = true;
 cd(general.scripts);
 [fname,pname,findex]=uigetfile('*.mmm','Run script file');
 if isequal(fname,0) || isequal(pname,0)
@@ -879,14 +881,20 @@ else
     handles=run_script(handles,fullfile(pname,fname));
 end
 cd(currdir);
+lighting goraud
+drawnow
 guidata(hObject,handles);
 
 function execute_script_callback(hObject, eventdata, handles)
 % hObject    handle to button_script (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+global hMain
 
+hMain.remote = true;
 handles = run_script(handles,eventdata);
+lighting gouraud
+drawnow
 guidata(hObject,handles);
 
 % --- Executes during object creation, after setting all properties.
@@ -1551,6 +1559,9 @@ function handles=run_script(handles,fname)
 
 global hMain
 
+set(hMain.MMM,'Pointer','watch');
+drawnow
+
 old_undo=hMain.store_undo;
 
 [rfile,msg]=fopen(fname,'rt');
@@ -1584,6 +1595,9 @@ while 1
     end
 end
 fclose(rfile);
+
+set(hMain.MMM,'Pointer','arrow');
+drawnow
 
 if isfield(hMain,'camlight')
     camlight(hMain.camlight);

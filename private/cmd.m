@@ -16,8 +16,10 @@ if get(hMain.checkbox_log,'Value')
     fclose(fid);
 end
 
-set(hMain.MMM,'Pointer','watch');
-drawnow
+if ~isfield(hMain,'remote') || ~hMain.remote
+    set(hMain.MMM,'Pointer','watch');
+    drawnow
+end
 
 commands=':atompair:attach:beacons:bckg:bilabel:blscan:camup:camrotate:color:colorscheme:compact:copy:delete:density:detach:dihedrals:distance:domain:download:dssp:echo:helix:help:hide:inertiaframe:label:libcomp:libtest:lock:locrmsd:locorder:loop:mass:motion:mushroom:new:ortho:pdbload:persp:plot:radgyr:redo:refrmsd:remodel:repack:replace:report:rmsd:rotamers:SAS:scopy:select:sheet:show:statistics:symmetry:synonym:transparency:undo:undefine:unlock:unselect:view:wrseq:zoom:';
 
@@ -199,7 +201,10 @@ end;
 
 set(handles.edit_command_line,'String',command_line);
 
-set(hMain.MMM,'Pointer','arrow');
+if ~isfield(hMain,'remote') || ~hMain.remote
+    set(hMain.MMM,'Pointer','arrow');
+    drawnow
+end
 
 % Command execution functions
 % --------------------------
@@ -480,7 +485,6 @@ end;
 if msg.error,
     add_msg_board(msg.text);
 end;
-drawnow;
 
 function handles=uncolor(handles,args)
 
@@ -1152,6 +1156,8 @@ function handles=copy_3D(handles,args)
 global hMain
 global hModel
 
+lighting gouraud
+
 args = split(strtrim(args));
 
 if ~hMain.detached,
@@ -1511,7 +1517,6 @@ if strcmp(address(1),'$'), % surface request
 else
     [message,argout]=set_object(address,'hide');
 end;
-lighting gouraud
 
 function handles=delete_cmd(handles,args)
 
@@ -1542,7 +1547,6 @@ if strcmp(address(1),'$'), % surface request
 else
     add_msg_board('Warning: Current version can delete only surfaces');
 end;
-lighting gouraud
 
 function handles=attach(handles)
 global hMain
@@ -1749,7 +1753,6 @@ if exist('mode','var') && ~isempty(strfind(address,'|')) && strcmp(mode,'label')
             end
         end
     end
-    lighting gouraud
     return
 end
 
@@ -1772,10 +1775,10 @@ else
     if length(myargs{1}) > 3
         argin{3} = char(myargs{1}(4));
     end;
-    [message,argout]=set_object(address,'show',argin);
+    [message,argout] = set_object(address,'show',argin);
 end;
 
-lighting gouraud
+% lighting gouraud
 
 if strcmp(strtrim(address),'*')
     highlight_selection
@@ -3176,8 +3179,6 @@ switch mode{1}
     otherwise
         add_msg_board(sprintf('ERROR: No rotamer library for label %s.',label));
 end
-set(hMain.MMM,'Pointer','arrow');
-drawnow
 
 function handles = coil_statistics(handles,args)
 
@@ -3298,8 +3299,6 @@ end;
 if ~isempty(fname),
     save(fname,'histo','rax','idr','rdax');
 end;
-set(hMain.MMM,'Pointer','arrow');
-drawnow
 
 
 function handles = get_beacons(handles,args)

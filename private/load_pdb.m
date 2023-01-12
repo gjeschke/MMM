@@ -66,4 +66,3 @@ if hMain.virgin,
     guidata(hMain.axes_model,hMain);
 end;
 
-set(gcf,'Pointer','arrow');

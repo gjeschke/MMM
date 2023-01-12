@@ -833,25 +833,23 @@ message.text='';
 
 scheme=argin{1};
 
-if length(argin)>1, % treat address argument for difference color scheme
-    [stag,ctag,modelnum,resnum]=mk_address_parts(indices);
+dindices=[];
+maxdiff = [];
+if length(argin)>1 % treat address argument for difference color scheme
+    [~,~,~,resnum]=mk_address_parts(indices);
     adr=argin{2};
     dindices0=resolve_address(adr);
     [stag2,ctag2,modelnum2,resnum2]=mk_address_parts(dindices0);
-    if ~isempty(resnum2),
+    if ~isempty(resnum2)
         dindices=resolve_address(sprintf('[%s](%s){%i}%i',stag2,ctag2,modelnum2,resnum2));
-    elseif ~isempty(modelnum2),
+    elseif ~isempty(modelnum2)
         dindices=resolve_address(sprintf('[%s](%s){%i}%i',stag2,ctag2,modelnum2,resnum));
-    elseif ~isempty(ctag2),
+    elseif ~isempty(ctag2)
         dindices=resolve_address(sprintf('[%s](%s)%i',stag2,ctag2,resnum));
-    elseif ~isempty(stag2),
+    elseif ~isempty(stag2)
         dindices=resolve_address(sprintf('[%s]%i',stag2,resnum));
-    else
-        dindices=[];
-    end;
-else
-    dindices=[];
-end;
+    end
+end
 
 if length(argin)>2,
     arg3=str2double(argin{3});
@@ -890,9 +888,14 @@ switch scheme
         end;
         known=1;
     case 'sequence'
-        num1=model.structures{indices(1)}(indices(2)).residues{indices(3)}.info(1).number;
-        nume=model.structures{indices(1)}(indices(2)).residues{indices(3)}.info(end).number;
-        residues=nume-num1+1;
+        if ~isempty(dindices) && ~isempty(maxdiff)
+            num1 = dindices(4);
+            residues = maxdiff;
+        else
+            num1=model.structures{indices(1)}(indices(2)).residues{indices(3)}.info(1).number;
+            nume=model.structures{indices(1)}(indices(2)).residues{indices(3)}.info(end).number;
+            residues=nume-num1+1;
+        end
         residues2=length(model.structures{indices(1)}(indices(2)).sequence);
         if residues2<residues,
             residues=residues2-num1+1;
@@ -1265,6 +1268,7 @@ function message=show_residue(indices,argin)
 % mode  string that determines the appearance of the plot
 
 global model
+global graph_settings
 mode = argin{1};
 
 message.error=0;
@@ -1282,7 +1286,23 @@ water=strcmpi(resname,'HOH'); % check whether this is a water
 gobjects=[];
 
 switch mode
-    case {'CaWire','CaStick','coil','ribbon'}
+    case {'coil'}
+        if ~water
+            if length(argin) >= 2
+                rad0 = graph_settings.coil_radius;
+                factor = str2double(argin{2});
+                if isnan(factor) || factor < 0 || factor > 5
+                    factor = 1;
+                end
+                graph_settings.coil_radius = factor*graph_settings.coil_radius;
+            end
+            gobjects = plot_backbone_segment(indices,mode);
+            if length(argin) >= 2
+                graph_settings.coil_radius = rad0;
+            end
+        end
+        if ~isempty(gobjects), plotted=1; end
+    case {'CaWire','CaStick','ribbon'}
         if ~water,
             gobjects=plot_backbone_segment(indices,mode);
         end;
