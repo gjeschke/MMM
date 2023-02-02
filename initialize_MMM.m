@@ -614,6 +614,14 @@ rotamer_libraries(38).type='peptide';
 rotamer_libraries(38).exclude=':H2:OXT:HXT:H:';
 rotamer_libraries(38).class = 'trityl';
 
+rotamer_libraries(39).label='HO4451';
+rotamer_libraries(39).tc='HO4';
+rotamer_libraries(39).T=298;
+rotamer_libraries(39).files=':HO4_298K_UFF_1024_r1:';
+rotamer_libraries(39).type='peptide';
+rotamer_libraries(39).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(39).class = 'nitroxide';
+
 ligand_libraries(1).label='dHisCuIDA';
 ligand_libraries(1).tc='IDA';
 ligand_libraries(1).files=':dHis_Cu_IDA_asym:';
