@@ -881,7 +881,7 @@ else
     handles=run_script(handles,fullfile(pname,fname));
 end
 cd(currdir);
-lighting goraud
+lighting gouraud
 drawnow
 guidata(hObject,handles);
 

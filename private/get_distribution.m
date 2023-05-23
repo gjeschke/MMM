@@ -98,7 +98,7 @@ else
                     pop2=NOpos2(kk,4);    % weight for k-th rotamer in the pos. 1
 
                     NO12=((sum((NO1-NO2).^2))^(1/2))/10; % NOpos1-NOpos2 distance (dipolar distance for k-kk pair) in nm!
-                    if NO12>=1
+                    if NO12>=0.1
                         poi=1+round(nr*(NO12-ra)/(re-ra));
                         if poi<=nr && poi>=1
                             distr(poi)=distr(poi)+pop1*pop2;
