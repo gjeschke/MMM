@@ -171,6 +171,10 @@ end;
 labnum=tag2id(label,label_defs.restags);
 atags=label_defs.residues(labnum).atoms;
 spin_density = label_defs.residues(labnum).spin_density;
+if isempty(spin_density)
+    NR_tag=id2tag(1,label_defs.residues(labnum).frame);
+    OR_tag=id2tag(2,label_defs.residues(labnum).frame);
+end
 info.name=label_defs.residues(labnum).tc;
 mylabel.adr=mk_address(indices);
 mylabel.name=label_defs.residues(labnum).short_name;
@@ -250,6 +254,12 @@ for rotamer=1:length(rotamers),
                 if k==C, C_new=newatoms; end;
             end;
         end;
+        if isempty(spin_density)
+            if strcmpi(atag,NR_tag) || strcmpi(atag,OR_tag)
+                mylabel.NOpos(rotamer,1:3)=mylabel.NOpos(rotamer,1:3)+ncoor(k,:)/2;
+                mylabel.NOpos(rotamer,4)=rotamers(rotamer).pop;
+            end
+        end
     end;
     [sc,~] = size(spin_density);
     mylabel.NOpos(rotamer,4)=rotamers(rotamer).pop;

@@ -281,7 +281,11 @@ else
             new_labels=new_labels+length(calc_positions);
             sites(k).residue=calc_positions;
             sites(k).library=libraries{k};
-            sites(k).class = rot_lib.class;
+            if isfield(rot_lib,'class')
+                sites(k).class = rot_lib.class;
+            else
+                sites(k).class = 'nitroxide';
+            end
             for kk=1:length(calc_positions)
                 text=sprintf('rotamers computed: %s using library %s at a temperature of %4.0f K',calc_positions(kk).label,libraries{k},T(k));
                 add_annotation(calc_positions(kk).indices,'Spin',text,{'rotamers computed'});
