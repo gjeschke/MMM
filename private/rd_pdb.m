@@ -1176,7 +1176,7 @@ while 1
                 occupancy=1;
             end
             if isempty(occupancy), occupancy=1; end
-            if abs(occupancy-1)<occupancy_error || strcmp(tline(17),' ') % defined location of this atom
+            if abs(occupancy-1)<occupancy_error || ~strcmp(tline(17),' ') % defined location of this atom
                 structure(c_id).residues{curr_model}.info(id).atom_numbers{at_id}=atnum; % residue must know where its atom coordinates are
             else % alternate locations of this atom
                 alternate=true;
