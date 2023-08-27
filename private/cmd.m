@@ -58,6 +58,7 @@ if isempty(test)
         add_msg_board(sprintf('ERROR: Command "%s" is not a valid command',cmd));
     end;
 end;
+% add_msg_board(sprintf('>%s...',cmd));
 % List of all recognized commands, alternative spellings allowed,
 % please keep alphabetic order of primary spelling
 switch cmd,

@@ -20,8 +20,12 @@ argout={};
 message.error=0;
 message.text='';
 
-if nargin<3,
+if nargin<2,
     argin{1}='';
+end;
+
+if nargin<3,
+    argin{2}=[];
 end;
 
 switch property
@@ -34,7 +38,7 @@ switch property
     case 'hide'
         message=hide_chain_model(indices);
     case 'show'
-        message=show_chain_model(indices,argin{1});
+        message=show_chain_model(indices,argin{1},argin{2});
     case 'transform'
         message=transform_chain_model(indices,argin);
     case 'transparency'
@@ -214,12 +218,18 @@ if ~isempty(info) && length(info)>=1,
     end;
 end;
 
-function message=show_chain_model(indices,mode)
+function message=show_chain_model(indices,mode,radius)
 % Plots a residue by calling plot routines for all atoms
 %
 % mode  string that determines the appearance of the plot
 
 global model
+global graph_settings
+
+if exist('radius','var') && ~isempty(radius)
+    default_coil_radius = graph_settings.coil_radius;
+    graph_settings.coil_radius = str2double(radius);
+end
 
 message.error=0;
 message.text='';
@@ -317,6 +327,11 @@ if plotted==0,
     message.error=2;
     message.text='Nothing to plot.';
 end;
+
+if exist('radius','var') && ~isempty(radius)
+    graph_settings.coil_radius = default_coil_radius;
+end
+
 
 function message=transform_chain_model(indices,matrices)
 % Coordinate transformation defined by an affine 4x4 transformation matrix

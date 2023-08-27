@@ -5,7 +5,7 @@ function [x,y,z,t]=point2trisphere(coor,radius,n)
 % coor      [x0,y0,z0] coordinate vector of the center of the sphere
 % radius    radius of the sphere
 % n         optional quality number, between 0 and inf, be careful, number
-%           of points grows dramatically with increasing n, defaults to 0 
+%           of points grows dramatically with increasing n, defaults to 1 
 %
 % x,y,z     coordinates of triangle vertices
 % t         face matrix for calling trisurf, use as
