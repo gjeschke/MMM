@@ -20,14 +20,11 @@ argout={};
 message.error=0;
 message.text='';
 
-if nargin<2,
+if nargin<3 || length(argin) < 2
     argin{1}='';
     argin{2}=[];
-end;
+end
 
-if nargin<3,
-    argin{2}=[];
-end;
 
 switch property
     case 'annotations'
