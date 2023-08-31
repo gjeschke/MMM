@@ -22,6 +22,7 @@ message.text='';
 
 if nargin<2,
     argin{1}='';
+    argin{2}=[];
 end;
 
 if nargin<3,
@@ -48,7 +49,7 @@ switch property
     otherwise
         message.error=3;
         message.text='Property does not exist';
-end;
+end
 
 
 function message=update_chain_model(indices)
