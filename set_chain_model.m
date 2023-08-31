@@ -20,10 +20,12 @@ argout={};
 message.error=0;
 message.text='';
 
-if nargin<3,
+if nargin<3 
     argin{1}='';
+end
+if length(argin) < 2
     argin{2}=[];
-end;
+end
 
 
 switch property
