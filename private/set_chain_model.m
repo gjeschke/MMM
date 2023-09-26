@@ -20,8 +20,11 @@ argout={};
 message.error=0;
 message.text='';
 
-if nargin<3 || length(argin) < 2
+if nargin<3
     argin{1}='';
+end
+
+if length(argin) < 2
     argin{2}=[];
 end
 
@@ -79,7 +82,7 @@ message.text='';
 
 color=argin{1};
 
-if length(argin)>1,
+if length(argin)>1 && ~isempty(argin{2})
     child_flag=argin{2};
 else
     child_flag=1;
