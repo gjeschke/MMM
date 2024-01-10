@@ -630,6 +630,33 @@ rotamer_libraries(40).type='peptide';
 rotamer_libraries(40).exclude=':H2:OXT:HXT:H:';
 rotamer_libraries(40).class = 'nitroxide';
 
+rotamer_libraries(41).label='PPLW';
+rotamer_libraries(41).tc='PPW';
+rotamer_libraries(41).T=298;
+rotamer_libraries(41).files=':PPW_298K_UFF_160_r1:';
+rotamer_libraries(41).type='peptide';
+rotamer_libraries(41).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(41).class = 'nitroxide';
+rotamer_libraries(41).download{1} = '';
+
+rotamer_libraries(42).label='AF-555';
+rotamer_libraries(42).tc='A55';
+rotamer_libraries(42).T=298;
+rotamer_libraries(42).files=':A55_298K_UFF_1024_r1:';
+rotamer_libraries(42).type='peptide';
+rotamer_libraries(42).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(42).class = 'chromophore';
+rotamer_libraries(42).download{1} = '';
+
+rotamer_libraries(43).label='AF-647';
+rotamer_libraries(43).tc='A64';
+rotamer_libraries(43).T=298;
+rotamer_libraries(43).files=':A64_298K_UFF_1024_r1:';
+rotamer_libraries(43).type='peptide';
+rotamer_libraries(43).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(43).class = 'chromophore';
+rotamer_libraries(43).download{1} = '';
+
 ligand_libraries(1).label='dHisCuIDA';
 ligand_libraries(1).tc='IDA';
 ligand_libraries(1).files=':dHis_Cu_IDA_asym:';
