@@ -657,6 +657,14 @@ rotamer_libraries(43).exclude=':H2:OXT:HXT:H:';
 rotamer_libraries(43).class = 'chromophore';
 rotamer_libraries(43).download{1} = '';
 
+rotamer_libraries(44).label='HO5223';
+rotamer_libraries(44).tc='HO5';
+rotamer_libraries(44).T=298;
+rotamer_libraries(44).files=':HO5_298K_UFF_1024_r1:';
+rotamer_libraries(44).type='peptide';
+rotamer_libraries(44).exclude=':H2:OXT:HXT:H:';
+rotamer_libraries(44).class = 'nitroxide';
+
 ligand_libraries(1).label='dHisCuIDA';
 ligand_libraries(1).tc='IDA';
 ligand_libraries(1).files=':dHis_Cu_IDA_asym:';
