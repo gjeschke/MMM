@@ -917,6 +917,19 @@ switch scheme
         Bfactor=sqrt(mean(Bfactors));
         rgb=color_grade(Bfactor-graph_settings.Bmin+1,graph_settings.Bmax-graph_settings.Bmin+1);
         known=1;
+    case 'pLDDT'
+        [message,Bfactors]=get_residue(indices,'Bfactor');
+        pLDDT = mean(Bfactors);
+        if pLDDT >= 90
+            rgb = [0,83,214]/255;
+        elseif pLDDT >= 70
+            rgb = [101,203,243]/255;
+        elseif pLDDT >= 50
+            rgb = [255,219,10]/255;
+        else
+            rgb = [255,125,69]/255;
+        end
+        known=1;
     case 'Bfactor_tight'
         [message,Bfactors]=get_residue(indices,'Bfactor');
         Bfactor=sqrt(mean(Bfactors));

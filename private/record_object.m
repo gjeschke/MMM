@@ -14,7 +14,7 @@ function record_object(obj,indices,xyz,num)
 %
 % G. Jeschke, 2009
 
-if obj==0, return;  end
+if obj==0 || isempty(xyz), return;  end
 
 % Assemble index vector
 idx = zeros(1,7);
